@@ -24,5 +24,5 @@ public:
 	void showCourbeInput() const ;
 };
 
-typedef boost::shared_ptr<CourbeInput> courbeInput_PTR;
-typedef boost::shared_ptr<const CourbeInput> courbeInput_CONSTPTR;
+typedef boost::shared_ptr<CourbeInput> CourbeInput_PTR;
+typedef boost::shared_ptr<const CourbeInput> CourbeInput_CONSTPTR;

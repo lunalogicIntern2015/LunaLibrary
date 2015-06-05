@@ -5,13 +5,13 @@
 void TestFonctionConstanteMorceaux(){
 	std::cout << "TestFonction()" << std::endl ;
 //fonction constante
-	constant_RR_Function f = constant_RR_Function(3);
+	Constant_RR_Function f = Constant_RR_Function(3);
 	std::cout << f(0) << std::endl ;
 //fonction constante par morceaux
 	std::vector<double> x ; x.push_back(0) ; x.push_back(1) ; x.push_back(2) ;
 	std::vector<double> y ; y.push_back(3) ; y.push_back(4) ;
 			
-	piecewiseconst_RR_Function f_CM = piecewiseconst_RR_Function(x, y) ;
+	Piecewiseconst_RR_Function f_CM = Piecewiseconst_RR_Function(x, y) ;
 	std::cout << "f(0) = " << f_CM(0) << "vs : 3" << std::endl ;
 	std::cout << "f(1) = " << f_CM(1) << "vs : 4" << std::endl ;
 	std::cout << "f(2) = " << f_CM(2) << "vs : 4" << std::endl ;
@@ -20,7 +20,7 @@ void TestFonctionConstanteMorceaux(){
 	std::cout << "non defini en 4 : f(4) = " << f_CM(4) << std::endl ;
 //doit renvoyer message d'erreur : vecteur pas de bonne taille    
 	y.push_back(5) ;
-	f_CM = piecewiseconst_RR_Function(x, y) ;
+	f_CM = Piecewiseconst_RR_Function(x, y) ;
 	std::cout << "pb de taille de vecteur : f(0) = " << f_CM(0) << std::endl ;
 	std::cout << "pb de taille de vecteur : f(2) = " << f_CM(2) << std::endl ;
 }

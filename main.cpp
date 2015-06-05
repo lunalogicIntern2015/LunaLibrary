@@ -4,7 +4,7 @@
 #include <Cheyette/unit_test/TestIntegrator1D_2D.h>
 #include <Cheyette/unit_test/TestApproxDD.h>
 #include <Cheyette/CheyetteModel/CheyetteDD_Model.h>
-#include <Cheyette/Pricer/CheyetteDD_VanillaSwaptionMCPricer.h>
+#include <Cheyette/Pricer/MC_CheyetteDD_VanillaSwapPricer.h>
 #include <LMM/numeric/Integrator1D.h>
 #include <Cheyette/unit_test/TestMC.h>
 
@@ -26,30 +26,24 @@ int main()
 	//TestIncrementalIntegrator1D_Riemann() ;
 
 	//CheyetteDD_VanillaSwaptionApproxPricer_PTR test = createApproxPricer_PTR() ;
-
-//a reprendre : 
-	//test_Derivative_ZC() ;  //passage par valeur ?!
-
-	//TestIncrementalIntegrator2D_Riemann() ;    //attention probleme lors de 2 appels consecutifs à la fonction integrate
-	//std::cout << "pb lors de 2 appels consecutifs a integrale" << std::endl ;
+	
+	//TestIncrementalIntegrator2D_Riemann() ;   
 
 	//createSwap() ;
 	//createDDModel() ;
-	//test_y_barre(0) ;
-	//test_y_barre(0.5) ;
-	//test_y_barre(1.0) ;
-	//test_Derivative_ZC() ;
+	//test_y_barre() ;
 	
-	//test_time_average() ; 
+	//test_Derivative_ZC() ;
+	test_time_average() ; 
 	//test_y_bar_cas_limite() ;
 	//test_Integrator1D();
 
 	//testSwap() ; 
-
+	
 	//test_incremental_integrale() ;
 
-	UneTrajectoireEuler() ;
-
+	//UneTrajectoireEuler() ;
+	TestMCSwapPricer() ;
 
 	/************  tests LMM   *************************/
 	//test_Noise();  

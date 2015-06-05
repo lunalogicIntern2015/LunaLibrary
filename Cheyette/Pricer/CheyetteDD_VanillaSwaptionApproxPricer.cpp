@@ -35,7 +35,7 @@ CheyetteDD_VanillaSwaptionApproxPricer::CheyetteDD_VanillaSwaptionApproxPricer
 double CheyetteDD_VanillaSwaptionApproxPricer::to_integrate_y_bar(double s) const
 {
 	double k			= cheyetteDD_Model_->get_CheyetteDD_Parameter().k_ ;
-	double sigma_r_0	= cheyetteDD_Model_->sigma_r(s, 0) ;			//sigma_r^0(t) = sigma_r(t, x_t, y_t) 
+	double sigma_r_0	= cheyetteDD_Model_->sigma_r(s, 0) ;			//sigma_r^0(t) = sigma_r(t, 0, 0) 
 	return exp(2 * k * s) * sigma_r_0 * sigma_r_0 ; 
 }
 
@@ -43,8 +43,8 @@ double CheyetteDD_VanillaSwaptionApproxPricer::to_integrate_y_bar(double s) cons
 // y_bar(t) = exp( - 2 k t ) * integrale_0^t( exp(2 k s) sigma_r^0(s) sigma_r^0(s) ds ) 
 void CheyetteDD_VanillaSwaptionApproxPricer::initialize_y_bar(double t, size_t gridSize) const
 {
-	double gridStart = 0 ;
-	double gridEnd = t ;
+	double gridStart	= 0 ;
+	double gridEnd		= t ;
 	double k			= cheyetteDD_Model_->get_CheyetteDD_Parameter().k_ ;
 
 	//constructeur pour le schema d'integration
@@ -451,17 +451,15 @@ double CheyetteDD_VanillaSwaptionApproxPricer::timeAverage(double t) const
 	boost::function<double(double)> f_inner = boost::bind(&CheyetteDD_VanillaSwaptionApproxPricer::lambda2, *this, _1);
 	boost::function<double(double)> f_outer = boost::bind(&CheyetteDD_VanillaSwaptionApproxPricer::f_outer_num, *this, _1);
 	
-//	double integrale_numerateur = int2D.integrate(f_outer_num, f_inner) ;
+	
+	double integrale_numerateur = int2D.integrate(f_outer, f_inner) ;
 
 //integrale denominateur
 	boost::function<double(double)> f_denom = boost::bind(&CheyetteDD_VanillaSwaptionApproxPricer::f_outer_denom, *this, _1);
 
-//	double integrale_denom = int2D.integrate(f_outer_denom, f_inner);
+	double integrale_denom = int2D.integrate(f_denom, f_inner);
 
-	std::cout << "ATTENTION au double appel de IncrementalIntegrator2D_Riemann" << std::endl ;
-	std::cout << "pas OK !!!!!!" << std::endl ;
-	return 0 ;
-//	return integrale_numerateur/integrale_denom ;
+	return integrale_numerateur/integrale_denom ;
 }
 
 double CheyetteDD_VanillaSwaptionApproxPricer::prixSwaptionApproxPiterbarg() const

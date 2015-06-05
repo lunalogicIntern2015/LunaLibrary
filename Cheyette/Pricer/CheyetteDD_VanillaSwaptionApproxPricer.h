@@ -31,7 +31,7 @@ private:
 	VanillaSwaption_PTR		swaption_ ;
 
 	//appel fréquent aux éléments suivants -> buffer
-	mutable courbeInput_PTR			buffer_courbeInput_ ;
+	mutable CourbeInput_PTR			buffer_courbeInput_ ;
 	mutable VanillaSwap				buffer_UnderlyingSwap_ ;
 	mutable double					buffer_T0_ ;
 	mutable double					buffer_TN_ ;
@@ -56,7 +56,7 @@ public :
 	CheyetteDD_Model_CONSTPTR	get_CheyetteDD_Model() const {return cheyetteDD_Model_ ;}
 	VanillaSwaption_PTR			get_VanillaSwaption() const {return swaption_ ;}
 
-	courbeInput_PTR				get_buffer_courbeInput_() const {return buffer_courbeInput_ ;}
+	CourbeInput_PTR				get_buffer_courbeInput_() const {return buffer_courbeInput_ ;}
 	VanillaSwap					get_buffer_UnderlyingSwap_() const {return buffer_UnderlyingSwap_ ;}
 	double						get_buffer_T0_() const {return buffer_T0_ ;}
 	double						get_buffer_TN_() const {return buffer_TN_ ;}
@@ -65,8 +65,8 @@ public :
 	std::vector<double>			get_buffer_deltaTFixedLeg_() const {return buffer_deltaTFixedLeg_ ;}
 	double						get_buffer_s0_() const {return buffer_s0_ ;}
 
-	Interpolation_RR_Function&		get_buffer_y_bar_() const {return buffer_y_bar_ ;}
-
+	Interpolation_RR_Function&	get_buffer_y_bar_() const {return buffer_y_bar_ ;}
+	double						get_buffer_y_bar_t(double t) const {return buffer_y_bar_(t) ;}
 
 	//calcul de y_barre(t)
 	double to_integrate_y_bar(double t) const ;
@@ -154,17 +154,6 @@ public :
 
 		//prix swaption approximé 
 		double prixSwaptionApproxPiterbarg() const ;		//size_t gridSize
-
-
-//	////! precalculation: YY TODO: can be further optimized for calibration problem. 
-//	//void preCalculateLiborAtExpensionInit(const std::vector<double> & liborsInitValue, const VanillaSwaption& vanillaswaption) const;
-//	//void preCalculate_dSdLi_AtExpensionInit(const std::vector<double> & liborsInitValue, const VanillaSwaption& vanillaswaption) const;
-//	//virtual void preCalculateALL(const std::vector<double> & liborsInitValue, const VanillaSwaption& vanillaswaption) const; 
-//
-//
-//	//double volBlack(const VanillaSwaption& vanillaSwaption, const std::vector<double>& liborsInitValue) const;
-//	//// exactly the same as Robonato.
-//	//double price(const VanillaSwaption & swaption, const std::vector<double> & libor_init )const;
 
 
 };
