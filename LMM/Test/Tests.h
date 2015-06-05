@@ -2,6 +2,7 @@
 
 #include <ql/math/array.hpp>
 #include <string>
+
 #include <LMM/LmmModel/LmmSwaptionMarketData.h>
 #include <LMM/calibration/LmmCalibrationConfig.h>
 #include <LMM/LmmModel/GMatrixMapping.h>
@@ -48,6 +49,7 @@ void test_LmmRegularizedCalibrationMarketData();
 //test JB
 void test_beginner();
 void vanillaSwapComparaisonExemple();
+void Test_McGeneticSwapLMMPricer();
 
 LmmSwaptionMarketData_PTR get_LmmSwaptionMarketData(const LmmCalibrationConfig& config, const std::string& input_file);
 
