@@ -22,12 +22,11 @@ void UneTrajectoireEuler()
 	listeMatu.push_back(15) ;	tauxZC.push_back(2.0/100) ;  
 	listeMatu.push_back(20) ;	tauxZC.push_back(2.5/100) ;
 	listeMatu.push_back(25) ;	tauxZC.push_back(2.3/100) ;
-	courbeInput_PTR courbe_PTR_test(new CourbeInput(listeMatu, tauxZC));
+	CourbeInput_PTR courbe_PTR_test(new CourbeInput(listeMatu, tauxZC));
 
-	piecewiseconst_RR_Function sigma = piecewiseconst_RR_Function(x, y) ; 
-	piecewiseconst_RR_Function m = piecewiseconst_RR_Function(x, y) ;
-	piecewiseconst_RR_Function shift = piecewiseconst_RR_Function(x, y) ;
-	CheyetteDD_Model::CheyetteDD_Parameter monStruct = CheyetteDD_Model::CheyetteDD_Parameter(k, sigma, m, shift) ;
+	Piecewiseconst_RR_Function sigma	= Piecewiseconst_RR_Function(x, y) ; 
+	Piecewiseconst_RR_Function m		= Piecewiseconst_RR_Function(x, y) ;
+	CheyetteDD_Model::CheyetteDD_Parameter monStruct = CheyetteDD_Model::CheyetteDD_Parameter(k, sigma, m) ;
 	CheyetteDD_Model_PTR modele_test_PTR(new CheyetteDD_Model(courbe_PTR_test, monStruct)) ;
 
 	double fwdProbaT = 1 ;
@@ -51,71 +50,79 @@ void UneTrajectoireEuler()
 
 }
 
-//void test_McLmm_for_Caplet( bool terminalOrSpotProb, 
-//						MCSchemeType::MCSchemeType mcSchemeType,
-//						size_t minNbSimulation, 
-//						size_t maxNbSimulation,
-//						double bnSimualtionPowBase,
-//						//! output
-//						std::vector<size_t>& nbSimulationVector,  // output
-//						std::vector<double>& capletResultVector, // output
-//						double& analytical_capletPrice)              // output
-////{
+//double ZCVasicek(double matuT, double mean_rev, double level, double sigma)
+//{
+//	double A_0_T = (1 - exp(- mean_rev * matuT)) / mean_rev ;
+//	double D_0_T = (level - sigma*sigma /(2*mean_rev*mean_rev) ) * (A_0_T - matuT) - sigma*sigma * A_0_T*A_0_T/(4 * mean_rev) ;
 //
-//	unsigned long seed = 47;
-//	RNGenerator_PTR  rnGenerator(new McGenerator(seed));
-//	VanillaCaplet_PTR vanillaCaplet = get_VanillaCaplet_PTR();
-//
-//
-//	Tenor  tenorType          = Tenor::_6M;
-//	size_t horizonYear        = 15; 
-//	double liborsInitValueFwd = 0.04;
-//	double shift              = 0.0;
-//	TEST::TEST_ShiftedLmmAndMcLmm testHelper =TEST::TEST_ShiftedLmmAndMcLmm(tenorType, 
-//																			horizonYear,						   
-//																			liborsInitValueFwd,
-//																			terminalOrSpotProb,
-//																			mcSchemeType,
-//																			shift);
-//	Lmm_PTR   lmm = testHelper.get_lmm();
-//	McLmm_PTR mclmm = testHelper.get_mcLmm();
-//	std::vector<double> liborsInitValue = testHelper.get_liborsInitValues();
-//
-//
-//	//std::vector<double> liborsInitValue;
-//	//Lmm_PTR lmm = get_lmm_for_Caplet(liborsInitValue); // init also the libor. 
-//	//McLmm_PTR mclmm_ptr = get_McLmm_for_Caplet(TerminalOrSpotProb, mcSchemeType,lmm, liborsInitValue);
-//
-//	McLmmVanillaCapletPricer mcLmmVanillaCapletPricer(mclmm);
-//
-//	//! analytical swaptionApprox price
-//	LmmVanillaCapletPricer lmmVanillaCapletPricer(lmm); // YY: maybe a problem of polymorphisms for smart_pointer ??? 
-//	analytical_capletPrice = lmmVanillaCapletPricer.price(*vanillaCaplet, liborsInitValue);
-//	std::cout << "analyticalCapletPrice = "<< analytical_capletPrice <<  std::endl;
-//	double analytical_impliedVol = lmmVanillaCapletPricer.convertPriceToBlackVol(*vanillaCaplet,liborsInitValue,analytical_capletPrice);
-//	std::cout << "analytical_impliedVol = "<< analytical_impliedVol <<  std::endl;
-//
-//	//! MC FRA price, TODO: seems a bad thing, these vectors.
-//	nbSimulationVector.clear();
-//	capletResultVector.clear();
-//
-//	for(size_t i=0;; ++i)
-//	{
-//		size_t nbSimulation = (size_t)std::pow(bnSimualtionPowBase,(int)i)*minNbSimulation;
-//		if(nbSimulation>maxNbSimulation)
-//			break;
-//		double mcPrice = mcLmmVanillaCapletPricer.price(*vanillaCaplet, nbSimulation);
-//
-//		std::cout << "mc_price = "<< mcPrice <<  std::endl;
-//		double mc_impliedVol = lmmVanillaCapletPricer.convertPriceToBlackVol(*vanillaCaplet,liborsInitValue,mcPrice);
-//		std::cout << "mc_analytical_impliedVol = "<< mc_impliedVol <<  std::endl;
-//
-//
-//		nbSimulationVector.push_back(nbSimulation);
-//		capletResultVector.push_back(mcPrice);
-//		mcLmmVanillaCapletPricer.resetGeneratorToinitSeed(); // for the next generation begin with the same seed as this one...
-//	}
 //}
-//
-//
 
+void TestMCSwapPricer()
+{
+	unsigned long seed = 47;
+	RNGenerator_PTR  rnGenerator(new McGenerator(seed));
+
+	std::vector<double> listeMatu, tauxZC ;
+	listeMatu.push_back(0) ;	tauxZC.push_back(0.8/100) ; 
+	listeMatu.push_back(1) ;	tauxZC.push_back(0.85/100) ; 
+	listeMatu.push_back(2) ;	tauxZC.push_back(0.9/100) ; 
+	listeMatu.push_back(3) ;	tauxZC.push_back(0.92/100) ;  
+	listeMatu.push_back(4) ;	tauxZC.push_back(0.95/100) ; 
+	listeMatu.push_back(5) ;	tauxZC.push_back(1.00/100) ; 
+	listeMatu.push_back(10) ;	tauxZC.push_back(1.5/100) ; 
+	listeMatu.push_back(15) ;	tauxZC.push_back(2.0/100) ;  
+	listeMatu.push_back(20) ;	tauxZC.push_back(2.5/100) ;
+	listeMatu.push_back(25) ;	tauxZC.push_back(2.3/100) ;
+	CourbeInput_PTR courbe_PTR_test(new CourbeInput(listeMatu, tauxZC));
+
+
+	std::vector<double> x, y ;
+	x.push_back(0) ; x.push_back(1) ; x.push_back(2) ; 
+	y.push_back(0.25) ; y.push_back(0.5) ;
+	double k(0.25) ;
+	Piecewiseconst_RR_Function sigma	= Piecewiseconst_RR_Function(x, y) ; 
+	Piecewiseconst_RR_Function m		= Piecewiseconst_RR_Function(x, y) ;
+	CheyetteDD_Model::CheyetteDD_Parameter monStruct = CheyetteDD_Model::CheyetteDD_Parameter(k, sigma, m) ;
+	CheyetteDD_Model_PTR modele_test_PTR(new CheyetteDD_Model(courbe_PTR_test, monStruct)) ;
+	modele_test_PTR->show() ;
+
+	double strike          = 0.04;
+	LMM::Index  indexStart = 2; 
+	LMM::Index  indexEnd   = 4; 
+	Tenor	floatingLegTenorType = Tenor::_6M;
+	Tenor	fixedLegTenorType    = Tenor::_1YR;
+	LMMTenorStructure_PTR simulationStructure(new LMMTenorStructure(Tenor::_6M , 10) );
+	VanillaSwap swap = VanillaSwap(strike, indexStart, indexEnd, floatingLegTenorType, fixedLegTenorType, simulationStructure);
+	swap.show() ;
+	double fwdProbaT = 1 ;
+	std::vector<double>	datesOfSimulation ;
+	std::vector<size_t> discretizationBetweenDates ;
+	//for(size_t i = 1 ; i < 20 ; ++i)
+	//{
+	//	datesOfSimulation.push_back(0.5 * i) ;
+	//	discretizationBetweenDates.push_back(4) ; 
+	//}
+	datesOfSimulation.push_back(1) ; datesOfSimulation.push_back(1.5) ; datesOfSimulation.push_back(2) ;
+	discretizationBetweenDates.push_back(200) ; discretizationBetweenDates.push_back(100) ; discretizationBetweenDates.push_back(100) ;
+
+	MC_Cheyette_PTR mc_Cheyette_Test_PTR(new MC_Cheyette(modele_test_PTR, 
+														rnGenerator, 
+														fwdProbaT, 
+														datesOfSimulation, 
+														discretizationBetweenDates) ) ;
+	MC_CheyetteDD_VanillaSwapPricer mc_Cheyette_vanillaSwpaPricer_Test(mc_Cheyette_Test_PTR) ;
+	
+	std::cout << "voir pour changer la graine a chaque simu" << std::endl ;
+	double t_valo = 1 ;
+	size_t nbSimu = 1000 ;
+
+	MC_CheyetteDD_ZCPricer mc_CheyetteDD_ZCPricer(mc_Cheyette_Test_PTR) ;
+	std::cout << "Prix ZC : " << mc_CheyetteDD_ZCPricer.price(t_valo, 2, nbSimu) << std::endl ;
+
+	std::cout << "Prix swap MC : " << mc_Cheyette_vanillaSwpaPricer_Test.swapNPV(t_valo, swap, nbSimu) << std::endl ;
+
+	VanillaSwaption swaption(swap, OptionType::OptionType::CALL) ;
+	MC_CheyetteDD_VanillaSwaptionPricer mc_Cheyette_vanillaSwaptionPricer_Test(mc_Cheyette_Test_PTR) ;
+	std::cout << "Prix swaption MC : " << mc_Cheyette_vanillaSwaptionPricer_Test.price(t_valo, swaption, nbSimu) << std::endl ;
+
+}

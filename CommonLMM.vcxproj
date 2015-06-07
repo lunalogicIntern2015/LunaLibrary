@@ -62,7 +62,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>E:\DevLib\QuantLib\lib\QuantLib-vc110-mt-gd.lib</AdditionalDependencies>
+      <AdditionalDependencies>E:\DevLib\QuantLib\lib\QuantLib-vc110-mt-gd.lib;</AdditionalDependencies>
       <AdditionalLibraryDirectories>E:\DevLib\boost\libs;E:\DevLib\QuantLib\lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -89,9 +89,10 @@
     <ClInclude Include="Cheyette\Fonction.h" />
     <ClInclude Include="Cheyette\InverseFunction.h" />
     <ClInclude Include="Cheyette\Pricer\CheyetteDD_VanillaSwaptionApproxPricer.h" />
-    <ClInclude Include="Cheyette\Pricer\CheyetteDD_VanillaSwaptionMCPricer.h" />
     <ClInclude Include="Cheyette\Pricer\MC_Cheyette.h" />
     <ClInclude Include="Cheyette\Pricer\MC_CheyetteDD_VanillaSwapPricer.h" />
+    <ClInclude Include="Cheyette\Pricer\MC_CheyetteDD_VanillaSwaptionPricer.h" />
+    <ClInclude Include="Cheyette\Pricer\MC_CheyetteDD_ZCPricer.h" />
     <ClInclude Include="Cheyette\unit_test\TestApproxDD.h" />
     <ClInclude Include="Cheyette\unit_test\TestFonction.h" />
     <ClInclude Include="Cheyette\unit_test\TestIntegrator1D_2D.h" />
@@ -211,9 +212,10 @@
     <ClCompile Include="Cheyette\CheyetteModel\CourbeInput.cpp" />
     <ClCompile Include="Cheyette\InverseFunction.cpp" />
     <ClCompile Include="Cheyette\Pricer\CheyetteDD_VanillaSwaptionApproxPricer.cpp" />
-    <ClCompile Include="Cheyette\Pricer\CheyetteDD_VanillaSwaptionMCPricer.cpp" />
     <ClCompile Include="Cheyette\Pricer\MC_Cheyette.cpp" />
     <ClCompile Include="Cheyette\Pricer\MC_CheyetteDD_VanillaSwapPricer.cpp" />
+    <ClCompile Include="Cheyette\Pricer\MC_CheyetteDD_VanillaSwaptionPricer.cpp" />
+    <ClCompile Include="Cheyette\Pricer\MC_CheyetteDD_ZCPricer.cpp" />
     <ClCompile Include="Cheyette\unit_test\TestApproxDD.cpp" />
     <ClCompile Include="Cheyette\unit_test\TestFonction.cpp" />
     <ClCompile Include="Cheyette\unit_test\TestIntegrator1D_2D.cpp" />

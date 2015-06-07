@@ -19,6 +19,8 @@
 	y(t) = ( \sigma^2_r(t) - 2 k y(t) ) dt 
 
 	\sigma_r(t) = (m(t) r(t) + (1 - m(t)) shift(t) ) \sigma(t)  := sigma(t, x)  
+	
+	\sigma_r(t) = (m(t) shift(t, x) + (1 - m(t)) shift(0, x) ) \sigma(t)  := sigma(t, x) 
 
 	2 parameters: m(t) and sigma(t) assumed to be piecewise constant time-dependent
 	m(t) \in [0,1]
@@ -32,41 +34,44 @@ public:
 	struct CheyetteDD_Parameter  // tout ce qu-il faudra calibrer
 	{
 		double						k_;			// add comment please	// c'est une constante à vérifier 
-	    piecewiseconst_RR_Function	sigma_ ;	//sigma(t)				
-		piecewiseconst_RR_Function	m_;			//m(t)					
-		piecewiseconst_RR_Function	shift_;		//r(t)/ r(0) ou S(t)/S(0) ou Li(t)/Li(0)
-		
+	    Piecewiseconst_RR_Function	sigma_ ;	//sigma(t)				
+		Piecewiseconst_RR_Function	m_;			//m(t)					
 
 		//structure constructor
 		CheyetteDD_Parameter(double k, 
-			                 const piecewiseconst_RR_Function& sigma, 
-							 const piecewiseconst_RR_Function& m,
-							 const piecewiseconst_RR_Function&	shift)
-				: k_(k), sigma_(sigma), m_(m), shift_(shift)
-		{
-			assert(k > 0) ;
-			if(sigma_.getx_() != m_.getx_())
-			{
-				std::cout << "Warning: pillars of m differ from pillars of sigma" << std::endl ;
-			}
-		}
+			                 const Piecewiseconst_RR_Function& sigma, 
+							 const Piecewiseconst_RR_Function& m)
+				: k_(k), sigma_(sigma), m_(m) 
+				{
+					assert(k > 0) ;
+					if(sigma_.getx_() != m_.getx_())
+					{
+						std::cout << "Warning: pillars of m differ from pillars of sigma" << std::endl ;
+					}
+				}
 	};
 
 private:
-	courbeInput_PTR			courbeInput_PTR_ ;             // P(0,t)
-	CheyetteDD_Parameter	cheyetteDD_Parameter_;
+
+	CourbeInput_PTR	courbeInput_PTR_ ;             // P(0,t)
+	mutable CheyetteDD_Parameter	cheyetteDD_Parameter_;
+	Boost_R2R_Function_PTR		shift_;		//r(t)/ r(0) ou S(t)/S(0) ou Li(t)/Li(0)
 
 public:
 	//constructor
-	CheyetteDD_Model(courbeInput_PTR courbeInput_PTR, const CheyetteDD_Parameter& cheyetteParam)
-		: courbeInput_PTR_(courbeInput_PTR), cheyetteDD_Parameter_(cheyetteParam)
-	{}
+	CheyetteDD_Model(const CourbeInput_PTR courbeInput_PTR, const CheyetteDD_Parameter& cheyetteParam)
+		: courbeInput_PTR_(courbeInput_PTR), cheyetteDD_Parameter_(cheyetteParam) 
+	{
+		boost::function<double(double, double)> f = boost::bind(&CheyetteDD_Model::shift, this, _1, _1);
+		Boost_R2R_Function_PTR f_ptr(new Boost_R2R_Function(f)) ;
+		shift_ =  f_ptr ;
+	}
 	
 	//destructor
 	virtual ~CheyetteDD_Model(){};
 
 	//getters
-	courbeInput_PTR			get_courbeInput_PTR() const{return courbeInput_PTR_ ;}
+	CourbeInput_PTR			get_courbeInput_PTR() const{return courbeInput_PTR_ ;}
 	CheyetteDD_Parameter	get_CheyetteDD_Parameter() const{return cheyetteDD_Parameter_;}
 
 	void show() ;
@@ -74,6 +79,8 @@ public:
 	//fonction de vol locale Displaced Diffusion
 	double sigma_r(double t, double x_t) const ;
 	double sigma_r_t_1stDerivative(double t, double x_t) const ;  //derivee wrt x_t
+
+	double shift(double t, double x_t) const ;							
 	double shift_1stDerivative(double t, double x_t) const ;  //derivee du shift (r(t) ou S(t) ou Li(t)) wrt x_t
 
 	//fonctions G(t, T), ZC B(t, T), Libor...

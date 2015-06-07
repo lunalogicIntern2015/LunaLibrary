@@ -6,6 +6,20 @@
 
 namespace numeric 
 {
+		size_t findClosestDate(double d, std::vector<double> vect)
+	{
+		size_t i = 0 ;
+		double tol = 0.01 ;
+		bool close = vect[0] - tol < d && d < vect[0] + tol ;
+		while (close == false)
+		{
+			++i ;
+			close = vect[i] - tol < d && d < vect[i] + tol ;
+		}
+		std::cout << "findClosestDate : d = " << d << "vs " << vect[i] << std::endl ;
+		return i ;
+	}
+
 //
 //Riemann
 //
@@ -57,6 +71,7 @@ namespace numeric
 		{
 			grids_[i] = grids_[i-1] + delta;
 		}
+		grids_[nbPoints - 1] = end ; //sinon pb numerique, 0.9999999 à la place de 1
 	}
 
 
@@ -65,7 +80,7 @@ namespace numeric
 	   double res = 0;
 	
 	   values_[0] = 0.0;
-	   for(size_t i=0; i<grids_.size()-1; ++i)  //securité si double appel de vecteur integrate
+	   for(size_t i=0; i<grids_.size(); ++i)  
 	   {  
 		   values_[i]  = 0 ;
 	   }

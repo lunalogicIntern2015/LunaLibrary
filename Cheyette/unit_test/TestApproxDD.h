@@ -12,7 +12,7 @@
 #include <vector>
 
 
-courbeInput_PTR createCourbeInput() ;
+CourbeInput_PTR createCourbeInput() ;
 
 CheyetteDD_Model_PTR createCheyetteDD_Model() ;
 
@@ -26,12 +26,12 @@ CheyetteDD_VanillaSwaptionApproxPricer_PTR createApproxPricer_PTR() ;
 
 void test_Derivative_ZC() ;
 
-//void test_y_barre(double t) ;  //et test annuite, test swap rate denominator derivee
+void test_y_barre() ;  //et test annuite, test swap rate denominator derivee
 
 void test_time_average() ;
 
 
-//	void test_y_bar_cas_limite() ;
+	void test_y_bar_cas_limite() ;
 //
 //	void test_incremental_integrale() ;
 //	void test_incremental_b_barre() ;

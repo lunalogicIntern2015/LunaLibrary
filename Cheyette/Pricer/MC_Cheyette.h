@@ -40,7 +40,7 @@ public:
 				x_t_Cheyette_(datesOfSimulation.size()), y_t_Cheyette_(datesOfSimulation.size()) 
 	{
 			//remplit x_t_Cheyette_ et y_t_Cheyette_ aux dates voulues
-			simulate_Euler() ;
+			//simulate_Euler() ;
 			if (datesOfSimulation_.size() != discretizationBetweenDates_.size())
 				throw "In MC_Cheyette, vectors datesOfSimulation and discretizationBetweenDates must have the same size" ;
 	} 

@@ -415,7 +415,6 @@
     <ClInclude Include="Cheyette\CheyetteModel\CheyetteModel.h" />
     <ClInclude Include="Cheyette\CheyetteModel\CourbeInput.h" />
     <ClInclude Include="Cheyette\Pricer\CheyetteDD_VanillaSwaptionApproxPricer.h" />
-    <ClInclude Include="Cheyette\Pricer\CheyetteDD_VanillaSwaptionMCPricer.h" />
     <ClInclude Include="Cheyette\Pricer\MC_Cheyette.h" />
     <ClInclude Include="Cheyette\Pricer\MC_CheyetteDD_VanillaSwapPricer.h" />
     <ClInclude Include="Cheyette\unit_test\Test_CheyetteDD_Model.h" />
@@ -425,6 +424,8 @@
     <ClInclude Include="Cheyette\unit_test\TestMC.h" />
     <ClInclude Include="Cheyette\Fonction.h" />
     <ClInclude Include="Cheyette\InverseFunction.h" />
+    <ClInclude Include="Cheyette\Pricer\MC_CheyetteDD_ZCPricer.h" />
+    <ClInclude Include="Cheyette\Pricer\MC_CheyetteDD_VanillaSwaptionPricer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\pricer\LmmTarnPricer.cpp">
@@ -796,7 +797,6 @@
     <ClCompile Include="Cheyette\CheyetteModel\CheyetteModel.cpp" />
     <ClCompile Include="Cheyette\CheyetteModel\CourbeInput.cpp" />
     <ClCompile Include="Cheyette\Pricer\CheyetteDD_VanillaSwaptionApproxPricer.cpp" />
-    <ClCompile Include="Cheyette\Pricer\CheyetteDD_VanillaSwaptionMCPricer.cpp" />
     <ClCompile Include="Cheyette\Pricer\MC_Cheyette.cpp" />
     <ClCompile Include="Cheyette\Pricer\MC_CheyetteDD_VanillaSwapPricer.cpp" />
     <ClCompile Include="Cheyette\unit_test\Test_CheyetteDD_Model.cpp" />
@@ -805,6 +805,8 @@
     <ClCompile Include="Cheyette\unit_test\TestIntegrator1D_2D.cpp" />
     <ClCompile Include="Cheyette\unit_test\TestMC.cpp" />
     <ClCompile Include="Cheyette\InverseFunction.cpp" />
+    <ClCompile Include="Cheyette\Pricer\MC_CheyetteDD_ZCPricer.cpp" />
+    <ClCompile Include="Cheyette\Pricer\MC_CheyetteDD_VanillaSwaptionPricer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="TODO" />

@@ -121,21 +121,21 @@ typedef boost::shared_ptr<Interpolation_RR_Function>       Interpolation_RR_Func
 typedef boost::shared_ptr<const Interpolation_RR_Function> Interpolation_RR_Function_CONSTPTR;
 
 //fonction constante
-class constant_RR_Function : public  RR_Function // R->R
+class Constant_RR_Function : public  RR_Function // R->R
 {
 private :
 	double constValue_ ;
 public:
-	constant_RR_Function(double constValue) : constValue_(constValue) {std::cout << "creation d'une fonction constante" << std::endl ;}
+	Constant_RR_Function(double constValue) : constValue_(constValue) {std::cout << "creation d'une fonction constante" << std::endl ;}
 	boost::function<double(double)> func_;
 
-	virtual ~constant_RR_Function(){};
+	virtual ~Constant_RR_Function(){};
 
 	double operator ()(double x) const {return constValue_;}
 };
 
 //fonction constante par morceaux avec convention cadlag
-class piecewiseconst_RR_Function : public RR_Function 
+class Piecewiseconst_RR_Function : public RR_Function 
 {
 private :
 	//si x est de longueur N, y doit être de longueur N-1
@@ -147,15 +147,15 @@ private :
 
 public :
 	//constructeur
-	piecewiseconst_RR_Function(const std::vector<double>& x, const std::vector<double>& y) : x_(x), y_(y) {} 
+	Piecewiseconst_RR_Function(const std::vector<double>& x, const std::vector<double>& y) : x_(x), y_(y) {} 
 
 	//getters
-	std::vector<double> piecewiseconst_RR_Function::getx_() const {return x_ ;} 
-	std::vector<double> piecewiseconst_RR_Function::gety_() const {return y_ ;}
+	std::vector<double> Piecewiseconst_RR_Function::getx_() const {return x_ ;} 
+	std::vector<double> Piecewiseconst_RR_Function::gety_() const {return y_ ;}
 
 	// find interval and return the corresponding y : convention càdlàg
 	// traiter cas extreme: extrapolation ! 
-	double piecewiseconst_RR_Function::evaluate(double t) const
+	double Piecewiseconst_RR_Function::evaluate(double t) const
 	{
 		//assert(x_[0] <= t || t <= x_[x_.size() - 1] ) ;
 		//assert(y_.size() +  1 == x_.size()) ; 
@@ -214,8 +214,22 @@ class R2R_Function
 public:
 	boost::function<double(double, double)> func_;
 
-	virtual double evaluate(double x, double y) const = 0;
+	virtual double operator ()(double t, double x) const = 0;
 };
+
+class Boost_R2R_Function : public  R2R_Function 
+{
+private:
+	boost::function<double(double, double)> func_;
+public:
+	Boost_R2R_Function(const boost::function<double(double, double)>& func):func_(func){}
+	virtual ~Boost_R2R_Function(){}
+	
+	double operator ()(double t, double x) const {return func_(t, x);}
+};
+typedef boost::shared_ptr<Boost_R2R_Function>       Boost_R2R_Function_PTR;
+typedef boost::shared_ptr<const Boost_R2R_Function> Boost_R2R_Function_CONSTPTR;
+
 
 //
 //class piecewiseconst_r2r_function : public r2r_function 

@@ -29,7 +29,7 @@ void Test_McGeneticSwapLMMPricer()
 	Tenor	tenorType		=	Tenor::_6M;
 	size_t	horizonYear		=	10;
 	LMMTenorStructure_PTR lmmTenorStructure( new LMMTenorStructure(tenorType, horizonYear));
-	size_t	nbSimulation	=	100000;
+	size_t	nbSimulation	=	1000;
 
 	LMM::Index	subIndexStart	=	10;
 	LMM::Index	subIndexEnd		=	16;

@@ -1,6 +1,16 @@
 #include "CheyetteDD_Model.h"
 
-void CheyetteDD_Model::show()
+////initialisation des elements statiques de CheyetteDD_Model
+//
+//	static const double matu[]={0., 1.,2., 3., 4., 5., 40., 15., 20., 25.};
+//	static const double tauxZC[]={0.8/100, 0.85/100, 0.9/100, 0.92/100, 0.95/100, 1.00/100, 1.5/100, 2.0/100, 2.5/100, 2.3/100};
+//	static std::vector<double> listeMatu(std::begin(matu),std::end(matu));
+//	static std::vector<double> listeTauxZC(std::begin(tauxZC),std::end(tauxZC));
+//	CourbeInput_PTR CheyetteDD_Model::courbeInput_PTR_(new CourbeInput(listeMatu, listeTauxZC));
+//
+//	Boost_R2R_Function CheyetteDD_Model::cheyetteDD_Parameter_.shift_(boost::bind(&CheyetteDD_Model::shift, _1, _1));
+
+	void CheyetteDD_Model::show()
 {
 	std::cout << "---------------------------------------------" << std::endl ;
 	std::cout << "--- creation d'un objet Cheyette DD Model ---" << std::endl ;
@@ -8,8 +18,8 @@ void CheyetteDD_Model::show()
 	cheyetteDD_Parameter_.sigma_.show() ;
 	std::cout << "  M piecewise constant " << std::endl ;
 	cheyetteDD_Parameter_.m_.show() ;
-	std::cout << "  SHIFT piecewise constant " << std::endl ;
-	cheyetteDD_Parameter_.shift_.show() ;
+	//std::cout << "  SHIFT piecewise constant " << std::endl ;
+	//cheyetteDD_Parameter_.shift_.show() ;
 	std::cout << "  k constant " << std::endl ;
 	std::cout << "       k = " << cheyetteDD_Parameter_.k_ << std::endl ;
 	std::cout << "---------------------------------------------" << std::endl ;
@@ -20,8 +30,8 @@ double CheyetteDD_Model::sigma_r(double t, double x_t) const
 {
 	double sigma_t = cheyetteDD_Parameter_.sigma_(t) ;
 	double m_t		= cheyetteDD_Parameter_.m_(t) ;
-	double shift_t	= cheyetteDD_Parameter_.shift_(t) ;
-	double shift_0	= cheyetteDD_Parameter_.shift_(0) ;
+	double shift_t	= shift_->operator()(t, x_t) ;
+	double shift_0	= shift_->operator()(0, 0) ;  //shift_(0, 0) ??
 	return sigma_t * (m_t * shift_t + (1 - m_t) * shift_0) ;
 }
 
@@ -30,6 +40,12 @@ double CheyetteDD_Model::sigma_r_t_1stDerivative(double t, double x_t) const
 	double sigma_t = cheyetteDD_Parameter_.sigma_(t) ;
 	double m_t		= cheyetteDD_Parameter_.m_(t) ;
 	return sigma_t * m_t * shift_1stDerivative(t, x_t)  ;
+}
+
+double CheyetteDD_Model::shift(double t, double x_t) const
+{
+	//cas shift = r(t)
+	return x_t + courbeInput_PTR_->get_f_0_t(t) ;  
 }
 
 double CheyetteDD_Model::shift_1stDerivative(double t, double x_t) const

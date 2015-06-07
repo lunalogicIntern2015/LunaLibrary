@@ -10,6 +10,8 @@
 
 #include <ql/math/distributions/normaldistribution.hpp>
 
+
+
 //TODO: delete const double &, use only double .
 namespace NumericalMethods
 {

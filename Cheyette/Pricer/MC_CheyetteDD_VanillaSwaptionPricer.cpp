@@ -1,19 +1,16 @@
-#include <cassert>
-#include <iostream>
-#include <cmath>
-
 #include <Cheyette/Pricer/MC_CheyetteDD_VanillaSwapPricer.h>
+#include <Cheyette/Pricer/MC_CheyetteDD_VanillaSwaptionPricer.h>
 
 
-
-double MC_CheyetteDD_VanillaSwapPricer::swapNPV(double t_valo, 
-												const VanillaSwap& vanillaSwap, 
+double MC_CheyetteDD_VanillaSwaptionPricer::price(double t_valo, 
+												const VanillaSwaption& vanillaSwaption, 
 												size_t nbSimulation)  const
 {
-	double dateFlux, x_t, y_t, fixedLegValue(0), floatLegValue(0), valueSwap(0) ;
+	double dateFlux, x_t, y_t, fixedLegValue(0), floatLegValue(0), valueSwaption(0) ;
 	std::vector<double> x_t_one_sim, y_t_one_sim ;  //one simulation 
 	std::vector<double> dates = mcCheyette_->getDatesOfSimulation_() ;
 
+	VanillaSwap vanillaSwap = vanillaSwaption.getUnderlyingSwap() ;
 	std::vector<size_t> fixedLegIndexSchedule		= vanillaSwap.get_fixedLegPaymentIndexSchedule() ; 
 	std::vector<size_t> floatingLegIndexSchedule	= vanillaSwap.get_floatingLegPaymentIndexSchedule() ;
 	double fixed_tenor = vanillaSwap.get_fixedLegTenorType().YearFraction() ;
@@ -43,20 +40,8 @@ double MC_CheyetteDD_VanillaSwapPricer::swapNPV(double t_valo,
 			double libor = mcCheyette_->getCheyetteDD_Model_()->Libor(t_valo, dateFlux - float_tenor, dateFlux, x_t, y_t) ;
 			floatLegValue += float_tenor * libor * mcCheyette_->getCheyetteDD_Model_()->P(t_valo, dateFlux, x_t, y_t) ; 
 		}	
-		valueSwap += floatLegValue - fixedLegValue ;
+		valueSwaption += std::max(floatLegValue - fixedLegValue, 0.) ;
 	}
 
-	return valueSwap / nbSimulation ;
+	return valueSwaption / nbSimulation ;
 }
-
-
-//double MC_CheyetteDD_VanillaSwapPricer:: swapRate(LMM::Index indexValuationDate,
-//										 const VanillaSwap& vanillaSwap,
-//										 const std::vector<double>& numeraire, 
-//										 const std::vector<double>& xt_Cheyette,
-//										 const std::vector<double>& yt_Cheyette) const
-//{
-//	double pvFloating = pvFloatingLeg( indexValuationDate,vanillaSwap,numeraire, xt_Cheyette, yt_Cheyette);
-//	double annuity = pvFixedLeg   (indexValuationDate, vanillaSwap, numeraire);
-//	return pvFloating / annuity;
-//}

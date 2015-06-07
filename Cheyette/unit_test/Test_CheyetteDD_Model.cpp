@@ -3,6 +3,6 @@
 
 double test_sigma_r(double t, double x_t)
 {
-	//TODO : test de fonction piecewise const 
+	//TODO : test de fonction piecewise const OK
 	return 0 ;
 }

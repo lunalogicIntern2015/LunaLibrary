@@ -7,7 +7,6 @@
 #include <Cheyette/unit_test/TestIntegrator1D_2D.h>
 #include <Cheyette/unit_test/TestApproxDD.h>
 #include <Cheyette/CheyetteModel/CheyetteDD_Model.h>
-#include <Cheyette/Pricer/CheyetteDD_VanillaSwaptionMCPricer.h>
 #include <LMM/numeric/Integrator1D.h>
 #include <Cheyette/unit_test/TestMC.h>
 
@@ -19,12 +18,10 @@ int main()
 	//test_beginner();							//test_JB
 	//vanillaSwapComparaisonExemple();			//test_JB		
 
-	Test_McGeneticSwapLMMPricer();			//test_JB
+	//Test_McGeneticSwapLMMPricer();			//test_JB
 	//Test_McGeneticTargetSwapLMMPricing();		//test_JB
 
-
 	//test_Integrator1D();
-
 	//createDDModel_xyz() ;
 	
 	/************    tests JL   ************************/
@@ -37,10 +34,10 @@ int main()
 
 	//CheyetteDD_VanillaSwaptionApproxPricer_PTR test = createApproxPricer_PTR() ;
 
-//a reprendre : 
-	//test_Derivative_ZC() ;  //passage par valeur ?!
 
-	//TestIncrementalIntegrator2D_Riemann() ;    //attention probleme lors de 2 appels consecutifs à la fonction integrate
+	test_Derivative_ZC() ;  
+
+	//TestIncrementalIntegrator2D_Riemann() ;    
 	//std::cout << "pb lors de 2 appels consecutifs a integrale" << std::endl ;
 
 	//createSwap() ;
@@ -59,6 +56,11 @@ int main()
 	//test_incremental_integrale() ;
 
 	//UneTrajectoireEuler() ;
+
+	//TestMCSwapPricer() ; 
+
+ 
+
 
 
 	/************  tests LMM   *************************/
