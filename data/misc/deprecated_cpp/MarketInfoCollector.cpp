@@ -1,4 +1,5 @@
-#include <LMM/helper/MarketInfoCollector.h>
+//#include <LMM/helper/MarketInfoCollector.h>
+#include <data\misc\deprecated_cpp\MarketInfoCollector.h>
 
 #include <iostream>
 #include <sstream>
