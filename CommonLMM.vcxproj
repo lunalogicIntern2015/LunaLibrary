@@ -42,9 +42,10 @@
     <IncludePath>C:\stageCheyette\LunaLibrary\data\misc\deprecated_cpp ; E:\Visual_Studio_Project\Visual_Studio_2012_Project\LunaLibrary;E:\DevLib\boost;E:\DevLib\QuantLib;
 	C:\stageCheyette\LunaLibrary; C:\boost&amp;quantlib\QuantLib-1.2.1\ql;C:\boost&amp;quantlib\boost_1_58_0;C:\boost&amp;quantlib\QuantLib-1.2.1; C:\boost&amp;quantlib\boost_1_58_0;C:\boost&amp;quantlib\QuantLib-1.2.1;
 	E:\Visual_Studio_Project\Visual_Studio_2012_Project\LunaLibrary;E:\DevLib\boost;E:\DevLib\QuantLib;$(IncludePath)</IncludePath>
+    <IncludePath>E:\Visual_Studio_Project\Visual_Studio_2012_Project\LunaLibrary;E:\DevLib\boost;E:\DevLib\QuantLib;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)VCBuild\$(Configuration)\</OutDir>
     <IntDir>VCBuild\$(Configuration)\</IntDir>
-    <LibraryPath>C:\boost&amp;quantlib\boost_1_58_0\libs;E:\DevLib\QuantLib\lib;E:\DevLib\boost\libs;$(LibraryPath)</LibraryPath>
+    <LibraryPath>E:\DevLib\QuantLib\lib;E:\DevLib\boost\libs;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>E:\Visual_Studio_Project\Visual_Studio_2012_Project\LunaLMM;E:\DevLib\QuantLib;E:\DevLib\boost;$(IncludePath)</IncludePath>
@@ -59,6 +60,7 @@
       <AdditionalIncludeDirectories>C:\stageCheyette\LunaLibrary\data\misc\deprecated_cpp ; E:\DevLib\boost;E:\Visual_Studio_Project\Visual_Studio_2012_Project\LunaLibrary; 
 	C:\boost&amp;quantlib\QuantLib-1.2.1;C:\stageCheyette\LunaLibrary;C:\boost&amp;quantlib\boost_1_58_0; 
 	C:\boost&amp;quantlib;E:\DevLib\boost;E:\Visual_Studio_Project\Visual_Studio_2012_Project\LunaLibrary</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\DevLib\boost;E:\Visual_Studio_Project\Visual_Studio_2012_Project\LunaLibrary</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
@@ -67,6 +69,7 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>E:\DevLib\QuantLib\lib\QuantLib-vc110-mt-gd.lib</AdditionalDependencies>
+      <AdditionalDependencies>E:\DevLib\QuantLib\lib\QuantLib-vc110-mt-gd.lib;</AdditionalDependencies>
       <AdditionalLibraryDirectories>E:\DevLib\boost\libs;E:\DevLib\QuantLib\lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -93,9 +96,10 @@
     <ClInclude Include="Cheyette\Fonction.h" />
     <ClInclude Include="Cheyette\InverseFunction.h" />
     <ClInclude Include="Cheyette\Pricer\CheyetteDD_VanillaSwaptionApproxPricer.h" />
-    <ClInclude Include="Cheyette\Pricer\CheyetteDD_VanillaSwaptionMCPricer.h" />
     <ClInclude Include="Cheyette\Pricer\MC_Cheyette.h" />
     <ClInclude Include="Cheyette\Pricer\MC_CheyetteDD_VanillaSwapPricer.h" />
+    <ClInclude Include="Cheyette\Pricer\MC_CheyetteDD_VanillaSwaptionPricer.h" />
+    <ClInclude Include="Cheyette\Pricer\MC_CheyetteDD_ZCPricer.h" />
     <ClInclude Include="Cheyette\unit_test\TestApproxDD.h" />
     <ClInclude Include="Cheyette\unit_test\TestFonction.h" />
     <ClInclude Include="Cheyette\unit_test\TestIntegrator1D_2D.h" />
@@ -135,12 +139,8 @@
     <ClInclude Include="LMM\calibration\Calibration.h" />
     <ClInclude Include="LMM\calibration\CalibrationShiftCostFunction.h" />
     <ClInclude Include="LMM\calibration\CalibrationVolCostFunction.h" />
+    <ClInclude Include="JBLMM\Pricer\McGeneticTargetSwapLmmPricer.h" />
     <ClInclude Include="LMM\calibration\LmmCalibrationConfig.h" />
-    <ClInclude Include="LMM\calibration\RebonatoVolatilityCostFunction.h" />
-    <ClInclude Include="LMM\calibration\SwaptionMarketDataContainer.h" />
-    <ClInclude Include="LMM\calibration\SwaptionMarketDataManager.h" />
-    <ClInclude Include="LMM\calibration\TestCostFunction.h" />
-    <ClInclude Include="LMM\calibration\TestHGVolatilityParam.h" />
     <ClInclude Include="LMM\greek\LmmVega.h" />
     <ClInclude Include="LMM\helper\BuildVariable.h" />
     <ClInclude Include="LMM\helper\CalibrationType.h" />
@@ -162,7 +162,6 @@
     <ClInclude Include="LMM\helper\TypeConverter.h" />
     <ClInclude Include="LMM\instrument\BermudanSwaption.h" />
     <ClInclude Include="LMM\instrument\CallableOption.h" />
-    <ClInclude Include="LMM\instrument\Caplet.h" />
     <ClInclude Include="LMM\instrument\VanillaFRA.h" />
     <ClInclude Include="LMM\instrument\VanillaCaplet.h" />
     <ClInclude Include="LMM\instrument\CMS.h" />
@@ -194,11 +193,7 @@
     <ClInclude Include="LMM\LmmModel\LmmSkewCostFunction.h" />
     <ClInclude Include="LMM\LmmModel\LmmSwaptionMarketData.h" />
     <ClInclude Include="LMM\numeric\Integrator1D.h" />
-    <ClInclude Include="LMM\numeric\RRFunction.h" />
     <ClInclude Include="LMM\numeric\UpperTriangularMatrixInterpolator.h" />
-    <ClInclude Include="LMM\pricer\LmmApproxVanillaSwaptionPricer.h" />
-    <ClInclude Include="LMM\pricer\LmmCapletPricer.h" />
-    <ClInclude Include="LMM\pricer\LmmSwaptionPricer.h" />
     <ClInclude Include="LMM\pricer\McLmmCallableOptionPricer.h" />
     <ClInclude Include="LMM\pricer\Regression.h" />
     <ClInclude Include="LMM\LmmModel\Shifted_HGVolatilityFunction.h" />
@@ -234,12 +229,6 @@
     <ClInclude Include="LMM\RNGenerator\McGenerator.h" />
     <ClInclude Include="LMM\RNGenerator\QMcGenerator.h" />
     <ClInclude Include="LMM\RNGenerator\RNGenerator.h" />
-    <ClInclude Include="LMM\Test\testlib\CapletTests____.h" />
-    <ClInclude Include="LMM\Test\testlib\LiborSimulationTests.h" />
-    <ClInclude Include="LMM\Test\testlib\SwaptionPricingTests.h" />
-    <ClInclude Include="LMM\Test\testlib\TestOptimizer.h" />
-    <ClInclude Include="LMM\Test\testlib\TestPricing.h" />
-    <ClInclude Include="LMM\Test\testlib\VolatilityTests.h" />
     <ClInclude Include="LMM\Test\Tests.h" />
     <ClInclude Include="LMM\Test\Test_CalibrationConfig.h" />
     <ClInclude Include="LMM\Test\Test_createLmmModel.h" />
@@ -252,6 +241,8 @@
     <ClCompile Include="Cheyette\Pricer\CheyetteDD_VanillaSwaptionApproxPricer.cpp" />
     <ClCompile Include="Cheyette\Pricer\MC_Cheyette.cpp" />
     <ClCompile Include="Cheyette\Pricer\MC_CheyetteDD_VanillaSwapPricer.cpp" />
+    <ClCompile Include="Cheyette\Pricer\MC_CheyetteDD_VanillaSwaptionPricer.cpp" />
+    <ClCompile Include="Cheyette\Pricer\MC_CheyetteDD_ZCPricer.cpp" />
     <ClCompile Include="Cheyette\unit_test\TestApproxDD.cpp" />
     <ClCompile Include="Cheyette\unit_test\TestFonction.cpp" />
     <ClCompile Include="Cheyette\unit_test\TestIntegrator1D_2D.cpp" />
@@ -306,26 +297,16 @@
     <ClCompile Include="LMM\Test\small_test\Test_McTerminalLmm____.cpp" />
     <ClCompile Include="LMM\Test\small_test\Test_VanillaSwapPricer____.cpp" />
     <ClCompile Include="LMM\Test\small_test\Test_VanillaSwaptionPricer____.cpp" />
+    <ClCompile Include="JBLMM\Test\Test_McGeneticTargetSwapPricing.cpp" />
     <ClCompile Include="LMM\Test\Test.cpp" />
-    <ClCompile Include="LMM\Test\testlib\CapletTests____.cpp" />
-    <ClCompile Include="LMM\Test\testlib\LiborSimulationTests.cpp" />
-    <ClCompile Include="LMM\Test\testlib\SwaptionPricingTests.cpp" />
-    <ClCompile Include="LMM\Test\testlib\TestPricing.cpp" />
-    <ClCompile Include="LMM\Test\testlib\Test_Instrument.cpp" />
-    <ClCompile Include="LMM\Test\testlib\VolatilityTests.cpp" />
     <ClCompile Include="LMM\Test\test_beginner.cpp" />
     <ClCompile Include="LMM\Test\Test_BlackGreek.cpp" />
     <ClCompile Include="LMM\Test\Test_CalibrationConfig.cpp" />
-    <ClCompile Include="LMM\Test\Test_CalibrationShiftWithSwaptionVolSkew.cpp" />
-    <ClCompile Include="LMM\Test\Test_CalibrationWithATMSwaptionVol.cpp" />
     <ClCompile Include="LMM\Test\Test_createLmmModel.cpp" />
-    <ClCompile Include="LMM\Test\Test_DerivatibleFunction.cpp" />
     <ClCompile Include="LMM\Test\Test_Functional.cpp" />
     <ClCompile Include="LMM\Test\Test_GMatrixMapping.cpp" />
-    <ClCompile Include="LMM\Test\Test_HGVolatility.cpp" />
     <ClCompile Include="LMM\Test\Test_Interpolation.cpp" />
     <ClCompile Include="LMM\Test\Test_LmmABCDFinder.cpp" />
-    <ClCompile Include="LMM\Test\Test_LmmCalibrationConfig.cpp" />
     <ClCompile Include="LMM\Test\Test_LmmCalibrationMarketData.cpp" />
     <ClCompile Include="LMM\Test\Test_LmmCalibrationSensitivity.cpp" />
     <ClCompile Include="LMM\Test\Test_LmmGnuplotPrinterMatrix.cpp" />
@@ -334,7 +315,6 @@
     <ClCompile Include="LMM\Test\Test_LmmVirtualCalibration.cpp" />
     <ClCompile Include="LMM\Test\Test_LmmVirtualCorrelationCalibraton.cpp" />
     <ClCompile Include="LMM\Test\Test_Noise.cpp" />
-    <ClCompile Include="LMM\Test\Test_SwaptionMarketDataContainer.cpp" />
     <ClCompile Include="LMM\Test\Test_UpperTriangleVanillaSwaptionQuotes.cpp" />
     <ClCompile Include="LMM\Test\Test_VanillaCapletPricer.cpp" />
     <ClCompile Include="LMM\Test\Test_McTerminalLmm.cpp" />
@@ -342,24 +322,6 @@
     <ClCompile Include="LMM\Test\Test_VanillaSwapPricer.cpp" />
     <ClCompile Include="LMM\Test\Test_VanillaSwaptionPricer.cpp" />
     <ClCompile Include="LMM\Test\Test_VanillaSwaptionPricer_MCvsApprox.cpp" />
-    <ClCompile Include="LMM\Test\unit_test\test_apath.cpp" />
-    <ClCompile Include="LMM\Test\unit_test\test_BoostUblasMatrix.cpp" />
-    <ClCompile Include="LMM\Test\unit_test\test_calibration_ATMSwaptionMarketData.cpp" />
-    <ClCompile Include="LMM\Test\unit_test\test_calibration_ATMSwaptionStructuredData.cpp" />
-    <ClCompile Include="LMM\Test\unit_test\test_calibration_RebonatoVolatilityCostFunction.cpp" />
-    <ClCompile Include="LMM\Test\unit_test\test_helper_LMMTenorStructure.cpp" />
-    <ClCompile Include="LMM\Test\unit_test\test_helper_QMcGenerator.cpp" />
-    <ClCompile Include="LMM\Test\unit_test\test_helper_Tenor.cpp" />
-    <ClCompile Include="LMM\Test\unit_test\test_helper_Tensor.cpp" />
-    <ClCompile Include="LMM\Test\unit_test\test_instrument_VanillaSwap.cpp" />
-    <ClCompile Include="LMM\Test\unit_test\test_ModelMCLMM_Correlation.cpp" />
-    <ClCompile Include="LMM\Test\unit_test\test_ModelMCLMM_Dispersion.cpp" />
-    <ClCompile Include="LMM\Test\unit_test\test_ModelMCLMM_HGVolatilityFunction.cpp" />
-    <ClCompile Include="LMM\Test\unit_test\test_ModelMCLMM_PCA.cpp" />
-    <ClCompile Include="LMM\Test\unit_test\test_ModelMCLMM_RobonatoAngle.cpp" />
-    <ClCompile Include="LMM\Test\unit_test\test_numeric_NumericalMethods.cpp" />
-    <ClCompile Include="LMM\Test\unit_test\test_pricer_LmmApproxVanillaSwaptionPricer.cpp" />
-    <ClCompile Include="LMM\Test\unit_test\test_QuantLibIntegrationMethod.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Cheyette\Pricer\MC_CheyetteDD_VanillaSwaptionPricer.cpp" />
     <ClCompile Include="Cheyette\Pricer\MC_CheyetteDD_ZCPricer.cpp" />
@@ -370,11 +332,6 @@
     <ClCompile Include="src\calibration\CalibrationShiftCostFunction.cpp" />
     <ClCompile Include="src\calibration\CalibrationVolCostFunction.cpp" />
     <ClCompile Include="src\calibration\LmmCalibrationConfig.cpp" />
-    <ClCompile Include="src\calibration\RebonatoVolatilityCostFunction.cpp" />
-    <ClCompile Include="src\calibration\SwaptionMarketDataContainer.cpp" />
-    <ClCompile Include="src\calibration\SwaptionMarketDataManager.cpp" />
-    <ClCompile Include="src\calibration\TestCostFunction.cpp" />
-    <ClCompile Include="src\calibration\TestHGVolatilityParam.cpp" />
     <ClCompile Include="src\helper\BuildVariable.cpp" />
     <ClCompile Include="src\helper\CalibrationType.cpp" />
     <ClCompile Include="src\helper\CombinationOperator.cpp" />
@@ -390,7 +347,6 @@
     <ClCompile Include="src\helper\TypeConverter.cpp" />
     <ClCompile Include="src\instrument\BermudanSwaption.cpp" />
     <ClCompile Include="src\instrument\CallableOption.cpp" />
-    <ClCompile Include="src\instrument\Caplet.cpp" />
     <ClCompile Include="src\instrument\VanillaFRA.cpp" />
     <ClCompile Include="src\instrument\VanillaCaplet.cpp" />
     <ClCompile Include="src\instrument\CMS.cpp" />
@@ -416,9 +372,6 @@
     <ClCompile Include="src\LmmModel\LmmSwaptionMarketData.cpp" />
     <ClCompile Include="src\numeric\Integrator1D.cpp" />
     <ClCompile Include="src\numeric\UpperTriangularMatrixInterpolator.cpp" />
-    <ClCompile Include="src\pricer\LmmApproxVanillaSwaptionPricer.cpp" />
-    <ClCompile Include="src\pricer\LmmCapletPricer.cpp" />
-    <ClCompile Include="src\pricer\LmmSwaptionPricer.cpp" />
     <ClCompile Include="src\pricer\McLmmCallableOptionPricer.cpp" />
     <ClCompile Include="src\LmmModel\BetaLmm.cpp" />
     <ClCompile Include="src\LmmModel\BetaShifted_HGVolatilityFunction.cpp" />
@@ -488,6 +441,7 @@
     <ClCompile Include="test\unit_test\test_numeric_NumericalMethods.cpp" />
     <ClCompile Include="test\unit_test\test_pricer_LmmApproxVanillaSwaptionPricer.cpp" />
     <ClCompile Include="test\unit_test\test_QuantLibIntegrationMethod.cpp" />
+    <ClCompile Include="test\unit_test\test_Integrator1D.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="TODO" />

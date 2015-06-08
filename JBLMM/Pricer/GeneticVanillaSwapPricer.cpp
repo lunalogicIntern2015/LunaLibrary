@@ -1,6 +1,7 @@
 #include "JBLMM/Pricer/GeneticVanillaSwapPricer.h"
 #include <JBLMM/Element/Coupon.h>
 #include <JBLMM/Element/CappedFlooredCoupon.h>
+#include <JBLMM/Element/LiborRate.h>
 
 #include <math.h>
 #include <memory>
@@ -42,56 +43,74 @@ double GeneticVanillaSwapPricer::geneticVanillaSwap_Analytical(GeneticSwap_CONST
 		ZC[i] = ZC[i-1]/(1+deltaT*liborsInitValue[i-1]);
 	}
 
-	// Caculate the floating leg
-	double floatingIncome = 0.0;
+
+	//calculate the floatingLeg
+	Coupon_CONSTPTR firstfloatingCoupon=floatingLeg[0];
+	CappedFlooredCoupon_CONSTPTR firstFloatingCappedFlooredCoupon = boost::dynamic_pointer_cast<const CappedFlooredCoupon>(firstfloatingCoupon);
+	if(!firstFloatingCappedFlooredCoupon)
+		throw("fail to cast CappedFlooredCoupon");
+
+	Rate_CONSTPTR firstFloatingLegRate = firstFloatingCappedFlooredCoupon->getRate();   
+	LiborRate_CONSTPTR	firstLiborRate		=	boost::dynamic_pointer_cast<const LiborRate>(firstFloatingLegRate);
+	if(!firstLiborRate)
+		throw("fail to cast rate to liborRate");
+
+	double floatingIncome=0.0;
 	for(size_t i=0; i<floatingLegHorizon;i++)
 	{
 		Coupon_CONSTPTR coupon	= floatingLeg[i];
-
 		LMM::Index paymentIndex = coupon->getPaymentIndex();
+		CappedFlooredCoupon_CONSTPTR cappedFlooredCoupon = boost::dynamic_pointer_cast<const CappedFlooredCoupon>(coupon);
 
-		Coupon_PTR coupon_nonConst		=	boost::const_pointer_cast<Coupon>(coupon);
-		CappedFlooredCoupon_PTR cappedFlooredCoupon = boost::dynamic_pointer_cast<CappedFlooredCoupon>(coupon_nonConst);
+		Rate_CONSTPTR	rate	=	cappedFlooredCoupon->getRate();
+		LiborRate_CONSTPTR liborRate = boost::dynamic_pointer_cast<const LiborRate>(rate);		
 
-		if(!cappedFlooredCoupon)
-			throw("fail to cast coupon to CappedFlooredCoupon"); 
-
-
+		LMM::Index indexLibor = liborRate->getFixingTime();
 		double tauxActualisation = ZC[paymentIndex];	
-
 		floatingIncome	+=	tauxActualisation*
 							cappedFlooredCoupon->getNominal()*
 							cappedFlooredCoupon->getPeriod()*
 							std::max(	cappedFlooredCoupon->getFloorStrike(), 
 										std::min(	cappedFlooredCoupon->getCapStrike(),
-													cappedFlooredCoupon->getMultiFactor()*liborsInitValue[paymentIndex-1]
+													cappedFlooredCoupon->getMultiFactor()*liborsInitValue[indexLibor]
 													+cappedFlooredCoupon->getAddFactor()));
 	}
 
-	// Caculate the fixed leg
+
+	// Caculate the fixedleg
+	Coupon_CONSTPTR firstfixedCoupon=fixedLeg[0];
+	CappedFlooredCoupon_CONSTPTR firstFixdCappedFlooredCoupon = boost::dynamic_pointer_cast<const CappedFlooredCoupon>(firstfixedCoupon);
+	if(!firstFixdCappedFlooredCoupon)
+		throw("fail to cast Coupon to CappedFlooredCoupon");
+
+	Rate_CONSTPTR firstFixedLegRate = firstFixdCappedFlooredCoupon->getRate();   
+	ConstRate_CONSTPTR	firstConstRate		=	boost::dynamic_pointer_cast<const ConstRate>(firstFixedLegRate);
+	if(!firstConstRate)
+		throw("fail to cast rate to ConstRate");
+	
 	double fixedIncome=0.0;
 	for(size_t i=0; i<fixedLegHorizon;i++)
 	{
-		Coupon_CONSTPTR coupon	=	fixedLeg[i];
+		Coupon_CONSTPTR coupon=fixedLeg[i];		
+		LMM::Index paymentIndex = coupon->getPaymentIndex();
 
-		// cast to CappedFlooredCoupon_PTR
-		Coupon_PTR coupon_nonConst		=	boost::const_pointer_cast<Coupon>(coupon);
-		CappedFlooredCoupon_PTR cappedFlooredCoupon = boost::dynamic_pointer_cast<CappedFlooredCoupon>(coupon_nonConst);
+		CappedFlooredCoupon_CONSTPTR cappedFlooredCoupon = boost::dynamic_pointer_cast<const CappedFlooredCoupon>(coupon);
 
-		LMM::Index paymentIndex = cappedFlooredCoupon->getPaymentIndex();
+		Rate_CONSTPTR rate = cappedFlooredCoupon->getRate();   
+		ConstRate_CONSTPTR	constRate		=	boost::dynamic_pointer_cast<const ConstRate>(rate);
 
+		double	constRateValue				=	constRate->getConstRateValue();
 		double tauxActualisation = ZC[paymentIndex];
-
 		fixedIncome	+=	tauxActualisation
 						*cappedFlooredCoupon->getNominal()
 						*cappedFlooredCoupon->getPeriod()*
 						std::max(	cappedFlooredCoupon->getFloorStrike(), 
 									std::min(	cappedFlooredCoupon->getCapStrike(),
 																		cappedFlooredCoupon->getMultiFactor()
-																		*liborsInitValue[paymentIndex-1]
+																		*constRateValue
 																		+cappedFlooredCoupon->getAddFactor()));
 	}
-	
+
 	return floatingIncome-fixedIncome;
 
 }
