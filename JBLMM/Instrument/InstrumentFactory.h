@@ -14,23 +14,23 @@
 class InstrumentFactory
 {
 public:
-	static GeneticSwap_PTR createVanillaSwap(	double strike, 
-												LMM::Index indexStart, 
-												LMM::Index indexEnd, 
-												Tenor floatingLegTenor, 
-												Tenor fixedLegTenor,
-												LMMTenorStructure_PTR swapStructure,
-												double nominal);
-
-	static GeneticSwap_PTR createStandardTARNSwap(	double strike,
+	static GeneticSwap_CONSTPTR createVanillaSwap(	double strike, 
 													LMM::Index indexStart, 
-												 	LMM::Index indexEnd, 
+													LMM::Index indexEnd, 
 													Tenor floatingLegTenor, 
 													Tenor fixedLegTenor,
-													LMMTenorStructure_PTR swapStructure,
-													double nominal,
-													double target);
+													LMMTenorStructure_CONSTPTR swapStructure,
+													double nominal);
 
-	static GeneticSwap_PTR createGeneticSwap(CouponLeg_PTR Leg1, CouponLeg_PTR Leg2);
+	static GeneticSwap_CONSTPTR createStandardTARNSwap(	double strike,
+														LMM::Index indexStart, 
+												 		LMM::Index indexEnd, 
+														Tenor floatingLegTenor, 
+														Tenor fixedLegTenor,
+														LMMTenorStructure_CONSTPTR swapStructure,
+														double nominal,
+														double target);
+
+	static GeneticSwap_CONSTPTR createGeneticSwap(CouponLeg_CONSTPTR Leg1, CouponLeg_CONSTPTR Leg2);
 };
 

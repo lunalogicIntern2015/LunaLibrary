@@ -11,15 +11,18 @@ class CallableSwap
 	std::vector<LMM::Index> exerciseTimes_;
 	//check: exerciseTikme in [fistIndex, lastindex]
 public:
-	//getter
+	//getters
 	GeneticSwap_CONSTPTR getGeneticSwap()const{return geneticSwap_;}
 	const std::vector<LMM::Index>& getExerciseTimes()const{return exerciseTimes_;}
 
-	//constructeur
+	//constructor
 	CallableSwap(GeneticSwap_CONSTPTR geneticSwap, const std::vector<LMM::Index>& exerciseTimes);
 
-	//destructeur
+	//destructor
 	virtual ~CallableSwap(){}
+
+	//check if exercise time is valuable
+	//bool checkIfExerciseTimeValid()const;
 	
 };
 

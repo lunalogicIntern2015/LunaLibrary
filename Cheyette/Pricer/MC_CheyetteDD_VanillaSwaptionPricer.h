@@ -20,7 +20,7 @@ public:
 
 	//Price at time T0=0
 	//---------     payer swaption     ---------
-	double price(double t_valo, const VanillaSwaption& vanillaSwaption, size_t nbSimulation)  const ;
+	double price(const VanillaSwaption& vanillaSwaption, size_t nbSimulation)  const ;
 
 	
 };

@@ -54,7 +54,10 @@ void TestIncrementalIntegrator2D_Riemann()
 	std::cout << "2eme appel " << std::endl ;
 	std::cout << int2D.integrate(f_outer, f_inner) << " vs 1/8 = " << 1/8. << std::endl ;
 
-	boost::function<double(double)> f_outer2 = boost::bind(Id, _1);
+	boost::function<double(double)> f_outer2 = boost::bind(carre, _1);
+	std::cout << int2D.integrate(f_outer2, f_inner) << " vs 1/10" << std::endl ;
+
+	std::cout << "2eme appel " << std::endl ;
 	std::cout << int2D.integrate(f_outer2, f_inner) << " vs 1/10" << std::endl ;
 }
 

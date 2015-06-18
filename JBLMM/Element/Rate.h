@@ -6,6 +6,8 @@ class Rate1
 public:
 	virtual ~Rate1(){}
 	virtual boost::shared_ptr<Rate1> clone()const;
+	//print
+	virtual void show()const;
 };
 typedef boost::shared_ptr<Rate1> Rate_PTR;
 typedef boost::shared_ptr<const Rate1> Rate_CONSTPTR;

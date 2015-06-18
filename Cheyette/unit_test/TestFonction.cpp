@@ -100,3 +100,10 @@ void TestInverse(){
 	std::cout << "i380  " << i.fMoinsUn(380) << std::endl ;
 
 }
+
+//void TestOperateurR2R()
+//{
+//	boost::function<double(double, double)> f 
+//	Boost_R2R_Function myFunc(boost::function<double(double, double)>& func):func_(func){}
+//
+//}

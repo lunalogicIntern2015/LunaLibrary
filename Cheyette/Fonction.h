@@ -192,7 +192,9 @@ public :
 
 	}
 
-	double operator ()(double x) const {return this->evaluate(x) ;}
+	double operator ()(double x) const {
+		return this->evaluate(x) ;
+	}
 
 	void show()
 	{
@@ -202,6 +204,16 @@ public :
 			std::cout << "       for x in [" << x_[i] << ", " << x_[i+1] << "[, y = " << y_[i] << std::endl ;
 		}
 		std::cout << "       for x in [" << x_[x_.size()-2] << ", " << x_[x_.size()-1] << "], y = " << y_[y_.size()-1] << std::endl ;
+	}
+
+	void print(std::ostream& o)
+	{
+		o << "       for x in [" << x_[0] << ", " << x_[1] << "], y = " << y_[0] << std::endl ;
+		for (size_t i = 1 ; i < x_.size() - 2 ; ++i)
+		{
+			o << "       for x in [" << x_[i] << ", " << x_[i+1] << "[, y = " << y_[i] << std::endl ;
+		}
+		o << "       for x in [" << x_[x_.size()-2] << ", " << x_[x_.size()-1] << "], y = " << y_[y_.size()-1] << std::endl ;
 	}
 };
 
@@ -225,7 +237,10 @@ public:
 	Boost_R2R_Function(const boost::function<double(double, double)>& func):func_(func){}
 	virtual ~Boost_R2R_Function(){}
 	
-	double operator ()(double t, double x) const {return func_(t, x);}
+	double operator ()(double t, double x) const {
+		double resultat = func_(t, x) ; //test 
+		return func_(t, x);
+	}
 };
 typedef boost::shared_ptr<Boost_R2R_Function>       Boost_R2R_Function_PTR;
 typedef boost::shared_ptr<const Boost_R2R_Function> Boost_R2R_Function_CONSTPTR;

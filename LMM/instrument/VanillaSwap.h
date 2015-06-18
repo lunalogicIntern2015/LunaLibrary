@@ -69,8 +69,8 @@ public:
 
 	// print swap informations to csv file
 	void print(const std::string& filename) const ;
-
-	void show() ;
+	void print(std::ostream& o) const ;
+	void show() const ;
 
 private:
 

@@ -12,8 +12,8 @@
 #include <vector>
 
 
-void UneTrajectoireEuler() ;
+//void UneTrajectoireEuler() ;
 
-void TestMCSwapPricer() ;
+//void TestMCSwapPricer() ;
 
 //double ZCVasicek(double matuT, double mean_rev, double level, double sigma) ;

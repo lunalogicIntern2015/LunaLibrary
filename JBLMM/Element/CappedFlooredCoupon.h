@@ -7,7 +7,7 @@
 
 class CappedFlooredCoupon : public Coupon
 {
-	double period_; // change the name
+	double period_; 
 	double nominal_;
 
 	bool   ifFloored_;
@@ -23,7 +23,8 @@ class CappedFlooredCoupon : public Coupon
 
 public:
 	// getter ... 
-	double			getPeriod()			const{return period_;}
+	double			getDelta()			const{return period_;}   //ne pas supprimer !! JL
+	double			getPeriod()			const{return period_;}  
 	double			getNominal()		const{return nominal_;}
 	bool			getIfFloored()		const{return ifFloored_;}
 	double			getFloorStrike()	const{return floorStrike_;}
@@ -35,20 +36,21 @@ public:
 	double			getValuationDate()	const{return valuationDate_;}
 
 	// constructor, constructor copie, destructor
-	CappedFlooredCoupon(LMM::Index		paymentDate,
-		                double			nominal,
-						double			period, 
-						bool			ifFloored,
-						double			floorStrike,
-						bool			ifCapped, 
-						double			capStrike, 
-						Rate_CONSTPTR	rate,
-						double			multiFactor,
-						double			addFactor, 
-						LMM::Index		valuationDateIndex);  
-
+	CappedFlooredCoupon(	LMM::Index		paymentDate,
+							double			nominal,
+							double			delta, 
+							bool			ifFloored,
+							double			floorStrike,
+							bool			ifCapped, 
+							double			capStrike, 
+							Rate_CONSTPTR	rate,
+							double			multiFactor,
+							double			addFactor, 
+							LMM::Index		valuationDateIndex);  
 	CappedFlooredCoupon(const CappedFlooredCoupon& c);
 	virtual ~CappedFlooredCoupon(){}
+	//show
+	virtual void show()const;
 	//clone
 	virtual Coupon_PTR clone()const;
 };	

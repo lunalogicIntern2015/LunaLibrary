@@ -7,3 +7,4 @@ CallableSwap::CallableSwap(GeneticSwap_CONSTPTR geneticSwap, const std::vector<L
 	exerciseTimes_(exerciseTimes)
 {
 }
+

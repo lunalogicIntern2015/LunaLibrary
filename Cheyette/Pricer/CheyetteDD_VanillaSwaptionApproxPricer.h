@@ -4,8 +4,6 @@
 #include <LMM/instrument/VanillaSwaption.h>
 #include <LMM/numeric/Integrator1D.h>
 
-#include <Cheyette\InverseFunction.h>
-
 #include <LMM/numeric/NumericalMethods.h>  //pour le prix Black
 
 #include <cassert>
@@ -35,8 +33,8 @@ private:
 	mutable VanillaSwap				buffer_UnderlyingSwap_ ;
 	mutable double					buffer_T0_ ;
 	mutable double					buffer_TN_ ;
-	mutable std::vector<LMM::Index> buffer_fixedLegPaymentIndexSchedule_ ;
-	mutable std::vector<LMM::Index> buffer_floatingLegPaymentIndexSchedule_ ;
+	mutable std::vector<size_t>		buffer_fixedLegPaymentIndexSchedule_ ;
+	mutable std::vector<size_t>		buffer_floatingLegPaymentIndexSchedule_ ;
 	mutable std::vector<double>		buffer_deltaTFixedLeg_ ;
 	mutable double					buffer_s0_;		
 
@@ -46,8 +44,6 @@ public :
 	//constructor  
 	CheyetteDD_VanillaSwaptionApproxPricer(	const CheyetteDD_Model_PTR& cheyetteDD_Model, 
 											const VanillaSwaption_PTR&	swaption); 
-
-
 
 	//destructor
 	virtual ~CheyetteDD_VanillaSwaptionApproxPricer(){};
@@ -60,8 +56,8 @@ public :
 	VanillaSwap					get_buffer_UnderlyingSwap_() const {return buffer_UnderlyingSwap_ ;}
 	double						get_buffer_T0_() const {return buffer_T0_ ;}
 	double						get_buffer_TN_() const {return buffer_TN_ ;}
-	std::vector<LMM::Index>		get_buffer_fixedLegPaymentIndexSchedule_() const {return buffer_fixedLegPaymentIndexSchedule_ ;}
-	std::vector<LMM::Index>		get_buffer_floatingLegPaymentIndexSchedule_() const {return buffer_floatingLegPaymentIndexSchedule_ ;}
+	std::vector<size_t>			get_buffer_fixedLegPaymentIndexSchedule_() const {return buffer_fixedLegPaymentIndexSchedule_ ;}
+	std::vector<size_t>			get_buffer_floatingLegPaymentIndexSchedule_() const {return buffer_floatingLegPaymentIndexSchedule_ ;}
 	std::vector<double>			get_buffer_deltaTFixedLeg_() const {return buffer_deltaTFixedLeg_ ;}
 	double						get_buffer_s0_() const {return buffer_s0_ ;}
 
@@ -70,8 +66,8 @@ public :
 
 	//calcul de y_barre(t)
 	double to_integrate_y_bar(double t) const ;
-	void initialize_y_bar(double t, size_t gridSize) const;		// ! pendant la calibration, remettre à jour la valeur de y_barre ?
-	//double calculate_y_bar(double t) const;					//sa valeur depend du paramètre k !
+	void initialize_y_bar(double t, size_t gridSize) const;		
+	// ! pendant la calibration, remettre à jour la valeur de y_barre
 
 
 
@@ -125,14 +121,13 @@ public :
 		//evaluee en t et pour un taux de swap s_bar = s0_
 		double calculate_phi_t_s_bar(double t) const; 
 
-		//approximation de Phi(t=0, s) en s
+		//approximation de Phi(t, s) en s
 		//DL autour de s_bar
-		double swapRateVolatility_approx_lineaire(double t, double s) const;
+		//double swapRateVolatility_approx_lineaire(double t, double s) const;
 
 /****************  parameter averaging  *********************
 *
-*	dX(t) = \lambda(t) ( (1-b(t)) X0 + b(t) X(t) ) dW(t)
-*	dY(t) = \lambda(t) ( (1- b )  X0  +  b   X(t) ) dW(t)
+*	dS(t) = \lambda(t) ( (1-b(t)) S0 + b(t) S(t) ) dW^Q_A		-> time averaging: b(t) puis b_barre
 *
 *	dS(t) = (A(t) + B(t) S(t)) dW^Q_A
 *	S(0) = S0_ connu

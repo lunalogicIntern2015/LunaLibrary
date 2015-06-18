@@ -11,29 +11,24 @@
 #include <iostream>
 #include <vector>
 
-
 CourbeInput_PTR createCourbeInput() ;
-
 CheyetteDD_Model_PTR createCheyetteDD_Model() ;
-
 VanillaSwaption_PTR createSwap();
-
 void testSwap() ; //test swap (dates flux fixes et flottants) 
-
 VanillaSwaption_PTR createSwaption() ;
-
 CheyetteDD_VanillaSwaptionApproxPricer_PTR createApproxPricer_PTR() ;
 
-void test_Derivative_ZC() ;
+void test_y_barre() ; 
 
-void test_y_barre() ;  //et test annuite, test swap rate denominator derivee
+//test des derivees de ZC et swapRateNumerator, swapRateDenominator
+void test_ZC_swapRate_Num_Denom() ;
+
+void test_swapRate_inverse() ;
+
+void test_fonction_inverse() ;  //necessite swapRate teste avant
+
+void test_derivatives() ;
 
 void test_time_average() ;
 
-
-	void test_y_bar_cas_limite() ;
-//
-//	void test_incremental_integrale() ;
-//	void test_incremental_b_barre() ;
-//	
-//	void TestApprox() ;  
+void test_y_bar_cas_limite() ;

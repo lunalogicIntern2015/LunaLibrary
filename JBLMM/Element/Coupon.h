@@ -16,6 +16,8 @@ public:
 	virtual ~Coupon(){} 
 	//clone
 	virtual boost::shared_ptr<Coupon> clone()const;	 
+	//print Coupon
+	virtual void show()const;
 };
 typedef boost::shared_ptr<Coupon> Coupon_PTR;
 typedef boost::shared_ptr<const Coupon> Coupon_CONSTPTR;

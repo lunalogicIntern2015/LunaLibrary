@@ -53,16 +53,17 @@ public:
 
 private:
 
-	CourbeInput_PTR	courbeInput_PTR_ ;             // P(0,t)
+	CourbeInput_PTR					courbeInput_PTR_ ;             // P(0,t)
 	mutable CheyetteDD_Parameter	cheyetteDD_Parameter_;
-	Boost_R2R_Function_PTR		shift_;		//r(t)/ r(0) ou S(t)/S(0) ou Li(t)/Li(0)
+	Boost_R2R_Function_PTR			shift_;						//r(t)/ r(0) ou S(t)/S(0) ou Li(t)/Li(0)
 
 public:
+
 	//constructor
-	CheyetteDD_Model(const CourbeInput_PTR courbeInput_PTR, const CheyetteDD_Parameter& cheyetteParam)
+	CheyetteDD_Model(const CourbeInput_PTR& courbeInput_PTR, const CheyetteDD_Parameter& cheyetteParam)
 		: courbeInput_PTR_(courbeInput_PTR), cheyetteDD_Parameter_(cheyetteParam) 
 	{
-		boost::function<double(double, double)> f = boost::bind(&CheyetteDD_Model::shift, this, _1, _1);
+		boost::function<double(double, double)> f = /*boost::bind(&CheyetteDD_Model::shift, this); */  boost::bind(&CheyetteDD_Model::shift, this, _1, _2);
 		Boost_R2R_Function_PTR f_ptr(new Boost_R2R_Function(f)) ;
 		shift_ =  f_ptr ;
 	}
@@ -74,14 +75,15 @@ public:
 	CourbeInput_PTR			get_courbeInput_PTR() const{return courbeInput_PTR_ ;}
 	CheyetteDD_Parameter	get_CheyetteDD_Parameter() const{return cheyetteDD_Parameter_;}
 
-	void show() ;
+	void show() const ;
+	void print(std::ostream& o) const ;
 
 	//fonction de vol locale Displaced Diffusion
-	double sigma_r(double t, double x_t) const ;
-	double sigma_r_t_1stDerivative(double t, double x_t) const ;  //derivee wrt x_t
+	double sigma_r( double t,  double x_t) const ;
+	double sigma_r_t_1stDerivative( double t,  double x_t) const ;  //derivee wrt x_t
 
-	double shift(double t, double x_t) const ;							
-	double shift_1stDerivative(double t, double x_t) const ;  //derivee du shift (r(t) ou S(t) ou Li(t)) wrt x_t
+	double shift( double t,  double x_t) const ;							
+	double shift_1stDerivative( double t,  double x_t) const ;  //derivee du shift (r(t) ou S(t) ou Li(t)) wrt x_t
 
 	//fonctions G(t, T), ZC B(t, T), Libor...
 	double G(double t, double T) const ;  
@@ -89,10 +91,13 @@ public:
 	double r_t(double t, double x_t) const ;
 	double Libor(double t, double T1, double T2, double x_t, double y_t) const ;  
 
-	//EDS : drift et diffusion sous Q^T
+	//EDS : diffusion
+	double diffusion_x(double t, double x_t) const ;
+	
+	double drift_y(double t, double x_t, double y_t) const ;
+
+	//EDS : drift sous Q^T
 	double drift_x_QT(double t, double T_proba_fwd, double x_t, double y_t) const ;
-	double diffusion_x_QT(double t, double x_t) const ;
-	double drift_y_QT(double t, double x_t, double y_t) const ;
 
 	//annuite A_0N(0)
 	//double annuity(double t, double x_t, double y_t, const VanillaSwap& vanillaSwap) ;

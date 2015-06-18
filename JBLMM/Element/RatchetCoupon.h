@@ -9,7 +9,7 @@
 class RatchetCoupon : public CappedFlooredCoupon
 {
 	double leverage_;
-	std::string dependentCoupon_;  // lastcoupon 
+	std::string dependentCoupon_;  // last coupon 
 
 public:
 

@@ -4,8 +4,8 @@
 #include "assert.h"
 #include <boost/shared_ptr.hpp>
 #include <iostream>
-#include <LMM/numeric/NumericalMethods.h>
 
+#include <LMM/numeric/NumericalMethods.h>
 //c'est la courbe spot des taux ZC
 
 //Singleton...
@@ -21,7 +21,8 @@ public:
 
 	double get_tauxZC0(double T) const ;
 	double get_f_0_t(double t) const ;
-	void showCourbeInput() const ;
+	void show() const ;
+	void print(std::ostream& o) const ;
 };
 
 typedef boost::shared_ptr<CourbeInput> CourbeInput_PTR;

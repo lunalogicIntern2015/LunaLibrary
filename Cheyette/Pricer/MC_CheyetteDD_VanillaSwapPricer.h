@@ -20,7 +20,7 @@ public:
 
 	//Price at time T0=0
 	//---------     payer swap     ---------
-	double swapNPV(double t_valo, const VanillaSwap& vanillaSwap, size_t nbSimulation)  const ;
+//	double swapNPV(double t_valo, const VanillaSwap& vanillaSwap, size_t nbSimulation)  const ;
 
 	//double swapRate(LMM::Index indexValuationDate,
 	//				const VanillaSwap& vanillaSwap,

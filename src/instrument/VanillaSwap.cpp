@@ -145,7 +145,7 @@ void VanillaSwap::print(const std::string& filename) const
 	outputstream.close();
 }
 
-void VanillaSwap::show()
+void VanillaSwap::show() const
 {
 	std::cout << "---------------------------------------------" << std::endl ;
 	std::cout << "--- creation d'un objet VanillaSwap --------" << std::endl ;
@@ -153,10 +153,6 @@ void VanillaSwap::show()
 	std::cout << "fixedLegTenorType_    " << fixedLegTenorType_ << std::endl ;
 	std::cout << "indexStart_           " << indexStart_ << std::endl ;
 	std::cout << "indexEnd_             " << indexEnd_ << std::endl ;
-	//std::cout << "get_EndDate " << simulationStructure->get_EndDate() << std::endl ;
-	//std::cout << "get_horizon " << simulationStructure->get_horizon() << std::endl ;
-	//std::cout << "get_nbLIBOR " << simulationStructure->get_nbLIBOR() << std::endl ;
-	//std::cout << "get_tenorType " << simulationStructure->get_tenorType() << std::endl ;
 	
 	std::cout << "indices des flux fixes" << std::endl ;
 	for (size_t i= 0 ; i < fixedLegPaymentIndexSchedule_.size() ; ++i)
@@ -185,6 +181,41 @@ void VanillaSwap::show()
 	std::cout << "---------------------------------------------" << std::endl ;
 }
 
+void VanillaSwap::print(std::ostream& o) const
+{
+	o << "---------------------------------------------" << std::endl ;
+	o << "-------------  VanillaSwap ------------------" << std::endl ;
+	o << "floatingLegTenorType_ " << floatingLegTenorType_ << std::endl ;
+	o << "fixedLegTenorType_    " << fixedLegTenorType_ << std::endl ;
+	o << "indexStart_           " << indexStart_ << std::endl ;
+	o << "indexEnd_             " << indexEnd_ << std::endl ;
+	
+	o << "indices des flux fixes" << std::endl ;
+	for (size_t i= 0 ; i < fixedLegPaymentIndexSchedule_.size() ; ++i)
+	{
+		o << fixedLegPaymentIndexSchedule_[i] << "  " ;
+	}
+	o << " " << std::endl ;
+	o << "indices des flux flottants" << std::endl ;
+	for (size_t i= 0 ; i < floatingLegPaymentIndexSchedule_.size() ; ++i)
+	{
+		o << floatingLegPaymentIndexSchedule_[i] << "  " ;
+	}
+	o << " " << std::endl ;
+	o << "deltaTFloatingLeg_ i" << std::endl ;
+	for (size_t i = 0 ; i < deltaTFloatingLeg_.size() ; ++i)
+	{
+		o << deltaTFloatingLeg_[i] << "  " ;
+	} 
+	o << " " << std::endl ;
+	o << "deltaTFixedLeg_ i" << std::endl ;
+	for (size_t i = 0 ; i < deltaTFixedLeg_.size() ; ++i)
+	{
+		o << deltaTFixedLeg_[i] << "  " ;
+	} 
+	o << " " << std::endl ;
+	o << "---------------------------------------------" << std::endl ;
+}
 
 
 std::ostream& operator<<(std::ostream& os, const VanillaSwap& swap){ swap.write_to_stream(os) ; return os; }

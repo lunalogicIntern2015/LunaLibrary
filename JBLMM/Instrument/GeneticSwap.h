@@ -12,7 +12,8 @@
 #include<LMM/helper/LMMTenorStructure.h>
 
 #include <JBLMM/Element/CouponLeg.h>
-
+#include <JBLMM/Element/CappedFlooredCoupon.h>
+#include <JBLMM/Element/LiborRate.h>
 
 //#include <LMM/helper/Name.h>
 //#include <LMM/helper/TenorType.h>
@@ -34,6 +35,14 @@ public:
 	// constructor, destructor
 	GeneticSwap(CouponLeg_CONSTPTR leg1, CouponLeg_CONSTPTR leg2);
 	virtual ~GeneticSwap(){}
+
+	//size_t  getIndexStart() const ;  //INDEX de 1er fixing, pas de flux !!!
+	//size_t  getIndexEnd() const ;	//INDEX de dernier FLUX !!
+
+	//display
+	void show() const ;
+	void print(std::ostream& o) const ;
+
 	//get subGeneticSwap
 	boost::shared_ptr<GeneticSwap> getSubGeneticSwap(const size_t indexStart, const size_t indexEnd) const;
 };

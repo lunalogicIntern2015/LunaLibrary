@@ -1,0 +1,26 @@
+---------------------------------------------;;;;;;;
+--- creation d'un objet Cheyette DD Model ---;;;;;;;
+  SIGMA piecewise constant ;;;;;;;
+       for x in [0, 3], y = 0,35;;;;;;;
+       for x in [3, 4], y = 0,35;;;;;;;
+  M piecewise constant ;;;;;;;
+       for x in [0, 3], y = 0;;;;;;;
+       for x in [3, 4], y = 0;;;;;;;
+  k constant ;;;;;;;
+       k = 0,2;;;;;;;
+---------------------------------------------;;;;;;;
+---------------------------------------------;;;;;;;
+--- creation d'un objet GeneticSwap --------;;;;;;;
+LEG 1 TenorType_ Tenor3M[3MO|0,25YR];;;;;;;
+LEG 2 TenorType_ Tenor3M[3MO|0,25YR];;;;;;;
+indices des flux Leg 1;;;;;;;
+5  6   ;;;;;;;
+indices des flux Leg 2;;;;;;;
+6;;;;;;;
+---------------------------------------------;;;;;;;
+;;;;;;;
+Prix approximation : ;0.00202054;;;;;;
+;;;;;;;
+nb simulations : ;10000; prix MC : ;0.0020364; IC inf : ;0.00197106; IC sup : ;0.00210174
+nb simulations : ;20000; prix MC : ;0.00209103; IC inf : ;0.00204412; IC sup : ;0.00213795
+nb simulations : ;30000; prix MC : ;0.00207515; IC inf : ;0.00203719; IC sup : ;0.00211312

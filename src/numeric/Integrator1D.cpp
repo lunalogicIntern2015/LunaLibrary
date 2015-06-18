@@ -16,7 +16,6 @@ namespace numeric
 			++i ;
 			close = vect[i] - tol < d && d < vect[i] + tol ;
 		}
-		std::cout << "findClosestDate : d = " << d << "vs " << vect[i] << std::endl ;
 		return i ;
 	}
 
@@ -44,9 +43,8 @@ namespace numeric
 		{
 			double t1 = grids_[i];
 			double t2 = grids_[i+1];
-			double t_mid = (t1+t2)/2;
+			double t_mid = (t1+t2)/2. ;
 			double current_result = func(t_mid)*(t2-t1);   // simplest one :)
-		   
 			res += current_result;
 		}
 		return res ;
@@ -77,8 +75,6 @@ namespace numeric
 
 	void IncrementalIntegrator1D_Riemann::vecteur_integrate( const boost::function<double(double)>& func) const
 	{
-	   double res = 0;
-	
 	   values_[0] = 0.0;
 	   for(size_t i=0; i<grids_.size(); ++i)  
 	   {  
@@ -112,7 +108,6 @@ namespace numeric
 		 std::vector<double> value_grid = incrementalIntegrator_inner_.get_values();
 		 Interpolation_RR_Function incrementalFunction_inner (x_grid, value_grid);
 		 Boost_RR_Function func_outer2(func_outer);
-		 //RR_Function_CONSTPTR func_outer2(new Boost_RR_Function(func_outer));
 
 		RR_Function_ComposeByProduct func(func_outer2, incrementalFunction_inner);
 
