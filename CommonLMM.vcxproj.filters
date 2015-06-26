@@ -420,9 +420,6 @@
     <ClInclude Include="Cheyette\CheyetteModel\CheyetteDD_Model.h">
       <Filter>Cheyette\CheyetteModel</Filter>
     </ClInclude>
-    <ClInclude Include="Cheyette\CheyetteModel\CheyetteModel.h">
-      <Filter>Cheyette\CheyetteModel</Filter>
-    </ClInclude>
     <ClInclude Include="Cheyette\CheyetteModel\CourbeInput.h">
       <Filter>Cheyette\CheyetteModel</Filter>
     </ClInclude>
@@ -783,7 +780,6 @@
     <ClCompile Include="JBLMM\Test\Test_McGeneticSwapLMMPricer.cpp" />
     <ClCompile Include="Cheyette\CheyetteModel\CheyetteDD_Model.cpp" />
     <ClCompile Include="Cheyette\Pricer\CheyetteDD_VanillaSwaptionApproxPricer.cpp" />
-    <ClCompile Include="Cheyette\CheyetteModel\CheyetteModel.cpp" />
     <ClCompile Include="Cheyette\CheyetteModel\courbeInput.cpp" />
     <ClCompile Include="Cheyette\InverseFunction.cpp" />
     <ClCompile Include="Cheyette\unit_test\TestApproxDD.cpp" />

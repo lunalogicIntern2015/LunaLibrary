@@ -16,6 +16,8 @@ private:
 	std::vector<double> tauxZC_ ;  //yield
 
 public:
+	CourbeInput(){} //utile pour la classe test
+
 	CourbeInput(std::vector<double> listeMatu, std::vector<double> tauxZC);
 	virtual ~CourbeInput(void){}
 

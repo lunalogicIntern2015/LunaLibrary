@@ -1,32 +1,26 @@
 #pragma once
-#include <boost/shared_ptr.hpp>
-#include <Cheyette/CheyetteModel/CheyetteDD_Model.h>
 #include <Cheyette/Pricer/MC_Cheyette.h>	
-
-//#include "GeneticSwap.h"
 #include <LMM/instrument/VanillaSwap.h>  
-#include <LMM/numeric/Integrator1D.h>  //pour la fonction closestDate
 
-class MC_CheyetteDD_VanillaSwapPricer
+
+class MC_CheyetteDD_VanillaSwapPricer : public MC_Cheyette
 {
-private:
-	MC_Cheyette_PTR mcCheyette_; 
 
 public:
-	MC_CheyetteDD_VanillaSwapPricer(const MC_Cheyette_PTR& mcCheyette)
-		: mcCheyette_(mcCheyette){}
+	MC_CheyetteDD_VanillaSwapPricer(CheyetteDD_Model_PTR		cheyetteDD_Model,
+									RNGenerator_PTR				rnGenerator,
+									Tenor						tenorType,
+									double						fwdProbaT,
+									std::vector<size_t>&		indexOfSimulation,		
+									std::vector<size_t>&		discretizationBetweenDates ) 
+		:MC_Cheyette(cheyetteDD_Model, rnGenerator, tenorType, fwdProbaT, indexOfSimulation, discretizationBetweenDates){}
 
 	virtual ~MC_CheyetteDD_VanillaSwapPricer(){}
 
-	//Price at time T0=0
-	//---------     payer swap     ---------
-//	double swapNPV(double t_valo, const VanillaSwap& vanillaSwap, size_t nbSimulation)  const ;
+	//! Pricing at time T0=0
+	//double swapRate(const VanillaSwap& vanillaSwap, size_t nbSimulation) const;
+	double swapNPV (VanillaSwap_PTR vanillaSwap, size_t nbSimulation, Tenor tenorFloatingLeg, Tenor tenorFixedLeg) const;
 
-	//double swapRate(LMM::Index indexValuationDate,
-	//				const VanillaSwap& vanillaSwap,
-	//				const std::vector<double>& numeraire, 
-	//				const std::vector<double>& xtCheyette, 
-	//				const std::vector<double>& yt_Cheyette) const;
 
 };
 

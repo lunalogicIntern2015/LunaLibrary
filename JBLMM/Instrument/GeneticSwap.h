@@ -43,6 +43,8 @@ public:
 	void show() const ;
 	void print(std::ostream& o) const ;
 
+
+
 	//get subGeneticSwap
 	boost::shared_ptr<GeneticSwap> getSubGeneticSwap(const size_t indexStart, const size_t indexEnd) const;
 };

@@ -29,7 +29,7 @@ typedef boost::shared_ptr<const ConstRate> ConstRate_CONSTPTR;
 class LiborRate : public Rate1
 {
 	LMM::Index fixingTime_; // T_{i}
-	const Tenor  duration_; // 3m, 6m 
+	const Tenor  duration_; // 3m, 6m c'est le tenor......²
 public:
 	//gettor
 	LMM::Index getFixingTime()const{return fixingTime_;}

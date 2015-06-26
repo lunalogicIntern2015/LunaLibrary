@@ -39,6 +39,7 @@ private:
 	mutable double					buffer_s0_;		
 
 	mutable Interpolation_RR_Function	buffer_y_bar_;
+	mutable double						buffer_b_barre_ ;
 
 public :
 	//constructor  
@@ -63,6 +64,7 @@ public :
 
 	Interpolation_RR_Function&	get_buffer_y_bar_() const {return buffer_y_bar_ ;}
 	double						get_buffer_y_bar_t(double t) const {return buffer_y_bar_(t) ;}
+	double						get_buffer_b_barre_() const {return buffer_b_barre_ ;}
 
 	//calcul de y_barre(t)
 	double to_integrate_y_bar(double t) const ;
@@ -124,6 +126,7 @@ public :
 		//approximation de Phi(t, s) en s
 		//DL autour de s_bar
 		//double swapRateVolatility_approx_lineaire(double t, double s) const;
+
 
 /****************  parameter averaging  *********************
 *

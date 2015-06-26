@@ -203,7 +203,7 @@ void GeneticSwap::print(std::ostream& o) const
 //leg2
 	if (tenorLeg2 == Tenor::_Non)
 	{
-		o << "LEG 2 TenorType_ " << tenorLeg2 << "  fixed rate : " << fixedRate1 << std::endl ;
+		o << "LEG 2 TenorType_ " << tenorLeg2 << "  fixed rate : " << fixedRate2 << std::endl ;
 	}
 	else
 	{

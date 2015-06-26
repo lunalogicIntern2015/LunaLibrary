@@ -14,6 +14,7 @@ void CheyetteDD_Model::show() const
 	std::cout << "  k constant " << std::endl ;
 	std::cout << "       k = " << cheyetteDD_Parameter_.k_ << std::endl ;
 	std::cout << "---------------------------------------------" << std::endl ;
+
 }
 
 void CheyetteDD_Model::print(std::ostream& o) const 
@@ -36,31 +37,47 @@ double CheyetteDD_Model::sigma_r( double t,  double x_t) const
 {
 	double sigma_t = cheyetteDD_Parameter_.sigma_(t) ;
 	double m_t		= cheyetteDD_Parameter_.m_(t) ;
-	double shift_t	= shift_->operator()(t, x_t) ;
-	double shift_0	= shift_->operator()(0, 0) ;  
-	return sigma_t * (m_t * shift_t + (1 - m_t) * shift_0) ;
+	double shift1	= shift1_->operator()(t, x_t) ;
+	double shift2	= shift2_->operator()(t, x_t) ;  
+	return sigma_t * (m_t * shift1 + (1 - m_t) * shift2) ;
 }
 
 double CheyetteDD_Model::sigma_r_t_1stDerivative( double t,  double x_t) const 
 {
 	double sigma_t = cheyetteDD_Parameter_.sigma_(t) ;
 	double m_t		= cheyetteDD_Parameter_.m_(t) ;
-	return sigma_t * m_t * shift_1stDerivative(t, x_t)  ;
-}
-//le x_t = 0 devient x_t = 0.1 apres appel à get_f_0_t
-double CheyetteDD_Model::shift( double t,  double x_t) const
-{
-	//cas shift = r(t)
-	double res = x_t + courbeInput_PTR_->get_f_0_t(t) ; 
-	return x_t + courbeInput_PTR_->get_f_0_t(t) ;  
+	return sigma_t * (m_t * derivative_x_shift1_->operator()(t, x_t) 
+					+ (1 - m_t) * derivative_x_shift2_->operator()(t, x_t) )  ;
 }
 
-double CheyetteDD_Model::shift_1stDerivative( double t,  double x_t) const
+//shift functions
+double CheyetteDD_Model::shift_rt(double t,  double x_t) const
 {
-	//si shift = r(t)
-	//r(t) = x(t) + f(0,t)
+	return x_t + courbeInput_PTR_->get_f_0_t(t) ;  
+}						
+double CheyetteDD_Model::shift_r0(double t,  double x_t) const
+{
+	return courbeInput_PTR_->get_f_0_t(0) ;  
+}
+double CheyetteDD_Model::shift_f_0_t(double t,  double x_t) const
+{
+	return courbeInput_PTR_->get_f_0_t(t) ;  
+}				
+
+//derivee du shift wrt x_t
+double CheyetteDD_Model::shift_rt_1stDerivative(double t,  double x_t) const
+{
 	return 1 ;
 }
+double CheyetteDD_Model::shift_r0_1stDerivative(double t,  double x_t) const
+{
+	return 0 ;
+} 
+double CheyetteDD_Model::shift_f_0_t_1stDerivative(double t,  double x_t) const
+{
+	return 0 ;
+}
+
 
 //fonctions G(t, T), ZC B(t, T)...
 //Displaced Diffusion : k constant, calcul explicite de G(t, T)

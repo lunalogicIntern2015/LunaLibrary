@@ -67,6 +67,7 @@ public:
 	double get_StartDate() const { return lmmTenorStructure_->get_tenorDate()[get_indexStart()] ; }
 	double get_EndDate()   const { return lmmTenorStructure_->get_tenorDate()[get_indexEnd()]   ; }
 
+
 	// print swap informations to csv file
 	void print(const std::string& filename) const ;
 	void print(std::ostream& o) const ;
@@ -98,6 +99,7 @@ private:
 public:
 	void write_to_stream(std::ostream& outputstream)const ;
 };
+
 typedef boost::shared_ptr<VanillaSwap> VanillaSwap_PTR;
 
 

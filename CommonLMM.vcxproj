@@ -42,7 +42,7 @@
     <IncludePath>C:\stageCheyette\LunaLibrary\data\misc\deprecated_cpp ; E:\Visual_Studio_Project\Visual_Studio_2012_Project\LunaLibrary;E:\DevLib\boost;E:\DevLib\QuantLib;
 	C:\stageCheyette\LunaLibrary; C:\boost&amp;quantlib\QuantLib-1.2.1\ql;C:\boost&amp;quantlib\boost_1_58_0;C:\boost&amp;quantlib\QuantLib-1.2.1; C:\boost&amp;quantlib\boost_1_58_0;C:\boost&amp;quantlib\QuantLib-1.2.1;
 	E:\Visual_Studio_Project\Visual_Studio_2012_Project\LunaLibrary;E:\DevLib\boost;E:\DevLib\QuantLib;$(IncludePath)</IncludePath>
-    <IncludePath>C:\boost&amp;quantlib\boost_1_58_0;C:\boost&amp;quantlib\QuantLib-1.2.1;C:\stageCheyette\LunaLibrary;E:\Visual_Studio_Project\Visual_Studio_2012_Project\LunaLibrary;E:\DevLib\boost;E:\DevLib\QuantLib;$(IncludePath)</IncludePath>
+    <IncludePath>C:\stageCheyette\LunaLibrary;C:\boost&amp;quantlib\boost_1_58_0;C:\boost&amp;quantlib\QuantLib-1.2.1;E:\Visual_Studio_Project\Visual_Studio_2012_Project\LunaLibrary;E:\DevLib\boost;E:\DevLib\QuantLib;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)VCBuild\$(Configuration)\</OutDir>
     <IntDir>VCBuild\$(Configuration)\</IntDir>
     <LibraryPath>C:\boost&amp;quantlib\boost_1_58_0\libs ; C:\boost&amp;quantlib\QuantLib-1.2.1\lib;$(LibraryPath)</LibraryPath>
@@ -60,7 +60,7 @@
       <AdditionalIncludeDirectories>C:\stageCheyette\LunaLibrary\data\misc\deprecated_cpp ; E:\DevLib\boost;E:\Visual_Studio_Project\Visual_Studio_2012_Project\LunaLibrary; 
 	C:\boost&amp;quantlib\QuantLib-1.2.1;C:\stageCheyette\LunaLibrary;C:\boost&amp;quantlib\boost_1_58_0; 
 	C:\boost&amp;quantlib;E:\DevLib\boost;E:\Visual_Studio_Project\Visual_Studio_2012_Project\LunaLibrary</AdditionalIncludeDirectories>
-      <AdditionalIncludeDirectories>C:\stageCheyette\LunaLibrary ; C:\boost&amp;quantlib\boost_1_58_0 ; C:\boost&amp;quantlib\QuantLib-1.2.1</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\stageCheyette\LunaLibrary;C:\boost&amp;quantlib\boost_1_58_0;C:\boost&amp;quantlib\QuantLib-1.2.1</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
@@ -92,12 +92,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Cheyette\CheyetteModel\CheyetteDD_Model.cpp" />
-    <ClCompile Include="Cheyette\CheyetteModel\CheyetteModel.cpp" />
     <ClCompile Include="Cheyette\CheyetteModel\CourbeInput.cpp" />
     <ClCompile Include="Cheyette\unit_test\TestMCGeneric.cpp" />
     <ClCompile Include="Cheyette\unit_test\TestMC_vs_approx.cpp" />
     <ClInclude Include="Cheyette\CheyetteModel\CheyetteDD_Model.h" />
-    <ClInclude Include="Cheyette\CheyetteModel\CheyetteModel.h" />
     <ClInclude Include="Cheyette\CheyetteModel\CourbeInput.h" />
     <ClCompile Include="Cheyette\Pricer\CheyetteDD_VanillaSwaptionApproxPricer.cpp" />
     <ClCompile Include="Cheyette\Pricer\MC_Cheyette.cpp" />

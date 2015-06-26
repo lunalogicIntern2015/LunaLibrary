@@ -1,27 +1,41 @@
 #pragma once
-#include <boost/shared_ptr.hpp>
-#include <Cheyette/CheyetteModel/CheyetteDD_Model.h>
 #include <Cheyette/Pricer/MC_Cheyette.h>	
-
 #include <LMM/instrument/VanillaSwap.h>  
 #include <LMM/instrument/VanillaSwaption.h>
-#include <LMM/numeric/Integrator1D.h>  //pour la fonction closestDate
 
-class MC_CheyetteDD_VanillaSwaptionPricer
+
+class MC_CheyetteDD_VanillaSwaptionPricer : public MC_Cheyette
 {
-private:
-	MC_Cheyette_PTR mcCheyette_; 
 
 public:
-	MC_CheyetteDD_VanillaSwaptionPricer(const MC_Cheyette_PTR& mcCheyette)
-		: mcCheyette_(mcCheyette){}
+	MC_CheyetteDD_VanillaSwaptionPricer(CheyetteDD_Model_PTR		cheyetteDD_Model,
+										RNGenerator_PTR				rnGenerator,
+										Tenor						tenorType,
+										double						fwdProbaT,
+										std::vector<size_t>&		indexOfSimulation,		
+										std::vector<size_t>&		discretizationBetweenDates ) 
+		:MC_Cheyette(cheyetteDD_Model, rnGenerator, tenorType, fwdProbaT, indexOfSimulation, discretizationBetweenDates){}
+
 
 	virtual ~MC_CheyetteDD_VanillaSwaptionPricer(){}
 
-	//Price at time T0=0
-	//---------     payer swaption     ---------
-	double price(const VanillaSwaption& vanillaSwaption, size_t nbSimulation)  const ;
+	//! Pricing at time T0=0
+	std::vector<double> price(VanillaSwaption_PTR vanillaSwaption, size_t nbSimulation) const;
 
+	void print(VanillaSwaption_PTR vanillaSwaption, 
+				std::vector<size_t> nbSimus, 
+				std::vector<double> prixMC,
+				std::vector<double> IC_inf,
+				std::vector<double> IC_sup) const ;
+
+	void printMC_vs_approx(double approx, double b_barre, 
+							double annuityA0, double swapRateS0, double volBlack, 
+							double a, double b,
+							VanillaSwaption_PTR vanillaSwaption, 
+							std::vector<size_t> nbSimus, 
+							std::vector<double> prixMC,
+							std::vector<double> IC_inf,
+							std::vector<double> IC_sup) const ;
 	
 };
 

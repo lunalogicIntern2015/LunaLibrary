@@ -161,7 +161,7 @@ double Black_SwaptionImpliedVolatility(const double bs_call_price, const double 
 										const double  fwd, const double  strike, const double  T)
 {
 	boost::function<double(double)> f = boost::bind(swaptionBlack_Price, annuity0, fwd, strike, _1, T);
-	boost::function<double(double)> f_derivative = boost::bind(Black_Vega_swaption, annuity0, fwd,strike,_1,T);   //not correct
+	boost::function<double(double)> f_derivative = boost::bind(Black_Vega_swaption, annuity0, fwd,strike,_1,T);   
 	
 	BS_function_helper bs_function_helper(f,f_derivative,bs_call_price);
 	double initial_guess = 1 ;

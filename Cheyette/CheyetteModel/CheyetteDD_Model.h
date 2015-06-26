@@ -22,6 +22,9 @@
 	
 	\sigma_r(t) = (m(t) shift(t, x) + (1 - m(t)) shift(0, x) ) \sigma(t)  := sigma(t, x) 
 
+Plus générique :
+	\sigma_r(t) = (m(t) shift1(t, x) + (1 - m(t)) shift2(t, x) ) \sigma(t)  := sigma(t, x) 
+
 	2 parameters: m(t) and sigma(t) assumed to be piecewise constant time-dependent
 	m(t) \in [0,1]
    -----------------------------------------------------------*/
@@ -53,19 +56,58 @@ public:
 
 private:
 
-	CourbeInput_PTR					courbeInput_PTR_ ;             // P(0,t)
+	CourbeInput_PTR					courbeInput_PTR_ ;             // yield y(0,t)
 	mutable CheyetteDD_Parameter	cheyetteDD_Parameter_;
-	Boost_R2R_Function_PTR			shift_;						//r(t)/ r(0) ou S(t)/S(0) ou Li(t)/Li(0)
+	Boost_R2R_Function_PTR			shift1_;						//ex: r(t)/r(0), r(t)/f(0,t), S(t)/S(0) ou Li(t)/Li(0)
+	Boost_R2R_Function_PTR			shift2_;
+	Boost_R2R_Function_PTR			derivative_x_shift1_;
+	Boost_R2R_Function_PTR			derivative_x_shift2_;
 
 public:
 
 	//constructor
-	CheyetteDD_Model(const CourbeInput_PTR& courbeInput_PTR, const CheyetteDD_Parameter& cheyetteParam)
+	CheyetteDD_Model(const CourbeInput_PTR& courbeInput_PTR, const CheyetteDD_Parameter& cheyetteParam, int choice)
 		: courbeInput_PTR_(courbeInput_PTR), cheyetteDD_Parameter_(cheyetteParam) 
 	{
-		boost::function<double(double, double)> f = /*boost::bind(&CheyetteDD_Model::shift, this); */  boost::bind(&CheyetteDD_Model::shift, this, _1, _2);
-		Boost_R2R_Function_PTR f_ptr(new Boost_R2R_Function(f)) ;
-		shift_ =  f_ptr ;
+		/*boost::bind(&CheyetteDD_Model::shift, this); */
+		switch(choice) 
+		{
+			case 1:{		//r(t) / r(0)
+				boost::function<double(double, double)> f1 = boost::bind(&CheyetteDD_Model::shift_rt, this, _1, _2);
+				boost::function<double(double, double)> f2 = boost::bind(&CheyetteDD_Model::shift_r0, this, _1, _2);
+				boost::function<double(double, double)> fp1 = boost::bind(&CheyetteDD_Model::shift_rt_1stDerivative, this, _1, _2);
+				boost::function<double(double, double)> fp2 = boost::bind(&CheyetteDD_Model::shift_r0_1stDerivative, this, _1, _2);
+				Boost_R2R_Function_PTR f1_ptr(new Boost_R2R_Function(f1)) ;
+				Boost_R2R_Function_PTR f2_ptr(new Boost_R2R_Function(f2)) ;
+				Boost_R2R_Function_PTR fp1_ptr(new Boost_R2R_Function(fp1)) ;
+				Boost_R2R_Function_PTR fp2_ptr(new Boost_R2R_Function(fp2)) ;
+				shift1_ = f1_ptr ;
+				shift2_ = f2_ptr ;
+				derivative_x_shift1_ = fp1_ptr;
+				derivative_x_shift2_ = fp2_ptr;
+				break ;
+				   }
+			case 2 :{	//r(t) / f(0, t)
+				boost::function<double(double, double)> f1 = boost::bind(&CheyetteDD_Model::shift_rt, this, _1, _2);
+				boost::function<double(double, double)> f2 = boost::bind(&CheyetteDD_Model::shift_f_0_t, this, _1, _2);
+				boost::function<double(double, double)> fp1 = boost::bind(&CheyetteDD_Model::shift_rt_1stDerivative, this, _1, _2);
+				boost::function<double(double, double)> fp2 = boost::bind(&CheyetteDD_Model::shift_f_0_t_1stDerivative, this, _1, _2);
+				Boost_R2R_Function_PTR f1_ptr(new Boost_R2R_Function(f1)) ;
+				Boost_R2R_Function_PTR f2_ptr(new Boost_R2R_Function(f2)) ;
+				Boost_R2R_Function_PTR fp1_ptr(new Boost_R2R_Function(fp1)) ;
+				Boost_R2R_Function_PTR fp2_ptr(new Boost_R2R_Function(fp2)) ;
+				shift1_ = f1_ptr ;
+				shift2_ = f2_ptr ;
+				derivative_x_shift1_ = fp1_ptr;
+				derivative_x_shift2_ = fp2_ptr;
+				break ;
+					}
+			case 3 :	//S(t) / S(0)
+				throw "Displaced Diffusion: shift S(t)/S(0) to implement" ;
+				break;
+			default :
+				throw "Displaced Diffusion: shift not defined" ;
+		}
 	}
 	
 	//destructor
@@ -82,8 +124,14 @@ public:
 	double sigma_r( double t,  double x_t) const ;
 	double sigma_r_t_1stDerivative( double t,  double x_t) const ;  //derivee wrt x_t
 
-	double shift( double t,  double x_t) const ;							
-	double shift_1stDerivative( double t,  double x_t) const ;  //derivee du shift (r(t) ou S(t) ou Li(t)) wrt x_t
+	//shift functions
+	double shift_rt(double t,  double x_t) const ;							
+	double shift_r0(double t,  double x_t) const ;
+	double shift_f_0_t(double t,  double x_t) const ;				
+	//derivee du shift wrt x_t
+	double shift_rt_1stDerivative(double t,  double x_t) const ;  
+	double shift_r0_1stDerivative(double t,  double x_t) const ;  
+	double shift_f_0_t_1stDerivative(double t,  double x_t) const ;  
 
 	//fonctions G(t, T), ZC B(t, T), Libor...
 	double G(double t, double T) const ;  

@@ -217,7 +217,7 @@ double CheyetteDD_VanillaSwaptionApproxPricer::swapRate(double t, double x_t) co
 {
 	double n      = swapRateNumerator(t, x_t);
 	double d      = swapRateDenominator(t, x_t);
-	assert (abs(d) >= 0.001) ;
+	assert (abs(d) > 0.001) ;
 	return n/d;
 }
 
@@ -285,7 +285,7 @@ double CheyetteDD_VanillaSwaptionApproxPricer::inverse(double t, double s) const
 				boost::bind(&CheyetteDD_VanillaSwaptionApproxPricer::swapRate_1stDerivative, this, t, _1);
 	
 	Newton_Raphson_struct NR_struct(f, f_derivative, s);   //struct qui contient f, f', target = s
-	double initial_guess	= 0.1 ;
+	double initial_guess	= 0.0 ;
 	double min				= -5.0;
 	double max				= 5.0;
     size_t nDigits			= 15;
@@ -305,7 +305,7 @@ double CheyetteDD_VanillaSwaptionApproxPricer::swapRateVolatility_1stDerivative(
 	double res =  sigma_r_t *	swapRate_2ndDerivative(t, x_t) / swapRate_1stDerivative(t, x_t) 
 					+ cheyetteDD_Model_->sigma_r_t_1stDerivative(t, x_t) ;
 
-	std::cout << "t : " << t << "swap rate vol 1st der : " << res << std::endl ;
+	//std::cout << "t : " << t << "swap rate vol 1st der : " << res << std::endl ;
 	return res ; 
 	
 }
@@ -320,8 +320,8 @@ double CheyetteDD_VanillaSwaptionApproxPricer::calculate_phi_t_s_bar(double t) c
 	double sigma_r_t_inv_sbar	= cheyetteDD_Model_->sigma_r(t, inverse_s_bar) ;	
 	double phi_res = swapRate_1stDerivative(t, inverse_s_bar) * sigma_r_t_inv_sbar ;
 	
-	//std::cout << "t = " << t << std::endl ;
-	//std::cout << "phi t s bar = " << phi_res << std::endl ;
+	//std::cout << "derivee = " << swapRate_1stDerivative(t, inverse_s_bar) << std::endl ;
+	//std::cout << "vol_t = " << phi_res << std::endl ;
 	return phi_res ;
 }
 
@@ -352,6 +352,7 @@ double CheyetteDD_VanillaSwaptionApproxPricer::A(double t) const
 
 	//std::cout.precision(15);
 	//std::cout << "t =    " << t << std::endl ;
+	//std::cout << inverse_s_bar << std::endl ;
 	//std::cout << "A(t) = " << A_t << std::endl ;
 
 	//std::cout << "calculate_phi_t_s_bar            : " << calculate_phi_t_s_bar(t) << std::endl ;
@@ -392,7 +393,10 @@ double CheyetteDD_VanillaSwaptionApproxPricer::lambda2(double t) const
 double CheyetteDD_VanillaSwaptionApproxPricer::b(double t) const
 {
 	//return 1 / (1 + A(t)/(B(t) * buffer_s0_)) ;
-	return  B(t) / lambda(t) ;
+	//double b_t = B(t) / lambda(t) ;
+	double b_t = 1 / (1 + A(t)/(B(t) * buffer_s0_)) ;
+	std::cout << " t : " << t << ", b_t : " << b_t << std::endl ;
+	return  b_t ;
 }	
 
 
@@ -428,13 +432,13 @@ double CheyetteDD_VanillaSwaptionApproxPricer::timeAverage(double t) const
 	boost::function<double(double)> f_denom = boost::bind(&CheyetteDD_VanillaSwaptionApproxPricer::f_outer_denom, *this, _1);
 	
 	double integrale_denom = int2D.integrate(f_denom, f_inner);
-	
-	return integrale_numerateur/integrale_denom ;
+	double b_barre = integrale_numerateur/integrale_denom ;
+	buffer_b_barre_ = b_barre ;
+	return b_barre ;
 }
 
 double CheyetteDD_VanillaSwaptionApproxPricer::prixSwaptionApproxPiterbarg() const
 {
-
 	//calcul de b_barre, time averaging
 	double b_barre  = timeAverage(buffer_T0_) ;		//average jusqu'à T0, date d'entrée dans le swap
 
@@ -450,8 +454,6 @@ double CheyetteDD_VanillaSwaptionApproxPricer::prixSwaptionApproxPiterbarg() con
 
 	boost::function<double(double)> func1 = boost::bind(&CheyetteDD_VanillaSwaptionApproxPricer::lambda2, this, _1);
 	double integrale = integral_Riemann.integrate(func1);
-
-	//std::cout << "la vol... moyenne : " << sqrt(integrale) << " ! " << std::endl ;
 
 	//prix Black swaption (approximation)
 	double annuity0 = swapRateDenominator(0, 0) ;	//en t = 0 c'est l'annuité(0)

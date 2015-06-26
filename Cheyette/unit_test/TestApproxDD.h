@@ -11,7 +11,9 @@
 #include <iostream>
 #include <vector>
 
-CourbeInput_PTR createCourbeInput() ;
+#include "TestMC_vs_approx.h"
+
+//CourbeInput_PTR createCourbeInput() ;
 CheyetteDD_Model_PTR createCheyetteDD_Model() ;
 VanillaSwaption_PTR createSwap();
 void testSwap() ; //test swap (dates flux fixes et flottants) 
@@ -30,5 +32,3 @@ void test_fonction_inverse() ;  //necessite swapRate teste avant
 void test_derivatives() ;
 
 void test_time_average() ;
-
-void test_y_bar_cas_limite() ;
