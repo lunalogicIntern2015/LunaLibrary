@@ -14,11 +14,14 @@
 #include <Cheyette/unit_test/TestMC_vs_approx.h>
 #include <Cheyette/unit_test/TestCalibrator.h>
 
+#include <LMM\Test\Tests.h>
+
+
 
 int main()
 {
-
-		testCalib() ;
+	test_LmmCalibrationMarketData() ;
+		//testCalib() ;
 
 	//double bs_call_price = 0.0747381/100 ; //0.0611958/100 ;
 	//double annuity0 = 83.86/100  ; //A0

@@ -7,5 +7,8 @@
 #include <Cheyette/Calibrator/CheyetteDD_CostFunctionSkew.h>
 #include <Cheyette/Calibrator/MarketData.h>
 
+//lecture dans fichier VCUB
+#include <LMM/LmmModel/LmmSwaptionMarketData.h>
+#include <LMM/Test/Tests.h>
 
 void testCalib() ;

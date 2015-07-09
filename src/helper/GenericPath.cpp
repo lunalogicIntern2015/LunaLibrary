@@ -56,7 +56,8 @@ std::string LMMPATH::get_runtime_datapath()
 	// set the absolute path to your input folder here (use in execute time)
 
 	// absolute path common for Yuan Li's computer 
-	return "C:\\stageCheyette\\LunaLibrary\\data\\output\\Cheyette\\"; 
+	//return "C:\\stageCheyette\\LunaLibrary\\data\\output\\Cheyette\\"; 
+	return "C:\\stageCheyette\\LunaLibrary\\data\\input\\" ;
 }
 
 // tested for both directory name end with double slash or not

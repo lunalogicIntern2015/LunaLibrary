@@ -222,3 +222,131 @@ void CheyetteDD_LocalCalibrator::calibrate()
 
 }
 
+void CheyetteDD_LocalCalibrator::printPlusPlus(const std::string& base_filename) const
+{
+	std::string path_OutPut = LMMPATH::get_output_path() + base_filename;
+
+	std::ofstream final_result ;
+
+	final_result.open(path_OutPut.c_str(), std::ios::app);
+
+	final_result<<"==============  General Results  ==============="<<std::endl;
+
+	final_result<<base_general_result_info_;
+
+	final_result<<std::endl;
+	
+	final_result<<std::endl<<"==================== Quotation ERROR Matrix Results  ==================="<<std::endl;
+
+	final_result<<std::endl<<"## absolute error , "<<std::endl;
+	for(size_t i=1;i<abs_quote_error_matrix_.size1();++i)
+	{
+		for(size_t j=1;j<abs_quote_error_matrix_.size1()-i;++j)
+		{
+			final_result<<abs_quote_error_matrix_(i,j)<<",";
+		}
+		final_result<<std::endl;
+	}
+
+	final_result<<std::endl<<"## rel error (%), "<<std::endl;
+	for(size_t i=1;i<rel_quote_error_matrix_.size1();++i)
+	{
+		for(size_t j=1;j<rel_quote_error_matrix_.size1()-i;++j)
+		{
+			final_result<<rel_quote_error_matrix_(i,j)<<",";
+		}
+		final_result<<std::endl;
+	}
+
+	///////  PRINT model quote and market quotes
+	UpperTriangularDoubleMatrix mkt_black_vol_matrix = pLmmBaseCostFunction_->get_MarketQuoteValuesMatrix();
+	UpperTriangularDoubleMatrix mdl_black_vol_matrix = pLmmBaseCostFunction_->get_ModelQuoteValuesMatrix();
+
+	final_result<<std::endl<<"## Model Black Vol, "<<std::endl;
+	for(size_t i=1;i<mdl_black_vol_matrix.size1();++i)
+	{
+		for(size_t j=1;j<mdl_black_vol_matrix.size1()-i;++j)
+		{
+			final_result<<mdl_black_vol_matrix(i,j)<<",";
+		}
+		final_result<<std::endl;
+	}
+
+	final_result<<std::endl<<"## Market Black Vol, "<<std::endl;
+	for(size_t i=1;i<mkt_black_vol_matrix.size1();++i)
+	{
+		for(size_t j=1;j<mkt_black_vol_matrix.size1()-i;++j)
+		{
+			final_result<<mkt_black_vol_matrix(i,j)<<",";
+		}
+		final_result<<std::endl;
+	}
+
+	final_result<<std::endl<<"==================== Quotation ERROR Vector Results  ==================="<<std::endl;
+	final_result<<"(Expir;Tenor) , , MKT Quotes, MDL Quotes, , Abs Error, Rel Error (%)"<<std::endl;
+
+
+	for(size_t iExpirity = 1; iExpirity<mkt_black_vol_matrix.size1()-1; ++iExpirity) // row
+	{
+		size_t nb_jSwaption = mkt_black_vol_matrix.size2()- iExpirity;
+		for(size_t jTenor = 1;jTenor< nb_jSwaption; ++jTenor)
+		{
+			final_result<<"("<<iExpirity<<";"<<jTenor<<"), ,";
+			final_result<<mkt_black_vol_matrix(iExpirity,jTenor) <<","
+				<<mdl_black_vol_matrix(iExpirity,jTenor) <<", ,"
+				<<abs_quote_error_matrix_(iExpirity,jTenor) <<","
+				<<rel_quote_error_matrix_(iExpirity,jTenor) <<",";
+
+			if(std::abs(rel_quote_error_matrix_(iExpirity,jTenor))>30)
+			{
+				final_result<<", BAD BAD,"<<std::endl;
+			}
+			else if(std::abs(rel_quote_error_matrix_(iExpirity,jTenor))>10)
+			{
+				final_result<<", BAD,"<<std::endl;
+			}
+			else
+			{
+				final_result<<","<<std::endl;
+			}			
+		}
+	}
+	final_result<<std::endl
+		<<", , , , Max Error ,"<< max_quote_abs_error_ <<","<< max_quote_rel_error_        <<","<<std::endl<<std::endl;
+
+	if(isVirtualCalibration_)
+	{
+		final_result<<std::endl<<"==================== Param ERROR Vector Results for Virtual Test gDelegate ==================="<<std::endl;
+		final_result<<"(Expir;Tenor) , , TrueParam, Calibrated Param, Error (%)"<<std::endl;
+
+
+		for(size_t iExpirity = 1; iExpirity<mkt_black_vol_matrix.size1()-1; ++iExpirity) // row
+		{
+			size_t nb_jSwaption = mkt_black_vol_matrix.size2()- iExpirity;
+			for(size_t jTenor = 1;jTenor< nb_jSwaption; ++jTenor)
+			{
+				final_result<<"("<<iExpirity<<";"<<jTenor<<"), ,";
+				final_result<<true_gDelegate_matrix_(iExpirity,jTenor) <<","
+					<<calibrated_gDelegate_matrix_(iExpirity,jTenor) <<", ,"
+					<<rel_error_gDelegate_matrix_(iExpirity,jTenor) <<",";
+
+				if(std::abs(rel_error_gDelegate_matrix_(iExpirity,jTenor))>15)
+				{
+					final_result<<", BAD BAD,"<<std::endl;
+				}
+				else if(std::abs(rel_error_gDelegate_matrix_(iExpirity,jTenor))>5)
+				{
+					final_result<<", BAD,"<<std::endl;
+				}
+				else
+				{
+					final_result<<","<<std::endl;
+				}			
+			}
+		}
+		final_result<<std::endl
+			<<", , , ,Max Error(%) ,"<< max_param_rel_error_        <<","<<std::endl<<std::endl;
+	}
+
+	final_result.close();
+}

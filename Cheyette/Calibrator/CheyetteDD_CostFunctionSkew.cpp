@@ -6,9 +6,9 @@
 Disposable<Array> CheyetteDD_CostFunctionSkew::values(const Array& param_m) const
 {
 	// difference between Swaption Market Quotes and Swaption Model Values
-	size_t nbQuotes = marketData_PTR_->get_aExpiry().size() ;
+	std::vector<double> skewQuotes = coTerminalSwaptionSkew_PTR_->getDiagonalSwaptionSkew() ;
+	size_t nbQuotes = skewQuotes.size()  ;  
 	Array res(nbQuotes);
-	std::vector<double> skewQuotes = marketData_PTR_->getSkew() ;
 
 	for (size_t i = 0 ; i < nbQuotes ; ++i)
 	{
@@ -16,8 +16,8 @@ Disposable<Array> CheyetteDD_CostFunctionSkew::values(const Array& param_m) cons
 		//setter le parametre m de cheyetteApproxPTR avec Array
 		cheyetteApprox_PTR_->updateM_calib(param_m) ; //maj de m + des buffers de l'approx
 
-		double strikeATM	= marketData_PTR_->getStrikeATM()[i] ;
-		double shiftUp		= marketData_PTR_->getShift() ;
+		double strikeATM	= coTerminalSwaptionSkew_PTR_->getStrike()[i] ;
+		double shiftUp		= coTerminalSwaptionSkew_PTR_->getShift() ;
 		double shiftDown	= - shiftUp ; 
 		double volShiftUp	= volShift(i, strikeATM, shiftUp) ;
 		double volShiftDown	= volShift(i, strikeATM, shiftDown) ;

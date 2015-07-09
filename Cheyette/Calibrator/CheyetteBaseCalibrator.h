@@ -64,10 +64,12 @@ public :
 	//const double& get_QuoteError_L1() const { return quote_error_l1_; }
 	//const double& get_QuoteError_LInf() const { return quote_error_lInf_; }
 	//const std::string& get_BaseGeneral_Result_Info() const { return base_general_result_info_;}
+
 	//// post calibration calculated errors
 	//void retreive_calib_global_error() ;
 	//virtual void retreive_calib_info() = 0 ;
-	//virtual void printPlusPlus(const std::string& base_filename) const = 0 ;
+
+	virtual void printPlusPlus(const std::string& base_filename) const = 0 ;
 	//void printAnnexeStopCriteriaLevenbergMarquardt( std::ofstream & stream ) const ;
 };
 

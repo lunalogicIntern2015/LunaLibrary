@@ -91,6 +91,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Cheyette\Calibrator\CheyetteDD_CalibrationConfig.cpp" />
     <ClCompile Include="Cheyette\Calibrator\CheyetteBaseCostFunction.cpp" />
     <ClCompile Include="Cheyette\Calibrator\CheyetteDD_CostFunctionSkew.cpp" />
     <ClCompile Include="Cheyette\Calibrator\CheyetteBaseCalibrator.cpp" />
@@ -102,6 +103,7 @@
     <ClCompile Include="Cheyette\unit_test\TestMCGeneric.cpp" />
     <ClCompile Include="Cheyette\unit_test\TestMC_vs_approx.cpp" />
     <ClCompile Include="Cheyette\unit_test\TestCalibrator.cpp" />
+    <ClInclude Include="Cheyette\Calibrator\CheyetteDD_CalibrationConfig.h" />
     <ClInclude Include="Cheyette\Calibrator\CheyetteBaseCostFunction.h" />
     <ClInclude Include="Cheyette\Calibrator\CheyetteDD_CostFunctionSkew.h" />
     <ClInclude Include="Cheyette\Calibrator\CheyetteBaseCalibrator.h" />
@@ -256,6 +258,7 @@
     <ClInclude Include="Cheyette\unit_test\TestMC_vs_approx.h" />
     <ClInclude Include="Cheyette\Calibrator\MarketData.h" />
     <ClInclude Include="Cheyette\unit_test\TestCalibrator.h" />
+    <ClInclude Include="LMM\Test\Tests.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="JBLMM\Element\CappedFlooredCoupon.cpp" />
@@ -278,6 +281,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="JBLMM\Test\Test_McGeneticTargetSwapPricing.cpp" />
+    <ClCompile Include="LMM\Test\Test.cpp" />
+    <ClCompile Include="LMM\Test\Test_LmmCalibrationMarketData.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Cheyette\Pricer\MC_CheyetteDD_GenericSwapPricer.cpp" />
     <ClCompile Include="Cheyette\Pricer\MC_CheyetteDD_GenericSwaptionPricer.cpp" />

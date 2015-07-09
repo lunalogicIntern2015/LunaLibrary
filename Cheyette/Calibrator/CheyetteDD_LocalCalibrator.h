@@ -56,7 +56,7 @@ public :
 	void calibrate() ;
 
 	////! print plus plus without erease
-	//void printPlusPlus(const std::string& base_filename) const ;
+	void printPlusPlus(const std::string& base_filename) const ;
 	//	
 	//virtual void retrieve_calib_info();
 };

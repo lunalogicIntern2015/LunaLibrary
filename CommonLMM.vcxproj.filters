@@ -480,6 +480,8 @@
     <ClInclude Include="Cheyette\Calibrator\MarketData.h" />
     <ClInclude Include="Cheyette\Calibrator\CheyetteBaseCostFunction.h" />
     <ClInclude Include="Cheyette\unit_test\TestCalibrator.h" />
+    <ClInclude Include="LMM\Test\Tests.h" />
+    <ClInclude Include="Cheyette\Calibrator\CheyetteDD_CalibrationConfig.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\pricer\LmmTarnPricer.cpp">
@@ -925,6 +927,9 @@
     <ClCompile Include="Cheyette\Calibrator\CheyetteBaseCostFunction.cpp" />
     <ClCompile Include="Cheyette\unit_test\TestCalibrator.cpp" />
     <ClCompile Include="Cheyette\Calibrator\MarketData.cpp" />
+    <ClCompile Include="LMM\Test\Test.cpp" />
+    <ClCompile Include="LMM\Test\Test_LmmCalibrationMarketData.cpp" />
+    <ClCompile Include="Cheyette\Calibrator\CheyetteDD_CalibrationConfig.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JBLMM\Element\CappedFlooredCoupon.h" />

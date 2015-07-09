@@ -16,7 +16,6 @@
 /**********************************************************
 
 	approx pour Cheyette Displaced Diffusion
-			approx cf papier de Yuan / Piterbarg
 
 **********************************************************/
 

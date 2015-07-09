@@ -54,6 +54,8 @@ void Test_McGeneticTargetSwapLMMPricing();
 
 LmmSwaptionMarketData_PTR get_LmmSwaptionMarketData(const LmmCalibrationConfig& config, const std::string& input_file);
 
+//pour la compatibilité avec CheyetteDD_config
+LmmSwaptionMarketData_PTR get_LmmSwaptionMarketData(const size_t model_nbYear, const std::string& input_file) ;
 
 LMMTenorStructure_PTR create___LMMTenorStructure_PTR(const size_t nbyear);
 
