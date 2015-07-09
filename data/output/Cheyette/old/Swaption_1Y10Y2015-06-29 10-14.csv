@@ -1,0 +1,51 @@
+---------------------------------------------;;;;
+------------- Cheyette DD Model ------------;;;;
+  SIGMA piecewise constant ;;;;
+       for x in [0, 10], y = 0.05;;;;
+       for x in [10, 20], y = 0.1;;;;
+  M piecewise constant ;;;;
+       for x in [0, 10], y = 0;;;;
+       for x in [10, 20], y = 0;;;;
+  k constant ;;;;
+       k = 0.2;;;;
+---------------------------------------------;;;;
+courbe des taux ZC spot (yield);;;;
+listeMatu   ;   tauxZC;;;
+0;0.008;;;
+1;0.0085;;;
+2;0.009;;;
+3;0.0092;;;
+4;0.0095;;;
+5;0.01;;;
+10;0.015;;;
+15;0.02;;;
+20;0.025;;;
+25;0.023;;;
+;;;;
+---------------------------------------------;;;;
+-------------  VanillaSwap ------------------;;;;
+floatingLegTenorType_ Tenor6M[6MO|0.5YR];;;;
+fixedLegTenorType_    Tenor1YR[12MO|1YR];;;;
+indexStart_           2;;;;
+indexEnd_             22;;;;
+indices des flux fixes;;;;
+4  6  8  10  12  14  16  18  20  22   ;;;;
+indices des flux flottants;;;;
+3  4  5  6  7  8  9  10  11  12  13  14  15  16  17  18  19  20  21  22   ;;;;
+deltaTFloatingLeg_ i;;;;
+0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5   ;;;;
+deltaTFixedLeg_ i;;;;
+1  1  1  1  1  1  1  1  1  1   ;;;;
+---------------------------------------------;;;;
+;;;;
+Prix approximation : ;7.927%;;;
+b_barre : ;0.0664173;;;
+annuity A(0) : ;9.20661;;;
+swap rate S(0) : ;0.0166096;;;
+;;;;
+vol Black impli : ;0.010%;;;
+;;;;
+prix approximation ; nb simulations ;  prix MC ; IC inf ; IC sup 
+7.927%;10000;7.930%;7.920%;7.939%
+7.927%;40000;7.926%;7.921%;7.930%
+7.927%;100000;7.926%;7.923%;7.929%

@@ -17,17 +17,38 @@ CheyetteDD_VanillaSwaptionApproxPricer::CheyetteDD_VanillaSwaptionApproxPricer
 {
 	// domaine de validité de l'approximation : //assert( ... ); 
 
-	buffer_courbeInput_						= cheyetteDD_Model->get_courbeInput_PTR() ;
-	buffer_UnderlyingSwap_					= swaption->getUnderlyingSwap() ;
-	buffer_T0_								= swaption->getUnderlyingSwap().get_StartDate() ;		//1ere date de fixing
-	buffer_TN_								= swaption->getUnderlyingSwap().get_EndDate() ;			//date dernier flux (setté en T_{N-1})
+	buffer_courbeInput_	 = cheyetteDD_Model->get_courbeInput_PTR() ;
+	initialize_buffers() ;  //initialise les autres buffers relatifs à la swaption, y barre, b barre 		
+}
+
+void CheyetteDD_VanillaSwaptionApproxPricer::initialize_buffers()
+{
+	buffer_UnderlyingSwap_					= swaption_->getUnderlyingSwap() ;
+	buffer_T0_								= swaption_->getUnderlyingSwap().get_StartDate() ;		//1ere date de fixing
+	buffer_TN_								= swaption_->getUnderlyingSwap().get_EndDate() ;			//date dernier flux (setté en T_{N-1})
 	buffer_fixedLegPaymentIndexSchedule_	= buffer_UnderlyingSwap_.get_fixedLegPaymentIndexSchedule() ;
 	buffer_floatingLegPaymentIndexSchedule_	= buffer_UnderlyingSwap_.get_floatingLegPaymentIndexSchedule() ;
 	buffer_deltaTFixedLeg_					= buffer_UnderlyingSwap_.get_DeltaTFixedLeg() ;
+	
+	//initialisation du shift de CheyetteDD_Model pas encore initialisé (c'est le cas si shift = S(t) / S(0) ) 
+	//shift = S(t) / S(0) dépend de la swaption. Non initialisable dans CheyetteDD_Model
+	if (cheyetteDD_Model_->get_shiftChoice() == 3)
+	{
+		boost::function<double(double, double)> f1 = boost::bind(&CheyetteDD_VanillaSwaptionApproxPricer::swapRate, this, _1, _2);
+		boost::function<double(double, double)> f2 = boost::bind(&CheyetteDD_VanillaSwaptionApproxPricer::swapRate, this, 0., 0.);
+		boost::function<double(double, double)> fp1 = boost::bind(&CheyetteDD_VanillaSwaptionApproxPricer::swapRate_1stDerivative, this, _1, _2);
+		boost::function<double(double, double)> fp2 = boost::bind(&CheyetteDD_VanillaSwaptionApproxPricer::swapRate_1stDerivative, this, 0., 0.);
+		Boost_R2R_Function_PTR f1_ptr(new Boost_R2R_Function(f1)) ;
+		Boost_R2R_Function_PTR f2_ptr(new Boost_R2R_Function(f2)) ;
+		Boost_R2R_Function_PTR fp1_ptr(new Boost_R2R_Function(fp1)) ;
+		Boost_R2R_Function_PTR fp2_ptr(new Boost_R2R_Function(fp2)) ;
+		cheyetteDD_Model_->setShiftPointer(f1_ptr, f2_ptr, fp1_ptr, fp2_ptr) ;
+	}
 
 	initialize_y_bar(buffer_T0_, gridSize);	
+	buffer_s0_								= swapRate0();  //necessite y_bar
 	
-	buffer_s0_								= swapRate0();
+	buffer_b_barre_ = timeAverage(buffer_T0_) ;
 }
 
 //fonction qui intervient pour le calcul de y bar
@@ -115,7 +136,16 @@ double CheyetteDD_VanillaSwaptionApproxPricer::ZC_2ndDerivative_on_xt(double t, 
 double CheyetteDD_VanillaSwaptionApproxPricer::swapRateNumerator(double t, double x_t) const 
 {
 	assert( t >= 0 ) ;
-	double y_bar_t = buffer_y_bar_(t) ;
+	double y_bar_t ;
+	if (this->get_CheyetteDD_Model()->get_shiftChoice() == 3) //cas shift S(t) / S(0)
+	{
+		y_bar_t = 0. ;
+	}
+	else
+	{
+		y_bar_t = buffer_y_bar_(t) ;
+	}
+	
 	double ZC_T0, ZC_TN ;
 //les 2 versions sont cohérentes en t = 0 :	
 	if (t == 0){  // bad comparision   // prefer to do: if (t==0) { check x_t ==0 }
@@ -144,7 +174,16 @@ double CheyetteDD_VanillaSwaptionApproxPricer::swapRateNumerator_2ndDerivative(d
 // Denominator = \sum delta_k P(t,T_k) en t = 0
 double CheyetteDD_VanillaSwaptionApproxPricer::swapRateDenominator(double t, double x_t) const 
 {
-	double y_bar_t = buffer_y_bar_(t) ;
+	double y_bar_t ;
+	if (this->get_CheyetteDD_Model()->get_shiftChoice() == 3) //cas shift S(t) / S(0)
+	{
+		y_bar_t = 0. ;
+	}
+	else
+	{
+		y_bar_t = buffer_y_bar_(t) ;
+	}
+	
 	double price = 0.0;
 
 	double fixed_tenor = buffer_UnderlyingSwap_.get_fixedLegTenorType().YearFraction() ;
@@ -217,7 +256,7 @@ double CheyetteDD_VanillaSwaptionApproxPricer::swapRate(double t, double x_t) co
 {
 	double n      = swapRateNumerator(t, x_t);
 	double d      = swapRateDenominator(t, x_t);
-	assert (abs(d) > 0.001) ;
+//	assert (abs(d) > 0.001) ;
 	return n/d;
 }
 
@@ -395,7 +434,7 @@ double CheyetteDD_VanillaSwaptionApproxPricer::b(double t) const
 	//return 1 / (1 + A(t)/(B(t) * buffer_s0_)) ;
 	//double b_t = B(t) / lambda(t) ;
 	double b_t = 1 / (1 + A(t)/(B(t) * buffer_s0_)) ;
-	std::cout << " t : " << t << ", b_t : " << b_t << std::endl ;
+	//std::cout << " t : " << t << ", b_t : " << b_t << std::endl ;
 	return  b_t ;
 }	
 
@@ -433,7 +472,7 @@ double CheyetteDD_VanillaSwaptionApproxPricer::timeAverage(double t) const
 	
 	double integrale_denom = int2D.integrate(f_denom, f_inner);
 	double b_barre = integrale_numerateur/integrale_denom ;
-	buffer_b_barre_ = b_barre ;
+	//buffer_b_barre_ = b_barre ;
 	return b_barre ;
 }
 
@@ -460,8 +499,9 @@ double CheyetteDD_VanillaSwaptionApproxPricer::prixSwaptionApproxPiterbarg() con
 	double K_tilde	= b_barre * buffer_UnderlyingSwap_.get_strike() + (1 - b_barre) * buffer_s0_ ;
 	double sigma_sqrt_T = b_barre * sqrt(integrale) ; 
 
+	//prend en compte strikes positifs et négatifs
 	//	double Black_Price_vol2(double fwd, double strike, double vol, double T);
-	return annuity0 / b_barre * NumericalMethods::Black_Price_vol2(buffer_s0_, K_tilde, sigma_sqrt_T, buffer_T0_) ;
+	return annuity0 / b_barre * NumericalMethods::Black_Price_vol2_allStrike(buffer_s0_, K_tilde, sigma_sqrt_T, buffer_T0_) ;
 	
 }
 

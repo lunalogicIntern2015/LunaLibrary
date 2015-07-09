@@ -30,6 +30,8 @@ namespace NumericalMethods
 	//avec vol non constante
 	double Black_Price_vol2(double fwd, double strike, double vol_T, double T);
 
+	double Black_Price_vol2_allStrike(double fwd, double strike, double sqrt_int_sigma2, double T) ;
+
 	double Black_Vega(const double fwd, const double strike, const double vol, const double T);
 	double Black_Vega_swaption(const double annuity0, const double fwd, const double strike, const double vol, const double T) ;
 

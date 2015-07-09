@@ -473,6 +473,13 @@
     <ClInclude Include="Cheyette\unit_test\TestMCGeneric.h" />
     <ClInclude Include="Cheyette\Pricer\MC_CheyetteDD_GenericSwaptionPricer.h" />
     <ClInclude Include="Cheyette\unit_test\TestMC_vs_approx.h" />
+    <ClInclude Include="Cheyette\Calibrator\CheyetteBaseCalibrator.h" />
+    <ClInclude Include="Cheyette\Calibrator\CheyetteDD_CostFunctionLevel.h" />
+    <ClInclude Include="Cheyette\Calibrator\CheyetteDD_CostFunctionSkew.h" />
+    <ClInclude Include="Cheyette\Calibrator\CheyetteDD_LocalCalibrator.h" />
+    <ClInclude Include="Cheyette\Calibrator\MarketData.h" />
+    <ClInclude Include="Cheyette\Calibrator\CheyetteBaseCostFunction.h" />
+    <ClInclude Include="Cheyette\unit_test\TestCalibrator.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\pricer\LmmTarnPricer.cpp">
@@ -871,9 +878,6 @@
     <ClCompile Include="Cheyette\CheyetteModel\CheyetteDD_Model.cpp">
       <Filter>Cheyette\CheyetteModel</Filter>
     </ClCompile>
-    <ClCompile Include="Cheyette\CheyetteModel\CheyetteModel.cpp">
-      <Filter>Cheyette\CheyetteModel</Filter>
-    </ClCompile>
     <ClCompile Include="Cheyette\CheyetteModel\CourbeInput.cpp">
       <Filter>Cheyette\CheyetteModel</Filter>
     </ClCompile>
@@ -914,6 +918,13 @@
     <ClCompile Include="Cheyette\unit_test\TestMCGeneric.cpp" />
     <ClCompile Include="Cheyette\Pricer\MC_CheyetteDD_GenericSwaptionPricer.cpp" />
     <ClCompile Include="Cheyette\unit_test\TestMC_vs_approx.cpp" />
+    <ClCompile Include="Cheyette\Calibrator\CheyetteBaseCalibrator.cpp" />
+    <ClCompile Include="Cheyette\Calibrator\CheyetteDD_CostFunctionLevel.cpp" />
+    <ClCompile Include="Cheyette\Calibrator\CheyetteDD_CostFunctionSkew.cpp" />
+    <ClCompile Include="Cheyette\Calibrator\CheyetteDD_LocalCalibrator.cpp" />
+    <ClCompile Include="Cheyette\Calibrator\CheyetteBaseCostFunction.cpp" />
+    <ClCompile Include="Cheyette\unit_test\TestCalibrator.cpp" />
+    <ClCompile Include="Cheyette\Calibrator\MarketData.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JBLMM\Element\CappedFlooredCoupon.h" />
@@ -1245,7 +1256,6 @@
       <Filter>LMM_pricer\GeneticSwapPricer</Filter>
     </ClInclude>
     <ClInclude Include="Cheyette\CheyetteModel\CheyetteDD_Model.h" />
-    <ClInclude Include="Cheyette\CheyetteModel\CheyetteModel.h" />
     <ClInclude Include="Cheyette\CheyetteModel\CourbeInput.h" />
     <ClInclude Include="Cheyette\Pricer\CheyetteDD_VanillaSwaptionApproxPricer.h" />
     <ClInclude Include="Cheyette\Pricer\MC_Cheyette.h" />
@@ -1649,7 +1659,6 @@
       <Filter>LMM\Test\Test_JL</Filter>
     </ClCompile>
     <ClCompile Include="Cheyette\CheyetteModel\CheyetteDD_Model.cpp" />
-    <ClCompile Include="Cheyette\CheyetteModel\CheyetteModel.cpp" />
     <ClCompile Include="Cheyette\CheyetteModel\CourbeInput.cpp" />
     <ClCompile Include="Cheyette\Pricer\CheyetteDD_VanillaSwaptionApproxPricer.cpp" />
     <ClCompile Include="Cheyette\Pricer\MC_Cheyette.cpp" />

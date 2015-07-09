@@ -38,7 +38,7 @@ double CheyetteDD_Model::sigma_r( double t,  double x_t) const
 	double sigma_t = cheyetteDD_Parameter_.sigma_(t) ;
 	double m_t		= cheyetteDD_Parameter_.m_(t) ;
 	double shift1	= shift1_->operator()(t, x_t) ;
-	double shift2	= shift2_->operator()(t, x_t) ;  
+	double shift2	= shift2_->operator()(t, x_t) ;  //en pratique pointe vers shift1(0, 0)
 	return sigma_t * (m_t * shift1 + (1 - m_t) * shift2) ;
 }
 
@@ -54,11 +54,13 @@ double CheyetteDD_Model::sigma_r_t_1stDerivative( double t,  double x_t) const
 double CheyetteDD_Model::shift_rt(double t,  double x_t) const
 {
 	return x_t + courbeInput_PTR_->get_f_0_t(t) ;  
-}						
-double CheyetteDD_Model::shift_r0(double t,  double x_t) const
+}	
+
+double CheyetteDD_Model::shift_r0(double t,  double x_t) const 
 {
 	return courbeInput_PTR_->get_f_0_t(0) ;  
-}
+}	
+
 double CheyetteDD_Model::shift_f_0_t(double t,  double x_t) const
 {
 	return courbeInput_PTR_->get_f_0_t(t) ;  
@@ -135,59 +137,3 @@ double CheyetteDD_Model::drift_y(double t, double x_t, double y_t) const
 	double k			= cheyetteDD_Parameter_.k_ ;
 	return sigma_r_t * sigma_r_t - 2 * k * y_t ;
 }
-
-
-//double CheyetteDD_Model::annuity(double t, double x_t, double y_t, const VanillaSwap& vanillaSwap)
-//{
-//	//TODO assert // check tenor[0] = 0; c'est à dire le 1er pilier de la tenor structure englobe t = 0 (date de valo) 
-//
-//	double price = 0.0;
-//	const std::vector<size_t>& fixedLegPaymentIndexSchedule  = vanillaSwap.get_fixedLegPaymentIndexSchedule();
-//	double dateEchangeFluxFixe, delta_T, ZC ;
-//
-//	double fixed_tenor = vanillaSwap.get_fixedLegTenorType().YearFraction() ;
-//	double float_tenor = vanillaSwap.get_floatingLegTenorType().YearFraction() ;
-//	double tenor_ref = std::min(fixed_tenor, float_tenor) ;  //le plus petit 
-//
-//	if (t == 0)
-//	{
-//		//somme sur tous les flux fixes
-//		for(size_t itr = 0; itr < fixedLegPaymentIndexSchedule.size(); ++itr) 
-//		{
-//			//convertit l'indice/le numero du flux en la date de tombée du flux (ex : flux numero 2 survient à date 1Y)
-//			dateEchangeFluxFixe = fixedLegPaymentIndexSchedule[itr] * tenor_ref ;
-//
-//			delta_T = vanillaSwap.get_DeltaTFixedLeg(itr);	
-//			ZC		= exp( - courbeInput_PTR_->get_tauxZC0(dateEchangeFluxFixe) * dateEchangeFluxFixe);
-//			price += delta_T * ZC ;		
-//		}
-//	}else
-//	{
-//		for(size_t itr = 0; itr < fixedLegPaymentIndexSchedule.size(); ++itr) 
-//		{
-//			dateEchangeFluxFixe = fixedLegPaymentIndexSchedule[itr] * tenor_ref ;
-//			delta_T = vanillaSwap.get_DeltaTFixedLeg(itr) ;	
-//			ZC		= P(t, dateEchangeFluxFixe, x_t, y_t) ;
-//			price += delta_T * ZC ;			
-//	}
-//	return price;
-//}
-
-
-//double CheyetteDD_Model::txSwap(const VanillaSwap& vanillaSwap)
-//{
-//	const std::vector<size_t>& fixedLegPaymentIndexSchedule  = vanillaSwap.get_fixedLegPaymentIndexSchedule();
-//
-//	double fixed_tenor = vanillaSwap.get_fixedLegTenorType().YearFraction() ;
-//	double float_tenor = vanillaSwap.get_floatingLegTenorType().YearFraction() ;
-//	double tenor_ref = std::min(fixed_tenor, float_tenor) ;  //le plus petit 
-//
-//	double T_0 = fixedLegPaymentIndexSchedule[0] * tenor_ref ;
-//	double ZC_T0 = exp( - courbeInput_PTR_->get_tauxZC0(T_0) * T_0) ;	
-//
-//	double T_N = fixedLegPaymentIndexSchedule[fixedLegPaymentIndexSchedule.size() - 1] * tenor_ref ;
-//	double ZC_TN = exp( - courbeInput_PTR_->get_tauxZC0(T_N) * T_N)  ;	
-//
-//	double annuite = annuity(vanillaSwap) ;
-//	return (ZC_T0 - ZC_TN)/ annuite ;
-//}

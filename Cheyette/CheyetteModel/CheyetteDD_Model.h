@@ -12,6 +12,8 @@
 #include <LMM/instrument/VanillaSwap.h> 
 #include <LMM/helper/LMMTenorStructure.h>
 
+#include <ql/math/array.hpp>
+using namespace QuantLib ;
 /*  -----------------------------------------------------------
 	Cheyette Model Displaced Diffusion (DD)
 
@@ -58,6 +60,7 @@ private:
 
 	CourbeInput_PTR					courbeInput_PTR_ ;             // yield y(0,t)
 	mutable CheyetteDD_Parameter	cheyetteDD_Parameter_;
+	int								shiftChoice_ ; 
 	Boost_R2R_Function_PTR			shift1_;						//ex: r(t)/r(0), r(t)/f(0,t), S(t)/S(0) ou Li(t)/Li(0)
 	Boost_R2R_Function_PTR			shift2_;
 	Boost_R2R_Function_PTR			derivative_x_shift1_;
@@ -66,11 +69,11 @@ private:
 public:
 
 	//constructor
-	CheyetteDD_Model(const CourbeInput_PTR& courbeInput_PTR, const CheyetteDD_Parameter& cheyetteParam, int choice)
-		: courbeInput_PTR_(courbeInput_PTR), cheyetteDD_Parameter_(cheyetteParam) 
+	CheyetteDD_Model(const CourbeInput_PTR& courbeInput_PTR, const CheyetteDD_Parameter& cheyetteParam, int shiftChoice)
+		: courbeInput_PTR_(courbeInput_PTR), cheyetteDD_Parameter_(cheyetteParam), shiftChoice_(shiftChoice) 
 	{
 		/*boost::bind(&CheyetteDD_Model::shift, this); */
-		switch(choice) 
+		switch(shiftChoice) 
 		{
 			case 1:{		//r(t) / r(0)
 				boost::function<double(double, double)> f1 = boost::bind(&CheyetteDD_Model::shift_rt, this, _1, _2);
@@ -81,10 +84,7 @@ public:
 				Boost_R2R_Function_PTR f2_ptr(new Boost_R2R_Function(f2)) ;
 				Boost_R2R_Function_PTR fp1_ptr(new Boost_R2R_Function(fp1)) ;
 				Boost_R2R_Function_PTR fp2_ptr(new Boost_R2R_Function(fp2)) ;
-				shift1_ = f1_ptr ;
-				shift2_ = f2_ptr ;
-				derivative_x_shift1_ = fp1_ptr;
-				derivative_x_shift2_ = fp2_ptr;
+				setShiftPointer(f1_ptr, f2_ptr, fp1_ptr, fp2_ptr) ;
 				break ;
 				   }
 			case 2 :{	//r(t) / f(0, t)
@@ -96,15 +96,15 @@ public:
 				Boost_R2R_Function_PTR f2_ptr(new Boost_R2R_Function(f2)) ;
 				Boost_R2R_Function_PTR fp1_ptr(new Boost_R2R_Function(fp1)) ;
 				Boost_R2R_Function_PTR fp2_ptr(new Boost_R2R_Function(fp2)) ;
-				shift1_ = f1_ptr ;
-				shift2_ = f2_ptr ;
-				derivative_x_shift1_ = fp1_ptr;
-				derivative_x_shift2_ = fp2_ptr;
+				setShiftPointer(f1_ptr, f2_ptr, fp1_ptr, fp2_ptr) ;
 				break ;
 					}
-			case 3 :	//S(t) / S(0)
-				throw "Displaced Diffusion: shift S(t)/S(0) to implement" ;
+			case 3 :{	//S(t) / S(0)
+				//shift defini plus tard une fois connue la swaption
+				//cf constructeur de CheyetteDD_VanillaSwaptionApproxPricer
+				setShiftPointer(NULL, NULL, NULL, NULL) ;				
 				break;
+					}
 			default :
 				throw "Displaced Diffusion: shift not defined" ;
 		}
@@ -116,6 +116,42 @@ public:
 	//getters
 	CourbeInput_PTR			get_courbeInput_PTR() const{return courbeInput_PTR_ ;}
 	CheyetteDD_Parameter	get_CheyetteDD_Parameter() const{return cheyetteDD_Parameter_;}
+	int						get_shiftChoice() const{return shiftChoice_ ;}
+
+	//setters
+	void		setCheyetteDD_Parameter_m(const std::vector<double>& m_y){cheyetteDD_Parameter_.m_.sety_(m_y) ;}
+	void		setCheyetteDD_Parameter_sigma(const std::vector<double>& sigma_y){cheyetteDD_Parameter_.sigma_.sety_(sigma_y) ;}
+
+	//Array : parametres m puis parametres sigma
+	void setCheyetteDD_Parameter_m(const Array& A){
+		size_t N = A.size();
+		std::vector<double> v(N) ;
+		for (size_t i = 0 ; i < N ; ++i)
+		{
+			v[i] = A[i] ;									//pas optimal
+		} 
+		setCheyetteDD_Parameter_m(v) ;
+	}
+	void setCheyetteDD_Parameter_sigma(const Array& A){
+		size_t N = A.size();
+		std::vector<double> v(N) ;
+		for (size_t i = 0 ; i < N ; ++i)
+		{
+			v[i] = A[i] ;
+		} 
+		setCheyetteDD_Parameter_sigma(v) ;
+	}
+	
+
+	//pointeurs vers f1, fprime1, f2, fprime2
+	void setShiftPointer(	Boost_R2R_Function_PTR f1_ptr, Boost_R2R_Function_PTR f2_ptr, 
+		Boost_R2R_Function_PTR fp1_ptr, Boost_R2R_Function_PTR fp2_ptr)
+	{
+		shift1_ = f1_ptr ;
+		shift2_ = f2_ptr ;
+		derivative_x_shift1_ = fp1_ptr;
+		derivative_x_shift2_ = fp2_ptr;	
+	}
 
 	void show() const ;
 	void print(std::ostream& o) const ;
@@ -146,15 +182,6 @@ public:
 
 	//EDS : drift sous Q^T
 	double drift_x_QT(double t, double T_proba_fwd, double x_t, double y_t) const ;
-
-	//annuite A_0N(0)
-	//double annuity(double t, double x_t, double y_t, const VanillaSwap& vanillaSwap) ;
-
-	//?????? taux de swap en 0 (pas de modèle, utilise la courbe des taux spot)
-	//double txSwap(const VanillaSwap&	vanillaSwap) ;
-	
-	//S(t, x_t, y_t) = S(t, x_t, y_bar_t) = S(t, x_t)  :  utile pour pouvoir inverser cette fonction par NR
-	//double S(double t, double x_t, double y_t, const VanillaSwap& vanillaSwap) ;
 
 };
 

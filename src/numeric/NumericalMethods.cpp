@@ -90,7 +90,6 @@ double swaptionBlack_Price(double annuity0, double fwd, double strike, double vo
 //sqrt_int_sigma2 = sqrt( \int_0^T \sigma^2(u) du )   
 double Black_Price_vol2(double fwd, double strike, double sqrt_int_sigma2, double T) 
 {
-	std::cout << "SJ : " << fwd << ", strike : " << strike << ", T : " << T << std::endl ;
     assert(sqrt_int_sigma2 > 0 && T > 0 && fwd >0 && strike >0);
 
 	double d1 = (log(fwd/strike) + 0.5 * sqrt_int_sigma2 * sqrt_int_sigma2) / sqrt_int_sigma2 ;
@@ -101,6 +100,26 @@ double Black_Price_vol2(double fwd, double strike, double sqrt_int_sigma2, doubl
 	double N2 = cdf(nd,d2); 
 
 	return fwd*N1-strike*N2;
+}
+
+//prix Black avec K < 0 
+//cas où le sous jacent est martingale sous la proba voulue
+//E^{Q annuity}(S(T0) | F_0) = S0 
+double Black_Price_vol2_allStrike(double fwd, double strike, double sqrt_int_sigma2, double T) 
+{
+	std::cout << "SJ : " << fwd << ", strike : " << strike << ", T : " << T << std::endl ;
+    assert(sqrt_int_sigma2 > 0 && T > 0 && fwd >0) ; 
+	double res  ;
+	if (strike > 0)
+	{
+		res = Black_Price_vol2(fwd, strike, sqrt_int_sigma2, T) ;
+	}
+	else
+	{
+		res = fwd - strike ;	
+	}
+
+	return res ;
 }
 
 double Black_Vega(const double fwd, const double strike, const double vol, const double T)
@@ -165,7 +184,7 @@ double Black_SwaptionImpliedVolatility(const double bs_call_price, const double 
 	
 	BS_function_helper bs_function_helper(f,f_derivative,bs_call_price);
 	double initial_guess = 1 ;
-	double min    = 10e-5;
+	double min    = 0;
 	double max    = 10 ;
     size_t nDigits   = 15;
 	boost::uintmax_t nMaxIter  = 100;

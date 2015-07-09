@@ -79,7 +79,7 @@ double MC_Cheyette::evaluateFloatLeg(	const size_t indexValuationDate,
 										const std::vector<double>& numeraire, 
 										const std::vector<double>& x_t, 
 										const std::vector<double>& y_t,
-										const Tenor tenor) const
+										const Tenor tenorFloatLeg) const
 //parametre Tenor represente le tenor du Libor de la floating leg
 //SUPPOSE LE MEME QUE CELUI de la LMM structure
 {
@@ -87,7 +87,7 @@ double MC_Cheyette::evaluateFloatLeg(	const size_t indexValuationDate,
 	size_t posIndexValuationDate	= findIndex(indexValuationDate, indexOfSimulation_) ;
 	for(size_t i=0; i<indexFloatLeg.size(); ++i)
 	{
-		double tenorYearFrac	= tenor.YearFraction() ;
+		double tenorYearFrac	= tenorFloatLeg.YearFraction() ;
 		size_t paymentIndex		= indexFloatLeg[i] ;
 		double paymentDate		= paymentIndex * tenorYearFrac ;
 		size_t fixingIndex		= paymentIndex - 1 ;

@@ -153,6 +153,15 @@ public :
 	std::vector<double> Piecewiseconst_RR_Function::getx_() const {return x_ ;} 
 	std::vector<double> Piecewiseconst_RR_Function::gety_() const {return y_ ;}
 
+	//setters
+	void Piecewiseconst_RR_Function::setx_(std::vector<double> x) {
+		x_.assign(x.begin(), x.end()) ;
+	} 
+	void Piecewiseconst_RR_Function::sety_(std::vector<double> y) {
+		assert(y.size() +  1 == x_.size()) ; 
+		y_ = y ; //y_.assign(y.begin(), y.end()) ;
+	} 
+
 	// find interval and return the corresponding y : convention càdlàg
 	// traiter cas extreme: extrapolation ! 
 	double Piecewiseconst_RR_Function::evaluate(double t) const

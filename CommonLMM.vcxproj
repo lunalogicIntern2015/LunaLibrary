@@ -91,10 +91,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Cheyette\Calibrator\CheyetteBaseCostFunction.cpp" />
+    <ClCompile Include="Cheyette\Calibrator\CheyetteDD_CostFunctionSkew.cpp" />
+    <ClCompile Include="Cheyette\Calibrator\CheyetteBaseCalibrator.cpp" />
+    <ClCompile Include="Cheyette\Calibrator\CheyetteDD_CostFunctionLevel.cpp" />
+    <ClCompile Include="Cheyette\Calibrator\CheyetteDD_LocalCalibrator.cpp" />
+    <ClCompile Include="Cheyette\Calibrator\MarketData.cpp" />
     <ClCompile Include="Cheyette\CheyetteModel\CheyetteDD_Model.cpp" />
     <ClCompile Include="Cheyette\CheyetteModel\CourbeInput.cpp" />
     <ClCompile Include="Cheyette\unit_test\TestMCGeneric.cpp" />
     <ClCompile Include="Cheyette\unit_test\TestMC_vs_approx.cpp" />
+    <ClCompile Include="Cheyette\unit_test\TestCalibrator.cpp" />
+    <ClInclude Include="Cheyette\Calibrator\CheyetteBaseCostFunction.h" />
+    <ClInclude Include="Cheyette\Calibrator\CheyetteDD_CostFunctionSkew.h" />
+    <ClInclude Include="Cheyette\Calibrator\CheyetteBaseCalibrator.h" />
+    <ClInclude Include="Cheyette\Calibrator\CheyetteDD_CostFunctionLevel.h" />
+    <ClInclude Include="Cheyette\Calibrator\CheyetteDD_LocalCalibrator.h" />
     <ClInclude Include="Cheyette\CheyetteModel\CheyetteDD_Model.h" />
     <ClInclude Include="Cheyette\CheyetteModel\CourbeInput.h" />
     <ClCompile Include="Cheyette\Pricer\CheyetteDD_VanillaSwaptionApproxPricer.cpp" />
@@ -242,6 +254,8 @@
     <ClInclude Include="Cheyette\unit_test\TestMCGeneric.h" />
     <ClInclude Include="Cheyette\Pricer\MC_CheyetteDD_GenericSwaptionPricer.h" />
     <ClInclude Include="Cheyette\unit_test\TestMC_vs_approx.h" />
+    <ClInclude Include="Cheyette\Calibrator\MarketData.h" />
+    <ClInclude Include="Cheyette\unit_test\TestCalibrator.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="JBLMM\Element\CappedFlooredCoupon.cpp" />

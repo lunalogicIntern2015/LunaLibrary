@@ -26,7 +26,7 @@ class CheyetteDD_VanillaSwaptionApproxPricer
 private:
 	
 	CheyetteDD_Model_PTR	cheyetteDD_Model_;  
-	VanillaSwaption_PTR		swaption_ ;
+	mutable VanillaSwaption_PTR		swaption_ ;   //mutable pour la calibration (skew avec strike +/- shift)
 
 	//appel fréquent aux éléments suivants -> buffer
 	mutable CourbeInput_PTR			buffer_courbeInput_ ;
@@ -46,11 +46,13 @@ public :
 	CheyetteDD_VanillaSwaptionApproxPricer(	const CheyetteDD_Model_PTR& cheyetteDD_Model, 
 											const VanillaSwaption_PTR&	swaption); 
 
+	void initialize_buffers() ;
+
 	//destructor
 	virtual ~CheyetteDD_VanillaSwaptionApproxPricer(){};
 
 	//getters
-	CheyetteDD_Model_CONSTPTR	get_CheyetteDD_Model() const {return cheyetteDD_Model_ ;}
+	CheyetteDD_Model_PTR	get_CheyetteDD_Model() const {return cheyetteDD_Model_ ;}  //CheyetteDD_Model_CONSTPTR
 	VanillaSwaption_PTR			get_VanillaSwaption() const {return swaption_ ;}
 
 	CourbeInput_PTR				get_buffer_courbeInput_() const {return buffer_courbeInput_ ;}
@@ -66,6 +68,34 @@ public :
 	double						get_buffer_y_bar_t(double t) const {return buffer_y_bar_(t) ;}
 	double						get_buffer_b_barre_() const {return buffer_b_barre_ ;}
 
+	//setters 
+	void setSwaption(const VanillaSwaption_PTR swaption)
+	{
+		swaption_ = swaption ;
+		std::cout << "changement de la swaption et recalcul des buffers de ApproxPricer" << std::endl ;
+		initialize_buffers() ; 
+	}
+
+	void setStrike(double strike)
+	{
+		swaption_->getUnderlyingSwap_RefNonConst().set_strike(strike) ;  // for skew calculation: need to bump strike ...
+		buffer_UnderlyingSwap_.set_strike(strike) ;
+	}
+
+	//pour la calibration, updateVol permet mise à jour des buffers lorsque la vol de CheyetteDD_Model est modifiée
+	void updateSigma_calib(const Array& A)
+	{
+		cheyetteDD_Model_->setCheyetteDD_Parameter_sigma(A) ;
+		std::cout << "changement de la swaption et recalcul des buffers de ApproxPricer" << std::endl ;
+		initialize_buffers() ; 
+	}
+
+	void updateM_calib(const Array& A)
+	{
+		cheyetteDD_Model_->setCheyetteDD_Parameter_m(A) ;
+		std::cout << "changement de la swaption et recalcul des buffers de ApproxPricer" << std::endl ;
+		initialize_buffers() ; 
+	}
 	//calcul de y_barre(t)
 	double to_integrate_y_bar(double t) const ;
 	void initialize_y_bar(double t, size_t gridSize) const;		
@@ -148,7 +178,6 @@ public :
 		
 		//retourne b barre du displaced diffusion
 		double timeAverage(double t) const ;				//, size_t gridSize	
-		//double timeAverage2(double t, size_t gridSize) const;
 
 		//prix swaption approximé 
 		double prixSwaptionApproxPiterbarg() const ;		//size_t gridSize

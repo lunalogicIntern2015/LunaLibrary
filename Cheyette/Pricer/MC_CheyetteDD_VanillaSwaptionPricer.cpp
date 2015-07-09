@@ -34,7 +34,7 @@ std::vector<double> MC_CheyetteDD_VanillaSwaptionPricer::price(VanillaSwaption_P
 										y_t_Cheyette_,
 										fixedLegTenor, 
 										vanillaSwap.get_strike());
-		double res = std::max(npv1 - npv2, 0.) ;
+		double res = std::max(npv1 - npv2, 0.) ;  
 		somme_xi += res ;
 		somme_xi2 += res*res ;
 	}
@@ -50,8 +50,8 @@ std::vector<double> MC_CheyetteDD_VanillaSwaptionPricer::price(VanillaSwaption_P
 	res[1] = IC_left ;
 	res[2] = IC_right ;
 
-	std::cout   << "prix MC swap : " << mean_x << std::endl;
-	std::cout	<< "nbSimulation : " << nbSimulation << std::endl;
+	std::cout   << "prix MC swaption : " << mean_x << std::endl;
+	std::cout	<< "nbSimulations    : " << nbSimulation << std::endl;
 	std::cout   << "99% confidence interval  [" << IC_left << " , " << IC_right	<< "]" << std::endl;
 
 	return res ;
