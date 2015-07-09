@@ -9,6 +9,7 @@ class CoTerminalSwaptionQuotes
 {
 protected:
 	std::vector<size_t> vectorExpiry_ ;				//1Y, 2Y, 3Y
+	std::vector<size_t> vectorTenor_ ;				//1Y, 2Y, 3Y
 	std::vector<double> strike_ ;				
 	
 	//std::string data_file_name_ ;
@@ -21,15 +22,16 @@ protected:
 
 public:	
 	CoTerminalSwaptionQuotes::CoTerminalSwaptionQuotes(	std::vector<size_t> vectorExpiry,
+														std::vector<size_t> vectorTenor,
 														std::vector<double> strike) 
-		: vectorExpiry_(vectorExpiry), strike_(strike) 
+		: vectorExpiry_(vectorExpiry), vectorTenor_(vectorTenor), strike_(strike) 
 	{
-		//assert(lmmTenorStructure_->get_horizon() == lastYear*indexRatio_); 
-		//assert(lmmTenorStructure->get_tenorType() == floatingTenor);
+		//assert que les swaptions de calibration sont bien coterminales
 	}
 
 //getters
 	std::vector<size_t> getVectorExpiry() const {return vectorExpiry_ ;}
+	std::vector<size_t> getVectorTenor() const {return vectorTenor_ ;}
 	std::vector<double> getStrike() const {return strike_ ;}
 
 	virtual double get_MinQuote() const = 0 ;

@@ -44,6 +44,9 @@ public:
 	double  get_strike() const        {return strike_;} 
 	double& get_strikeRef()           {return strike_;} 
 	
+	void set_indexStart(size_t indexStart) {indexStart_ = indexStart;}
+	void set_indexEnd(size_t indexEnd) {indexEnd_ = indexEnd;}
+
 	Tenor get_fixedLegTenorType()	 const { return fixedLegTenorType_     ; }
 	Tenor get_floatingLegTenorType() const { return floatingLegTenorType_  ; }	
 	Tenor get_lmmTenorStructureTenorType()  const { return lmmTenorStructure_->get_tenorType();} // to compare with the pricer's LMM's structure

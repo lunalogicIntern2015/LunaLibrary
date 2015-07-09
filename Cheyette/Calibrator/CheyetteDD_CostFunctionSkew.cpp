@@ -32,7 +32,6 @@ Disposable<Array> CheyetteDD_CostFunctionSkew::values(const Array& param_m) cons
 //retourne la vol implicite pour ATM + shift bp
 double CheyetteDD_CostFunctionSkew::volShift(size_t indexSwaption, double strike, double shift) const
 {
-
 		cheyetteApprox_PTR_->setStrike(strike + shift) ;
 	
 	//verification que strike est shifte
@@ -41,7 +40,7 @@ double CheyetteDD_CostFunctionSkew::volShift(size_t indexSwaption, double strike
 					<< std::endl ;
 		double modelPrice	= cheyetteApprox_PTR_->prixSwaptionApproxPiterbarg() ;
 	//conversion prix -> vol
-		double T			= marketData_PTR_->get_aExpiry()[indexSwaption] ;
+		double T			= coTerminalSwaptionSkew_PTR_->getVectorExpiry()[indexSwaption] ;
 		double S0			= cheyetteApprox_PTR_->get_buffer_s0_() ;
 		double modelQuote	= NumericalMethods::Black_impliedVolatility(modelPrice, S0, strike + shift, T) ;
 		

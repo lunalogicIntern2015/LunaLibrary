@@ -5,37 +5,33 @@
 #include <string.h>
 #include <ctime>
 
-	CheyetteBaseCalibrator::CheyetteBaseCalibrator( const QuantLib::Size& maxIterations,
-													const QuantLib::Real& rootEpsilon,        
-													const QuantLib::Real& functionEpsilon,    
-													CheyetteBaseCostFunction_PTR cheyetteBaseCostFunction)
-/*EndCriteria (	size_t maxIterations, size_t maxStationaryStateIterations, 
-				RealType rootEpsilon, RealType functionEpsilon, RealType gradientNormEpsilon) */
-			:	 stopCriteria_(maxIterations, 100 , rootEpsilon, functionEpsilon, 0.1),
-				 cheyetteBaseCostFunction_(cheyetteBaseCostFunction)
+CheyetteBaseCalibrator::CheyetteBaseCalibrator( const QuantLib::Size& maxIterations,
+												const QuantLib::Real& rootEpsilon,        
+												const QuantLib::Real& functionEpsilon)    
+											/*	CheyetteBaseCostFunction_PTR cheyetteBaseCostFunction_PTR)*/
+	: isVirtualCalibration_(false)
+	, use_positive_constraint_(false)
+	, pConstraint_(new QuantLib::NoConstraint() ) // default constraint is a no constraint
+	, stopCriteria_(maxIterations, 100 , rootEpsilon, functionEpsilon, 0.)
+/*	, cheyetteBaseCostFunction_PTR_(cheyetteBaseCostFunction_PTR)*/
+	, total_minimization_time_(-1000)
+	, max_quote_rel_error_(0)
+	, max_quote_abs_error_(0)
+	, quote_error_l2_(0.), quote_error_l1_(0.), quote_error_lInf_(0.)
 {}
-				
-				 /*
-				 pConstraint_(new QuantLib::NoConstraint() ), //no constraint by default
-				 total_minimization_time_(-1000)
-				 isVirtualCalibration_(false),
-				 use_positive_constraint_(false), 
-				 max_quote_rel_error_(0),
-				 rel_quote_error_matrix_( pLmmBaseCostFunction->size1(), pLmmBaseCostFunction->size2() ),
-				 max_quote_abs_error_(0),
-				 abs_quote_error_matrix_( pLmmBaseCostFunction->size1(), pLmmBaseCostFunction->size2() ),
-				 quote_error_l2_(0.), quote_error_l1_(0.), quote_error_lInf_(0.) */ 
 
-//void LmmBaseCalibrator::retreive_calib_global_error() 
+void CheyetteBaseCalibrator::activate_PositiveConstraint()
+{
+	use_positive_constraint_ = true;
+	pConstraint_.reset( new QuantLib::PositiveConstraint() );
+}
+
+//void CheyetteBaseCalibrator::retrieve_calib_global_error() 
 //{
-//	pLmmBaseCostFunction_->fully_UpdateSwaptionMdlValues();
+//	cheyetteBaseCostFunction_PTR_->fully_UpdateSwaptionMdlValues();
 //
-//	const UpperTriangularDoubleMatrix mkt_quotes_matrix = pLmmBaseCostFunction_->get_MarketQuoteValuesMatrix();
-//	const UpperTriangularDoubleMatrix mdl_quotes_matrix = pLmmBaseCostFunction_->get_ModelQuoteValuesMatrix();
-//
-//	assert(mkt_quotes_matrix.size1() == mkt_quotes_matrix.size2() );
-//	assert(mkt_quotes_matrix.size1() == mdl_quotes_matrix.size1() );
-//	assert(mkt_quotes_matrix.size2() == mdl_quotes_matrix.size2() );
+//	const UpperTriangularDoubleMatrix mkt_quotes_matrix = cheyetteBaseCostFunction_PTR_->get_MarketQuoteValuesMatrix();
+//	const UpperTriangularDoubleMatrix mdl_quotes_matrix = cheyetteBaseCostFunction_PTR_->get_ModelQuoteValuesMatrix();
 //
 //	const size_t swaption_matrix_size = mkt_quotes_matrix.size1();
 //
@@ -100,25 +96,24 @@
 //	base_general_result_info_.clear();
 //	base_general_result_info_=general_info.str();
 //}
-//
-//
-//
-//void LmmBaseCalibrator::printAnnexeStopCriteriaLevenbergMarquardt( std::ofstream & stream ) const
-//{
-//	//http://www.math.utah.edu/software/minpack/minpack/lmdif.html see at the end
-//	stream <<std::endl;
-//	stream << " LevenbergMarquardt stop criteria " <<std::endl;
-//	stream << " See http://www.math.utah.edu/software/minpack/minpack/lmdif.html "<<std::endl;
-//	stream << " 0. Improper input parameters" <<std::endl;
-//	stream << " 1. Both actual and predicted relative reductions in the sum of squares are at most FTOL" <<std::endl;
-//	stream << " 2. Relative error between two consecutive iterates is at most XTOL" <<std::endl;
-//	stream << " 3. Conditions for INFO = 1 and INFO = 2 both hold." <<std::endl;
-//	stream << " 4. The cosine of the angle between FVEC and any column of the Jacobian is at most GTOL in absolute value" <<std::endl;
-//	stream << " 5. Number of calls to FCN has reached or exceeded MAXFEV" <<std::endl;
-//	stream << " 6. FTOL is too small. No further reduction in the sum of squares is possible" <<std::endl;
-//	stream << " 7. XTOL is too small. No further improvement in the approximate solution X is possible." <<std::endl;
-//	stream << " 8. GTOL is too small. FVEC is orthogonal to the	columns of the Jacobian to machine precision" <<std::endl;
-//	stream << " 9. NOT DETERMINE INFO" <<std::endl;
-//}
+
+
+void CheyetteBaseCalibrator::printAnnexeStopCriteriaLevenbergMarquardt( std::ofstream & stream ) const
+{
+	//http://www.math.utah.edu/software/minpack/minpack/lmdif.html see at the end
+	stream <<std::endl;
+	stream << " LevenbergMarquardt stop criteria " <<std::endl;
+	stream << " See http://www.math.utah.edu/software/minpack/minpack/lmdif.html "<<std::endl;
+	stream << " 0. Improper input parameters" <<std::endl;
+	stream << " 1. Both actual and predicted relative reductions in the sum of squares are at most FTOL" <<std::endl;
+	stream << " 2. Relative error between two consecutive iterates is at most XTOL" <<std::endl;
+	stream << " 3. Conditions for INFO = 1 and INFO = 2 both hold." <<std::endl;
+	stream << " 4. The cosine of the angle between FVEC and any column of the Jacobian is at most GTOL in absolute value" <<std::endl;
+	stream << " 5. Number of calls to FCN has reached or exceeded MAXFEV" <<std::endl;
+	stream << " 6. FTOL is too small. No further reduction in the sum of squares is possible" <<std::endl;
+	stream << " 7. XTOL is too small. No further improvement in the approximate solution X is possible." <<std::endl;
+	stream << " 8. GTOL is too small. FVEC is orthogonal to the	columns of the Jacobian to machine precision" <<std::endl;
+	stream << " 9. NOT DETERMINE INFO" <<std::endl;
+}
 
 

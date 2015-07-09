@@ -477,11 +477,13 @@
     <ClInclude Include="Cheyette\Calibrator\CheyetteDD_CostFunctionLevel.h" />
     <ClInclude Include="Cheyette\Calibrator\CheyetteDD_CostFunctionSkew.h" />
     <ClInclude Include="Cheyette\Calibrator\CheyetteDD_LocalCalibrator.h" />
-    <ClInclude Include="Cheyette\Calibrator\MarketData.h" />
     <ClInclude Include="Cheyette\Calibrator\CheyetteBaseCostFunction.h" />
     <ClInclude Include="Cheyette\unit_test\TestCalibrator.h" />
     <ClInclude Include="LMM\Test\Tests.h" />
     <ClInclude Include="Cheyette\Calibrator\CheyetteDD_CalibrationConfig.h" />
+    <ClInclude Include="Cheyette\Calibrator\CoTerminalSwaptionQuotes.h" />
+    <ClInclude Include="Cheyette\Calibrator\CoTerminalSwaptionSkew.h" />
+    <ClInclude Include="Cheyette\Calibrator\CoTerminalSwaptionVol.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\pricer\LmmTarnPricer.cpp">
@@ -926,10 +928,11 @@
     <ClCompile Include="Cheyette\Calibrator\CheyetteDD_LocalCalibrator.cpp" />
     <ClCompile Include="Cheyette\Calibrator\CheyetteBaseCostFunction.cpp" />
     <ClCompile Include="Cheyette\unit_test\TestCalibrator.cpp" />
-    <ClCompile Include="Cheyette\Calibrator\MarketData.cpp" />
     <ClCompile Include="LMM\Test\Test.cpp" />
     <ClCompile Include="LMM\Test\Test_LmmCalibrationMarketData.cpp" />
     <ClCompile Include="Cheyette\Calibrator\CheyetteDD_CalibrationConfig.cpp" />
+    <ClCompile Include="Cheyette\Calibrator\CoTerminalSwaptionSkew.cpp" />
+    <ClCompile Include="Cheyette\Calibrator\CoTerminalSwaptionVol.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JBLMM\Element\CappedFlooredCoupon.h" />

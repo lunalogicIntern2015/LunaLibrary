@@ -25,6 +25,8 @@ public:
 		//à compléter ?
 	}
 
+	CoTerminalSwaptionVol_CONSTPTR	getCoTerminalSwaptionVol_PTR() const{return coTerminalSwaptionVol_PTR_ ;}
+
 	//m fixé, on fait varier sigma
 	virtual Disposable<Array> values(const Array& param_sigma) const ;
 

@@ -15,9 +15,10 @@ private:
 public:	
 	CoTerminalSwaptionSkew::CoTerminalSwaptionSkew(	std::vector<double> diagonalSwaptionSkew,
 														std::vector<size_t> vectorExpiry,
+														std::vector<size_t> vectorTenor,
 														std::vector<double> strike, 
 														double shift) 
-		: CoTerminalSwaptionQuotes(vectorExpiry, strike), diagonalSwaptionSkew_(diagonalSwaptionSkew), shift_(shift) 
+		: CoTerminalSwaptionQuotes(vectorExpiry, vectorTenor, strike), diagonalSwaptionSkew_(diagonalSwaptionSkew), shift_(shift) 
 	{}
 
 //getters

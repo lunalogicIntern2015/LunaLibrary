@@ -18,11 +18,12 @@ using namespace QuantLib ;  //pour CostFunction, Real, Array
 class CheyetteBaseCostFunction : public CostFunction
 {
 protected :
-// 	CoTerminalSwaptionQuotes_CONSTPTR					coTerminalSwaptionQuotes_PTR_ ;
-
 	mutable size_t										indexSwaption_ ; //sur quel index de swaption on calibre 								
 	mutable CheyetteDD_VanillaSwaptionApproxPricer_PTR	cheyetteApprox_PTR_ ;
 	
+	//values change during cost calculation
+	mutable unsigned int nbCalled;
+
 public:
 	CheyetteBaseCostFunction(	size_t indexSwaption,  
 								CheyetteDD_VanillaSwaptionApproxPricer_PTR cheyetteApprox_PTR)
@@ -34,6 +35,8 @@ public:
 	{ 
 		//à compléter ?
 	}
+
+	size_t get_nbCalled() const { return nbCalled; }
 
 	//value: method to overload to compute the cost functon value in x.
 	//ici norme 2 = sqrt(sum of squares	

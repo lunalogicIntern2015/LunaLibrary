@@ -15,8 +15,9 @@ private:
 public:	
 	CoTerminalSwaptionVol::CoTerminalSwaptionVol(	std::vector<double> diagonalSwaptionVol,
 													std::vector<size_t> vectorExpiry,
+													std::vector<size_t> vectorTenor,
 													std::vector<double> strike) 
-		: CoTerminalSwaptionQuotes(vectorExpiry, strike), diagonalSwaptionVol_(diagonalSwaptionVol)
+		: CoTerminalSwaptionQuotes(vectorExpiry, vectorTenor, strike), diagonalSwaptionVol_(diagonalSwaptionVol)
 	{}
 
 //getters

@@ -19,10 +19,9 @@ public:
 		: CheyetteBaseCostFunction(indexSwaption, cheyetteApprox_PTR), coTerminalSwaptionSkew_PTR_(coTerminalSwaptionSkew_PTR)
 	{}
 
-	virtual ~CheyetteDD_CostFunctionSkew()
-	{ 
-		//à compléter ?
-	}
+	virtual ~CheyetteDD_CostFunctionSkew(){}
+
+	CoTerminalSwaptionSkew_CONSTPTR getCoTerminalSwaptionSkew_PTR() const {return coTerminalSwaptionSkew_PTR_ ;}
 
 	//sigma fixé, on fait varier m pour prendre en compte le skew
 	virtual Disposable<Array> values(const Array& param_m) const ;

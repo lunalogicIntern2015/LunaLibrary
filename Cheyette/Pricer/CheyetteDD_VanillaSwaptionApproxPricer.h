@@ -68,9 +68,12 @@ public :
 	double						get_buffer_b_barre_() const {return buffer_b_barre_ ;}
 
 	//setters 
-	void setSwaption(const VanillaSwaption_PTR swaption)
+	void setSwaption(double strike, size_t indexStart, size_t indexEnd)
 	{
-		swaption_ = swaption ;
+		buffer_UnderlyingSwap_.set_strike(strike) ;
+		buffer_UnderlyingSwap_.set_indexStart(indexStart) ; 
+		buffer_UnderlyingSwap_.set_indexEnd(indexEnd) ; 
+
 		std::cout << "changement de la swaption et recalcul des buffers de ApproxPricer" << std::endl ;
 		initialize_buffers() ; 
 	}

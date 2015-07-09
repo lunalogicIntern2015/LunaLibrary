@@ -1,28 +1,21 @@
 #pragma once
 
+#include <Cheyette/CheyetteModel/CheyetteDD_Model.h>
+#include <fstream>
+
 // CheyetteDD_CalibrationConfig plays the role of parameters holders for the whole model
-//
-// 
+ 
 struct CheyetteDD_CalibrationConfig 
 {	
 public:
-	
 	CheyetteDD_CalibrationConfig();	
 	
-	//param du modele
-//	Shifted_HGVolatilityParam::ABCDParameter vol_abcd_;
+//param du modele
 	CheyetteDD_Model::CheyetteDD_Parameter cheyetteDD_Param_ ;
-	
 	CourbeInput_PTR courbeInput_PTR_ ;
-
 	size_t shiftChoice_ ;
 
 	size_t model_nbYear_;  //nb year max, 16 pour calibrer par ex
-
-
-//autres param fixés
-//	double correl_alpha_;
-//	double correl_beta_;
 
 	std::string test_folder_;
 
@@ -30,17 +23,6 @@ public:
 	bool use_positive_constraint_;
 
 	virtual void print(const std::string& filename) const ;	
-
-	//tranformer le struct cheyette dd param en Array pour la calibration
-	QuantLib::Array get_abcdArray() const
-	{
-		QuantLib::Array abcd(4);
-		abcd[0]=vol_abcd_.a_;
-		abcd[1]=vol_abcd_.b_;
-		abcd[2]=vol_abcd_.c_;
-		abcd[3]=vol_abcd_.d_;
-		return abcd;
-	}
 
 	// storing result
 	void reset_result() const ;

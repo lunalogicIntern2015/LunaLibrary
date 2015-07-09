@@ -20,6 +20,7 @@
 
 int main()
 {
+	test_CheyetteCalibrationMarketData() ;
 	test_LmmCalibrationMarketData() ;
 		//testCalib() ;
 

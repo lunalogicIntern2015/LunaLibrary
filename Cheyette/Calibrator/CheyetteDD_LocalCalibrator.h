@@ -18,6 +18,10 @@
 class CheyetteDD_LocalCalibrator : public CheyetteBaseCalibrator
 {
 private:
+	//fonctions de coût
+	CheyetteDD_CostFunctionLevel_PTR		costFunctionLevel_PTR_ ;
+	CheyetteDD_CostFunctionSkew_PTR			costFunctionSkew_PTR_ ;
+	//points de depart
 	Array	sigmaInitiate_ ;	//param initial pour sigma(t)				
 	Array	mInitiate_;			//param initial pour m(t)	
 
@@ -28,18 +32,17 @@ public :
 	CheyetteDD_LocalCalibrator(	const QuantLib::Size & maxIterations,       
 								const QuantLib::Real & rootEpsilon,        
 								const QuantLib::Real & functionEpsilon,    
-								CheyetteBaseCostFunction_PTR & cheyetteBaseCostFunction_PTR,
 								Array sigmaInitiate, Array mInitiate,
-								Array calibrated_sigma, Array calibrated_m)
-		: CheyetteBaseCalibrator(maxIterations, rootEpsilon , functionEpsilon, cheyetteBaseCostFunction_PTR),
+								Array calibrated_sigma, Array calibrated_m,
+								CheyetteDD_CostFunctionLevel_PTR		costFunctionLevel_PTR,
+								CheyetteDD_CostFunctionSkew_PTR		costFunctionSkew_PTR)
+		: CheyetteBaseCalibrator(maxIterations, rootEpsilon , functionEpsilon),
 			sigmaInitiate_(sigmaInitiate), mInitiate_(mInitiate), 
-			calibrated_sigma_(calibrated_sigma), calibrated_m_(calibrated_m)
+			calibrated_sigma_(calibrated_sigma), calibrated_m_(calibrated_m),
+			costFunctionLevel_PTR_(costFunctionLevel_PTR), costFunctionSkew_PTR_(costFunctionSkew_PTR)
 	{}
 
-	virtual ~CheyetteDD_LocalCalibrator()
-	{
-		//à compléter
-	}
+	virtual ~CheyetteDD_LocalCalibrator(){}
 
 	//void minimizeNoConstraint(	QuantLib::Array xInitiate, 
 	//							QuantLib::LevenbergMarquardt minimizationSolver, 
@@ -49,16 +52,23 @@ public :
 										QuantLib::LevenbergMarquardt& minimizationSolver, 
 										CheyetteBaseCostFunction_PTR cheyetteBaseCostFunction_PTR) ;
 	
+	virtual std::string Name() const 
+	{
+		if(isVirtualCalibration_) return "VIRTUAL LocalCalibrator";
+		else  return "Local Calibrator";
+	}
+
 	//calibration de sigma -> m -> sigma sur une swaption
 	void calibrateOneSwaption(size_t indexSwaption) ;
 
 	//boucle sur les differentes swaptions
-	void calibrate() ;
+	void solve() ;
 
-	////! print plus plus without erease
-	void printPlusPlus(const std::string& base_filename) const ;
-	//	
-	//virtual void retrieve_calib_info();
+	//void retrieve_calib_info();
+	
+	//print plus plus without erease
+	//void printPlusPlus(const std::string& base_filename) const ;	
+
 };
 
 typedef boost::shared_ptr<CheyetteDD_LocalCalibrator> CheyetteDD_LocalCalibrator_PTR;
