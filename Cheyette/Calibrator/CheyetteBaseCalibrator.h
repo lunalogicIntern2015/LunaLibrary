@@ -30,6 +30,8 @@ protected :
 	bool isVirtualCalibration_;
 
 	std::string base_general_result_info_;
+	
+	std::ostream& o_ ;
 
 	//! minimizator
 	QuantLib::EndCriteria::Type endConvergenceType_;
@@ -60,12 +62,11 @@ protected :
 	void printAnnexeStopCriteriaLevenbergMarquardt( std::ofstream & stream ) const ;
 
 public :
-	CheyetteBaseCalibrator( const QuantLib::Size& maxIterations,
+	CheyetteBaseCalibrator( std::ostream& o, 
+							const QuantLib::Size& maxIterations,
 							const QuantLib::Real& rootEpsilon,        
 							const QuantLib::Real& functionEpsilon) ;    
 						//	CheyetteBaseCostFunction_PTR cheyetteBaseCostFunction) ;
-
-	virtual std::string Name() const =0 ;
 
 	bool isVirtualCalibration() const { return isVirtualCalibration_; }
 

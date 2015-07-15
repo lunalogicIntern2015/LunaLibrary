@@ -148,6 +148,17 @@ private :
 public :
 	//constructeur
 	Piecewiseconst_RR_Function(const std::vector<double>& x, const std::vector<double>& y) : x_(x), y_(y) {} 
+	Piecewiseconst_RR_Function(size_t t_max, double constante)
+	{
+		std::vector<double> x(t_max + 1) ;	//0 , 1 , ..., t_max
+		for (size_t i = 0 ; i < t_max + 1 ; ++i)
+		{
+			x[i] = i ;
+		}
+		x_ = x ;
+		std::vector<double> y(t_max, constante) ;  
+		y_ = y ;
+	} 
 
 	//getters
 	std::vector<double> Piecewiseconst_RR_Function::getx_() const {return x_ ;} 
@@ -160,6 +171,10 @@ public :
 	void Piecewiseconst_RR_Function::sety_(std::vector<double> y) {
 		assert(y.size() +  1 == x_.size()) ; 
 		y_ = y ; //y_.assign(y.begin(), y.end()) ;
+	} 
+	void Piecewiseconst_RR_Function::sety_(double y, size_t index) 
+	{
+		y_[index] = y ; //y_.assign(y.begin(), y.end()) ;
 	} 
 
 	// find interval and return the corresponding y : convention càdlàg
@@ -212,7 +227,11 @@ public :
 		{
 			std::cout << "       for x in [" << x_[i] << ", " << x_[i+1] << "[, y = " << y_[i] << std::endl ;
 		}
-		std::cout << "       for x in [" << x_[x_.size()-2] << ", " << x_[x_.size()-1] << "], y = " << y_[y_.size()-1] << std::endl ;
+		if (x_.size() > 2)
+		{
+			std::cout << "       for x in [" << x_[x_.size()-2] << ", " << x_[x_.size()-1] 
+								<< "], y = " << y_[y_.size()-1] << std::endl ;
+		}
 	}
 
 	void print(std::ostream& o)
@@ -222,7 +241,11 @@ public :
 		{
 			o << "       for x in [" << x_[i] << ", " << x_[i+1] << "[, y = " << y_[i] << std::endl ;
 		}
-		o << "       for x in [" << x_[x_.size()-2] << ", " << x_[x_.size()-1] << "], y = " << y_[y_.size()-1] << std::endl ;
+		if (x_.size() > 2)
+		{
+			o << "       for x in [" << x_[x_.size()-2] << ", " << x_[x_.size()-1] 
+						<< "], y = " << y_[y_.size()-1] << std::endl ;
+		}
 	}
 };
 

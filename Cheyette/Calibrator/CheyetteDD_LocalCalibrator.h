@@ -22,25 +22,29 @@ private:
 	CheyetteDD_CostFunctionLevel_PTR		costFunctionLevel_PTR_ ;
 	CheyetteDD_CostFunctionSkew_PTR			costFunctionSkew_PTR_ ;
 	//points de depart
-	Array	sigmaInitiate_ ;	//param initial pour sigma(t)				
-	Array	mInitiate_;			//param initial pour m(t)	
+	Array	sigmaInitiate_1D_ ;	//param initial pour sigma(t)				
+	Array	mInitiate_1D_ ;			//param initial pour m(t)	
 
-	mutable Array	calibrated_sigma_ ;			//sigma(t) calibre				
-	mutable Array	calibrated_m_;				//m(t) calibre
+	mutable Array	calibrated_sigma_1D_ ;			//sigma(t) calibre				
+	mutable Array	calibrated_m_1D_ ;				//m(t) calibre
 
 public :
-	CheyetteDD_LocalCalibrator(	const QuantLib::Size & maxIterations,       
+	CheyetteDD_LocalCalibrator(	std::ostream& o,
+								const QuantLib::Size & maxIterations,       
 								const QuantLib::Real & rootEpsilon,        
 								const QuantLib::Real & functionEpsilon,    
-								Array sigmaInitiate, Array mInitiate,
-								Array calibrated_sigma, Array calibrated_m,
+								Array sigmaInitiate_1D, Array mInitiate_1D,
+								Array calibrated_sigma_1D, Array calibrated_m_1D,
 								CheyetteDD_CostFunctionLevel_PTR		costFunctionLevel_PTR,
 								CheyetteDD_CostFunctionSkew_PTR		costFunctionSkew_PTR)
-		: CheyetteBaseCalibrator(maxIterations, rootEpsilon , functionEpsilon),
-			sigmaInitiate_(sigmaInitiate), mInitiate_(mInitiate), 
-			calibrated_sigma_(calibrated_sigma), calibrated_m_(calibrated_m),
+		: CheyetteBaseCalibrator(o, maxIterations, rootEpsilon , functionEpsilon),
+			sigmaInitiate_1D_(sigmaInitiate_1D), mInitiate_1D_(mInitiate_1D), 
+			calibrated_sigma_1D_(calibrated_sigma_1D), calibrated_m_1D_(calibrated_m_1D),
 			costFunctionLevel_PTR_(costFunctionLevel_PTR), costFunctionSkew_PTR_(costFunctionSkew_PTR)
-	{}
+	{
+		assert(sigmaInitiate_1D_.size() ==1) ;
+		assert(mInitiate_1D_.size() ==1) ;
+	}
 
 	virtual ~CheyetteDD_LocalCalibrator(){}
 
@@ -48,20 +52,15 @@ public :
 	//							QuantLib::LevenbergMarquardt minimizationSolver, 
 	//							CheyetteBaseCostFunction_PTR cheyetteBaseCostFunction_PTR) ;
 
-	void minimizePositiveConstraint(	QuantLib::Array& calibratedArray, 
-										QuantLib::LevenbergMarquardt& minimizationSolver, 
-										CheyetteBaseCostFunction_PTR cheyetteBaseCostFunction_PTR) ;
-	
-	virtual std::string Name() const 
-	{
-		if(isVirtualCalibration_) return "VIRTUAL LocalCalibrator";
-		else  return "Local Calibrator";
-	}
+	void minimizePositiveConstraint(QuantLib::Array& calibratedArray1D, 	
+									QuantLib::LevenbergMarquardt& minimizationSolver, 
+									CheyetteDD_CostFunctionLevel pCostFunctionLevel) ;
+
+	void minimizeBoundaryConstraint(QuantLib::Array& calibratedArray1D, 
+									QuantLib::LevenbergMarquardt& minimizationSolver,
+									CheyetteDD_CostFunctionSkew pCostFunctionSkew) ;
 
 	//calibration de sigma -> m -> sigma sur une swaption
-	void calibrateOneSwaption(size_t indexSwaption) ;
-
-	//boucle sur les differentes swaptions
 	void solve() ;
 
 	//void retrieve_calib_info();

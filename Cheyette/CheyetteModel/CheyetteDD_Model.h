@@ -122,26 +122,9 @@ public:
 	void		setCheyetteDD_Parameter_m(const std::vector<double>& m_y){cheyetteDD_Parameter_.m_.sety_(m_y) ;}
 	void		setCheyetteDD_Parameter_sigma(const std::vector<double>& sigma_y){cheyetteDD_Parameter_.sigma_.sety_(sigma_y) ;}
 
-	//Array : parametres m puis parametres sigma
-	void setCheyetteDD_Parameter_m(const Array& A){
-		size_t N = A.size();
-		std::vector<double> v(N) ;
-		for (size_t i = 0 ; i < N ; ++i)
-		{
-			v[i] = A[i] ;									//pas optimal
-		} 
-		setCheyetteDD_Parameter_m(v) ;
-	}
-	void setCheyetteDD_Parameter_sigma(const Array& A){
-		size_t N = A.size();
-		std::vector<double> v(N) ;
-		for (size_t i = 0 ; i < N ; ++i)
-		{
-			v[i] = A[i] ;
-		} 
-		setCheyetteDD_Parameter_sigma(v) ;
-	}
-	
+	void		setCheyetteDD_Parameter_m(double m, size_t index){cheyetteDD_Parameter_.m_.sety_(m, index) ;}
+
+	void		setCheyetteDD_Parameter_sigma(double sigma, size_t index){cheyetteDD_Parameter_.sigma_.sety_(sigma, index) ;}	
 
 	//pointeurs vers f1, fprime1, f2, fprime2
 	void setShiftPointer(	Boost_R2R_Function_PTR f1_ptr, Boost_R2R_Function_PTR f2_ptr, 

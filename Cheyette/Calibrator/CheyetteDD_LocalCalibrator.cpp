@@ -138,101 +138,99 @@
 
 //calibratedArray : point de depart de l'algo d'optimisation
 //calibratedArray est ensuite mis à jour avec la valeur calibrée
-void CheyetteDD_LocalCalibrator::minimizePositiveConstraint(	QuantLib::Array& calibratedArray, 
+void CheyetteDD_LocalCalibrator::minimizePositiveConstraint(QuantLib::Array& calibratedArray1D, 
 															QuantLib::LevenbergMarquardt& minimizationSolver, 
-															CheyetteBaseCostFunction_PTR cheyetteBaseCostFunction_PTR)
+															CheyetteDD_CostFunctionLevel pCostFunctionLevel)
 {
 	QuantLib::PositiveConstraint	positiveConstraint ;
-	QuantLib::Problem				optimizationProblem(*cheyetteBaseCostFunction_PTR.get(), 
+	QuantLib::Problem				optimizationProblem(pCostFunctionLevel, 
 														positiveConstraint, 
-														calibratedArray);  //pt de depart de l'algo
+														calibratedArray1D);  //pt de depart de l'algo
 	
 	QuantLib::EndCriteria::Type		endConvergenceType = minimizationSolver.minimize(optimizationProblem, stopCriteria_);	
-	calibratedArray = optimizationProblem.currentValue() ;
+	calibratedArray1D = optimizationProblem.currentValue() ;
+
+	std::cout << " Criteria :" << endConvergenceType << std::endl ;
+	std::cout << " Root :" << optimizationProblem.currentValue() << std::endl ;
+	std::cout << " Min Function Value :" << optimizationProblem.functionValue () << std::endl ;
+	std::cout << " --------------------------------------------------------------" << std::endl ;
+
+	o_ << " Criteria : ;" << endConvergenceType << std::endl ;
+	o_ << " Root : ;" << optimizationProblem.currentValue() << std::endl ;
+	o_ << " Min Function Value : ;" << optimizationProblem.functionValue () << std::endl ;
+	o_ << std::endl ;
+}
+
+void CheyetteDD_LocalCalibrator::minimizeBoundaryConstraint(QuantLib::Array& calibratedArray1D, 
+															QuantLib::LevenbergMarquardt& minimizationSolver, 
+															CheyetteDD_CostFunctionSkew pCostFunctionSkew)
+{
+	//QuantLib::PositiveConstraint	bc ; //positiveConstraint ;
+	QuantLib::BoundaryConstraint bc(0.000000001, 1.) ;
+
+	QuantLib::Problem				optimizationProblem(pCostFunctionSkew, 
+														bc, 
+														calibratedArray1D);  //pt de depart de l'algo
+	
+	QuantLib::EndCriteria::Type		endConvergenceType = minimizationSolver.minimize(optimizationProblem, stopCriteria_);	
+	calibratedArray1D = optimizationProblem.currentValue() ;
 
 	std::cout << " Criteria :" << endConvergenceType << std::endl ;
 	std::cout << " Root :" << optimizationProblem.currentValue() << std::endl ;
 	std::cout << " Min Function Value :" << optimizationProblem.functionValue () << std::endl ;
 	std::cout << " --------------------------------------------------------------" << std::endl ;
 	std::cout << std::endl ;
+
+	o_ << " Criteria : ;" << endConvergenceType << std::endl ;
+	o_ << " Root : ;" << optimizationProblem.currentValue() << std::endl ;
+	o_ << " Min Function Value : ;" << optimizationProblem.functionValue () << std::endl ;
+	o_ << std::endl ;
 }
 
-
-
-//calibration de sigma -> m -> sigma sur une swaption
-void CheyetteDD_LocalCalibrator::calibrateOneSwaption(size_t indexSwaption)
+//solve le CheyetteDD_calibrator : minimisation 1D, une swaption
+void CheyetteDD_LocalCalibrator::solve()
 {
-//	CheyetteDD_VanillaSwaptionApproxPricer_PTR	cheyetteApprox_PTR(cheyetteBaseCostFunction_->getCheyetteDD_ApproxPricer_PTR()) ; 
+
+	//minimisations 1D sur sigma puis m
 	QuantLib::LevenbergMarquardt	minimizationSolver ; //(functionEpsilon(), rootEpsilon(), 1e-16);
 
 	//minimisation sur sigma
-	minimizePositiveConstraint( calibrated_sigma_, minimizationSolver, costFunctionLevel_PTR_) ;
+	minimizePositiveConstraint(calibrated_sigma_1D_, minimizationSolver, *costFunctionLevel_PTR_) ;  //.get()
 
 	size_t nbMaxIterations = 2 ;
 	for (size_t i = 0 ; i < nbMaxIterations ; ++i)
 	{
 		//minimisation sur m
-		minimizePositiveConstraint( calibrated_m_, minimizationSolver, costFunctionSkew_PTR_) ; 
+		minimizeBoundaryConstraint(calibrated_m_1D_, minimizationSolver, *costFunctionSkew_PTR_) ; 
 
 		//minimisation sur sigma
-	minimizePositiveConstraint( calibrated_sigma_, minimizationSolver, costFunctionLevel_PTR_) ;
+		minimizePositiveConstraint(calibrated_sigma_1D_, minimizationSolver, *costFunctionLevel_PTR_) ;
 	}
+	o_ << std::endl ;
+	o_ << "------ Calibration sur la swaption suivante -------" << std::endl ;
+	o_ << std::endl ;
+	//mise à jour de calibrated_m_sigma et calibrated_m ok car passage par référence dans minimizeConstraint
 
-//vol ATM modele
-	double T			= costFunctionLevel_PTR_->getCoTerminalSwaptionVol_PTR()->getVectorExpiry()[indexSwaption] ;
-	double S0			= costFunctionLevel_PTR_->getCheyetteDD_ApproxPricer_PTR()->get_buffer_s0_() ;
-	double modelPrice	= costFunctionLevel_PTR_->getCheyetteDD_ApproxPricer_PTR()->prixSwaptionApproxPiterbarg() ;
-	double strike		= costFunctionLevel_PTR_->getCoTerminalSwaptionVol_PTR()->getStrike()[indexSwaption] ;
-	std::cout	<< "vol ATM : " << NumericalMethods::Black_impliedVolatility(modelPrice, S0, strike, T) << std::endl ;
+////vol ATM modele
+//	double T			= costFunctionLevel_PTR_->getCoTerminalSwaptionVol_PTR()->getVectorExpiry() ;
+//	double S0			= costFunctionLevel_PTR_->getCheyetteDD_ApproxPricer_PTR()->get_buffer_s0_() ;
+//	double modelPrice	= costFunctionLevel_PTR_->getCheyetteDD_ApproxPricer_PTR()->prixSwaptionApproxPiterbarg() ;
+//	double strike		= costFunctionLevel_PTR_->getCoTerminalSwaptionVol_PTR()->getStrike() ;
+//	std::cout	<< "vol ATM : " << NumericalMethods::Black_ swaption impliedVolatility(modelPrice, S0, strike, T) << std::endl ;
+//
+////vol ATM + shift modele 
+//	double shift = costFunctionSkew_PTR_->getCoTerminalSwaptionSkew_PTR()->getShift() ;
+//	costFunctionLevel_PTR_->getCheyetteDD_ApproxPricer_PTR()->setStrike(strike + shift) ;
+//	modelPrice	= costFunctionLevel_PTR_->getCheyetteDD_ApproxPricer_PTR()->prixSwaptionApproxPiterbarg() ;
+//	std::cout	<< "vol ATM + shift : " << NumericalMethods::Black_  swaption impliedVolatility(modelPrice, S0, strike+shift, T) << std::endl ;
+//
+////vol ATM + shift modele 
+//	costFunctionLevel_PTR_->getCheyetteDD_ApproxPricer_PTR()->setStrike(strike - shift) ;
+//	modelPrice	= costFunctionLevel_PTR_->getCheyetteDD_ApproxPricer_PTR()->prixSwaptionApproxPiterbarg() ;
+//	std::cout	<< "vol ATM - shift : " << NumericalMethods::Black_ swaption  impliedVolatility(modelPrice, S0, strike-shift, T) << std::endl ;
+//
+//	costFunctionLevel_PTR_->getCheyetteDD_ApproxPricer_PTR()->setStrike(strike) ;
 
-//vol ATM + shift modele 
-	double shift = costFunctionSkew_PTR_->getCoTerminalSwaptionSkew_PTR()->getShift() ;
-	costFunctionLevel_PTR_->getCheyetteDD_ApproxPricer_PTR()->setStrike(strike + shift) ;
-	modelPrice	= costFunctionLevel_PTR_->getCheyetteDD_ApproxPricer_PTR()->prixSwaptionApproxPiterbarg() ;
-	std::cout	<< "vol ATM + shift : " << NumericalMethods::Black_impliedVolatility(modelPrice, S0, strike+shift, T) << std::endl ;
-
-//vol ATM + shift modele 
-	costFunctionLevel_PTR_->getCheyetteDD_ApproxPricer_PTR()->setStrike(strike - shift) ;
-	modelPrice	= costFunctionLevel_PTR_->getCheyetteDD_ApproxPricer_PTR()->prixSwaptionApproxPiterbarg() ;
-	std::cout	<< "vol ATM - shift : " << NumericalMethods::Black_impliedVolatility(modelPrice, S0, strike-shift, T) << std::endl ;
-
-	costFunctionLevel_PTR_->getCheyetteDD_ApproxPricer_PTR()->setStrike(strike) ;
-}
-
-//boucle sur les differentes swaptions
-void CheyetteDD_LocalCalibrator::solve()
-{
-	size_t nbSwaptions = costFunctionLevel_PTR_->getCoTerminalSwaptionVol_PTR()->getVectorExpiry().size() ;
-
-	double local_minimization_time = 0;
-//	QuantLib::Integer local_minimization_stopInfo = -10000;
-
-	for (size_t indexSwaption = 0 ; indexSwaption < nbSwaptions ; ++indexSwaption)
-	{
-		//caracteristiques swaption de calibration
-		double strike = costFunctionLevel_PTR_->getCoTerminalSwaptionVol_PTR()->getStrike()[indexSwaption] ;
-		size_t indexStart = costFunctionLevel_PTR_->getCoTerminalSwaptionVol_PTR()->getVectorExpiry()[indexSwaption] ;
-		size_t indexEnd = costFunctionLevel_PTR_->getCoTerminalSwaptionVol_PTR()->getVectorTenor()[indexSwaption] ;
-
-		//modifier l'approx pricer avec la swaption en cours  
-		costFunctionLevel_PTR_->getCheyetteDD_ApproxPricer_PTR()->setSwaption(strike, indexStart, indexEnd) ;
-
-			clock_t start_minimizer = std::clock();
-		calibrateOneSwaption(indexSwaption) ; //calibration de sigma, puis de m et de sigma à nouveau
-			clock_t end_minimizer = std::clock();
-
-		//total_number_called_ += pLmmBaseCostFunction_->get_nbCalled();
-		local_minimization_time = double(end_minimizer - start_minimizer) / CLOCKS_PER_SEC;
-//		local_minimization_stopInfo = minimizationSolver.getInfo();	
-
-		total_minimization_time_+=local_minimization_time;
-//		rows_stop_Info_.push_back(local_minimization_stopInfo);
-//		rows_stop_Error_.push_back( optimizationProblem.functionValue() );	
-
-		local_minimization_time = 0;
-//		local_minimization_stopInfo = -10000;
-
-	}
 	costFunctionLevel_PTR_->getCheyetteDD_ApproxPricer_PTR()->get_CheyetteDD_Model()->show() ;
 
 	//retrieve_calib_info();

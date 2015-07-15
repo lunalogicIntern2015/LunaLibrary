@@ -8,25 +8,17 @@
 struct CheyetteDD_CalibrationConfig 
 {	
 public:
-	CheyetteDD_CalibrationConfig();	
-	
-//param du modele
-	CheyetteDD_Model::CheyetteDD_Parameter cheyetteDD_Param_ ;
-	CourbeInput_PTR courbeInput_PTR_ ;
-	size_t shiftChoice_ ;
 
-	size_t model_nbYear_;  //nb year max, 16 pour calibrer par ex
+//param
+	size_t									model_nbYear_;  //nb year max, 16 pour calibrer par ex
+	CheyetteDD_Model::CheyetteDD_Parameter	cheyetteDD_Param_ ;
+	double									strikeBump_ ;
+	CourbeInput_PTR							courbeInput_PTR_ ;  
+	size_t									shiftChoice_ ;
+	std::string								test_folder_;
 
-	std::string test_folder_;
-
-	mutable bool use_local_calib_;
-	bool use_positive_constraint_;
-
-	virtual void print(const std::string& filename) const ;	
-
-	// storing result
-	void reset_result() const ;
-
+	mutable bool							use_local_calib_;
+	bool									use_positive_constraint_;
 	mutable double result_quote_error_l2;
 	mutable double result_quote_error_l1;
 	mutable double result_quote_error_linf;
@@ -38,5 +30,11 @@ public:
 	mutable double result_pelLibor_error_l2;
 	mutable double result_pelLibor_error_l1;
 	mutable double result_pelLibor_error_linf;
+
+//methodes
+	CheyetteDD_CalibrationConfig(	CheyetteDD_Model::CheyetteDD_Parameter	cheyetteDD_Param,
+									CourbeInput_PTR							courbeInput_PTR) ;
+	void reset_result() const ;
+	virtual void print(const std::string& filename) const ;	
 };
 

@@ -146,6 +146,19 @@ CourbeInput_PTR createCourbeInput(int curveChoice)
 		return courbe_PTR_test ;
 		break ;
 		   }
+	case 7:{
+		std::vector<double> listeMatu, tauxZC ;
+		double translation = 0.0 ;
+		listeMatu.push_back(0) ;			tauxZC.push_back(4.7/100  + translation) ; 
+		listeMatu.push_back(0.5) ;			tauxZC.push_back(4.7/100  + translation) ; 
+		listeMatu.push_back(0.8) ;			tauxZC.push_back(4.623/100  + translation) ; 
+		listeMatu.push_back(1) ;			tauxZC.push_back(4.573/100  + translation) ;  
+		listeMatu.push_back(1.5 ) ;			tauxZC.push_back(4.437/100  + translation) ; 
+		listeMatu.push_back(2 ) ;			tauxZC.push_back(4.353/100  + translation) ;  
+		CourbeInput_PTR courbe_PTR_test(new CourbeInput(listeMatu, tauxZC));		   
+		return courbe_PTR_test ;
+		break ;
+		   }
 	default :
 		throw "courbe non existante" ;
 	}
@@ -632,7 +645,7 @@ void matrixPrint(std::ofstream& o, std::vector<size_t> expiry_maturity, std::str
 	o << endl ;
 	o << endl ;
 	o << chaine << endl ;
-	o << "expiry (a)\ tenor swap (b) ; " ;
+	o << "expiry (a) \\ tenor swap (b) ; " ;
 		for (size_t i = 0 ; i < expiry_maturity.size() ; i++)
 		{
 			o << expiry_maturity[i] << "Y ;" ;

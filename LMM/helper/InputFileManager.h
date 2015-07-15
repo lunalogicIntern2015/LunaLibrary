@@ -57,6 +57,8 @@ namespace InputFileManager
 		//file_list.push_back("VCUB_2014_08_07.csv");// 35
 		//file_list.push_back("VCUB_2014_08_08.csv");// 36
 		//file_list.push_back("VCUB_2014_08_14.csv");// 37
+
+		file_list.push_back("VCUB_2004_04_07.csv");// 27
 		
 		//file_list.push_back("VCUB_2004_04_07.csv");
 		//file_list.push_back("VCUB_Dirty_2014_08_01.csv");// 	

@@ -64,6 +64,7 @@ double CheyetteDD_VanillaSwaptionApproxPricer::to_integrate_y_bar(double s) cons
 // y_bar(t) = exp( - 2 k t ) * integrale_0^t( exp(2 k s) sigma_r^0(s) sigma_r^0(s) ds ) 
 void CheyetteDD_VanillaSwaptionApproxPricer::initialize_y_bar(double t, size_t gridSize) const
 {
+	assert(t > 0);
 	double gridStart	= 0 ;
 	double gridEnd		= t ;
 	double k			= cheyetteDD_Model_->get_CheyetteDD_Parameter().k_ ;
@@ -254,9 +255,12 @@ double CheyetteDD_VanillaSwaptionApproxPricer::swapRate0() const
 }
 double CheyetteDD_VanillaSwaptionApproxPricer::swapRate(double t, double x_t) const
 {
+
 	double n      = swapRateNumerator(t, x_t);
 	double d      = swapRateDenominator(t, x_t);
-//	assert (abs(d) > 0.001) ;
+
+
+	assert (d > 0.001) ;
 	return n/d;
 }
 
@@ -481,10 +485,10 @@ double CheyetteDD_VanillaSwaptionApproxPricer::prixSwaptionApproxPiterbarg() con
 	//calcul de b_barre, time averaging
 	double b_barre  = timeAverage(buffer_T0_) ;		//average jusqu'à T0, date d'entrée dans le swap
 
-	std::cout	<< "strike K : " << buffer_UnderlyingSwap_.get_strike() 
-				<< ", b_barre : " << b_barre 
-				<< ", s0 : " << buffer_s0_
-				<< ", r0 : " << buffer_courbeInput_->get_f_0_t(0) << std::endl ;
+	//std::cout	<< "strike K : " << buffer_UnderlyingSwap_.get_strike() 
+	//			<< ", b_barre : " << b_barre 
+	//			<< ", s0 : " << buffer_s0_
+	//			<< ", r0 : " << buffer_courbeInput_->get_f_0_t(0) << std::endl ;
 
 	//calcul de la variance (integrale de lambda_t)
 	double gridStart = 0.0;
@@ -493,11 +497,13 @@ double CheyetteDD_VanillaSwaptionApproxPricer::prixSwaptionApproxPiterbarg() con
 
 	boost::function<double(double)> func1 = boost::bind(&CheyetteDD_VanillaSwaptionApproxPricer::lambda2, this, _1);
 	double integrale = integral_Riemann.integrate(func1);
+	
+//std::cout << "b barre : " << b_barre << ", integrale de lambda_t : " << integrale << std::endl ;
 
 	//prix Black swaption (approximation)
-	double annuity0 = swapRateDenominator(0, 0) ;	//en t = 0 c'est l'annuité(0)
+	double annuity0 = swapRateDenominator(0., 0.) ;	//en t = 0 c'est l'annuité(0)
 	double K_tilde	= b_barre * buffer_UnderlyingSwap_.get_strike() + (1 - b_barre) * buffer_s0_ ;
-	double sigma_sqrt_T = b_barre * sqrt(integrale) ; 
+	double sigma_sqrt_T = sqrt(integrale * b_barre * b_barre) ;  //b_barre * sqrt(integrale) 
 
 	//prend en compte strikes positifs et négatifs
 	//	double Black_Price_vol2(double fwd, double strike, double vol, double T);

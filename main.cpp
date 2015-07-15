@@ -20,8 +20,12 @@
 
 int main()
 {
-	test_CheyetteCalibrationMarketData() ;
-	test_LmmCalibrationMarketData() ;
+	//file numero 0, coterminal 2Y
+	size_t numFile = 1 ;
+	size_t coterminal = 10 ;
+	testCalib2(numFile, coterminal) ;   //2004 04 07 : file 27
+//	test_CheyetteCalibrationMarketData() ;
+	//test_LmmCalibrationMarketData() ;
 		//testCalib() ;
 
 	//double bs_call_price = 0.0747381/100 ; //0.0611958/100 ;

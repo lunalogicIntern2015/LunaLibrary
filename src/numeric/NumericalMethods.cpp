@@ -107,7 +107,7 @@ double Black_Price_vol2(double fwd, double strike, double sqrt_int_sigma2, doubl
 //E^{Q annuity}(S(T0) | F_0) = S0 
 double Black_Price_vol2_allStrike(double fwd, double strike, double sqrt_int_sigma2, double T) 
 {
-	std::cout << "SJ : " << fwd << ", strike : " << strike << ", T : " << T << std::endl ;
+	//std::cout << "SJ : " << fwd << ", strike : " << strike << ", T : " << T << std::endl ;
     assert(sqrt_int_sigma2 > 0 && T > 0 && fwd >0) ; 
 	double res  ;
 	if (strike > 0)

@@ -484,6 +484,7 @@
     <ClInclude Include="Cheyette\Calibrator\CoTerminalSwaptionQuotes.h" />
     <ClInclude Include="Cheyette\Calibrator\CoTerminalSwaptionSkew.h" />
     <ClInclude Include="Cheyette\Calibrator\CoTerminalSwaptionVol.h" />
+    <ClInclude Include="Cheyette\Calibrator\MarketData.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\pricer\LmmTarnPricer.cpp">
@@ -933,6 +934,7 @@
     <ClCompile Include="Cheyette\Calibrator\CheyetteDD_CalibrationConfig.cpp" />
     <ClCompile Include="Cheyette\Calibrator\CoTerminalSwaptionSkew.cpp" />
     <ClCompile Include="Cheyette\Calibrator\CoTerminalSwaptionVol.cpp" />
+    <ClCompile Include="Cheyette\Calibrator\MarketData.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JBLMM\Element\CappedFlooredCoupon.h" />

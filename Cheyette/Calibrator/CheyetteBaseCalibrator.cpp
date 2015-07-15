@@ -5,11 +5,13 @@
 #include <string.h>
 #include <ctime>
 
-CheyetteBaseCalibrator::CheyetteBaseCalibrator( const QuantLib::Size& maxIterations,
+CheyetteBaseCalibrator::CheyetteBaseCalibrator( std::ostream& o,
+												const QuantLib::Size& maxIterations,
 												const QuantLib::Real& rootEpsilon,        
 												const QuantLib::Real& functionEpsilon)    
 											/*	CheyetteBaseCostFunction_PTR cheyetteBaseCostFunction_PTR)*/
-	: isVirtualCalibration_(false)
+	: o_(o),
+		isVirtualCalibration_(false)
 	, use_positive_constraint_(false)
 	, pConstraint_(new QuantLib::NoConstraint() ) // default constraint is a no constraint
 	, stopCriteria_(maxIterations, 100 , rootEpsilon, functionEpsilon, 0.)

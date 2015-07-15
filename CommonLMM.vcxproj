@@ -97,6 +97,7 @@
     <ClCompile Include="Cheyette\Calibrator\CheyetteBaseCalibrator.cpp" />
     <ClCompile Include="Cheyette\Calibrator\CheyetteDD_CostFunctionLevel.cpp" />
     <ClCompile Include="Cheyette\Calibrator\CheyetteDD_LocalCalibrator.cpp" />
+    <ClCompile Include="Cheyette\Calibrator\MarketData.cpp" />
     <ClCompile Include="Cheyette\CheyetteModel\CheyetteDD_Model.cpp" />
     <ClCompile Include="Cheyette\CheyetteModel\CourbeInput.cpp" />
     <ClCompile Include="Cheyette\unit_test\TestMCGeneric.cpp" />
@@ -109,6 +110,7 @@
     <ClInclude Include="Cheyette\Calibrator\CheyetteDD_CostFunctionLevel.h" />
     <ClInclude Include="Cheyette\Calibrator\CheyetteDD_LocalCalibrator.h" />
     <ClInclude Include="Cheyette\Calibrator\CoTerminalSwaptionQuotes.h" />
+    <ClInclude Include="Cheyette\Calibrator\MarketData.h" />
     <ClInclude Include="Cheyette\CheyetteModel\CheyetteDD_Model.h" />
     <ClInclude Include="Cheyette\CheyetteModel\CourbeInput.h" />
     <ClCompile Include="Cheyette\Pricer\CheyetteDD_VanillaSwaptionApproxPricer.cpp" />

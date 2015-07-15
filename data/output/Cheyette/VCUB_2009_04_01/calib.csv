@@ -1,0 +1,226 @@
+
+---------------------------------------------
+------------- Cheyette DD Model ------------
+  SIGMA piecewise constant 
+       for x in [0, 1], y = 0.2
+       for x in [1, 2[, y = 0.2
+       for x in [2, 3[, y = 0.2
+       for x in [3, 4[, y = 0.2
+       for x in [4, 5[, y = 0.2
+       for x in [5, 6[, y = 0.2
+       for x in [6, 7[, y = 0.2
+       for x in [7, 8[, y = 0.2
+       for x in [8, 9], y = 0.2
+  M piecewise constant 
+       for x in [0, 1], y = 0.4
+       for x in [1, 2[, y = 0.4
+       for x in [2, 3[, y = 0.4
+       for x in [3, 4[, y = 0.4
+       for x in [4, 5[, y = 0.4
+       for x in [5, 6[, y = 0.4
+       for x in [6, 7[, y = 0.4
+       for x in [7, 8[, y = 0.4
+       for x in [8, 9], y = 0.4
+  k constant 
+       k = 0.2
+---------------------------------------------
+shift 3 : S(t) / S(0)
+courbe des taux ZC spot (yield)
+listeMatu   ;   tauxZC
+0 ; 0.0169476
+0.5 ; 0.0169476
+1 ; 0.0160725
+1.5 ; 0.0163461
+2 ; 0.0175541
+2.5 ; 0.0195732
+3 ; 0.0209838
+3.5 ; 0.0226305
+4 ; 0.0239326
+4.5 ; 0.0252568
+5 ; 0.0263815
+5.5 ; 0.0275233
+6 ; 0.0285393
+6.5 ; 0.02942
+7 ; 0.0302332
+7.5 ; 0.0309462
+8 ; 0.0316235
+8.5 ; 0.0322997
+9 ; 0.0329535
+9.5 ; 0.0334914
+10 ; 0.0340231
+10.5 ; 0.0346208
+11 ; 0.0352146
+11.5 ; 0.0357497
+12 ; 0.0362883
+12.5 ; 0.0366558
+13 ; 0.0370358
+13.5 ; 0.0374287
+14 ; 0.037835
+14.5 ; 0.0382554
+15 ; 0.0386905
+15.5 ; 0.0386844
+16 ; 0.0387023
+16.5 ; 0.038743
+
+
+sigma : ;0.2; volModel : ;0.0895058; volQuote : ;0.2675
+sigma : ;0.2; volModel : ;0.0895058; volQuote : ;0.2675
+sigma : ;0.20002; volModel : ;0.0895147; volQuote : ;0.2675
+sigma : ;0.4; volModel : ;0.17888; volQuote : ;0.2675
+sigma : ;0.40004; volModel : ;0.178898; volQuote : ;0.2675
+sigma : ;0.598558; volModel : ;0.267348; volQuote : ;0.2675
+sigma : ;0.598618; volModel : ;0.267375; volQuote : ;0.2675
+sigma : ;0.598899; volModel : ;0.2675; volQuote : ;0.2675
+sigma : ;0.598959; volModel : ;0.267527; volQuote : ;0.2675
+sigma : ;0.598899; volModel : ;0.2675; volQuote : ;0.2675
+sigma : ;0.598899; volModel : ;0.2675; volQuote : ;0.2675
+ Criteria : ;StationaryFunctionValue
+ Root : ;[ 0.598899 ]
+ Min Function Value : ;3.33067e-016
+
+m : ;0.4; skewModel : ;0.157862; skewQuote : ;1.8
+m : ;0.4; skewModel : ;0.157862; skewQuote : ;1.8
+m : ;0.40004; skewModel : ;0.157881; skewQuote : ;1.8
+m : ;0.8; skewModel : ;0.348142; skewQuote : ;1.8
+m : ;0.80008; skewModel : ;0.34818; skewQuote : ;1.8
+m : ;0.849532; skewModel : ;0.371695; skewQuote : ;1.8
+m : ;0.849617; skewModel : ;0.371735; skewQuote : ;1.8
+m : ;0.945434; skewModel : ;0.417291; skewQuote : ;1.8
+m : ;0.945529; skewModel : ;0.417336; skewQuote : ;1.8
+m : ;0.96748; skewModel : ;0.427772; skewQuote : ;1.8
+m : ;0.967577; skewModel : ;0.427817; skewQuote : ;1.8
+m : ;0.971882; skewModel : ;0.429864; skewQuote : ;1.8
+m : ;0.971979; skewModel : ;0.429911; skewQuote : ;1.8
+m : ;0.98066; skewModel : ;0.434037; skewQuote : ;1.8
+m : ;0.980758; skewModel : ;0.434084; skewQuote : ;1.8
+m : ;0.998109; skewModel : ;0.442332; skewQuote : ;1.8
+m : ;0.998209; skewModel : ;0.442379; skewQuote : ;1.8
+m : ;0.998458; skewModel : ;0.442498; skewQuote : ;1.8
+m : ;0.998558; skewModel : ;0.442545; skewQuote : ;1.8
+m : ;0.999156; skewModel : ;0.442829; skewQuote : ;1.8
+m : ;0.999256; skewModel : ;0.442877; skewQuote : ;1.8
+m : ;0.999295; skewModel : ;0.442896; skewQuote : ;1.8
+m : ;0.999295; skewModel : ;0.442896; skewQuote : ;1.8
+ Criteria : ;StationaryFunctionValue
+ Root : ;[ 0.999295 ]
+ Min Function Value : ;1.3571
+
+sigma : ;0.598899; volModel : ;0.267375; volQuote : ;0.2675
+sigma : ;0.598899; volModel : ;0.267375; volQuote : ;0.2675
+sigma : ;0.598959; volModel : ;0.267401; volQuote : ;0.2675
+sigma : ;0.599182; volModel : ;0.2675; volQuote : ;0.2675
+sigma : ;0.599241; volModel : ;0.267527; volQuote : ;0.2675
+sigma : ;0.599182; volModel : ;0.2675; volQuote : ;0.2675
+sigma : ;0.599182; volModel : ;0.2675; volQuote : ;0.2675
+ Criteria : ;StationaryFunctionValue
+ Root : ;[ 0.599182 ]
+ Min Function Value : ;3.33067e-016
+
+m : ;0.999295; skewModel : ;0.443104; skewQuote : ;1.8
+m : ;0.999295; skewModel : ;0.443104; skewQuote : ;1.8
+m : ;0.999395; skewModel : ;0.443152; skewQuote : ;1.8
+m : ;0.999783; skewModel : ;0.443337; skewQuote : ;1.8
+m : ;0.999883; skewModel : ;0.443384; skewQuote : ;1.8
+m : ;0.999848; skewModel : ;0.443367; skewQuote : ;1.8
+m : ;0.999848; skewModel : ;0.443367; skewQuote : ;1.8
+ Criteria : ;StationaryFunctionValue
+ Root : ;[ 0.999848 ]
+ Min Function Value : ;1.35663
+
+sigma : ;0.599182; volModel : ;0.2675; volQuote : ;0.2675
+sigma : ;0.599182; volModel : ;0.2675; volQuote : ;0.2675
+sigma : ;0.599241; volModel : ;0.267526; volQuote : ;0.2675
+sigma : ;0.599182; volModel : ;0.2675; volQuote : ;0.2675
+sigma : ;0.599242; volModel : ;0.267527; volQuote : ;0.2675
+sigma : ;0.599182; volModel : ;0.2675; volQuote : ;0.2675
+sigma : ;0.599182; volModel : ;0.2675; volQuote : ;0.2675
+ Criteria : ;StationaryFunctionValue
+ Root : ;[ 0.599182 ]
+ Min Function Value : ;5.55112e-017
+
+
+------ Calibration sur la swaption suivante -------
+
+sigma : ;0.2; volModel : ;0.180284; volQuote : ;0.224
+sigma : ;0.2; volModel : ;0.180284; volQuote : ;0.224
+sigma : ;0.20002; volModel : ;0.180287; volQuote : ;0.224
+sigma : ;0.4; volModel : ;0.21539; volQuote : ;0.224
+sigma : ;0.40004; volModel : ;0.215399; volQuote : ;0.224
+sigma : ;0.440096; volModel : ;0.224246; volQuote : ;0.224
+sigma : ;0.440141; volModel : ;0.224256; volQuote : ;0.224
+sigma : ;0.43901; volModel : ;0.224; volQuote : ;0.224
+sigma : ;0.439054; volModel : ;0.22401; volQuote : ;0.224
+sigma : ;0.43901; volModel : ;0.224; volQuote : ;0.224
+sigma : ;0.439053; volModel : ;0.22401; volQuote : ;0.224
+sigma : ;0.43901; volModel : ;0.224; volQuote : ;0.224
+sigma : ;0.43901; volModel : ;0.224; volQuote : ;0.224
+ Criteria : ;StationaryFunctionValue
+ Root : ;[ 0.43901 ]
+ Min Function Value : ;2.77556e-017
+
+m : ;0.4; skewModel : ;-0.00820828; skewQuote : ;-2.8
+m : ;0.4; skewModel : ;-0.00820828; skewQuote : ;-2.8
+m : ;0.40004; skewModel : ;-0.00818658; skewQuote : ;-2.8
+m : ;5.55112e-017; skewModel : ;-0.22529; skewQuote : ;-2.8
+m : ;5.55167e-017; skewModel : ;-0.22529; skewQuote : ;-2.8
+m : ;4.64316e-019; skewModel : ;-0.22529; skewQuote : ;-2.8
+m : ;5.55112e-017; skewModel : ;-0.22529; skewQuote : ;-2.8
+ Criteria : ;StationaryFunctionValue
+ Root : ;[ 5.55112e-017 ]
+ Min Function Value : ;2.57471
+
+sigma : ;0.43901; volModel : ;0.224139; volQuote : ;0.224
+sigma : ;0.43901; volModel : ;0.224139; volQuote : ;0.224
+sigma : ;0.439053; volModel : ;0.224149; volQuote : ;0.224
+sigma : ;0.438398; volModel : ;0.224; volQuote : ;0.224
+sigma : ;0.438442; volModel : ;0.22401; volQuote : ;0.224
+sigma : ;0.438398; volModel : ;0.224; volQuote : ;0.224
+sigma : ;0.438441; volModel : ;0.22401; volQuote : ;0.224
+sigma : ;0.438398; volModel : ;0.224; volQuote : ;0.224
+sigma : ;0.438398; volModel : ;0.224; volQuote : ;0.224
+ Criteria : ;StationaryFunctionValue
+ Root : ;[ 0.438398 ]
+ Min Function Value : ;0
+
+m : ;5.55112e-017; skewModel : ;-0.224524; skewQuote : ;-2.8
+m : ;5.55112e-017; skewModel : ;-0.224524; skewQuote : ;-2.8
+m : ;5.55167e-017; skewModel : ;-0.224524; skewQuote : ;-2.8
+m : ;1.11022e-016; skewModel : ;-0.224524; skewQuote : ;-2.8
+m : ;5.55112e-017; skewModel : ;-0.224524; skewQuote : ;-2.8
+ Criteria : ;StationaryFunctionValue
+ Root : ;[ 5.55112e-017 ]
+ Min Function Value : ;2.57548
+
+sigma : ;0.438398; volModel : ;0.224; volQuote : ;0.224
+sigma : ;0.438398; volModel : ;0.224; volQuote : ;0.224
+sigma : ;0.438441; volModel : ;0.22401; volQuote : ;0.224
+sigma : ;0.438398; volModel : ;0.224; volQuote : ;0.224
+ Criteria : ;StationaryFunctionValue
+ Root : ;[ 0.438398 ]
+ Min Function Value : ;0
+
+
+------ Calibration sur la swaption suivante -------
+
+sigma : ;0.2; volModel : ;0.171949; volQuote : ;0.1975
+sigma : ;0.2; volModel : ;0.171949; volQuote : ;0.1975
+sigma : ;0.20002; volModel : ;0.171951; volQuote : ;0.1975
+sigma : ;0.4; volModel : ;0.20061; volQuote : ;0.1975
+sigma : ;0.40004; volModel : ;0.200617; volQuote : ;0.1975
+sigma : ;0.382463; volModel : ;0.197545; volQuote : ;0.1975
+sigma : ;0.382501; volModel : ;0.197551; volQuote : ;0.1975
+sigma : ;0.382204; volModel : ;0.1975; volQuote : ;0.1975
+sigma : ;0.382242; volModel : ;0.197507; volQuote : ;0.1975
+sigma : ;0.382204; volModel : ;0.1975; volQuote : ;0.1975
+sigma : ;0.382242; volModel : ;0.197507; volQuote : ;0.1975
+sigma : ;0.382204; volModel : ;0.1975; volQuote : ;0.1975
+sigma : ;0.382204; volModel : ;0.1975; volQuote : ;0.1975
+ Criteria : ;StationaryFunctionValue
+ Root : ;[ 0.382204 ]
+ Min Function Value : ;5.55112e-017
+
+m : ;0.4; skewModel : ;-0.299089; skewQuote : ;-2
+m : ;0.4; skewModel : ;-0.299089; skewQuote : ;-2
+m : ;0.40004; skewModel : ;-0.299067; skewQuote : ;-2
+m : ;0; skewModel : ;-0.519235; skewQuote : ;-2
+m : ;0.0001; skewModel : ;-0.51918; skewQuote : ;-2

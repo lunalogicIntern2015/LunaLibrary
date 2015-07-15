@@ -7,21 +7,20 @@
 class CoTerminalSwaptionVol : public CoTerminalSwaptionQuotes 
 {
 private:
-	std::vector<double> diagonalSwaptionVol_;		// vol implicites stockées par expiry croissantes
+	double diagonalSwaptionVol_;		// vol implicites stockées par expiry croissantes
 													//ex : 1Y 3Y, 2Y 2Y, 3Y 1Y
-				
-	//std::string data_file_name_ ;
 
 public:	
-	CoTerminalSwaptionVol::CoTerminalSwaptionVol(	std::vector<double> diagonalSwaptionVol,
-													std::vector<size_t> vectorExpiry,
-													std::vector<size_t> vectorTenor,
-													std::vector<double> strike) 
-		: CoTerminalSwaptionQuotes(vectorExpiry, vectorTenor, strike), diagonalSwaptionVol_(diagonalSwaptionVol)
+	CoTerminalSwaptionVol::CoTerminalSwaptionVol(	double diagonalSwaptionVol,
+													size_t vectorExpiry,
+													size_t vectorTenor,
+													double strike,
+													VanillaSwaption_PTR swaption) 
+		: CoTerminalSwaptionQuotes(vectorExpiry, vectorTenor, strike, swaption), diagonalSwaptionVol_(diagonalSwaptionVol)
 	{}
 
 //getters
-	std::vector<double> getDiagonalSwaptionVol() const {return diagonalSwaptionVol_ ;}
+	double getDiagonalSwaptionVol() const {return diagonalSwaptionVol_ ;}
 
 	virtual double get_MinQuote() const {return 0 ;}
 	virtual double get_MaxQuote() const {return 0 ;}

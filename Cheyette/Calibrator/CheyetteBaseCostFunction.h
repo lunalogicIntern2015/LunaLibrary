@@ -18,33 +18,23 @@ using namespace QuantLib ;  //pour CostFunction, Real, Array
 class CheyetteBaseCostFunction : public CostFunction
 {
 protected :
-	mutable size_t										indexSwaption_ ; //sur quel index de swaption on calibre 								
+	size_t indexSwaption_ ;		
 	mutable CheyetteDD_VanillaSwaptionApproxPricer_PTR	cheyetteApprox_PTR_ ;
-	
-	//values change during cost calculation
-	mutable unsigned int nbCalled;
-
+	ostream& o_ ;
 public:
-	CheyetteBaseCostFunction(	size_t indexSwaption,  
-								CheyetteDD_VanillaSwaptionApproxPricer_PTR cheyetteApprox_PTR)
-				:	indexSwaption_(indexSwaption), 
-					cheyetteApprox_PTR_(cheyetteApprox_PTR)
+	CheyetteBaseCostFunction(	ostream& o, CheyetteDD_VanillaSwaptionApproxPricer_PTR cheyetteApprox_PTR, 
+								size_t indexSwaption)
+			: o_(o), cheyetteApprox_PTR_(cheyetteApprox_PTR), indexSwaption_(indexSwaption)
 	{}
 
-	virtual ~CheyetteBaseCostFunction()
-	{ 
-		//à compléter ?
-	}
-
-	size_t get_nbCalled() const { return nbCalled; }
+	virtual ~CheyetteBaseCostFunction(){}
 
 	//value: method to overload to compute the cost functon value in x.
 	//ici norme 2 = sqrt(sum of squares	
-	virtual Real value(const Array& param_array) const ;
+	virtual Real value(const Array& param_array1D) const ;
 	
-	virtual Disposable<Array> values(const Array& param_sigma) const = 0 ;
+	virtual Disposable<Array> values(const Array& param_sigma1D) const = 0 ;
 
-	size_t										getIndexSwaption() const {return indexSwaption_ ;}
 	CheyetteDD_VanillaSwaptionApproxPricer_PTR	getCheyetteDD_ApproxPricer_PTR() const {return cheyetteApprox_PTR_ ;}
 
 	//void print(const std::string& filename) const;

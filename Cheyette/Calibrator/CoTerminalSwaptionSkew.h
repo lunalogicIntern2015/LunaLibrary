@@ -6,24 +6,24 @@
 class CoTerminalSwaptionSkew : public CoTerminalSwaptionQuotes
 {
 private:
-	std::vector<double> diagonalSwaptionSkew_;	// skew stocké par expiry croissantes
+	double diagonalSwaptionSkew_;	// skew stocké par expiry croissantes
 													//ex : 1Y 3Y, 2Y 2Y, 3Y 1Y			
 	double shift_ ;								//shift appliqué au strike pour calculer le skew
 
-	//std::string data_file_name_ ;
-
 public:	
-	CoTerminalSwaptionSkew::CoTerminalSwaptionSkew(	std::vector<double> diagonalSwaptionSkew,
-														std::vector<size_t> vectorExpiry,
-														std::vector<size_t> vectorTenor,
-														std::vector<double> strike, 
+	CoTerminalSwaptionSkew::CoTerminalSwaptionSkew(		double diagonalSwaptionSkew,
+														size_t vectorExpiry,
+														size_t vectorTenor,
+														double strike, 
+														VanillaSwaption_PTR swaption,
 														double shift) 
-		: CoTerminalSwaptionQuotes(vectorExpiry, vectorTenor, strike), diagonalSwaptionSkew_(diagonalSwaptionSkew), shift_(shift) 
+		:	CoTerminalSwaptionQuotes(vectorExpiry, vectorTenor, strike, swaption), 
+			diagonalSwaptionSkew_(diagonalSwaptionSkew), shift_(shift) 
 	{}
 
 //getters
-	std::vector<double> getDiagonalSwaptionSkew() const {return diagonalSwaptionSkew_ ;}
-	double				getShift() const {return shift_ ;}
+	double getDiagonalSwaptionSkew() const {return diagonalSwaptionSkew_ ;}
+	double getShift() const {return shift_ ;}
 
 	virtual double get_MinQuote() const {return 0 ;}
 	virtual double get_MaxQuote() const {return 0 ;}

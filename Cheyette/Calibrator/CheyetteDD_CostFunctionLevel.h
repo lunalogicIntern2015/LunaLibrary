@@ -14,24 +14,21 @@ private:
 	CoTerminalSwaptionVol_CONSTPTR	coTerminalSwaptionVol_PTR_ ;
 public:
 
-	CheyetteDD_CostFunctionLevel(	CoTerminalSwaptionVol_CONSTPTR coTerminalSwaptionVol_PTR, 
-									size_t indexSwaption,  
-									CheyetteDD_VanillaSwaptionApproxPricer_PTR cheyetteApprox_PTR)
-		: CheyetteBaseCostFunction(indexSwaption, cheyetteApprox_PTR), coTerminalSwaptionVol_PTR_(coTerminalSwaptionVol_PTR)
+	CheyetteDD_CostFunctionLevel(	ostream& o, CoTerminalSwaptionVol_CONSTPTR coTerminalSwaptionVol_PTR,   
+									CheyetteDD_VanillaSwaptionApproxPricer_PTR cheyetteApprox_PTR,
+									size_t indexSwaption)
+		: CheyetteBaseCostFunction(o, cheyetteApprox_PTR, indexSwaption), coTerminalSwaptionVol_PTR_(coTerminalSwaptionVol_PTR)
 	{}
 
-	virtual ~CheyetteDD_CostFunctionLevel()
-	{ 
-		//à compléter ?
-	}
+	virtual ~CheyetteDD_CostFunctionLevel(){}
 
 	CoTerminalSwaptionVol_CONSTPTR	getCoTerminalSwaptionVol_PTR() const{return coTerminalSwaptionVol_PTR_ ;}
 
 	//m fixé, on fait varier sigma
-	virtual Disposable<Array> values(const Array& param_sigma) const ;
+	virtual Disposable<Array> values(const Array& param_sigma1D) const ;
 
 };
 
-typedef boost::shared_ptr<CheyetteDD_CostFunctionLevel> CheyetteDD_CostFunctionLevel_PTR;
+typedef boost::shared_ptr<CheyetteDD_CostFunctionLevel> CheyetteDD_CostFunctionLevel_PTR ;
 typedef boost::shared_ptr<const CheyetteDD_CostFunctionLevel> CheyetteDD_CostFunctionLevel_CONSTPTR;
 

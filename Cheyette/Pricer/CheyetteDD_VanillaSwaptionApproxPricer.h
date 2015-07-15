@@ -35,7 +35,7 @@ private:
 	mutable std::vector<size_t>		buffer_fixedLegPaymentIndexSchedule_ ;
 	mutable std::vector<size_t>		buffer_floatingLegPaymentIndexSchedule_ ;
 	mutable std::vector<double>		buffer_deltaTFixedLeg_ ;
-	mutable double					buffer_s0_;		
+	mutable double					buffer_s0_;			
 
 	mutable Interpolation_RR_Function	buffer_y_bar_;
 	mutable double						buffer_b_barre_ ;
@@ -74,7 +74,12 @@ public :
 		buffer_UnderlyingSwap_.set_indexStart(indexStart) ; 
 		buffer_UnderlyingSwap_.set_indexEnd(indexEnd) ; 
 
-		std::cout << "changement de la swaption et recalcul des buffers de ApproxPricer" << std::endl ;
+		initialize_buffers() ; 
+	}
+
+	void setSwaption(VanillaSwaption_PTR pSwaption)
+	{
+		swaption_ = pSwaption ;
 		initialize_buffers() ; 
 	}
 
@@ -85,17 +90,17 @@ public :
 	}
 
 	//pour la calibration, updateVol permet mise à jour des buffers lorsque la vol de CheyetteDD_Model est modifiée
-	void updateSigma_calib(const Array& A)
+	void updateSigma_calib(std::ostream& o, double a, size_t index)
 	{
-		cheyetteDD_Model_->setCheyetteDD_Parameter_sigma(A) ;
-		std::cout << "changement de la swaption et recalcul des buffers de ApproxPricer" << std::endl ;
+		o << "sigma : ;" << a ;
+		cheyetteDD_Model_->setCheyetteDD_Parameter_sigma(a, index) ;
 		initialize_buffers() ; 
 	}
 
-	void updateM_calib(const Array& A)
+	void updateM_calib(std::ostream& o, double a, size_t index)
 	{
-		cheyetteDD_Model_->setCheyetteDD_Parameter_m(A) ;
-		std::cout << "changement de la swaption et recalcul des buffers de ApproxPricer" << std::endl ;
+		o << "m : ;" << a ;
+		cheyetteDD_Model_->setCheyetteDD_Parameter_m(a, index) ;
 		initialize_buffers() ; 
 	}
 	//calcul de y_barre(t)
