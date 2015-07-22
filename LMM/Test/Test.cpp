@@ -57,6 +57,21 @@ LmmSwaptionMarketData_PTR get_LmmSwaptionMarketData(const size_t model_nbYear, c
 	return pLmmSwaptionMarketData;
 }
 
+//pour la compatibilité avec CheyetteDD_Config
+LmmSwaptionMarketDataFull_PTR get_LmmSwaptionMarketDataFull(const size_t model_nbYear, const std::string& input_file)
+{
+	size_t nbYear = model_nbYear ;
+	Tenor tenorfixedleg(Tenor::_1YR) ;
+	Tenor tenorfloatleg(Tenor::_6M)  ;
+
+	LmmSwaptionMarketDataFull_PTR 
+			pLmmSwaptionMarketData( new LmmSwaptionMarketDataFull(tenorfixedleg, tenorfloatleg , nbYear ) );
+
+	pLmmSwaptionMarketData->parseFromMarketData(input_file);
+
+	return pLmmSwaptionMarketData;
+}
+
 LMMTenorStructure_PTR create___LMMTenorStructure_PTR(const size_t nbyear)
 {
 	Tenor tenorfixedleg = Tenor::_1YR ;

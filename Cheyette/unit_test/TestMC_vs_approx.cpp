@@ -1,4 +1,7 @@
 #include "TestMC_vs_approx.h"
+#include <fstream>
+
+#include <ostream>
 
 //pour les tests dans le main()
 	//std::vector<double> x, m_y, sigma_y ;
@@ -110,42 +113,6 @@ CourbeInput_PTR createCourbeInput(int curveChoice)
 		return courbe_PTR_test ;
 		break ;
 		   }
-	case 5:{
-		std::vector<double> listeMatu, tauxZC ;
-		double translation = 0.0 ;
-		listeMatu.push_back(0) ;			tauxZC.push_back(0.989746/100  + translation) ; 
-		listeMatu.push_back(0.5) ;			tauxZC.push_back(0.989746/100  + translation) ; 
-		listeMatu.push_back(0.75) ;			tauxZC.push_back(0.984527/100  + translation) ; 
-		listeMatu.push_back(1.) ;			tauxZC.push_back(0.979192/100  + translation) ; 
-		listeMatu.push_back(1.5) ;			tauxZC.push_back(0.966866/100  + translation) ;  
-		listeMatu.push_back(2 ) ;			tauxZC.push_back(0.952632/100  + translation) ; 
-		listeMatu.push_back(3 ) ;			tauxZC.push_back(0.920034/100  + translation) ;  
-		listeMatu.push_back(4 ) ;			tauxZC.push_back(0.883928/100  + translation) ;
-		listeMatu.push_back(5 ) ;			tauxZC.push_back(0.846015/100  + translation) ;
-		listeMatu.push_back(6 ) ;			tauxZC.push_back(0.807019/100  + translation) ;
-		listeMatu.push_back(8 ) ;			tauxZC.push_back(0.728073/100  + translation) ;
-		listeMatu.push_back(10 ) ;			tauxZC.push_back(0.654385/100  + translation) ;
-		listeMatu.push_back(12 ) ;			tauxZC.push_back(0.587184/100  + translation) ;
-		listeMatu.push_back(15 ) ;			tauxZC.push_back(0.495425/100  + translation) ;
-		listeMatu.push_back(20 ) ;			tauxZC.push_back(0.372788/100  + translation) ;
-		CourbeInput_PTR courbe_PTR_test(new CourbeInput(listeMatu, tauxZC));		   
-		return courbe_PTR_test ;
-		break ;
-		   }
-	case 6:{
-		std::vector<double> listeMatu, tauxZC ;
-		double translation = 0.0 ;
-		listeMatu.push_back(0) ;			tauxZC.push_back(0.998459/100  + translation) ; 
-		listeMatu.push_back(0.5) ;			tauxZC.push_back(0.997973/100  + translation) ; 
-		listeMatu.push_back(0.66) ;			tauxZC.push_back(0.997463/100  + translation) ; 
-		listeMatu.push_back(0.8) ;			tauxZC.push_back(0.979192/100  + translation) ; 
-		listeMatu.push_back(1) ;			tauxZC.push_back(0.99697/100  + translation) ;  
-		listeMatu.push_back(1.5 ) ;			tauxZC.push_back(0.995317/100  + translation) ; 
-		listeMatu.push_back(2 ) ;			tauxZC.push_back(0.993352/100  + translation) ;  
-		CourbeInput_PTR courbe_PTR_test(new CourbeInput(listeMatu, tauxZC));		   
-		return courbe_PTR_test ;
-		break ;
-		   }
 	case 7:{
 		std::vector<double> listeMatu, tauxZC ;
 		double translation = 0.0 ;
@@ -253,7 +220,7 @@ void test_approx(double strike, size_t a, size_t b, Tenor floatingLegTenor, Teno
 		vectICsup[i]  = resMC[2] ;
 	}
 	
-	double annuityA0 = approx.swapRateDenominator(0., 0.) ;
+	double annuityA0 = approx.swapRateDenominator(0., 0., 0.) ;
 	double swapRateS0 = approx.swapRate0() ;
 
 	double blackPrice = NumericalMethods::Black_SwaptionImpliedVolatility(approxPrice, annuityA0, 
@@ -292,27 +259,6 @@ void test_approx_ATM(size_t a, size_t b, Tenor floatingLegTenor, Tenor fixedLegT
 	CheyetteDD_Model_PTR modele_test_PTR(new CheyetteDD_Model(courbe_PTR_test, monStruct, shiftChoice)) ;
 	modele_test_PTR->show() ;
 
-//param MC
-	std::vector<size_t>			simulationIndex ;
-	std::vector<size_t>			discretizationBetweenDates ;
-	simulationIndex.push_back(0) ; 	discretizationBetweenDates.push_back(0) ; 
-	simulationIndex.push_back(indexStart) ;	discretizationBetweenDates.push_back(indexStart * 100) ; 
-	for (size_t i = 1 ; i <= (indexEnd-indexStart) ; ++i)
-	{
-		simulationIndex.push_back(indexStart + i) ;
-		discretizationBetweenDates.push_back(50) ;
-	}
-
-	unsigned long seed = 47;
-	RNGenerator_PTR  rnGenerator(new McGenerator(seed));
-
-	MC_CheyetteDD_VanillaSwaptionPricer_PTR mc(new MC_CheyetteDD_VanillaSwaptionPricer(modele_test_PTR,
-															rnGenerator,
-															floatingLegTenor,
-															fwdProbaT,
-															simulationIndex,		
-															discretizationBetweenDates   ) ) ;
-
 //approx
 	double strike = 1000. ; //temporaire avant de mettre strike ATM
 	LMMTenorStructure_PTR simulationStructure(new LMMTenorStructure(floatingLegTenor, a+b+1) );
@@ -325,11 +271,14 @@ void test_approx_ATM(size_t a, size_t b, Tenor floatingLegTenor, Tenor fixedLegT
 	double strikeATM = approx.swapRate0() ;
 	swap.set_strike(strikeATM) ;
 	VanillaSwaption_PTR swaption_PTR_test_ATM(new VanillaSwaption(swap, OptionType::OptionType::CALL)) ;
-	CheyetteDD_VanillaSwaptionApproxPricer approxATM(modele_test_PTR, swaption_PTR_test_ATM);
+	swaption_PTR_test_ATM->show() ;
 
-	std::cout << "prixSwaption" << std::endl ;
+//approx
+	CheyetteDD_VanillaSwaptionApproxPricer approxATM(modele_test_PTR, swaption_PTR_test_ATM);
 	double approxPrice = approxATM.prixSwaptionApproxPiterbarg() ;
 	double b_barre = approxATM.get_buffer_b_barre_() ;
+
+	std::cout << "prixSwaption" << std::endl ;
 	std::cout << "approxPrice : " << approxPrice << std::endl ;
 	std::cout << "b barre :     " << b_barre << std::endl ;
 	std::cout << "  " << std::endl ;
@@ -344,19 +293,35 @@ void test_approx_ATM(size_t a, size_t b, Tenor floatingLegTenor, Tenor fixedLegT
 	//size_t maturity = indexStart ; //index
 	//GeneticSwaption_CONSTPTR 	genericSwaptionTest(new GeneticSwaption(maturity, genericSwapTest)) ;
 
+//param MC
+	std::vector<size_t>			simulationIndex ;
+	std::vector<size_t>			discretizationBetweenDates ;
+	simulationIndex.push_back(0) ; 	discretizationBetweenDates.push_back(0) ; 
+	simulationIndex.push_back(indexStart) ;	discretizationBetweenDates.push_back(indexStart * 100) ; 
+	for (size_t i = 1 ; i <= (indexEnd-indexStart) ; ++i)
+	{
+		simulationIndex.push_back(indexStart + i) ;
+		discretizationBetweenDates.push_back(50) ;
+	}
+
+	unsigned long seed = 47;
+	RNGenerator_PTR  rnGenerator(new McGenerator(seed));
+	MC_CheyetteDD_VanillaSwaptionPricer_PTR mc(new MC_CheyetteDD_VanillaSwaptionPricer(modele_test_PTR,
+															rnGenerator, floatingLegTenor, fwdProbaT,
+															simulationIndex, discretizationBetweenDates   ) ) ;
 	size_t nbMC = nbSimus.size() ;
 	std::vector<double> vectPrixMC(nbMC), vectICinf(nbMC), vectICsup(nbMC) ; 
 	for (size_t i = 0 ; i < nbMC ; ++i)
 	{
 		//std::vector<double> resMC = mc->price(genericSwaptionTest, nbSimus[i]) ;
-		std::vector<double> resMC = mc->price(swaption_PTR_test, nbSimus[i]) ;
+		std::vector<double> resMC = mc->price(swaption_PTR_test_ATM, nbSimus[i]) ;
 		vectPrixMC[i] = resMC[0] ;
 		vectICinf[i]  = resMC[1] ;
 		vectICsup[i]  = resMC[2] ;
 	}
 	
-	double annuityA0 = approx.swapRateDenominator(0., 0.) ;
-	double swapRateS0 = approx.swapRate0() ;
+	double annuityA0 = approxATM.swapRateDenominator(0., 0., 0.) ;
+	double swapRateS0 = approxATM.swapRate0() ;
 
 	double volBlack = NumericalMethods::Black_SwaptionImpliedVolatility(approxPrice, annuityA0, 
 																		swapRateS0, strikeATM, a) ;
@@ -370,7 +335,96 @@ void test_approx_ATM(size_t a, size_t b, Tenor floatingLegTenor, Tenor fixedLegT
 	//						a, b, genericSwaptionTest, nbSimus, vectPrixMC, vectICinf, vectICsup) ;
 
 	mc->printMC_vs_approx(approxPrice, b_barre, annuityA0, swapRateS0, volBlack,
-							a, b, swaption_PTR_test, nbSimus, vectPrixMC, vectICinf, vectICsup) ;
+							a, b, swaption_PTR_test_ATM, nbSimus, vectPrixMC, vectICinf, vectICsup) ;
+}
+
+//param 
+//swaption aY bY
+//floating leg tenor vs fixed leg tenor (pas vraiment un tenor mais frequence des flux)
+//size(x) = size(m_y) + 1 = size(sigma_y) + 1
+void test_approx_ATM(size_t a, size_t b, Tenor floatingLegTenor, Tenor fixedLegTenor, 
+					 CheyetteDD_Model_PTR pCheyetteDD_Model,
+					 std::vector<size_t> nbSimus, std::ofstream& o)
+{	
+
+	double tenor = std::min(floatingLegTenor.YearFraction() , fixedLegTenor.YearFraction() ) ;
+	size_t indexStart = size_t(a / tenor) ;
+	size_t indexEnd = size_t((a+b) / tenor) ;
+	double fwdProbaT = double(b) ;  //size_t vers double ok
+
+//param MC
+	std::vector<size_t>			simulationIndex ;
+	std::vector<size_t>			discretizationBetweenDates ;
+	simulationIndex.push_back(0) ; 	discretizationBetweenDates.push_back(0) ; 
+	simulationIndex.push_back(indexStart) ;	discretizationBetweenDates.push_back(indexStart * 100) ; 
+	for (size_t i = 1 ; i <= (indexEnd-indexStart) ; ++i)
+	{
+		simulationIndex.push_back(indexStart + i) ;
+		discretizationBetweenDates.push_back(50) ;
+	}
+
+	unsigned long seed = 47;
+	RNGenerator_PTR  rnGenerator(new McGenerator(seed));
+
+	MC_CheyetteDD_VanillaSwaptionPricer_PTR mc(new MC_CheyetteDD_VanillaSwaptionPricer(pCheyetteDD_Model,
+															rnGenerator,
+															floatingLegTenor,
+															fwdProbaT,
+															simulationIndex,		
+															discretizationBetweenDates   ) ) ;
+
+//approx
+	double strike =  - 1000. ; //temporaire avant de mettre strike ATM
+	LMMTenorStructure_PTR simulationStructure(new LMMTenorStructure(floatingLegTenor, a+b+1) );
+	VanillaSwap swap = VanillaSwap(strike, indexStart, indexEnd, floatingLegTenor, fixedLegTenor, simulationStructure);
+	
+	VanillaSwaption_PTR swaption_PTR_test(new VanillaSwaption(swap, OptionType::OptionType::CALL)) ;
+	CheyetteDD_VanillaSwaptionApproxPricer approx(pCheyetteDD_Model, swaption_PTR_test);
+
+//calcul du strike ATM pour le swap
+	double strikeATM = approx.swapRate0() ;
+
+	o << "strike ATM pour swaption " << a << "Y" << b << "Y : " << strikeATM << std::endl ;
+	std::cout << "strike ATM pour swaption " << a << "Y" << b << "Y : " << strikeATM << std::endl ;
+	std::cout << std::endl ;
+
+	swap.set_strike(strikeATM) ;
+	VanillaSwaption_PTR swaption_PTR_test_ATM(new VanillaSwaption(swap, OptionType::OptionType::CALL)) ;
+	swaption_PTR_test_ATM->show() ;
+	CheyetteDD_VanillaSwaptionApproxPricer approxATM(pCheyetteDD_Model, swaption_PTR_test_ATM);
+
+	std::cout << "prixSwaption" << std::endl ;
+	double approxPrice = approxATM.prixSwaptionApproxPiterbarg() ;
+	double b_barre = approxATM.get_buffer_b_barre_() ;
+	std::cout << "approxPrice : " << approxPrice << std::endl ;
+	std::cout << "b barre :     " << b_barre << std::endl ;
+	std::cout << "  " << std::endl ;
+
+//MC
+	size_t nbMC = nbSimus.size() ;
+	std::vector<double> vectPrixMC(nbMC), vectICinf(nbMC), vectICsup(nbMC) ; 
+	for (size_t i = 0 ; i < nbMC ; ++i)
+	{
+		std::vector<double> resMC = mc->price(swaption_PTR_test_ATM, nbSimus[i]) ;
+		vectPrixMC[i] = resMC[0] ;
+		vectICinf[i]  = resMC[1] ;
+		vectICsup[i]  = resMC[2] ;
+	}
+	
+	double annuityA0 = approxATM.swapRateDenominator(0., 0., 0.) ;
+	double swapRateS0 = approxATM.swapRate0() ;
+
+	double volBlack = NumericalMethods::Black_SwaptionImpliedVolatility(approxPrice, annuityA0, 
+																		swapRateS0, strikeATM, a) ;
+
+	std::cout << "strike :    " << strikeATM << std::endl ;
+	std::cout << "expiry :    " << a << std::endl ;
+	std::cout << "annuity :   " << annuityA0 << std::endl ;
+	std::cout << "swapRate :  " << swapRateS0 << std::endl ;
+	std::cout << "vol Black : " << volBlack << std::endl ;
+
+	mc->printMC_vs_approx(o, approxPrice, b_barre, annuityA0, swapRateS0, volBlack,
+							a, b, swaption_PTR_test_ATM, nbSimus, vectPrixMC, vectICinf, vectICsup) ;
 }
 
 /* *********************************/
@@ -540,7 +594,7 @@ void test_printElement(double strike, size_t index1, size_t index2, std::vector<
 		matriceMC_ICsup (index1, index2) = resMC[2] ;
 	}
 
-	double annuityA0 = approx.swapRateDenominator(0., 0.) ;
+	double annuityA0 = approx.swapRateDenominator(0., 0., 0.) ;
 	double swapRateS0 = approx.swapRate0() ;
 	matriceS0(index1, index2) = swapRateS0 ;
 	matriceKtilde(index1, index2) = b_barre * strike + (1 - b_barre) * swapRateS0 ;
@@ -751,7 +805,7 @@ void test_printElement_ATM(size_t index1, size_t index2, std::vector<size_t>& ex
 	matriceAbsoluteError(index1, index2) = matriceMCprice(index1, index2) - matriceApprox(index1, index2) ;
 	matriceRelativeError(index1, index2) = matriceAbsoluteError(index1, index2) / matriceMCprice(index1, index2) ;
 
-	double annuityA0 = approxATM.swapRateDenominator(0., 0.) ;
+	double annuityA0 = approxATM.swapRateDenominator(0., 0., 0.) ;
 	double swapRateS0 = approxATM.swapRate0() ;
 	matriceS0(index1, index2) = swapRateS0 ;
 
@@ -847,7 +901,7 @@ void smile(size_t a, size_t b, double strikeATM, Tenor floatingLegTenor, Tenor f
 		double approxPrice = approx.prixSwaptionApproxPiterbarg() ;
 		double b_barre = approx.get_buffer_b_barre_() ;
 
-		double annuityA0 = approx.swapRateDenominator(0., 0.) ;
+		double annuityA0 = approx.swapRateDenominator(0., 0., 0.) ;
 		double swapRateS0 = approx.swapRate0() ;
 		double volBlack = NumericalMethods::Black_SwaptionImpliedVolatility(approxPrice, annuityA0, 
 																		swapRateS0, ATMpourcent[i] * strikeATM, a) ;

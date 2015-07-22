@@ -236,15 +236,15 @@ public :
 
 	void print(std::ostream& o)
 	{
-		o << "       for x in [" << x_[0] << ", " << x_[1] << "], y = " << y_[0] << std::endl ;
+		o << "       for x in [" << x_[0] << ", " << x_[1] << "], y =  ;" << y_[0] << std::endl ;
 		for (size_t i = 1 ; i < x_.size() - 2 ; ++i)
 		{
-			o << "       for x in [" << x_[i] << ", " << x_[i+1] << "[, y = " << y_[i] << std::endl ;
+			o << "       for x in [" << x_[i] << ", " << x_[i+1] << "[, y = ;" << y_[i] << std::endl ;
 		}
 		if (x_.size() > 2)
 		{
 			o << "       for x in [" << x_[x_.size()-2] << ", " << x_[x_.size()-1] 
-						<< "], y = " << y_[y_.size()-1] << std::endl ;
+						<< "], y = ;" << y_[y_.size()-1] << std::endl ;
 		}
 	}
 };
@@ -276,6 +276,34 @@ public:
 };
 typedef boost::shared_ptr<Boost_R2R_Function>       Boost_R2R_Function_PTR;
 typedef boost::shared_ptr<const Boost_R2R_Function> Boost_R2R_Function_CONSTPTR;
+
+/***********************************************************
+******* fonctions de R^3 dans R 
+***********************************************************/
+
+class R3R_Function 
+{
+public:
+	boost::function<double(double, double, double)> func_;
+
+	virtual double operator ()(double t, double x, double y) const = 0;
+};
+
+class Boost_R3R_Function : public  R3R_Function 
+{
+private:
+	boost::function<double(double, double, double)> func_;
+public:
+	Boost_R3R_Function(const boost::function<double(double, double, double)>& func):func_(func){}
+	virtual ~Boost_R3R_Function(){}
+	
+	double operator ()(double t, double x, double y) const {
+		double resultat = func_(t, x, y) ; 
+		return resultat ;
+	}
+};
+typedef boost::shared_ptr<Boost_R3R_Function>       Boost_R3R_Function_PTR;
+typedef boost::shared_ptr<const Boost_R3R_Function> Boost_R3R_Function_CONSTPTR;
 
 
 //

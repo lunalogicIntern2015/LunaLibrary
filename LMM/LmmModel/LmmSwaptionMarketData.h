@@ -33,7 +33,7 @@ public:
 	
 	LmmSwaptionMarketData(const Tenor& fixedtenor, const Tenor& floattenor, const size_t maxNbYear);
 
-	void parseFromMarketData(const std::string& filename);
+	virtual void parseFromMarketData(const std::string& filename);
 
 	LiborQuotes_PTR get_LiborQuotes() const { return pLiborQuotes_ ; }
 	UpperTriangleVanillaSwaptionQuotes_PTR get_SwaptionQuotes_ATM()const { return swaptionMarketData_ATM_.first;     }
@@ -52,7 +52,7 @@ public:
 
 	void print(const std::string& filename) const ; 
 
-private:
+protected:
 	// Quote & moneyness
 	typedef std::pair<UpperTriangleVanillaSwaptionQuotes_PTR, double> SwaptionMarketData;
 
@@ -103,7 +103,7 @@ private:
 							, const std::vector<size_t>& missed_rows  
 							, const std::vector<size_t>& missed_cols  ) const;
 
-	void buildSwationQuotes( const double & strike_bump
+	virtual void buildSwationQuotes( const double & strike_bump
 		                   , const std::vector<double>& swpm_expirities
 		                   , const std::vector<double>& swpm_tenor
 						   , const std::vector<std::vector<double> >& swpm_quote_buffer

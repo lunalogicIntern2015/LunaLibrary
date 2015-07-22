@@ -9,7 +9,7 @@
 namespace numeric 
 {
 
-	size_t findClosestDate(double d, std::vector<double> vect) ;
+	//size_t findClosestDate(double d, std::vector<double> vect) ;
 
 
 	// ------------------------------------------------------

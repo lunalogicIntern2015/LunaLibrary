@@ -35,6 +35,7 @@ public:
 							std::vector<double> IC_sup) const ;
 
 
+
 };
 
 typedef boost::shared_ptr<MC_CheyetteDD_GenericSwaptionPricer>       MC_CheyetteDD_GenericSwaptionPricer_PTR;

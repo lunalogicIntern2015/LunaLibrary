@@ -21,7 +21,6 @@ Disposable<Array> CheyetteDD_CostFunctionSkew::values(const Array& param_m1D) co
 
 	Array res(1) ;
 	res[0] = skewModel - skewQuote ;		
-	std::cout <<res[0] << std::endl ;
 	return res ;
 }
 
@@ -37,7 +36,7 @@ double CheyetteDD_CostFunctionSkew::volShift(double strike, double shift) const
 	//conversion prix -> vol
 	double T			= coTerminalSwaptionSkew_PTR_->getVectorExpiry() ;
 	double S0			= cheyetteApprox_PTR_->get_buffer_s0_() ;
-	double annuity0		= cheyetteApprox_PTR_->swapRateDenominator(0., 0.) ;
+	double annuity0		= cheyetteApprox_PTR_->swapRateDenominator(0., 0., 0.) ;
 
 	//double modelQuote	= NumericalMethods::Black_impliedVolatility(modelPrice, S0, strike + shift, T) ;
 	

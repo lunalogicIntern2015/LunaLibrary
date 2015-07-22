@@ -14,6 +14,4 @@
 
 //void UneTrajectoireEuler() ;
 
-//void TestMCSwapPricer() ;
-
-//double ZCVasicek(double matuT, double mean_rev, double level, double sigma) ;
+void TestMCSwapPricer() ;

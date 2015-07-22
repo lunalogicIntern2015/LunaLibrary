@@ -19,7 +19,7 @@ Disposable<Array> CheyetteDD_CostFunctionLevel::values(const Array& param_sigma1
 	double T			= coTerminalSwaptionVol_PTR_->getVectorExpiry() ;
 	double strike		= coTerminalSwaptionVol_PTR_->getStrike() ;
 	double S0			= cheyetteApprox_PTR_->get_buffer_s0_() ;
-	double annuity0		= cheyetteApprox_PTR_->swapRateDenominator(0., 0.) ;
+	double annuity0		= cheyetteApprox_PTR_->swapRateDenominator(0., 0., 0.) ;
 
 	//double modelQuote	= NumericalMethods::Black_impliedVolatility(modelPrice, S0, strike, T) ;
 

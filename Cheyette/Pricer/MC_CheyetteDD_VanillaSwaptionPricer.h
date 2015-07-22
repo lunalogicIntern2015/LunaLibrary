@@ -36,6 +36,16 @@ public:
 							std::vector<double> prixMC,
 							std::vector<double> IC_inf,
 							std::vector<double> IC_sup) const ;
+
+	void printMC_vs_approx(std::ofstream& o,
+							double approx, double b_barre, 
+							double annuityA0, double swapRateS0, double volBlack, 
+							double a, double b,
+							VanillaSwaption_PTR vanillaSwaption, 
+							std::vector<size_t> nbSimus, 
+							std::vector<double> prixMC,
+							std::vector<double> IC_inf,
+							std::vector<double> IC_sup) const ;
 	
 };
 

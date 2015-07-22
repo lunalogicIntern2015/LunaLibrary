@@ -57,3 +57,22 @@ void CourbeInput::print(std::ostream& o) const
 	}
 	o	<<	std::endl;
 }
+
+void CourbeInput::printHorizontal(std::ostream& o) const
+{
+	int N = listeMatu_.size() ;
+	o << "courbe des taux ZC spot (yield)" << std::endl ;
+
+	o << "listeMatu ; " << std::endl ;
+	for (int i = 0 ; i < N ; ++i)
+	{
+		o << listeMatu_[i] << " ; " ; 
+	}
+	o << std::endl ;
+	o << "tauxZC ; " << std::endl ;
+	for (int i = 0 ; i < N ; ++i)
+	{
+		o << tauxZC_[i] << " ; " ; 
+	}
+	o	<<	std::endl;
+}

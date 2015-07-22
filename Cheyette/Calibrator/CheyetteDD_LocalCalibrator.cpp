@@ -167,6 +167,7 @@ void CheyetteDD_LocalCalibrator::minimizeBoundaryConstraint(QuantLib::Array& cal
 {
 	//QuantLib::PositiveConstraint	bc ; //positiveConstraint ;
 	QuantLib::BoundaryConstraint bc(0.000000001, 1.) ;
+	//QuantLib::BoundaryConstraint bc(- 1., 1.) ;
 
 	QuantLib::Problem				optimizationProblem(pCostFunctionSkew, 
 														bc, 
@@ -206,33 +207,43 @@ void CheyetteDD_LocalCalibrator::solve()
 		//minimisation sur sigma
 		minimizePositiveConstraint(calibrated_sigma_1D_, minimizationSolver, *costFunctionLevel_PTR_) ;
 	}
-	o_ << std::endl ;
-	o_ << "------ Calibration sur la swaption suivante -------" << std::endl ;
-	o_ << std::endl ;
 	//mise à jour de calibrated_m_sigma et calibrated_m ok car passage par référence dans minimizeConstraint
 
-////vol ATM modele
-//	double T			= costFunctionLevel_PTR_->getCoTerminalSwaptionVol_PTR()->getVectorExpiry() ;
-//	double S0			= costFunctionLevel_PTR_->getCheyetteDD_ApproxPricer_PTR()->get_buffer_s0_() ;
-//	double modelPrice	= costFunctionLevel_PTR_->getCheyetteDD_ApproxPricer_PTR()->prixSwaptionApproxPiterbarg() ;
-//	double strike		= costFunctionLevel_PTR_->getCoTerminalSwaptionVol_PTR()->getStrike() ;
-//	std::cout	<< "vol ATM : " << NumericalMethods::Black_ swaption impliedVolatility(modelPrice, S0, strike, T) << std::endl ;
-//
-////vol ATM + shift modele 
-//	double shift = costFunctionSkew_PTR_->getCoTerminalSwaptionSkew_PTR()->getShift() ;
-//	costFunctionLevel_PTR_->getCheyetteDD_ApproxPricer_PTR()->setStrike(strike + shift) ;
-//	modelPrice	= costFunctionLevel_PTR_->getCheyetteDD_ApproxPricer_PTR()->prixSwaptionApproxPiterbarg() ;
-//	std::cout	<< "vol ATM + shift : " << NumericalMethods::Black_  swaption impliedVolatility(modelPrice, S0, strike+shift, T) << std::endl ;
-//
-////vol ATM + shift modele 
-//	costFunctionLevel_PTR_->getCheyetteDD_ApproxPricer_PTR()->setStrike(strike - shift) ;
-//	modelPrice	= costFunctionLevel_PTR_->getCheyetteDD_ApproxPricer_PTR()->prixSwaptionApproxPiterbarg() ;
-//	std::cout	<< "vol ATM - shift : " << NumericalMethods::Black_ swaption  impliedVolatility(modelPrice, S0, strike-shift, T) << std::endl ;
-//
-//	costFunctionLevel_PTR_->getCheyetteDD_ApproxPricer_PTR()->setStrike(strike) ;
+//pour le smile
+	double strike		= costFunctionLevel_PTR_->getCoTerminalSwaptionVol_PTR()->getStrike() ;
+	double shift		= costFunctionSkew_PTR_->getCoTerminalSwaptionSkew_PTR()->getShift() ;
 
-	costFunctionLevel_PTR_->getCheyetteDD_ApproxPricer_PTR()->get_CheyetteDD_Model()->show() ;
+	o_ << " ; vol ATM - 5bp ; vol ATM ; vol ATM + 5bp " << std::endl ;
+	o_ << "STRIKE ; " << strike - shift << " ; " << strike << " ; " << strike + shift << std::endl ;
+//vol ATM - shift modele 
+	double T			= costFunctionLevel_PTR_->getCoTerminalSwaptionVol_PTR()->getVectorExpiry() ;
+	double S0			= costFunctionLevel_PTR_->getCheyetteDD_ApproxPricer_PTR()->get_buffer_s0_() ;
+	double annuity0		= costFunctionLevel_PTR_->getCheyetteDD_ApproxPricer_PTR()->swapRateDenominator(0., 0., 0.) ;
 
+	costFunctionLevel_PTR_->getCheyetteDD_ApproxPricer_PTR()->setStrike(strike - shift) ;
+	double modelPrice	= costFunctionLevel_PTR_->getCheyetteDD_ApproxPricer_PTR()->prixSwaptionApproxPiterbarg() ;
+	double volATMmoins	= NumericalMethods::Black_SwaptionImpliedVolatility(modelPrice, annuity0,   							  
+																			S0, strike - shift, T) ;
+	o_ << "VOL MODEL ; " << volATMmoins ;
+
+//vol ATM 
+	costFunctionLevel_PTR_->getCheyetteDD_ApproxPricer_PTR()->setStrike(strike) ;
+	modelPrice	= costFunctionLevel_PTR_->getCheyetteDD_ApproxPricer_PTR()->prixSwaptionApproxPiterbarg() ;
+	double volATM	= NumericalMethods::Black_SwaptionImpliedVolatility(modelPrice, annuity0,   							  
+																			S0, strike, T) ;
+	o_ << " ; " << volATM ;
+
+//vol ATM + shift modele 
+	costFunctionLevel_PTR_->getCheyetteDD_ApproxPricer_PTR()->setStrike(strike + shift) ;
+	modelPrice	= costFunctionLevel_PTR_->getCheyetteDD_ApproxPricer_PTR()->prixSwaptionApproxPiterbarg() ;
+	double volATMplus	= NumericalMethods::Black_SwaptionImpliedVolatility(modelPrice, annuity0,   							  
+																			S0, strike + shift, T) ;
+	o_ << " ; " << volATMplus << std::endl ;
+
+
+	costFunctionLevel_PTR_->getCheyetteDD_ApproxPricer_PTR()->setStrike(strike) ;
+
+	//costFunctionLevel_PTR_->getCheyetteDD_ApproxPricer_PTR()->get_CheyetteDD_Model()->show() ;
 	//retrieve_calib_info();
 }
 

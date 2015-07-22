@@ -252,20 +252,20 @@ void test_ZC_swapRate_Num_Denom()
 		new CheyetteDD_VanillaSwaptionApproxPricer(cheyetteDD_Model_PTR_Test, vanillaSwaption_PTR_Test)) ;
 	
 //t = 0 avec la courbe spot
-	std::cout << "derivee_1_classe T = 1Y   " << approxPricerTest_PTR->ZC_1stDerivative_on_xt(0., 1.0, 0.) << std::endl ;
+	std::cout << "derivee_1_classe T = 1Y   " << approxPricerTest_PTR->ZC_1stDerivative_on_xt(0., 1.0, 0., 0.) << std::endl ;
 	std::cout << "derivee_1_main   T = 1Y   " << -exp(- 0.85/100) * (1 - exp(-1)) << std::endl ;
-	std::cout << "derivee_1_classe T = 2Y   " << approxPricerTest_PTR->ZC_1stDerivative_on_xt(0., 2.0, 0.) << std::endl ;
+	std::cout << "derivee_1_classe T = 2Y   " << approxPricerTest_PTR->ZC_1stDerivative_on_xt(0., 2.0, 0., 0.) << std::endl ;
 	std::cout << "derivee_1_main   T = 2Y   " << -exp(- 2 * 0.9/100) * (1 - exp(-2)) << std::endl ;
 	std::cout << "   " << std::endl ;
-	std::cout << "derivee_2_classe T = 1Y   " << approxPricerTest_PTR->ZC_2ndDerivative_on_xt(0., 1.0, 0.) << std::endl ;
+	std::cout << "derivee_2_classe T = 1Y   " << approxPricerTest_PTR->ZC_2ndDerivative_on_xt(0., 1.0, 0., 0.) << std::endl ;
 	std::cout << "derivee_2_main   T = 1Y   "  << exp(- 0.85/100) * pow(1 - exp(-1),2) << std::endl ;
 	std::cout << "   " << std::endl ;
 //swap rate numerator
-	std::cout << "swap rate numerator   " << approxPricerTest_PTR->swapRateNumerator(0., 0.) << std::endl ;
+	std::cout << "swap rate numerator   " << approxPricerTest_PTR->swapRateNumerator(0., 0., 0.) << std::endl ;
 	std::cout << "swap rate numerator   " <<  exp(- 1 * 0.85/100) - exp(- 3 * 0.92/100) << std::endl ;
 	std::cout << "   " << std::endl ;
 //swap rate denominator
-	std::cout << "swap rate denominator " << approxPricerTest_PTR->swapRateDenominator(0., 0.) << std::endl ;
+	std::cout << "swap rate denominator " << approxPricerTest_PTR->swapRateDenominator(0., 0., 0.) << std::endl ;
 	//somme sur les flux fixes : (2Y et 3Y) (delta_fixed = 1)
 	std::cout << "swap rate denominator " << 1 * (exp(- 2 * 0.9/100) + exp(- 3 * 0.92/100)) << std::endl ;  
 
@@ -290,13 +290,13 @@ void test_ZC_swapRate_Num_Denom()
 //swap rate numerator
 	//on fixe arbitrairement x_t = 1 pour le test (t = 0.5)
 	std::cout << "------------  t = 0.5  ------------" << std::endl ;
-	std::cout << "swap rate numerator   " << approxPricerTest_PTR->swapRateNumerator(0.5, 1) << std::endl ;
 	double y_bar_t = approxPricerTest_PTR->get_buffer_y_bar_t(0.5) ;
+	std::cout << "swap rate numerator   " << approxPricerTest_PTR->swapRateNumerator(0.5, 1, y_bar_t) << std::endl ;
 	std::cout << "swap rate numerator   " <<  cheyetteDD_Model_PTR_Test->P(0.5, 1, 1, y_bar_t) +
 												- cheyetteDD_Model_PTR_Test->P(0.5, 3, 1, y_bar_t) << std::endl ;
 	std::cout << "   " << std::endl ;
 //swap rate denominator
-	std::cout << "swap rate denominator " << approxPricerTest_PTR->swapRateDenominator(0.5, 1) << std::endl ;
+	std::cout << "swap rate denominator " << approxPricerTest_PTR->swapRateDenominator(0.5, 1, y_bar_t) << std::endl ;
 	//somme sur les flux fixes : (2Y et 3Y) (delta_fixed = 1)
 	std::cout << "swap rate denominator " << 1 * (cheyetteDD_Model_PTR_Test->P(0.5, 2, 1, y_bar_t) 
 												+ cheyetteDD_Model_PTR_Test->P(0.5, 3, 1, y_bar_t)) << std::endl ;  
@@ -326,7 +326,7 @@ void test_ZC_swapRate_Num_Denom()
 	double ge4 = 1 - exp(- (3 - 0.5)) ;
 	double PtT3Y = exp( - 3 * 0.92/100) / exp( - 0.5 * 0.825/100) * exp(- 0.2 * ge4 - 1/2. * y_bar_t * ge4 * ge4) ;
 
-	std::cout << "swapRate(0.5, 0.2) : " << approxPricerTest_PTR->swapRate(0.5, 0.2) << std::endl ;
+	std::cout << "swapRate(0.5, 0.2) : " << approxPricerTest_PTR->swapRate(0.5, 0.2, y_bar_t) << std::endl ;
 	std::cout << (PtT0 - PtT3Y) / (PtT2Y + PtT3Y) << std::endl ;
 
 }
@@ -375,8 +375,8 @@ void test_swapRate_inverse()
 	CheyetteDD_VanillaSwaptionApproxPricer_PTR approxPricerTest_PTR(
 		new CheyetteDD_VanillaSwaptionApproxPricer(cheyetteDD_Model_PTR_Test, vanillaSwaption_PTR_Test)) ;
 
-	std::cout << "approxPricerTest_PTR->swapRate(0, 0) : " << approxPricerTest_PTR->swapRate(0, 0) <<std::endl ;   //OK
-	std::cout << "approxPricerTest_PTR->swapRate(0, 0) : " << approxPricerTest_PTR->swapRate(0.1, 0) <<std::endl ;  
+	std::cout << "approxPricerTest_PTR->swapRate(0, 0) : " << approxPricerTest_PTR->swapRate(0., 0., 0.) <<std::endl ;   //OK
+	std::cout << "approxPricerTest_PTR->swapRate(0, 0) : " << approxPricerTest_PTR->swapRate(0.1, 0., 0.) <<std::endl ;  
 }
 
 void test_fonction_inverse()
@@ -400,23 +400,23 @@ void test_fonction_inverse()
 	CheyetteDD_VanillaSwaptionApproxPricer approx = 
 				CheyetteDD_VanillaSwaptionApproxPricer(modele_test_PTR, swaption_PTR_test); 
 
-	std::cout << "-----------  test fonction inverse  -----------------------" << std::endl ;
-	std::cout << " " << std::endl ;
-	std::cout	<< "swapRate(0, 0) : " << approx.swapRate(0, 0) 
-				<< ", approx.get_buffer_s0_ : " << approx.get_buffer_s0_() << std::endl ;
-	std::cout << "inverse : " << approx.inverse(0., approx.swapRate(0, 0)) << " vs 0" << std::endl ;
-	std::cout << " " << std::endl ;
-	std::cout << "swapRate(0.5, 2) : " << approx.swapRate(0.5, 2) << std::endl ;
-	std::cout << "inverse : " << approx.inverse(0.5, approx.swapRate(0.5, 2)) << " vs 2" << std::endl ;
-	std::cout << " " << std::endl ;
-	std::cout << "swapRate(0.5, 0.2) : " << approx.swapRate(0.5, 0.2) << std::endl ;
-	std::cout << "inverse : " << approx.inverse(0.5, approx.swapRate(0.5, 0.2)) << " vs 0.2" << std::endl ;
-	std::cout << " " << std::endl ;	
-	std::cout << "swapRate(1, 0.5) : " << approx.swapRate(1, 0.5) << std::endl ;
-	std::cout << "inverse : " << approx.inverse(1, approx.swapRate(1, 0.5)) << " vs 0.5" << std::endl ;
-	std::cout << " " << std::endl ;
-	std::cout << "swapRate(1, 5) : " << approx.swapRate(1, 5) << std::endl ;
-	std::cout << "inverse : " << approx.inverse(1, approx.swapRate(1, 5)) << " vs 5" << std::endl ;
+	//std::cout << "-----------  test fonction inverse  -----------------------" << std::endl ;
+	//std::cout << " " << std::endl ;
+	//std::cout	<< "swapRate(0, 0) : " << approx.swapRate(0., 0., 0.) 
+	//			<< ", approx.get_buffer_s0_ : " << approx.get_buffer_s0_() << std::endl ;
+	//std::cout << "inverse : " << approx.inverse(0., approx.swapRate(0, 0)) << " vs 0" << std::endl ;
+	//std::cout << " " << std::endl ;
+	//std::cout << "swapRate(0.5, 2) : " << approx.swapRate(0.5, 2) << std::endl ;
+	//std::cout << "inverse : " << approx.inverse(0.5, approx.swapRate(0.5, 2)) << " vs 2" << std::endl ;
+	//std::cout << " " << std::endl ;
+	//std::cout << "swapRate(0.5, 0.2) : " << approx.swapRate(0.5, 0.2) << std::endl ;
+	//std::cout << "inverse : " << approx.inverse(0.5, approx.swapRate(0.5, 0.2)) << " vs 0.2" << std::endl ;
+	//std::cout << " " << std::endl ;	
+	//std::cout << "swapRate(1, 0.5) : " << approx.swapRate(1, 0.5) << std::endl ;
+	//std::cout << "inverse : " << approx.inverse(1, approx.swapRate(1, 0.5)) << " vs 0.5" << std::endl ;
+	//std::cout << " " << std::endl ;
+	//std::cout << "swapRate(1, 5) : " << approx.swapRate(1, 5) << std::endl ;
+	//std::cout << "inverse : " << approx.inverse(1, approx.swapRate(1, 5)) << " vs 5" << std::endl ;
 
 }
 
@@ -453,15 +453,15 @@ void test_derivatives()
 	std::cout << "------------  d sigma_r / dx  --------------" << std::endl ;
 	std::cout << " " << std::endl ;
 
-	std::cout << approx.get_CheyetteDD_Model()->sigma_r_t_1stDerivative(0, 0.5)  << std::endl ;
-	std::cout << approx.get_CheyetteDD_Model()->sigma_r_t_1stDerivative(0.5, 0.5)  << std::endl ;
-	std::cout << approx.get_CheyetteDD_Model()->sigma_r_t_1stDerivative(1, 0.5)  << std::endl ;
+	std::cout << approx.get_CheyetteDD_Model()->sigma_r_t_1stDerivative(0., 0.5, 0.)  << std::endl ;
+	std::cout << approx.get_CheyetteDD_Model()->sigma_r_t_1stDerivative(0.5, 0.5, 0.)  << std::endl ;
+	std::cout << approx.get_CheyetteDD_Model()->sigma_r_t_1stDerivative(1., 0.5, 0.)  << std::endl ;
 
 	std::cout << " " << std::endl ;
 	std::cout << "------------  test 2nd derivative  --------------" << std::endl ;
 	std::cout << " " << std::endl ;
  
-	double vx = 10 ;
+	double vx = 10. ;
 
 	double n	= f_num(vx) ;
 	double n_1	= f_num_x(vx); 

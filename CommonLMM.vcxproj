@@ -91,7 +91,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Cheyette\Calibrator\CheyetteDD_CalibrationConfig.cpp" />
+    <ClCompile Include="Cheyette\Pricer\CheyetteQuad_VanillaSwaptionApproxPricer.cpp" />
+    <ClCompile Include="Cheyette\CheyetteModel\CheyetteQuad_Model.cpp" />
     <ClCompile Include="Cheyette\Calibrator\CheyetteBaseCostFunction.cpp" />
     <ClCompile Include="Cheyette\Calibrator\CheyetteDD_CostFunctionSkew.cpp" />
     <ClCompile Include="Cheyette\Calibrator\CheyetteBaseCalibrator.cpp" />
@@ -103,13 +104,14 @@
     <ClCompile Include="Cheyette\unit_test\TestMCGeneric.cpp" />
     <ClCompile Include="Cheyette\unit_test\TestMC_vs_approx.cpp" />
     <ClCompile Include="Cheyette\unit_test\TestCalibrator.cpp" />
-    <ClInclude Include="Cheyette\Calibrator\CheyetteDD_CalibrationConfig.h" />
+    <ClInclude Include="Cheyette\Calibrator\MarketDataConvertor.h" />
+    <ClInclude Include="Cheyette\Pricer\CheyetteQuad_VanillaSwaptionApproxPricer.h" />
+    <ClInclude Include="Cheyette\CheyetteModel\CheyetteQuad_Model.h" />
     <ClInclude Include="Cheyette\Calibrator\CheyetteBaseCostFunction.h" />
     <ClInclude Include="Cheyette\Calibrator\CheyetteDD_CostFunctionSkew.h" />
     <ClInclude Include="Cheyette\Calibrator\CheyetteBaseCalibrator.h" />
     <ClInclude Include="Cheyette\Calibrator\CheyetteDD_CostFunctionLevel.h" />
     <ClInclude Include="Cheyette\Calibrator\CheyetteDD_LocalCalibrator.h" />
-    <ClInclude Include="Cheyette\Calibrator\CoTerminalSwaptionQuotes.h" />
     <ClInclude Include="Cheyette\Calibrator\MarketData.h" />
     <ClInclude Include="Cheyette\CheyetteModel\CheyetteDD_Model.h" />
     <ClInclude Include="Cheyette\CheyetteModel\CourbeInput.h" />
@@ -129,6 +131,7 @@
     <ClCompile Include="Cheyette\unit_test\TestMC.cpp" />
     <ClCompile Include="Cheyette\unit_test\Test_CheyetteDD_Model.cpp" />
     <ClInclude Include="Cheyette\unit_test\TestApproxDD.h" />
+    <ClInclude Include="Cheyette\unit_test\TestCalibrator.h" />
     <ClInclude Include="Cheyette\unit_test\TestFonction.h" />
     <ClInclude Include="Cheyette\unit_test\TestIntegrator1D_2D.h" />
     <ClInclude Include="Cheyette\unit_test\TestMC.h" />
@@ -136,8 +139,6 @@
     <ClCompile Include="Cheyette\InverseFunction.cpp" />
     <ClInclude Include="Cheyette\Fonction.h" />
     <ClInclude Include="Cheyette\InverseFunction.h" />
-    <ClInclude Include="Cheyette\Calibrator\CoTerminalSwaptionSkew.h" />
-    <ClInclude Include="Cheyette\Calibrator\CoTerminalSwaptionVol.h" />
     <ClInclude Include="JBLMM\Element\CappedFlooredCoupon.h" />
     <ClInclude Include="JBLMM\Element\Coupon.h" />
     <ClInclude Include="JBLMM\Element\CouponLeg.h" />
@@ -215,6 +216,7 @@
     <ClInclude Include="LMM\LmmModel\LmmShiftCalibrator.h" />
     <ClInclude Include="LMM\LmmModel\LmmSkewCostFunction.h" />
     <ClInclude Include="LMM\LmmModel\LmmSwaptionMarketData.h" />
+    <ClInclude Include="LMM\LmmModel\LmmSwaptionMarketDataFull.h" />
     <ClInclude Include="LMM\numeric\Integrator1D.h" />
     <ClInclude Include="LMM\numeric\RRFunction.h" />
     <ClInclude Include="LMM\numeric\UpperTriangularMatrixInterpolator.h" />
@@ -260,12 +262,9 @@
     <ClInclude Include="Cheyette\unit_test\TestMCGeneric.h" />
     <ClInclude Include="Cheyette\Pricer\MC_CheyetteDD_GenericSwaptionPricer.h" />
     <ClInclude Include="Cheyette\unit_test\TestMC_vs_approx.h" />
-    <ClInclude Include="Cheyette\unit_test\TestCalibrator.h" />
     <ClInclude Include="LMM\Test\Tests.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Cheyette\Calibrator\CoTerminalSwaptionSkew.cpp" />
-    <ClCompile Include="Cheyette\Calibrator\CoTerminalSwaptionVol.cpp" />
     <ClCompile Include="JBLMM\Element\CappedFlooredCoupon.cpp" />
     <ClCompile Include="JBLMM\Element\Coupon.cpp" />
     <ClCompile Include="JBLMM\Element\CouponLeg.cpp" />
@@ -288,9 +287,9 @@
     <ClCompile Include="JBLMM\Test\Test_McGeneticTargetSwapPricing.cpp" />
     <ClCompile Include="LMM\Test\Test.cpp" />
     <ClCompile Include="LMM\Test\Test_LmmCalibrationMarketData.cpp" />
-    <ClCompile Include="main.cpp" />
     <ClCompile Include="Cheyette\Pricer\MC_CheyetteDD_GenericSwapPricer.cpp" />
     <ClCompile Include="Cheyette\Pricer\MC_CheyetteDD_GenericSwaptionPricer.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="src\calibration\LmmCalibrationConfig.cpp" />
     <ClCompile Include="src\helper\BuildVariable.cpp" />
     <ClCompile Include="src\helper\CalibrationType.cpp" />
@@ -330,6 +329,7 @@
     <ClCompile Include="src\LmmModel\LmmShiftCalibrator.cpp" />
     <ClCompile Include="src\LmmModel\LmmSkewCostFunction.cpp" />
     <ClCompile Include="src\LmmModel\LmmSwaptionMarketData.cpp" />
+    <ClCompile Include="src\LmmModel\LmmSwaptionMarketDataFull.cpp" />
     <ClCompile Include="src\numeric\Integrator1D.cpp" />
     <ClCompile Include="src\numeric\UpperTriangularMatrixInterpolator.cpp" />
     <ClCompile Include="src\pricer\McLmmCallableOptionPricer.cpp" />

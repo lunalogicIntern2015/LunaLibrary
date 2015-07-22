@@ -32,6 +32,10 @@ void test_approx_ATM(size_t a, size_t b, Tenor floatingLegTenor, Tenor fixedLegT
 					 std::vector<double> x, std::vector<double> m_y, std::vector<double> sigma_y, double k, 
 					 std::vector<size_t> nbSimus) ;
 
+void test_approx_ATM(size_t a, size_t b, Tenor floatingLegTenor, Tenor fixedLegTenor, 
+					 CheyetteDD_Model_PTR pCheyetteDD_Model,
+					 std::vector<size_t> nbSimus) ;
+
 void test_printMatrix_ATM(std::vector<size_t> expiry_maturity, Tenor floatingLegTenor, Tenor fixedLegTenor, 
 					 int curveChoice, int shiftChoice, 
 					 std::vector<double> x, std::vector<double> m_y, std::vector<double> sigma_y, double k, 
@@ -65,3 +69,7 @@ void test_printElement(double strike, size_t index1, size_t index2, std::vector<
 void smile(size_t a, size_t b, double strikeATM, Tenor floatingLegTenor, Tenor fixedLegTenor, 
 			int curveChoice, int shiftChoice, 
 			std::vector<double> x, std::vector<double> m_y, std::vector<double> sigma_y, double k) ;
+
+void test_approx_ATM(size_t a, size_t b, Tenor floatingLegTenor, Tenor fixedLegTenor, 
+					 CheyetteDD_Model_PTR pCheyetteDD_Model,
+					 std::vector<size_t> nbSimus, std::ofstream& o) ;

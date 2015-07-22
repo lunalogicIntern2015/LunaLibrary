@@ -25,6 +25,8 @@ public:
 	double get_f_0_t(double t) const ;
 	void show() const ;
 	void print(std::ostream& o) const ;
+	void printHorizontal(std::ostream& o) const ;
+
 };
 
 typedef boost::shared_ptr<CourbeInput> CourbeInput_PTR;

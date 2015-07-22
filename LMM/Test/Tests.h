@@ -4,6 +4,8 @@
 #include <string>
 
 #include <LMM/LmmModel/LmmSwaptionMarketData.h>
+#include <LMM/LmmModel/LmmSwaptionMarketDataFull.h>
+
 #include <LMM/calibration/LmmCalibrationConfig.h>
 #include <LMM/LmmModel/GMatrixMapping.h>
 
@@ -57,7 +59,7 @@ LmmSwaptionMarketData_PTR get_LmmSwaptionMarketData(const LmmCalibrationConfig& 
 //pour la compatibilité avec CheyetteDD_config
 LmmSwaptionMarketData_PTR get_LmmSwaptionMarketData(const size_t model_nbYear, const std::string& input_file) ;
 
-
+LmmSwaptionMarketDataFull_PTR get_LmmSwaptionMarketDataFull(const size_t model_nbYear, const std::string& input_file) ;
 
 LMMTenorStructure_PTR create___LMMTenorStructure_PTR(const size_t nbyear);
 

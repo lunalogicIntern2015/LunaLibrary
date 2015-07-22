@@ -50,66 +50,107 @@
 //
 //}
 //
-////double ZCVasicek(double matuT, double mean_rev, double level, double sigma)
-////{
-////	double A_0_T = (1 - exp(- mean_rev * matuT)) / mean_rev ;
-////	double D_0_T = (level - sigma*sigma /(2*mean_rev*mean_rev) ) * (A_0_T - matuT) - sigma*sigma * A_0_T*A_0_T/(4 * mean_rev) ;
-////
-////}
 //
-//void TestMCSwapPricer()
-//{
-//	unsigned long seed = 47;
-//	RNGenerator_PTR  rnGenerator(new McGenerator(seed));
-//
-//	CourbeInput_PTR courbe_PTR_test(createCourbeInput());
-//
-//	std::vector<double> x, sigma_y, m_y ;
-//	x.push_back(0) ; x.push_back(1) ; x.push_back(2) ; 
-//	sigma_y.push_back(0.2) ; sigma_y.push_back(0.2) ;
-//	m_y.push_back(0.3) ; m_y.push_back(0.3) ;
-//	double k(0.25) ;
-//	Piecewiseconst_RR_Function sigma	= Piecewiseconst_RR_Function(x, sigma_y) ; 
-//	Piecewiseconst_RR_Function m		= Piecewiseconst_RR_Function(x, m_y) ;
-//	CheyetteDD_Model::CheyetteDD_Parameter monStruct = CheyetteDD_Model::CheyetteDD_Parameter(k, sigma, m) ;
-//	CheyetteDD_Model_PTR modele_test_PTR(new CheyetteDD_Model(courbe_PTR_test, monStruct)) ;
-//	modele_test_PTR->show() ;
-//
-//	double strike          = 0.9/100;
-//	LMM::Index  indexStart = 2; 
-//	LMM::Index  indexEnd   = 4; 
-//	Tenor	floatingLegTenorType = Tenor::_6M;
-//	Tenor	fixedLegTenorType    = Tenor::_1YR;
-//	LMMTenorStructure_PTR simulationStructure(new LMMTenorStructure(Tenor::_6M , 10) );
-//	VanillaSwap swap = VanillaSwap(strike, indexStart, indexEnd, floatingLegTenorType, fixedLegTenorType, simulationStructure);
-//	swap.show() ;
-//	double fwdProbaT = 3 ;
-//	std::vector<double>	datesOfSimulation ;
-//	std::vector<size_t> discretizationBetweenDates ;
-//	//for(size_t i = 1 ; i < 20 ; ++i)
-//	//{
-//	//	datesOfSimulation.push_back(0.5 * i) ;
-//	//	discretizationBetweenDates.push_back(4) ; 
-//	//}
-//	datesOfSimulation.push_back(1) ; datesOfSimulation.push_back(1.5) ; datesOfSimulation.push_back(2) ;
-//	discretizationBetweenDates.push_back(200) ; discretizationBetweenDates.push_back(100) ; discretizationBetweenDates.push_back(100) ;
-//
-//	MC_Cheyette_PTR mc_Cheyette_Test_PTR(new MC_Cheyette(modele_test_PTR, 
-//														rnGenerator, 
-//														fwdProbaT,
-//														datesOfSimulation, 
-//														discretizationBetweenDates) ) ;
-//	MC_CheyetteDD_VanillaSwapPricer mc_Cheyette_vanillaSwpaPricer_Test(mc_Cheyette_Test_PTR) ;
-//	
-//	size_t nbSimu = 2000 ;
-//
-//	//MC_CheyetteDD_ZCPricer mc_CheyetteDD_ZCPricer(mc_Cheyette_Test_PTR) ;
-//	//std::cout << "Prix ZC : " << mc_CheyetteDD_ZCPricer.price(t_valo, 2, nbSimu) << std::endl ;
-//
-//	//std::cout << "Prix swap MC : " << mc_Cheyette_vanillaSwpaPricer_Test.swapNPV(t_valo, swap, nbSimu) << std::endl ;
-//
-//	VanillaSwaption swaption(swap, OptionType::OptionType::CALL) ;
-//	MC_CheyetteDD_VanillaSwaptionPricer mc_Cheyette_vanillaSwaptionPricer_Test(mc_Cheyette_Test_PTR) ;
-//	std::cout << "Prix swaption MC : " << mc_Cheyette_vanillaSwaptionPricer_Test.price(swaption, nbSimu) << std::endl ;
-//
-//}
+void TestMCSwapPricer()
+{
+	unsigned long seed = 47;
+	RNGenerator_PTR  rnGenerator(new McGenerator(seed));
+
+	CourbeInput_PTR courbe_PTR_test(createCourbeInput(3));
+
+	std::vector<double> x, sigma_y, m_y ;
+	x.push_back(0) ; x.push_back(5) ; x.push_back(10) ; 
+	sigma_y.push_back(0.15) ; sigma_y.push_back(0.20) ;
+	m_y.push_back(0.3) ; m_y.push_back(0.1) ;
+	double k(0.02) ;
+	Piecewiseconst_RR_Function sigma	= Piecewiseconst_RR_Function(x, sigma_y) ; 
+	Piecewiseconst_RR_Function m		= Piecewiseconst_RR_Function(x, m_y) ;
+	CheyetteDD_Model::CheyetteDD_Parameter monStruct = CheyetteDD_Model::CheyetteDD_Parameter(k, sigma, m) ;
+	int shiftChoice = 1 ;
+	CheyetteDD_Model_PTR modele_test_PTR(new CheyetteDD_Model(courbe_PTR_test, monStruct, shiftChoice)) ;
+	modele_test_PTR->show() ;
+
+	double strike          = - 1000. ;
+
+	//swaption 1Y1Y
+	//LMM::Index  indexStart = 2; 
+	//LMM::Index  indexEnd   = 4; 
+
+	//swaption 3Y1Y
+	//LMM::Index  indexStart = 6; 
+	//LMM::Index  indexEnd   = 8; 
+
+	//swaption 1Y3Y
+	//LMM::Index  indexStart = 2; 
+	//LMM::Index  indexEnd   = 8; 
+
+	//swaption 1Y9Y
+	LMM::Index  indexStart = 2; 
+	LMM::Index  indexEnd   = 20; 
+
+	Tenor	floatingLegTenorType = Tenor::_6M;
+	Tenor	fixedLegTenorType    = Tenor::_1YR;
+	LMMTenorStructure_PTR simulationStructure(new LMMTenorStructure(Tenor::_6M , 20) );
+	VanillaSwap swap = VanillaSwap(strike, indexStart, indexEnd, floatingLegTenorType, fixedLegTenorType, simulationStructure);
+	VanillaSwap_PTR pSwap(new 
+		VanillaSwap(strike, indexStart, indexEnd, floatingLegTenorType, fixedLegTenorType, simulationStructure)) ;
+	swap.show() ;
+	double fwdProbaT = 3 ;
+	std::vector<size_t>	indexOfSimulation ;
+	std::vector<size_t> discretizationBetweenDates ;
+		indexOfSimulation.push_back(0) ;		
+		discretizationBetweenDates.push_back(0) ; 
+	for(size_t i = 1 ; i <= indexEnd ; ++i)
+	{
+		indexOfSimulation.push_back(i) ;		//INDEX !!! de simulation 
+		discretizationBetweenDates.push_back(20) ; 
+	}
+	//indexOfSimulation.push_back(1) ; indexOfSimulation.push_back(1.5) ; indexOfSimulation.push_back(2) ;
+	//discretizationBetweenDates.push_back(200) ; discretizationBetweenDates.push_back(100) ; discretizationBetweenDates.push_back(100) ;
+
+	MC_CheyetteDD_VanillaSwapPricer_PTR mc_swap_pricer_PTR( 
+					new	MC_CheyetteDD_VanillaSwapPricer(modele_test_PTR, 
+														rnGenerator, 
+														floatingLegTenorType,
+														fwdProbaT,
+														indexOfSimulation, 
+														discretizationBetweenDates) ) ;
+
+	size_t nbSimu = 20000 ;
+	
+
+	//float - fixed
+	std::cout << "Prix swap MC : " << mc_swap_pricer_PTR->swapNPV(pSwap, nbSimu, floatingLegTenorType, fixedLegTenorType) 
+								<< std::endl ;
+	double dateStart	= indexStart / 2.;
+	double dateEnd		= indexEnd / 2.; 
+	double tauxStart	= courbe_PTR_test->get_tauxZC0(dateStart) ;
+	double tauxEnd		= courbe_PTR_test->get_tauxZC0(dateEnd) ;
+	double ZC_T0 = exp( - dateStart * tauxStart ) ; //exp( - indexStart / 2. * tauxStart ) ;
+	double ZC_TN = exp( - dateEnd * tauxEnd ) ;
+	double floatLeg = ZC_T0 - ZC_TN ;
+	
+
+	std::vector<size_t> fixedLegIndex = pSwap->get_fixedLegPaymentIndexSchedule() ;
+	double fixedLeg = 0. ;
+	for (size_t i = 0 ; i < fixedLegIndex.size() ; ++i)
+	{
+		double date	= fixedLegIndex[i] / 2.;
+		fixedLeg += exp( - date * courbe_PTR_test->get_tauxZC0(date) ) ;
+	}
+
+	std::cout << "Prix swap courbe : " << floatLeg - strike * fixedLeg << std::endl ;
+
+
+	VanillaSwaption_PTR pSwaption(new VanillaSwaption(swap, OptionType::OptionType::CALL)) ;
+	MC_CheyetteDD_VanillaSwaptionPricer_PTR mc_swaption_pricer(
+							new MC_CheyetteDD_VanillaSwaptionPricer(modele_test_PTR, 
+																			rnGenerator, 
+																			floatingLegTenorType,
+																			fwdProbaT,
+																			indexOfSimulation, 
+																			discretizationBetweenDates) ) ;
+
+	std::cout << "Prix swaption MC : " << mc_swaption_pricer->price(pSwaption, nbSimu)[0] << std::endl ;
+
+}

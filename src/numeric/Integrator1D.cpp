@@ -6,18 +6,18 @@
 
 namespace numeric 
 {
-		size_t findClosestDate(double d, std::vector<double> vect)
-	{
-		size_t i = 0 ;
-		double tol = 0.01 ;
-		bool close = vect[0] - tol < d && d < vect[0] + tol ;
-		while (close == false)
-		{
-			++i ;
-			close = vect[i] - tol < d && d < vect[i] + tol ;
-		}
-		return i ;
-	}
+	//	size_t findClosestDate(double d, std::vector<double> vect)
+	//{
+	//	size_t i = 0 ;
+	//	double tol = 0.01 ;
+	//	bool close = vect[0] - tol < d && d < vect[0] + tol ;
+	//	while (close == false)
+	//	{
+	//		++i ;
+	//		close = vect[i] - tol < d && d < vect[i] + tol ;
+	//	}
+	//	return i ;
+	//}
 
 //
 //Riemann
@@ -93,24 +93,21 @@ namespace numeric
 	}
 
 	IncrementalIntegrator2D_Riemann::IncrementalIntegrator2D_Riemann(double start, double end, size_t nbPoints)
-		:incrementalIntegrator_inner_(start,end,nbPoints),
-		incrementalIntegrator_outer_(start,end,nbPoints)
-	{
-	
-	}
+		:incrementalIntegrator_inner_(start,end, nbPoints),
+		incrementalIntegrator_outer_(start,end, nbPoints){}
 
 	double IncrementalIntegrator2D_Riemann::integrate( const boost::function<double(double)>& func_outer, 
 		                                               const boost::function<double(double)>& func_inner) const
 	{
-		 incrementalIntegrator_inner_.vecteur_integrate(func_inner);
+		incrementalIntegrator_inner_.vecteur_integrate(func_inner);
 
-		 std::vector<double> x_grid = incrementalIntegrator_inner_.get_grids();
-		 std::vector<double> value_grid = incrementalIntegrator_inner_.get_values();
-		 Interpolation_RR_Function incrementalFunction_inner (x_grid, value_grid);
-		 Boost_RR_Function func_outer2(func_outer);
+		std::vector<double> x_grid = incrementalIntegrator_inner_.get_grids();
+		std::vector<double> value_grid = incrementalIntegrator_inner_.get_values();
+		Interpolation_RR_Function incrementalFunction_inner (x_grid, value_grid);
+		Boost_RR_Function func_outer2(func_outer);
 
 		RR_Function_ComposeByProduct func(func_outer2, incrementalFunction_inner);
 
-		 return incrementalIntegrator_outer_.integrate(func);
+		return incrementalIntegrator_outer_.integrate(func);
 	}
 } 
