@@ -114,8 +114,8 @@ inline std::vector<VanillaSwaption_PTR> getVectorSwaptions(const Tenor& tenorFlo
 
 	for (size_t i = 1 ; i < vectSwaptions.size() ; ++i)  
 	{
-		size_t indexStart		= vectExpiry[i] / tenor_ref ;
-		size_t indexEnd			= indexStart + vectTenor[i] / tenor_ref ;
+		size_t indexStart		= size_t(vectExpiry[i] / tenor_ref) ;
+		size_t indexEnd			= indexStart + size_t(vectTenor[i] / tenor_ref) ;
 		
 		LMMTenorStructure_PTR pTenorStructure(new LMMTenorStructure(tenorFloat, max_nbOfYear)) ;
 		VanillaSwap swap = VanillaSwap(vectStrike[i], indexStart, indexEnd, tenorFloat, tenorFixed, pTenorStructure) ;

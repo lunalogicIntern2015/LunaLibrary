@@ -153,11 +153,11 @@ void testSwap()
 VanillaSwaption_PTR createSwaption()
 {
 	double strike          = 0.04;
-	LMM::Index  indexStart = 2; 
-	LMM::Index  indexEnd   = 4; 
+	LMM::Index  indexStart = 20; 
+	LMM::Index  indexEnd   = 40; 
 	Tenor	floatingLegTenorType = Tenor::_6M;
 	Tenor	fixedLegTenorType    = Tenor::_1YR;
-	LMMTenorStructure_PTR simulationStructure(new LMMTenorStructure(Tenor::_6M , 15) );
+	LMMTenorStructure_PTR simulationStructure(new LMMTenorStructure(Tenor::_6M , 40) );
 	VanillaSwap swap = VanillaSwap(strike, indexStart, indexEnd, floatingLegTenorType, fixedLegTenorType, simulationStructure);
 	
 	VanillaSwaption_PTR vanillaSwaption_PTR_Test(new VanillaSwaption(swap, OptionType::OptionType::CALL)) ;
@@ -179,10 +179,10 @@ CheyetteDD_VanillaSwaptionApproxPricer_PTR createApproxPricer_PTR()
 void test_y_barre()
 {
 	std::vector<double> x, y, m_y ;
-	x.push_back(0) ; x.push_back(1) ; x.push_back(2) ; 
-	y.push_back(0.25) ; y.push_back(0.5) ;
+	x.push_back(0) ; x.push_back(10) ; x.push_back(20) ; 
+	y.push_back(0.25) ; y.push_back(0.25) ;
 	m_y.push_back(0) ; m_y.push_back(0) ;
-	double k(1) ;
+	double k(0.02) ;
 
 	int curveChoice = 1 ;  //0,1 ou 2
 	CourbeInput_PTR courbe_PTR_test(createCourbeInput(curveChoice));
@@ -198,12 +198,22 @@ void test_y_barre()
 	CheyetteDD_VanillaSwaptionApproxPricer approx = 
 				CheyetteDD_VanillaSwaptionApproxPricer(modele_test_PTR, swaption_PTR_test); 
 
-	double t = 1 ;
+	double t = 1. ;
 	double r0 = modele_test_PTR->get_courbeInput_PTR()->get_f_0_t(0) ;
-	double res_integrale(exp(- 2) * pow(0.25 * r0, 2) * (exp(2) - 1) / 2) ;
+	double res_integrale =  pow(0.25 * r0, 2) * (1. - exp(- 2. * k * t)) / (2. * k) ;
 
+	std::cout << "t  = " << t << std::endl ;
 	std::cout << "integrale_main   : " << res_integrale << std::endl ;
-	std::cout << "integrale_classe : " << approx.get_buffer_y_bar_t(t) << std::endl ;
+	std::cout << "integrale_classe : " << approx.get_buffer_y_bar_()(t) << std::endl ;
+	std::cout << " " << std::endl ;
+
+	t = 10. ;
+	res_integrale =  pow(0.25 * r0, 2) * (1. - exp(- 2. * k * t)) / (2. * k) ;
+
+	std::cout << "t  = " << t << std::endl ;
+	std::cout << "integrale_main   : " << res_integrale << std::endl ;
+	std::cout << "integrale_classe : " << approx.get_buffer_y_bar_()(t) << std::endl ;
+
 
 }
 
@@ -290,7 +300,7 @@ void test_ZC_swapRate_Num_Denom()
 //swap rate numerator
 	//on fixe arbitrairement x_t = 1 pour le test (t = 0.5)
 	std::cout << "------------  t = 0.5  ------------" << std::endl ;
-	double y_bar_t = approxPricerTest_PTR->get_buffer_y_bar_t(0.5) ;
+	double y_bar_t = approxPricerTest_PTR->get_buffer_y_bar_()(0.5) ;
 	std::cout << "swap rate numerator   " << approxPricerTest_PTR->swapRateNumerator(0.5, 1, y_bar_t) << std::endl ;
 	std::cout << "swap rate numerator   " <<  cheyetteDD_Model_PTR_Test->P(0.5, 1, 1, y_bar_t) +
 												- cheyetteDD_Model_PTR_Test->P(0.5, 3, 1, y_bar_t) << std::endl ;

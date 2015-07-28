@@ -15,7 +15,7 @@
 class RR_Function  // fonction de R dans R
 {
 public:
-	virtual double operator ()(double x) const = 0;
+	virtual const double operator ()(double x) const = 0;
 };
 typedef boost::shared_ptr<RR_Function>       RR_Function_PTR;
 typedef boost::shared_ptr<const RR_Function> RR_Function_CONSTPTR;
@@ -28,7 +28,7 @@ public:
 	Boost_RR_Function(const boost::function<double(double)>& func):func_(func){}
 	virtual ~Boost_RR_Function(){}
 	
-	double operator ()(double x) const {return func_(x);}
+	const double operator ()(double x) const {return func_(x);}
 };
 typedef boost::shared_ptr<Boost_RR_Function>       Boost_RR_Function_PTR;
 typedef boost::shared_ptr<const Boost_RR_Function> Boost_RR_Function_CONSTPTR;
@@ -63,7 +63,7 @@ public:
 	RR_Function_ComposeByProduct(RR_Function_CONSTPTR func1, RR_Function_CONSTPTR func2)
 		:RR_Function_Composed(func1, func2){}
 
-	double operator ()(double x) const {return func1_->operator()(x) * func2_->operator()(x) ; } 
+	const double operator ()(double x) const {return func1_->operator()(x) * func2_->operator()(x) ; } 
 
 };
 typedef boost::shared_ptr<RR_Function_ComposeByProduct>       RR_Function_ComposeByProduct_PTR;
@@ -107,7 +107,7 @@ public:
 	void set_grid_(std::vector<double> grid) {grid_ = grid ;}
 	void set_value_(std::vector<double> value) {value_ = value ;}
 
-	double operator ()(double x) const {return  NumericalMethods::linearInterpolation2(x, grid_, value_);}
+	const double operator ()(double x) const {return  NumericalMethods::linearInterpolation2(x, grid_, value_);}
 
 	Interpolation_RR_Function& operator=(Interpolation_RR_Function const& f2)
 	{
@@ -131,7 +131,7 @@ public:
 
 	virtual ~Constant_RR_Function(){};
 
-	double operator ()(double x) const {return constValue_;}
+	const double operator ()(double x) const {return constValue_;}
 };
 
 //fonction constante par morceaux avec convention cadlag
@@ -179,7 +179,7 @@ public :
 
 	// find interval and return the corresponding y : convention càdlàg
 	// traiter cas extreme: extrapolation ! 
-	double Piecewiseconst_RR_Function::evaluate(double t) const
+	const double Piecewiseconst_RR_Function::evaluate(double t) const
 	{
 		//assert(x_[0] <= t || t <= x_[x_.size() - 1] ) ;
 		//assert(y_.size() +  1 == x_.size()) ; 
@@ -216,11 +216,11 @@ public :
 
 	}
 
-	double operator ()(double x) const {
+	const double operator ()(double x) const {
 		return this->evaluate(x) ;
 	}
 
-	void show()
+	void show() const
 	{
 		std::cout << "       for x in [" << x_[0] << ", " << x_[1] << "], y = " << y_[0] << std::endl ;
 		for (size_t i = 1 ; i < x_.size() - 2 ; ++i)
@@ -234,7 +234,7 @@ public :
 		}
 	}
 
-	void print(std::ostream& o)
+	void print(std::ostream& o) const
 	{
 		o << "       for x in [" << x_[0] << ", " << x_[1] << "], y =  ;" << y_[0] << std::endl ;
 		for (size_t i = 1 ; i < x_.size() - 2 ; ++i)
@@ -258,7 +258,7 @@ class R2R_Function
 public:
 	boost::function<double(double, double)> func_;
 
-	virtual double operator ()(double t, double x) const = 0;
+	virtual const double operator ()(double t, double x) const = 0;
 };
 
 class Boost_R2R_Function : public  R2R_Function 
@@ -269,7 +269,7 @@ public:
 	Boost_R2R_Function(const boost::function<double(double, double)>& func):func_(func){}
 	virtual ~Boost_R2R_Function(){}
 	
-	double operator ()(double t, double x) const {
+	const double operator ()(double t, double x) const {
 		double resultat = func_(t, x) ; //test 
 		return func_(t, x);
 	}
@@ -286,7 +286,7 @@ class R3R_Function
 public:
 	boost::function<double(double, double, double)> func_;
 
-	virtual double operator ()(double t, double x, double y) const = 0;
+	virtual const double operator ()(double t, double x, double y) const = 0;
 };
 
 class Boost_R3R_Function : public  R3R_Function 
@@ -297,7 +297,7 @@ public:
 	Boost_R3R_Function(const boost::function<double(double, double, double)>& func):func_(func){}
 	virtual ~Boost_R3R_Function(){}
 	
-	double operator ()(double t, double x, double y) const {
+	const double operator ()(double t, double x, double y) const {
 		double resultat = func_(t, x, y) ; 
 		return resultat ;
 	}

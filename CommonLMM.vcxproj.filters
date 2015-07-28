@@ -438,9 +438,6 @@
     <ClInclude Include="Cheyette\Pricer\MC_CheyetteDD_ZCPricer.h">
       <Filter>Cheyette\Pricer</Filter>
     </ClInclude>
-    <ClInclude Include="Cheyette\InverseFunction.h">
-      <Filter>Cheyette</Filter>
-    </ClInclude>
     <ClInclude Include="Cheyette\Fonction.h">
       <Filter>Cheyette</Filter>
     </ClInclude>
@@ -472,7 +469,6 @@
     <ClInclude Include="Cheyette\Pricer\MC_CheyetteDD_GenericSwapPricer.h" />
     <ClInclude Include="Cheyette\unit_test\TestMCGeneric.h" />
     <ClInclude Include="Cheyette\Pricer\MC_CheyetteDD_GenericSwaptionPricer.h" />
-    <ClInclude Include="Cheyette\unit_test\TestMC_vs_approx.h" />
     <ClInclude Include="Cheyette\Calibrator\CheyetteBaseCalibrator.h" />
     <ClInclude Include="Cheyette\Calibrator\CheyetteDD_CostFunctionLevel.h" />
     <ClInclude Include="Cheyette\Calibrator\CheyetteDD_CostFunctionSkew.h" />
@@ -792,7 +788,6 @@
     <ClCompile Include="Cheyette\CheyetteModel\CheyetteDD_Model.cpp" />
     <ClCompile Include="Cheyette\Pricer\CheyetteDD_VanillaSwaptionApproxPricer.cpp" />
     <ClCompile Include="Cheyette\CheyetteModel\courbeInput.cpp" />
-    <ClCompile Include="Cheyette\InverseFunction.cpp" />
     <ClCompile Include="Cheyette\unit_test\TestApproxDD.cpp" />
     <ClCompile Include="Cheyette\unit_test\TestFonction.cpp" />
     <ClCompile Include="Cheyette\unit_test\TestMC.cpp" />
@@ -900,9 +895,6 @@
     <ClCompile Include="Cheyette\Pricer\MC_CheyetteDD_ZCPricer.cpp">
       <Filter>Cheyette\Pricer</Filter>
     </ClCompile>
-    <ClCompile Include="Cheyette\InverseFunction.cpp">
-      <Filter>Cheyette</Filter>
-    </ClCompile>
     <ClCompile Include="Cheyette\unit_test\TestMC.cpp">
       <Filter>Cheyette\unit_test</Filter>
     </ClCompile>
@@ -921,7 +913,6 @@
     <ClCompile Include="Cheyette\Pricer\MC_CheyetteDD_GenericSwapPricer.cpp" />
     <ClCompile Include="Cheyette\unit_test\TestMCGeneric.cpp" />
     <ClCompile Include="Cheyette\Pricer\MC_CheyetteDD_GenericSwaptionPricer.cpp" />
-    <ClCompile Include="Cheyette\unit_test\TestMC_vs_approx.cpp" />
     <ClCompile Include="Cheyette\Calibrator\CheyetteBaseCalibrator.cpp" />
     <ClCompile Include="Cheyette\Calibrator\CheyetteDD_CostFunctionLevel.cpp" />
     <ClCompile Include="Cheyette\Calibrator\CheyetteDD_CostFunctionSkew.cpp" />
@@ -1373,7 +1364,6 @@
     <ClInclude Include="LMM\calibration\CalibrationShiftCostFunction.h" />
     <ClInclude Include="LMM\calibration\CalibrationVolCostFunction.h" />
     <ClInclude Include="Cheyette\Fonction.h" />
-    <ClInclude Include="Cheyette\InverseFunction.h" />
     <ClInclude Include="Cheyette\Pricer\MC_CheyetteDD_ZCPricer.h" />
     <ClInclude Include="Cheyette\Pricer\MC_CheyetteDD_VanillaSwaptionPricer.h" />
   </ItemGroup>

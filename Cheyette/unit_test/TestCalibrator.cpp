@@ -163,9 +163,12 @@ void testCalib(size_t fileNumber, size_t coterminal)
 	//compare market smile and model smile for ITM/ATM/OTM strikes
 	//generateSmile(model_nbYear, fileNumber, coterminal, o) ;
 
-	std::vector<size_t> nbSimus(1) ;
-	nbSimus[0] = 10000 ;// nbSimus[1] = 10000 ; nbSimus[2] = 30000 ; nbSimus[3] = 50000 ;
+	//std::vector<size_t> nbSimus(1) ;
+	//nbSimus[0] = 10000 ;// nbSimus[1] = 10000 ; nbSimus[2] = 30000 ; nbSimus[3] = 50000 ;
 	//nbSimus[4] = 100000 ; nbSimus[5] = 200000 ;
+
+		std::vector<size_t> nbSimus(5) ;
+	nbSimus[0] = 5000 ; nbSimus[1] = 10000 ; nbSimus[2] = 20000 ; nbSimus[3] = 50000 ; nbSimus[4] = 100000 ;
 
 	for (size_t a = 1 ; a < coterminal ; ++a)
 	{

@@ -122,7 +122,7 @@ double CheyetteDD_Model::drift_x_QT(double t, double T_proba_fwd, double x_t, do
 	double k			= cheyetteDD_Parameter_.k_ ;
 	double sigma_r_t	= sigma_r(t, x_t, y_t) ;
 
-	return y_t - k * x_t - G(t, T_proba_fwd) * sigma_r_t * sigma_r_t ;	  
+	return y_t - k * x_t - G(t, T_proba_fwd) * sigma_r_t * sigma_r_t ;	  	  
 }
 
 
@@ -130,5 +130,5 @@ double CheyetteDD_Model::drift_y(double t, double x_t, double y_t) const
 {
 	double sigma_r_t	=  sigma_r(t, x_t, y_t) ;
 	double k			= cheyetteDD_Parameter_.k_ ;
-	return sigma_r_t * sigma_r_t - 2 * k * y_t ;
+	return sigma_r_t * sigma_r_t - 2. * k * y_t ;
 }

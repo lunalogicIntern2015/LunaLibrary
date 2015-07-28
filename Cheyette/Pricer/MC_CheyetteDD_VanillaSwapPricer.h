@@ -7,19 +7,20 @@ class MC_CheyetteDD_VanillaSwapPricer : public MC_Cheyette
 {
 
 public:
-	MC_CheyetteDD_VanillaSwapPricer(CheyetteDD_Model_PTR		cheyetteDD_Model,
-									RNGenerator_PTR				rnGenerator,
-									Tenor						tenorType,
-									double						fwdProbaT,
-									std::vector<size_t>&		indexOfSimulation,		
-									std::vector<size_t>&		discretizationBetweenDates ) 
-		:MC_Cheyette(cheyetteDD_Model, rnGenerator, tenorType, fwdProbaT, indexOfSimulation, discretizationBetweenDates){}
+		MC_CheyetteDD_VanillaSwapPricer(	CheyetteDD_Model_PTR		cheyetteDD_Model,
+											RNGenerator_PTR				rnGenerator,
+											LMMTenorStructure_PTR		pTenorStructure,
+											size_t						fwdProbaT,
+											size_t						discretizationBetweenDates   )
+		:MC_Cheyette(cheyetteDD_Model, rnGenerator, pTenorStructure, fwdProbaT, discretizationBetweenDates){}
 
 	virtual ~MC_CheyetteDD_VanillaSwapPricer(){}
 
 	//! Pricing at time T0=0
 	//double swapRate(const VanillaSwap& vanillaSwap, size_t nbSimulation) const;
-	double swapNPV (VanillaSwap_PTR vanillaSwap, size_t nbSimulation, Tenor tenorFloatingLeg, Tenor tenorFixedLeg) const;
+	double swapNPV (VanillaSwap_PTR vanillaSwap, size_t nbSimulation, 
+					size_t valuationIndex,
+					Tenor tenorFloatingLeg, Tenor tenorFixedLeg) const;
 
 
 };

@@ -6,13 +6,12 @@ class MC_CheyetteDD_GenericSwapPricer : public MC_Cheyette
 {
 
 public:
-	MC_CheyetteDD_GenericSwapPricer(CheyetteDD_Model_PTR		cheyetteDD_Model,
-									RNGenerator_PTR				rnGenerator,
-									Tenor						tenorType,
-									double						fwdProbaT,
-									std::vector<size_t>&		indexOfSimulation,		
-									std::vector<size_t>&		discretizationBetweenDates ) 
-		:MC_Cheyette(cheyetteDD_Model, rnGenerator, tenorType, fwdProbaT, indexOfSimulation, discretizationBetweenDates){}
+	MC_CheyetteDD_GenericSwapPricer(	CheyetteDD_Model_PTR		cheyetteDD_Model,
+										RNGenerator_PTR				rnGenerator,
+										LMMTenorStructure_PTR		pTenorStructure,
+										size_t						fwdProbaT,
+										size_t						discretizationBetweenDates   )
+		:MC_Cheyette(cheyetteDD_Model, rnGenerator, pTenorStructure, fwdProbaT, discretizationBetweenDates){}
 
 	virtual ~MC_CheyetteDD_GenericSwapPricer(){}
 

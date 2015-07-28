@@ -24,11 +24,11 @@ class CheyetteDD_VanillaSwaptionApproxPricer
 
 private:
 	
-	CheyetteDD_Model_PTR	cheyetteDD_Model_;  
-	mutable VanillaSwaption_PTR		swaption_ ;   //mutable pour la calibration (skew avec strike +/- shift)
+	CheyetteDD_Model_PTR	pCheyetteDD_Model_;  
+	mutable VanillaSwaption_PTR		pSwaption_ ;   //mutable pour la calibration (skew avec strike +/- shift)
 
 	//appel fréquent aux éléments suivants -> buffer
-	mutable CourbeInput_PTR			buffer_courbeInput_ ;
+	mutable CourbeInput_PTR			buffer_pCourbeInput_ ;
 	mutable VanillaSwap				buffer_UnderlyingSwap_ ;
 	mutable double					buffer_T0_ ;
 	mutable double					buffer_TN_ ;
@@ -41,8 +41,8 @@ private:
 
 public :
 	//constructor  
-	CheyetteDD_VanillaSwaptionApproxPricer(	const CheyetteDD_Model_PTR& cheyetteDD_Model, 
-											const VanillaSwaption_PTR&	swaption); 
+	CheyetteDD_VanillaSwaptionApproxPricer(	const CheyetteDD_Model_PTR& pCheyetteDD_Model, 
+											const VanillaSwaption_PTR&	pSwaption); 
 
 	void initialize_buffers() ;
 
@@ -50,10 +50,10 @@ public :
 	virtual ~CheyetteDD_VanillaSwaptionApproxPricer(){};
 
 	//getters
-	CheyetteDD_Model_PTR		get_CheyetteDD_Model() const {return cheyetteDD_Model_ ;}  //CheyetteDD_Model_CONSTPTR
-	VanillaSwaption_PTR			get_VanillaSwaption() const {return swaption_ ;}
+	CheyetteDD_Model_PTR		get_CheyetteDD_Model() const {return pCheyetteDD_Model_ ;}  //CheyetteDD_Model_CONSTPTR
+	VanillaSwaption_PTR			get_VanillaSwaption() const {return pSwaption_ ;}
 
-	CourbeInput_PTR				get_buffer_courbeInput_() const {return buffer_courbeInput_ ;}
+	CourbeInput_PTR				get_buffer_courbeInput_() const {return buffer_pCourbeInput_ ;}
 	VanillaSwap					get_buffer_UnderlyingSwap_() const {return buffer_UnderlyingSwap_ ;}
 	double						get_buffer_T0_() const {return buffer_T0_ ;}
 	double						get_buffer_TN_() const {return buffer_TN_ ;}
@@ -62,7 +62,7 @@ public :
 	double						get_buffer_s0_() const {return buffer_s0_ ;}
 
 	Interpolation_RR_Function&	get_buffer_y_bar_() const {return buffer_y_bar_ ;}
-	double						get_buffer_y_bar_t(double t) const {return buffer_y_bar_(t) ;}
+//	double						get_buffer_y_bar_t(double t) const {return buffer_y_bar_(t) ;}
 	double						get_buffer_b_barre_() const {return buffer_b_barre_ ;}
 
 	//setters 
@@ -77,13 +77,13 @@ public :
 
 	void setSwaption(VanillaSwaption_PTR pSwaption)
 	{
-		swaption_ = pSwaption ;
+		pSwaption_ = pSwaption ;
 		initialize_buffers() ; 
 	}
 
 	void setStrike(double strike)
 	{
-		swaption_->getUnderlyingSwap_RefNonConst().set_strike(strike) ;  // for skew calculation: need to bump strike ...
+		pSwaption_->getUnderlyingSwap_RefNonConst().set_strike(strike) ;  // for skew calculation: need to bump strike ...
 		buffer_UnderlyingSwap_.set_strike(strike) ;
 	}
 
@@ -91,14 +91,14 @@ public :
 	void updateSigma_calib(std::ostream& o, double a, size_t index)
 	{
 		o << "sigma : ;" << a ;
-		cheyetteDD_Model_->setCheyetteDD_Parameter_sigma(a, index) ;
+		pCheyetteDD_Model_->setCheyetteDD_Parameter_sigma(a, index) ;
 		initialize_buffers() ; 
 	}
 
 	void updateM_calib(std::ostream& o, double a, size_t index)
 	{
 		o << "m : ;" << a ;
-		cheyetteDD_Model_->setCheyetteDD_Parameter_m(a, index) ;
+		pCheyetteDD_Model_->setCheyetteDD_Parameter_m(a, index) ;
 		initialize_buffers() ; 
 	}
 	//calcul de y_barre(t)

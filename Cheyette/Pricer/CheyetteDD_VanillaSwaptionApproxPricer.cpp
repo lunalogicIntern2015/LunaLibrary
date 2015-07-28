@@ -5,31 +5,31 @@
 #include <vector>
 #include <iostream> 
 
-const size_t gridSize  = 3 ;	//mettre 11 ou 101 (11 est suffisant)
+const size_t gridSize  = 101 ;	//mettre 11 ou 101 (11 est suffisant)
 
 
 CheyetteDD_VanillaSwaptionApproxPricer::CheyetteDD_VanillaSwaptionApproxPricer
-						(const CheyetteDD_Model_PTR&	cheyetteDD_Model, 
-						const VanillaSwaption_PTR&		swaption) 
-						:cheyetteDD_Model_(cheyetteDD_Model), swaption_(swaption)  					
+						(const CheyetteDD_Model_PTR&	pCheyetteDD_Model, 
+						const VanillaSwaption_PTR&		pSwaption) 
+						:pCheyetteDD_Model_(pCheyetteDD_Model), pSwaption_(pSwaption)  					
 {
 	// domaine de validité de l'approximation : //assert( ... ); 
 
-	buffer_courbeInput_	 = cheyetteDD_Model->get_courbeInput_PTR() ;
+	buffer_pCourbeInput_	 = pCheyetteDD_Model->get_courbeInput_PTR() ;
 	initialize_buffers() ;  //initialise les autres buffers relatifs à la swaption, y barre, b barre 		
 }
 
 void CheyetteDD_VanillaSwaptionApproxPricer::initialize_buffers()
 {
-	buffer_UnderlyingSwap_					= swaption_->getUnderlyingSwap() ;
-	buffer_T0_								= swaption_->getUnderlyingSwap().get_StartDate() ;		//1ere date de fixing
-	buffer_TN_								= swaption_->getUnderlyingSwap().get_EndDate() ;			//date dernier flux (setté en T_{N-1})
+	buffer_UnderlyingSwap_					= pSwaption_->getUnderlyingSwap() ;
+	buffer_T0_								= pSwaption_->getUnderlyingSwap().get_StartDate() ;		//1ere date de fixing
+	buffer_TN_								= pSwaption_->getUnderlyingSwap().get_EndDate() ;			//date dernier flux (setté en T_{N-1})
 	buffer_fixedLegPaymentIndexSchedule_	= buffer_UnderlyingSwap_.get_fixedLegPaymentIndexSchedule() ;
 	buffer_deltaTFixedLeg_					= buffer_UnderlyingSwap_.get_DeltaTFixedLeg() ;
 	
 	//initialisation du shift de CheyetteDD_Model pas encore initialisé (c'est le cas si shift = S(t) / S(0) ) 
 	//shift = S(t) / S(0) dépend de la swaption. Non initialisable dans CheyetteDD_Model
-	if (cheyetteDD_Model_->get_shiftChoice() == 3)
+	if (pCheyetteDD_Model_->get_shiftChoice() == 3)
 	{
 		boost::function<double(double, double, double)> f1 
 				= boost::bind(&CheyetteDD_VanillaSwaptionApproxPricer::swapRate, this, _1, _2, _3);
@@ -43,7 +43,7 @@ void CheyetteDD_VanillaSwaptionApproxPricer::initialize_buffers()
 		Boost_R3R_Function_PTR f2_ptr(new Boost_R3R_Function(f2)) ;
 		Boost_R3R_Function_PTR fp1_ptr(new Boost_R3R_Function(fp1)) ;
 		Boost_R3R_Function_PTR fp2_ptr(new Boost_R3R_Function(fp2)) ;
-		cheyetteDD_Model_->setShiftPointer(f1_ptr, f2_ptr, fp1_ptr, fp2_ptr) ;
+		pCheyetteDD_Model_->setShiftPointer(f1_ptr, f2_ptr, fp1_ptr, fp2_ptr) ;
 	}
 
 	initialize_y_bar(buffer_T0_, gridSize);	
@@ -56,8 +56,8 @@ void CheyetteDD_VanillaSwaptionApproxPricer::initialize_buffers()
 //sera integrée sur s entre 0 et t 
 double CheyetteDD_VanillaSwaptionApproxPricer::to_integrate_y_bar(double s) const
 {
-	double k			= cheyetteDD_Model_->get_CheyetteDD_Parameter().k_ ;
-	double sigma_r_0	= cheyetteDD_Model_->sigma_r(s, 0., 0.) ;			//sigma_r^0(t) = sigma_r(t, 0, 0) 
+	double k			= pCheyetteDD_Model_->get_CheyetteDD_Parameter().k_ ;
+	double sigma_r_0	= pCheyetteDD_Model_->sigma_r(s, 0., 0.) ;			//sigma_r^0(t) = sigma_r(t, 0, 0) 
 	return exp(2 * k * s) * sigma_r_0 * sigma_r_0 ; 
 }
 
@@ -68,7 +68,7 @@ void CheyetteDD_VanillaSwaptionApproxPricer::initialize_y_bar(double t, size_t g
 	assert(t > 0);
 	double gridStart	= 0. ;
 	double gridEnd		= t ;
-	double k			= cheyetteDD_Model_->get_CheyetteDD_Parameter().k_ ;
+	double k			= pCheyetteDD_Model_->get_CheyetteDD_Parameter().k_ ;
 
 	//constructeur pour le schema d'integration
 	numeric::IncrementalIntegrator1D_Riemann integral(gridStart, gridEnd, gridSize);
@@ -97,8 +97,8 @@ double CheyetteDD_VanillaSwaptionApproxPricer::ZC_1stDerivative_on_xt(double t, 
 	assert(0 <= T && T <= buffer_TN_) ;
 	if (t==0){assert(x_t == 0 && y_t == 0) ;}
 
-	double ZC = cheyetteDD_Model_->P(t, T, x_t, y_t) ;	
-	double g = cheyetteDD_Model_->G(t,T) ;
+	double ZC = pCheyetteDD_Model_->P(t, T, x_t, y_t) ;	
+	double g = pCheyetteDD_Model_->G(t,T) ;
 	double res = - g * ZC ;
 	return res ;	
 }
@@ -107,8 +107,8 @@ double CheyetteDD_VanillaSwaptionApproxPricer::ZC_2ndDerivative_on_xt(double t, 
 {
 	assert(0 <= T && T <= buffer_TN_) ;
 
-	double ZC = cheyetteDD_Model_->P(t, T, x_t, y_t) ;
-	double g = cheyetteDD_Model_->G(t,T) ;
+	double ZC = pCheyetteDD_Model_->P(t, T, x_t, y_t) ;
+	double g = pCheyetteDD_Model_->G(t,T) ;
 	double res = g * g * ZC ;
 	
 	return res ;					
@@ -120,8 +120,8 @@ double CheyetteDD_VanillaSwaptionApproxPricer::swapRateNumerator(double t, doubl
 	assert( t >= 0. ) ;
 
 	double ZC_T0, ZC_TN ;
-	ZC_T0 = cheyetteDD_Model_->P(t, buffer_T0_, x_t, y_t) ; 
-	ZC_TN = cheyetteDD_Model_->P(t, buffer_TN_, x_t, y_t) ;	
+	ZC_T0 = pCheyetteDD_Model_->P(t, buffer_T0_, x_t, y_t) ; 
+	ZC_TN = pCheyetteDD_Model_->P(t, buffer_TN_, x_t, y_t) ;	
 	
 	return  ZC_T0 - ZC_TN ; 
 }
@@ -148,7 +148,7 @@ double CheyetteDD_VanillaSwaptionApproxPricer::swapRateDenominator(double t, dou
 	{
 		double dateEchangeFluxFixe = buffer_fixedLegPaymentIndexSchedule_[itr] * tenor_ref ;
 		double delta_T = buffer_deltaTFixedLeg_[itr] ;	
-		double ZC		= cheyetteDD_Model_->P(t, dateEchangeFluxFixe, x_t, y_t) ;
+		double ZC		= pCheyetteDD_Model_->P(t, dateEchangeFluxFixe, x_t, y_t) ;
 		denom += delta_T * ZC ;
 	}
 	
@@ -208,9 +208,35 @@ double CheyetteDD_VanillaSwaptionApproxPricer::swapRate_1stDerivative(double t, 
 
 	double d   = swapRateDenominator(t, x_t, y_t);
 	double d_1 = swapRateDenominator_1stDerivative(t, x_t, y_t);
-	//std::cout << "swap rate 1st derivative : " << (n_1*d - n*d_1)/(d*d) << std::endl ;
-	return (n_1*d - n*d_1)/(d*d);
+
+	return  (n_1*d - n*d_1)/(d*d) ;	
 }
+
+//double CheyetteDD_VanillaSwaptionApproxPricer::swapRate_1stDerivative(double t, double x_t, double y_t) const
+//{
+//	double A_t_x_y = swapRateDenominator(t, x_t, y_t) ;
+//	
+//	double ZC_T0, ZC_TN ;
+//	ZC_T0 = pCheyetteDD_Model_->P(t, buffer_T0_, x_t, y_t) ; 
+//	ZC_TN = pCheyetteDD_Model_->P(t, buffer_TN_, x_t, y_t) ;	
+//	
+//	double g_T0 = pCheyetteDD_Model_->G(t,buffer_T0_) ;
+//	double g_TN = pCheyetteDD_Model_->G(t,buffer_TN_) ;
+//	
+//	double S_t_x_y = swapRate(t, x_t, y_t) ;
+//
+//	double somme = 0. ;
+//	for (size_t i = 0  ; i < buffer_fixedLegPaymentIndexSchedule_.size() ; ++i)
+//	{
+//		double T_i = buffer_fixedLegPaymentIndexSchedule_[i] / 2. ;   // tenor 6M seulement 
+//		double delta_i = buffer_deltaTFixedLeg_[i] ; 
+//		double ZC_Ti = pCheyetteDD_Model_->P(t, T_i, x_t, y_t) ;	
+//		double g_Ti = pCheyetteDD_Model_->G(t, T_i) ;	
+//		somme += delta_i * ZC_Ti * g_Ti ;
+//	}
+//
+//	return  - 1. / A_t_x_y * (ZC_T0 * g_T0 - ZC_TN * g_TN) + S_t_x_y / A_t_x_y * somme ;	
+//}
 
 double CheyetteDD_VanillaSwaptionApproxPricer::swapRate0_1stDerivative(double t, double x_t, double y_t) const
 {
@@ -274,9 +300,9 @@ double CheyetteDD_VanillaSwaptionApproxPricer::inverse(double t, double s) const
     size_t nDigits			= 15;
 //	boost::uintmax_t nMaxIter  = 50 ;
 
-	double result_newton_raphson = boost::math::tools::newton_raphson_iterate(NR_struct, initial_guess, min, max, nDigits);
+	double res_newton_raphson = boost::math::tools::newton_raphson_iterate(NR_struct, initial_guess, min, max, nDigits);
 	
-	return result_newton_raphson;
+	return res_newton_raphson;
 }
 
 
@@ -291,9 +317,9 @@ double CheyetteDD_VanillaSwaptionApproxPricer::Phi(double t, double x_t) const
 {
 	double y_bar = buffer_y_bar_(t) ;
 
-	double sigma_r	= cheyetteDD_Model_->sigma_r(t, x_t, y_bar) ;	
+	double sigma_r	= pCheyetteDD_Model_->sigma_r(t, x_t, y_bar) ;	
 	double phi_res = swapRate_1stDerivative(t, x_t, y_bar) * sigma_r ;
-	
+
 	return phi_res ;
 }
 
@@ -301,9 +327,9 @@ double CheyetteDD_VanillaSwaptionApproxPricer::DPhi(double t, double x_t) const
 {
 	double y_bar = buffer_y_bar_(t) ;
 
-	double sigma_r	= cheyetteDD_Model_->sigma_r(t, x_t, y_bar) ;
+	double sigma_r	= pCheyetteDD_Model_->sigma_r(t, x_t, y_bar) ;
 	double res		=  sigma_r *	swapRate_2ndDerivative(t, x_t, y_bar) / swapRate_1stDerivative(t, x_t, y_bar) 
-					+ cheyetteDD_Model_->sigma_r_t_1stDerivative(t, x_t, y_bar) ;
+					+ pCheyetteDD_Model_->sigma_r_t_1stDerivative(t, x_t, y_bar) ;
 
 	return res ; 
 }

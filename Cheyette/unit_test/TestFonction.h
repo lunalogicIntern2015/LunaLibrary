@@ -16,7 +16,7 @@ void TestInterpolation_RR_Function() ;
 
 //void TestFonctionConstanteMorceaux_R2R() ;
 
-void TestInverse() ;
+//void TestInverse() ;
 
 //void TestOperateurR2R() ;
 

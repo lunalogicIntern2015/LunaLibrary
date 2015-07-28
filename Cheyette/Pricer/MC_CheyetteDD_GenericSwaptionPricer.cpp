@@ -14,22 +14,15 @@ std::vector<double> MC_CheyetteDD_GenericSwaptionPricer::price(GeneticSwaption_C
 	//MC
 	for(size_t itrSimulation=0; itrSimulation<nbSimulation; ++itrSimulation)
 	{
-		simulate_Euler() ;
-		double npv1  = evaluateCouponLeg(indexValuationDate, 
-										genericSwap->getLeg1(), 
-										numeraires_, 
-										x_t_Cheyette_,
-										y_t_Cheyette_,
-										tenorType_);
-		double npv2  = evaluateCouponLeg(indexValuationDate, 
-										genericSwap->getLeg2(), 
-										numeraires_, 
-										x_t_Cheyette_,
-										y_t_Cheyette_,
-										tenorType_);
-		double res = std::max(npv1 - npv2, 0.) ;
-		somme_xi += res ;
-		somme_xi2 += res*res ;
+		if ((itrSimulation*10) % nbSimulation == 0){std::cout << double(itrSimulation)/double(nbSimulation)*100 << "%" << std::endl ;}
+		//simulate_Euler() ;
+		//////double npv1  = evaluateCouponLeg(indexValuationDate, genericSwap->getLeg1(), tenorType_);
+
+		//////double npv2  = evaluateCouponLeg(indexValuationDate, genericSwap->getLeg2(), tenorType_);
+
+		////double res = std::max(npv1 - npv2, 0.) ;
+		////somme_xi += res ;
+		////somme_xi2 += res*res ;
 	}
 	double mean_x	= somme_xi / nbSimulation; 
 	double mean_x2	= somme_xi2 / nbSimulation; 

@@ -14,22 +14,14 @@ double MC_CheyetteDD_GenericSwapPricer::swapNPV(GeneticSwap_CONSTPTR geneticSwap
 	//MC
 	for(size_t itrSimulation=0; itrSimulation<nbSimulation; ++itrSimulation)
 	{
-		simulate_Euler() ;
-		double npv1  = evaluateCouponLeg(indexValuationDate, 
-										geneticSwap->getLeg1(), 
-										numeraires_, 
-										x_t_Cheyette_,
-										y_t_Cheyette_,
-										tenorLeg1);			
-		double npv2  = evaluateCouponLeg(indexValuationDate, 
-										geneticSwap->getLeg2(), 
-										numeraires_, 
-										x_t_Cheyette_,
-										y_t_Cheyette_,
-										tenorLeg2);			
-		TEST_sommeLeg1 += npv1 ;
-		TEST_sommeLeg2 += npv2 ;
-		result += npv1 - npv2;
+		if ((itrSimulation*10) % nbSimulation == 0){std::cout << double(itrSimulation)/double(nbSimulation)*100 << "%" << std::endl ;}
+		//simulate_Euler() ;
+		//double npv1  = evaluateCouponLeg(indexValuationDate, geneticSwap->getLeg1(), tenorLeg1);
+
+		//double npv2  = evaluateCouponLeg(indexValuationDate, geneticSwap->getLeg2(), tenorLeg2);			
+		//TEST_sommeLeg1 += npv1 ;
+		//TEST_sommeLeg2 += npv2 ;
+		//result += npv1 - npv2;
 	}
 	double TEST_meanLeg1 = TEST_sommeLeg1 / nbSimulation ;
 	double TEST_meanLeg2 = TEST_sommeLeg2 / nbSimulation ;

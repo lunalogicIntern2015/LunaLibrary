@@ -5,43 +5,44 @@
 
 
 //simulation
-std::vector<double> MC_CheyetteDD_VanillaSwaptionPricer::price(VanillaSwaption_PTR vanillaSwaption, size_t nbSimulation) const
+std::vector<double> MC_CheyetteDD_VanillaSwaptionPricer::price(VanillaSwaption_PTR pVanillaSwaption, size_t nbSimulation) const
 {
-	std::vector<double> res(3) ;
-	double somme_xi	= 0. ;
-	double somme_xi2	= 0. ;
-	size_t indexValuationDate = 0 ;
-	VanillaSwap vanillaSwap = vanillaSwaption->getUnderlyingSwap() ;
-
+	VanillaSwap vanillaSwap = pVanillaSwaption->getUnderlyingSwap() ;
 	Tenor floatingLegTenor = vanillaSwap.get_floatingLegTenorType() ;
 	Tenor fixedLegTenor = vanillaSwap.get_fixedLegTenorType() ;
-	//MC
+
+	assert(floatingLegTenor.YearFraction() >= pTenorStructure_->get_tenorType().YearFraction()) ;
+	assert(fixedLegTenor.YearFraction() >= pTenorStructure_->get_tenorType().YearFraction()) ;
+	assert(vanillaSwap.get_EndDate() <= fwdProbaT_) ;
+
+	std::vector<double> res(3) ;
+	double somme_xi   = 0.0;
+	double somme_xi_2 = 0.0;
+
+	size_t valuationIndexSwaption = 0 ;
+	size_t valuationIndexSwap = pVanillaSwaption->getUnderlyingSwap().get_indexStart() ;
+	
+	size_t startDateSwap = pVanillaSwaption->getUnderlyingSwap().get_StartDate() ;
+	size_t endDateSwap = pVanillaSwaption->getUnderlyingSwap().get_EndDate() ;
+	
 	for(size_t itrSimulation=0; itrSimulation<nbSimulation; ++itrSimulation)
 	{
+		if ((itrSimulation*10) % nbSimulation == 0){std::cout << double(itrSimulation)/double(nbSimulation)*100 << "%" << std::endl ;}	
+
 		simulate_Euler() ;
-		//float
-		double npv1  = evaluateFloatLeg(indexValuationDate, 
-										vanillaSwap.get_floatingLegPaymentIndexSchedule(), 
-										numeraires_, 
-										x_t_Cheyette_,
-										y_t_Cheyette_,
-										floatingLegTenor);
-		//fixed
-		double npv2  = evaluateFixedLeg(indexValuationDate, 
-										vanillaSwap.get_fixedLegPaymentIndexSchedule(), 
-										numeraires_, 
-										x_t_Cheyette_,
-										y_t_Cheyette_,
-										fixedLegTenor, 
-										vanillaSwap.get_strike());
-		double res = std::max(npv1 - npv2, 0.) ;  
-		
-		somme_xi += res ;
-		somme_xi2 += res*res ;
+		double npvFloatingLeg = evaluateFloatLeg(valuationIndexSwap, 
+												vanillaSwap.get_floatingLegPaymentIndexSchedule(), floatingLegTenor);
+		double npvFixedLeg = evaluateFixedLeg(valuationIndexSwap, vanillaSwap.get_fixedLegPaymentIndexSchedule(), 
+										fixedLegTenor, vanillaSwap.get_strike());
+		double payoffAtMaturity    = pVanillaSwaption->payoff(npvFloatingLeg,npvFixedLeg);			
+		double value = payoffAtMaturity * numeraires_[valuationIndexSwaption]/numeraires_[valuationIndexSwap] ;
+
+		somme_xi					  += value;	
+		somme_xi_2 += value*value;
 	}
+
 	double mean_x	= somme_xi / nbSimulation; 
-	double mean_x2	= somme_xi2 / nbSimulation; 
- 
+	double mean_x2	= somme_xi_2 / nbSimulation; 
 	double variance = mean_x2 - mean_x * mean_x ;
 
 	double IC_left	= mean_x - 2.57*std::sqrt(variance / nbSimulation);

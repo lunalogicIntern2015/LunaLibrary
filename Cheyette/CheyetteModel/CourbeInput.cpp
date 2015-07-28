@@ -30,8 +30,6 @@ double CourbeInput::get_f_0_t(double t) const
 	//return (yieldT_bump-yieldT)/epsilon;  //Yuan
 
 	double derivee_yield = (get_tauxZC0(t + epsilon) - get_tauxZC0(t))/epsilon ;
-	double res_intermediaire = get_tauxZC0(t) ;
-	double res = get_tauxZC0(t) + t * derivee_yield ; //pour le test seulement
 	return get_tauxZC0(t) + t * derivee_yield ;
 
 }

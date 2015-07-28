@@ -1,52 +1,56 @@
 #include <stdio.h>
 
-//#include <Cheyette/unit_test/TestFonction.h>
-//#include <Cheyette/unit_test/Test_CheyetteDD_Model.h>
-//#include <Cheyette/unit_test/TestIntegrator1D_2D.h>
-//#include <Cheyette/unit_test/TestMCGeneric.h>
-//#include <Cheyette/unit_test/TestApproxDD.h>
 #include <Cheyette/CheyetteModel/CheyetteDD_Model.h>
 #include <LMM/numeric/Integrator1D.h>
 #include <Cheyette/unit_test/TestMC.h>
-#include <Cheyette/unit_test/TestMC_vs_approx.h>
 #include <Cheyette/unit_test/TestCalibrator.h>
 #include <LMM/Test/Tests.h>
-#include <Cheyette/unit_test/TestMC.h>
+#include <Cheyette/unit_test/TestApproxDD.h>
+
 
 int main()
 {
-	//TestMCSwapPricer() ;
 
-//pas à pas détaillé sur swaption 1Y 13Y
-	//void test_approx_ATM(size_t a, size_t b, Tenor floatingLegTenor, Tenor fixedLegTenor, 
-	//				 int curveChoice, int shiftChoice, 
-	//				 std::vector<double> x, std::vector<double> m_y, std::vector<double> sigma_y, double k, 
-	//				 std::vector<size_t> nbSimus)
+//test MC swap contre swap courbe + swaption OK
+	//TestMCSwapPricer_annuity(1, 1, simus, floatingLegTenor, fixedLegTenor) ;
+	//TestMCSwapPricer_annuity(1, 5, simus, floatingLegTenor, fixedLegTenor) ;
 
-	size_t a = 1 ;
-	size_t b = 13 ;
+	size_t a = 10 ;
+	size_t b = 10 ;
+	size_t simus = 30000 ;
+
 	Tenor floatingLegTenor	= Tenor::_6M ;
 	Tenor fixedLegTenor		= Tenor::_12M ;
-	int curveChoice = 1 ; //courbe plate à 1%
-	int shiftChoice = 1 ;
-	std::vector<double> x(15) ;
-	std::vector<double> m_y(14) ;
-	std::vector<double> sigma_y(14) ;
-	for (size_t i = 0 ; i < 15 ; ++i)
-	{
-		x[i] = i ;
-	}
-	for (size_t i = 0 ; i < 14 ; ++i)
-	{
-		m_y[i] = 0. ;
-		sigma_y[i] = 0.2 ;
-	}
-	double k = 0.02 ;
-	std::vector<size_t> nbSimus(1) ;
-	nbSimus[0] = 20000 ;
 
-	test_approx_ATM(a, b, floatingLegTenor, fixedLegTenor, 
-					 curveChoice, shiftChoice, x, m_y, sigma_y, k, nbSimus) ;
+	//TestMCSwapPricer(a, b, simus, floatingLegTenor, fixedLegTenor) ;
+	//TestMCSwapPricer_annuity(a, b, simus, floatingLegTenor, fixedLegTenor) ;
+
+	MCforward(a, b, simus, floatingLegTenor, fixedLegTenor) ;
+	MCannuity(a, b, simus, floatingLegTenor, fixedLegTenor) ; 
+
+	//int curveChoice = 1 ; //courbe plate à 1%
+	//int shiftChoice = 1 ;
+	//std::vector<double> x(a+b+2) ;
+	//std::vector<double> m_y(a+b+1) ;
+	//std::vector<double> sigma_y(a+b+1) ;
+	//for (size_t i = 0 ; i < a+b+2 ; ++i)
+	//{
+	//	x[i] = i ;
+	//}
+	//for (size_t i = 0 ; i < a+b+1 ; ++i)
+	//{
+	//	m_y[i] = 0. ;
+	//	sigma_y[i] = 0.20 ;
+	//}
+	//double k = 0.02 ;
+	//std::vector<size_t> nbSimus(1) ;
+	//nbSimus[0] = 5000 ; nbSimus[1] = 10000 ; 
+	//nbSimus[0] = 20000 ; 
+	//nbSimus[3] = 50000 ; nbSimus[4] = 100000 ;
+
+	//test_approx_ATM(a, b, floatingLegTenor, fixedLegTenor, 
+	//				 curveChoice, shiftChoice, x, m_y, sigma_y, k, nbSimus) ;
+
 
 	//size_t numFile = 6 ;
 	//size_t coterminal = 14 ;

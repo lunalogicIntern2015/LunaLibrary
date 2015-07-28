@@ -11,13 +11,15 @@
 #include <iostream>
 #include <vector>
 
-#include "TestMC_vs_approx.h"
+#include "TestMC.h"
 
 //CourbeInput_PTR createCourbeInput() ;
 CheyetteDD_Model_PTR createCheyetteDD_Model() ;
 VanillaSwaption_PTR createSwap();
 void testSwap() ; //test swap (dates flux fixes et flottants) 
+
 VanillaSwaption_PTR createSwaption() ;
+
 CheyetteDD_VanillaSwaptionApproxPricer_PTR createApproxPricer_PTR() ;
 
 void test_y_barre() ; 
