@@ -44,19 +44,19 @@ namespace InputFileManager
 		file_list.push_back("VCUB_2013_07_03.csv");// 22
 		file_list.push_back("VCUB_2013_10_03.csv");// 23
 		file_list.push_back("VCUB_2014_01_01.csv");// 24
-		//file_list.push_back("VCUB_2014_02_05.csv");// 25
-		//file_list.push_back("VCUB_2014_03_05.csv");// 26
+		file_list.push_back("VCUB_2014_02_05.csv");// 25
+		file_list.push_back("VCUB_2014_03_05.csv");// 26
 		file_list.push_back("VCUB_2014_04_02.csv");// 27
-		//file_list.push_back("VCUB_2014_05_01.csv");// 28
-		//file_list.push_back("VCUB_2014_06_04.csv");// 29
+		file_list.push_back("VCUB_2014_05_01.csv");// 28
+		file_list.push_back("VCUB_2014_06_04.csv");// 29
 		file_list.push_back("VCUB_2014_07_02.csv");// 30
-		//file_list.push_back("VCUB_2014_08_01.csv");// 31
-		//file_list.push_back("VCUB_2014_08_04.csv");// 31
-		//file_list.push_back("VCUB_2014_08_05.csv");// 33
-		//file_list.push_back("VCUB_2014_08_06.csv");// 34
-		//file_list.push_back("VCUB_2014_08_07.csv");// 35
-		//file_list.push_back("VCUB_2014_08_08.csv");// 36
-		//file_list.push_back("VCUB_2014_08_14.csv");// 37
+		file_list.push_back("VCUB_2014_08_01.csv");// 31
+		file_list.push_back("VCUB_2014_08_04.csv");// 31
+		file_list.push_back("VCUB_2014_08_05.csv");// 33
+		file_list.push_back("VCUB_2014_08_06.csv");// 34
+		file_list.push_back("VCUB_2014_08_07.csv");// 35
+		file_list.push_back("VCUB_2014_08_08.csv");// 36
+		file_list.push_back("VCUB_2014_08_14.csv");// 37
 		
 		//file_list.push_back("VCUB_2004_04_07.csv");
 		//file_list.push_back("VCUB_Dirty_2014_08_01.csv");// 	

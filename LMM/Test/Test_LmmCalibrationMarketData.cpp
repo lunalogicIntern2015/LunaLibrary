@@ -63,7 +63,7 @@ void test_LmmCalibrationMarketData()
 {
 
 	std::vector<std::string> mkt_file_list = InputFileManager::get_VCUB_FileList();
-	test_calib_gMatrix_OneFile(mkt_file_list[0]);
+	test_calib_gMatrix_OneFile(mkt_file_list.back());
 
 	//////series of tests all calibator, with all data files, and allowing negative values of g .
 	//test_calib_gMatrixNegative_allData();
@@ -76,24 +76,33 @@ void test_calib_gMatrix_OneFile(const std::string& mkt_data_file)
 	folder_name+=base_name_file;
 	LMMPATH::reset_Output_SubFolder(folder_name );
 
+
+
 	LmmCalibrationConfig config;
-	config.model_nbYear_=16;
+
+	config.floatLegTenor_=Tenor::_6M;
+	config.fixedLegTenor_=Tenor::_12M;
+
+	config.model_nbYear_		=	10;
+	size_t fixedFloatRatio		=	config.fixedLegTenor_.ratioTo(config.floatLegTenor_);
+	config.correl_FullRank_		=	fixedFloatRatio*config.model_nbYear_+1;
 
 	LmmSwaptionMarketData_PTR pLmmSwaptionMarketData=get_LmmSwaptionMarketData(config, mkt_data_file);
 
-	config.correl_ReducedRank_= 30 ; config.correl_alpha_ = 0.000000001 ; config.correl_beta_  = 0.05;
+
+	config.correl_ReducedRank_= 3; config.correl_alpha_ = 0.0 ; config.correl_beta_  = 0.1;
 	QuantLib::Array found_abcd = marketData_LMM_ABCD_calibration(config,pLmmSwaptionMarketData);
 
 	//Correlation_PTR found_correlation_ptr = marketData_LMM_Correlation_calibration(config,pLmmSwaptionMarketData,found_abcd);
 
-	config.correl_ReducedRank_= 3 ;
 
 	//marketData_LMM_CascadeExact_calibration(config, pLmmSwaptionMarketData, found_abcd , create_InitCorrelation(config) );
 	//config.use_local_calib_=true;
 	//marketData_LMM_Local_gCalibration(config, pLmmSwaptionMarketData, found_abcd , create_InitCorrelation(config), GMatrixMapping_PTR() );
 	//config.use_local_calib_=false;
 	config.penalty_time_homogeneity_ = 1e-4 ; config.penalty_libor_ = 1e-6 ; config.use_positive_constraint_= true;
-	marketData_LMM_Global_gCalibration(config, pLmmSwaptionMarketData, found_abcd , create_InitCorrelation(config), GMatrixMapping_PTR() );
+	config.use_local_calib_=false;
+	marketData_LMM_Global_gCalibration(config, pLmmSwaptionMarketData, found_abcd , create_InitCorrelation(config), GMatrixMapping_PTR());
 }
 
 
@@ -102,6 +111,8 @@ void test_calib_gMatrixNegative_allData()
 	std::vector<std::string> mkt_file_list = InputFileManager::get_VCUB_FileList();
 	//size_t nbFile = 2;
 	size_t nbFile = mkt_file_list.size();
+
+
 
 	LmmCalibrationConfig config;
 	config.model_nbYear_=16;

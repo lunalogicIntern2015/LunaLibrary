@@ -59,7 +59,7 @@ double McLmmVanillaSwapPricer::pvFloatingLeg(LMM::Index indexValuationDate,
 		//! YY TODO: restriction, Attention: this line suppose: MCLMM simulation use the same lmmTenor to simulate libor !!!
 		size_t indexLibor = floatingLegPaymentIndex-1; // condition: floatingTenor = lmmTenor
 		size_t indexT     = indexLibor;                                        // = i
-		double libor      = liborMatrix(indexLibor, indexT);
+		double libor      = liborMatrix(indexLibor, indexValuationDate);
 		double delta_T    = vanillaSwap.get_DeltaTFloatLeg(itr);
 		price			 += delta_T*libor*numeraire[indexValuationDate]/numeraire[floatingLegPaymentIndex];		
 	}
@@ -67,14 +67,37 @@ double McLmmVanillaSwapPricer::pvFloatingLeg(LMM::Index indexValuationDate,
 }
 
 
-double McLmmVanillaSwapPricer:: swapRate(LMM::Index indexValuationDate,
+double McLmmVanillaSwapPricer::swapRate(LMM::Index indexValuationDate,
 										 const VanillaSwap& vanillaSwap,
 										 const std::vector<double>& numeraire, 
 										 const matrix& liborMatrix) const
 {
 	double pvFloating = pvFloatingLeg( indexValuationDate,vanillaSwap,numeraire,liborMatrix);
-	double annuity = pvFixedLeg   (indexValuationDate, vanillaSwap, numeraire);
-	return pvFloating / annuity;
+	double annuityPrice = annuity(indexValuationDate, vanillaSwap, numeraire);
+	return pvFloating / annuityPrice;
+}
+
+double McLmmVanillaSwapPricer::price_on_oneSimulation(	Instrument_CONSTPTR instrument,
+														LMM::Index evaluationDateIndex, 
+														const matrix& liborMatrix, 
+														const std::vector<double>& numeraire)const
+{
+	if(instrument==nullptr)
+		return 0.0;
+
+	VanillaSwap_CONSTPTR vanillaSwap = boost::dynamic_pointer_cast<const VanillaSwap>(instrument);
+	if(vanillaSwap)
+	{
+		double npvFloatingLeg = pvFloatingLeg(evaluationDateIndex, *vanillaSwap.get(), numeraire,liborMatrix);
+		double npvFixedLeg    = pvFixedLeg   (evaluationDateIndex, *vanillaSwap.get(), numeraire);
+		double npvSwap		  = npvFloatingLeg - npvFixedLeg;	
+		return npvSwap;	
+	}
+	else
+	{
+		throw("McLmmVanillaSwapPricer mismatch the instrument");
+	}
+
 }
 
 //double MCLmmVanillaSwapPricer::annuity( LMM::Index indexValuationDate,

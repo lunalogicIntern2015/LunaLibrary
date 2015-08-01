@@ -12,6 +12,8 @@
 #include <LMM/helper/TenorType.h>
 #include <LMM/helper/LMMTenorStructure.h>
 
+#include <JBLMM/Instrument/Instrument.h>
+
 
 /*! \class VanillaSwap manage leg's INDICES in the simulation structures see <LMM\lmmModel\LMMTenorStructure.h>
  * Each simulation index correspond to a simulated Libor
@@ -26,7 +28,7 @@
  *
  * !!! For instance, floatTenor=simulationTenor = T_{i+1} - T_i for a swap
  */
-class VanillaSwap
+class VanillaSwap :public Instrument
 {
 public:
 
@@ -70,7 +72,7 @@ public:
 	// print swap informations to csv file
 	void print(const std::string& filename) const ;
 
-	void show() ;
+	void show()const ;
 
 private:
 
@@ -99,6 +101,7 @@ public:
 	void write_to_stream(std::ostream& outputstream)const ;
 };
 typedef boost::shared_ptr<VanillaSwap> VanillaSwap_PTR;
+typedef boost::shared_ptr<const VanillaSwap> VanillaSwap_CONSTPTR;
 
 
 

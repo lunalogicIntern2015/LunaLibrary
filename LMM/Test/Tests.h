@@ -69,12 +69,12 @@ GMatrixMapping_PTR marketData_LMM_CascadeExact_calibration( const LmmCalibration
 														  , Correlation_PTR found_correlation_ptr 
 														  );
 
-void marketData_LMM_Global_gCalibration( const LmmCalibrationConfig& config
-										   , LmmSwaptionMarketData_PTR pLmmSwaptionMarketData 
-										   , const QuantLib::Array& abcd_param 
-										   , Correlation_PTR found_correlation_ptr 
-										   , GMatrixMapping_PTR init_gMapping /*should be NULL*/
-										   );
+Shifted_HGVolatilityFunction_PTR marketData_LMM_Global_gCalibration( const LmmCalibrationConfig& config
+																	, LmmSwaptionMarketData_PTR pLmmSwaptionMarketData 
+																	, const QuantLib::Array& abcd_param 
+																	, Correlation_PTR found_correlation_ptr 
+																	, GMatrixMapping_PTR init_gMapping /*should be NULL*/
+																	);
 
 void marketData_LMM_Local_gCalibration( const LmmCalibrationConfig& config
 										   , LmmSwaptionMarketData_PTR pLmmSwaptionMarketData 

@@ -703,6 +703,7 @@ void LmmSwaptionMarketData::buildSwationQuotes( const double & strike_bump
 				missed_row_indices.push_back(iExperityRow);
 		}
 	}
+
 	std::sort( missed_row_indices.begin(), missed_row_indices.end() );
 
 	for(size_t jTenorCol=1;jTenorCol<last_year;++jTenorCol)
@@ -715,6 +716,7 @@ void LmmSwaptionMarketData::buildSwationQuotes( const double & strike_bump
 				missed_col_indices.push_back(jTenorCol);
 		}
 	}
+
 	std::sort( missed_col_indices.begin(), missed_col_indices.end() );
 	
 	fill_missing_strike(strike_rate_matrix,strike_bump,missed_row_indices,missed_col_indices);

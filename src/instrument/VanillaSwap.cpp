@@ -145,7 +145,7 @@ void VanillaSwap::print(const std::string& filename) const
 	outputstream.close();
 }
 
-void VanillaSwap::show()
+void VanillaSwap::show()const
 {
 	std::cout << "---------------------------------------------" << std::endl ;
 	std::cout << "--- creation d'un objet VanillaSwap --------" << std::endl ;
