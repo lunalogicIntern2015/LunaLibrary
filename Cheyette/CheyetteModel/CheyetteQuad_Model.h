@@ -90,6 +90,7 @@ public :
 	//fonction de vol locale Quadratic Volatility
 	double sigma_r( double t,  double x_t) const ;
 	double sigma_r_t_1stDerivative( double t,  double x_t) const ;  //derivee wrt x_t
+	double sigma_r_t_2ndDerivative( double t,  double x_t) const ;
 
 	//fonctions G(t, T), ZC B(t, T), Libor...
 	double G(double t, double T) const ;  

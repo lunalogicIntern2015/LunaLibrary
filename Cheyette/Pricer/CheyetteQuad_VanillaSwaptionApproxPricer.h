@@ -163,6 +163,7 @@ public:
 
 	//autres fonctions intermédiaires pour les time averaging
 		double lambda2(double t) const ;
+		double lambda4(double t) const ;
 		double f_outer_num_b(double t) const ;
 		double f_outer_num_c(double t) const ;
 
@@ -171,5 +172,15 @@ public:
 	//time averaging of b_S(t) and c_S(t)
 		double timeAverage_b_S(double t) const ;
 		double timeAverage_c_S(double t) const ;
+
+
+/**********************  Call approximation ************************
+** dynamique : 
+**
+**  dS(t) = \Phi(S_t) dW(t)
+********************************************************************/
+
+		//double callApprox(double maturity, double strike) const ;
+
 };
 

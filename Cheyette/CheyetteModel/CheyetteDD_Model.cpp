@@ -92,7 +92,8 @@ double CheyetteDD_Model::P(double t, double T, double x_t, double y_t) const
 	double g = G(t,T) ;
 	double P_0_t = exp( - courbeInput_PTR_->get_tauxZC0(t) * t ) ;
 	double P_0_T = exp( - courbeInput_PTR_->get_tauxZC0(T) * T ) ;
-	return P_0_T/P_0_t * exp(- x_t * g - 0.5 * y_t * g * g) ; 
+	double res = P_0_T/P_0_t * exp(- x_t * g - 0.5 * y_t * g * g) ;
+	return res ; 
 }
 
 //f_0_t à coder dans la classe courbeInput

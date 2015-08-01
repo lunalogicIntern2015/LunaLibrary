@@ -18,6 +18,9 @@ public:
 
 	//! Pricing at time T0=0
 	double swapNPV(GeneticSwap_CONSTPTR geneticSwap, size_t nbSimulation, Tenor tenorLeg1, Tenor tenorLeg2) const ;
+
+
+
 };
 
 typedef boost::shared_ptr<MC_CheyetteDD_GenericSwapPricer>       MC_CheyetteDD_GenericSwapPricer_PTR;

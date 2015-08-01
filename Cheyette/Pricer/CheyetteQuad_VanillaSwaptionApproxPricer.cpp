@@ -314,14 +314,11 @@ double CheyetteQuad_VanillaSwaptionApproxPricer::DL2_Phi_t_s(double t, double s)
 
 double CheyetteQuad_VanillaSwaptionApproxPricer::Phi(double t, double x_t) const
 {
-	//à vérifier !!!!
-
 	//retourne dS(t)/dx(t) sigma_r(t) (t=0, inverse, y_bar)
 	double y_bar = buffer_y_bar_(t) ;
-	double inverse_s_bar =	inverse(t, buffer_s0_) ;  
 
-	double sigma_r_t_inv_sbar	= pCheyetteQuad_Model_->sigma_r(t, inverse_s_bar) ;	
-	double phi_res = swapRate_1stDerivative(t, inverse_s_bar, y_bar) * sigma_r_t_inv_sbar ;
+	double sigma_r_t_inv_sbar	= pCheyetteQuad_Model_->sigma_r(t, x_t) ;	
+	double phi_res = swapRate_1stDerivative(t, x_t, y_bar) * sigma_r_t_inv_sbar ;
 	
 	return phi_res ;
 
@@ -344,15 +341,16 @@ double CheyetteQuad_VanillaSwaptionApproxPricer::D2Phi(double t, double x_t) con
 {
 	double y_bar = buffer_y_bar_(t) ;
 
-	// formule à vérifier !!!!
 	double sigma_r		= pCheyetteQuad_Model_->sigma_r(t, x_t) ;
 	double sigma_r_1	= pCheyetteQuad_Model_->sigma_r_t_1stDerivative(t, x_t) ;
+	double sigma_r_2	= pCheyetteQuad_Model_->sigma_r_t_2ndDerivative(t, x_t) ;
 	double S_1	= swapRate_1stDerivative(t, x_t, y_bar); 
 	double S_2	= swapRate_2ndDerivative(t, x_t, y_bar); 
 	double S_3	= swapRate_3rdDerivative(t, x_t, y_bar); 
 
-	double res =  sigma_r_1 * S_2 / (S_1*S_1) + sigma_r * ( S_3/(S_1 * S_1) - pow(S_2, 2) / pow(S_1, 3) )
-											  + sigma_r_1 ;
+	double res = sigma_r * ( S_3/(S_1 * S_1) - pow(S_2, 2) / pow(S_1, 3) )
+					+ sigma_r_1 * S_2 / (S_1*S_1) 
+					+ sigma_r_2 / S_1 ;
 		 
 	return res ; 
 }
@@ -378,7 +376,7 @@ double CheyetteQuad_VanillaSwaptionApproxPricer::b_S(double t) const
 double CheyetteQuad_VanillaSwaptionApproxPricer::c_S(double t) const
 {
 	double inverse_s_bar =	inverse(t, buffer_s0_) ; 
-	return D2Phi(t, inverse_s_bar) / buffer_s0_ ;
+	return D2Phi(t, inverse_s_bar) / lambda(t) ;
 }
 
 //autres fonctions intermédiaires pour les time averaging
@@ -386,6 +384,12 @@ double CheyetteQuad_VanillaSwaptionApproxPricer::lambda2(double t) const
 {
 	return lambda(t) * lambda(t) ; 
 }
+
+double CheyetteQuad_VanillaSwaptionApproxPricer::lambda4(double t) const
+{
+	return pow(lambda(t), 4) ; 
+}
+
 double CheyetteQuad_VanillaSwaptionApproxPricer::f_outer_num_b(double t) const
 {
 	return lambda2(t) * b_S(t) ;  //OK (fonction outer seulement ie sans v^2(u)
@@ -409,24 +413,44 @@ double CheyetteQuad_VanillaSwaptionApproxPricer::timeAverage_b_S(double t) const
 //integrale numerateur
 	numeric::IncrementalIntegrator2D_Riemann int2D(gridStart, gridEnd, gridSize) ;
 	boost::function<double(double)> f_inner = boost::bind(&CheyetteQuad_VanillaSwaptionApproxPricer::lambda2, *this, _1);
-	boost::function<double(double)> f_outer = boost::bind(&CheyetteQuad_VanillaSwaptionApproxPricer::f_outer_num_b, *this, _1);
-	
+	boost::function<double(double)> f_outer = boost::bind(&CheyetteQuad_VanillaSwaptionApproxPricer::f_outer_num_b, *this, _1);	
 	double integrale_numerateur = int2D.integrate(f_outer, f_inner) ;
 	
 //integrale denominateur
 	boost::function<double(double)> f_denom = boost::bind(&CheyetteQuad_VanillaSwaptionApproxPricer::f_outer_denom, *this, _1);
-	
 	double integrale_denom = int2D.integrate(f_denom, f_inner);
+
 	double b_barre = integrale_numerateur/integrale_denom ;
-	//buffer_b_barre_ = b_barre ;
+
 	return b_barre ;
 }
 
 double CheyetteQuad_VanillaSwaptionApproxPricer::timeAverage_c_S(double t) const
 {
-	return 1. ;
+	double gridStart = 0.0;
+	double gridEnd = t ; 
+
+//integrale numerateur
+	numeric::IncrementalIntegrator2D_Riemann int2D(gridStart, gridEnd, gridSize) ;
+	boost::function<double(double)> f_inner = boost::bind(&CheyetteQuad_VanillaSwaptionApproxPricer::lambda4, *this, _1);
+	boost::function<double(double)> f_outer = boost::bind(&CheyetteQuad_VanillaSwaptionApproxPricer::f_outer_num_c, *this, _1);	
+	double integrale_numerateur = int2D.integrate(f_outer, f_inner) ;
+	
+//integrale denominateur
+	boost::function<double(double)> f_denom = boost::bind(&CheyetteQuad_VanillaSwaptionApproxPricer::f_outer_denom, *this, _1);
+	double integrale_denom = int2D.integrate(f_denom, f_inner);
+
+	double c_barre = integrale_numerateur/integrale_denom ;
+
+	return c_barre ;
 }
 
+
+/**********************  Call approximation ************************
+** dynamique : 
+**
+**  dS(t) = \Phi(S_t) dW(t)
+********************************************************************/
 
 
 

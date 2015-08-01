@@ -22,9 +22,6 @@ std::vector<double> MC_CheyetteDD_VanillaSwaptionPricer::price(VanillaSwaption_P
 	size_t valuationIndexSwaption = 0 ;
 	size_t valuationIndexSwap = pVanillaSwaption->getUnderlyingSwap().get_indexStart() ;
 	
-	size_t startDateSwap = pVanillaSwaption->getUnderlyingSwap().get_StartDate() ;
-	size_t endDateSwap = pVanillaSwaption->getUnderlyingSwap().get_EndDate() ;
-	
 	for(size_t itrSimulation=0; itrSimulation<nbSimulation; ++itrSimulation)
 	{
 		if ((itrSimulation*10) % nbSimulation == 0){std::cout << double(itrSimulation)/double(nbSimulation)*100 << "%" << std::endl ;}	

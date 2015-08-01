@@ -59,7 +59,9 @@ double McLmmVanillaSwapPricer::pvFloatingLeg(LMM::Index indexValuationDate,
 		//! YY TODO: restriction, Attention: this line suppose: MCLMM simulation use the same lmmTenor to simulate libor !!!
 		size_t indexLibor = floatingLegPaymentIndex-1; // condition: floatingTenor = lmmTenor
 		size_t indexT     = indexLibor;                                        // = i
-		double libor      = liborMatrix(indexLibor, indexT);
+		double libor      = liborMatrix(indexLibor, indexT);		
+											//index libor : temps où le libor est fixé
+											///indexT 
 		double delta_T    = vanillaSwap.get_DeltaTFloatLeg(itr);
 		price			 += delta_T*libor*numeraire[indexValuationDate]/numeraire[floatingLegPaymentIndex];		
 	}

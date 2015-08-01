@@ -94,8 +94,6 @@ public:
 
 	//double evaluateCappedFlooredCoupon( CappedFlooredCoupon_CONSTPTR cappedFlooredCoupon, 
 	//									double rateValue) const ;
-
-
 };
 
 typedef boost::shared_ptr<MC_Cheyette> MC_Cheyette_PTR;

@@ -53,6 +53,7 @@ void MC_Cheyette::computeNumeraires() const
 	}
 }
 
+
 //! one simulation - pour les produits vanille 
 double MC_Cheyette::evaluateFloatLeg(	const size_t valuationIndex,
 										const std::vector<size_t>& indexFloatLeg,
@@ -63,36 +64,38 @@ double MC_Cheyette::evaluateFloatLeg(	const size_t valuationIndex,
 	double tenorStructYearFrac	= pTenorStructure_->get_tenorType().YearFraction() ;
 	assert(tenorStructYearFrac <= tenorFloatYearFrac) ;
 
-	//double price = 0.0;
+	double price = 0.0;
 
 	//rapport tenorFloat / tenorStructure  (ex : swap 6M sur TenorStructure 3M) rapport de 2 = nbIndices
 	size_t nbIndices = tenorFloatYearFrac / tenorStructYearFrac ;
 
-	//for(size_t i=0; i<indexFloatLeg.size(); ++i)
-	//{
-	//	size_t paymentIndex		= indexFloatLeg[i] ;
+	for(size_t i=0; i<indexFloatLeg.size(); ++i)
+	{
+		size_t paymentIndex		= indexFloatLeg[i] ;
 
-	//	if(paymentIndex <= valuationIndex)continue;
+		if(paymentIndex <= valuationIndex)continue;
 
-	//	double paymentDate		= paymentIndex * tenorStructYearFrac ;
-	//	size_t fixingIndex		= paymentIndex - nbIndices ;
-	//	double fixingDate		= fixingIndex * tenorStructYearFrac ;	
+		double paymentDate		= paymentIndex * tenorStructYearFrac ;
+		size_t fixingIndex		= paymentIndex - nbIndices ;
+		double fixingDate		= fixingIndex * tenorStructYearFrac ;	
 
-	//	double libor = cheyetteDD_Model_->Libor(fixingDate, fixingDate, paymentDate, 
-	//											x_t_Cheyette_[fixingIndex], y_t_Cheyette_[fixingIndex]) ; 
-	//		
-	//	//payoffFlow = nominal * deltaFloat * value  (ici NOMINAL = 1)
-	//	double payoffFlow		= tenorFloatYearFrac * libor ;		//tenorFloat = deltaFloat
-	//																			
-	//	double numeraireRatio	= numeraires_[valuationIndex]/numeraires_[paymentIndex];
+		//  !!! FAUX !!!
+		//double libor = cheyetteDD_Model_->Libor(fixingDate, fixingDate, paymentDate, 
+		//										x_t_Cheyette_[fixingIndex], y_t_Cheyette_[fixingIndex]) ; 
 
-	//	price += payoffFlow * numeraireRatio;
-	//}
+		double libor = cheyetteDD_Model_->Libor(valuationIndex * tenorStructYearFrac, fixingDate, paymentDate, 
+												x_t_Cheyette_[valuationIndex], y_t_Cheyette_[valuationIndex]) ; 	
+		//payoffFlow = nominal * deltaFloat * value  (ici NOMINAL = 1)
+		double payoffFlow		= tenorFloatYearFrac * libor ;		//tenorFloat = deltaFloat																			
+		double numeraireRatio	= numeraires_[valuationIndex]/numeraires_[paymentIndex];
+		price += payoffFlow * numeraireRatio;
+	}
 
-	double startDateSwap	= (indexFloatLeg[0] - nbIndices ) * tenorStructYearFrac ;
-	double endDateSwap		= indexFloatLeg[indexFloatLeg.size() - 1] * tenorStructYearFrac ;
-	double price = 1 - cheyetteDD_Model_->P(startDateSwap, endDateSwap, x_t_Cheyette_[valuationIndex], 
-																		y_t_Cheyette_[valuationIndex]) ;
+//version 2 : OK aussi
+	//double startDateSwap	= (indexFloatLeg[0] - nbIndices ) * tenorStructYearFrac ;
+	//double endDateSwap		= indexFloatLeg[indexFloatLeg.size() - 1] * tenorStructYearFrac ;
+	//double price = 1 - cheyetteDD_Model_->P(startDateSwap, endDateSwap, x_t_Cheyette_[valuationIndex], 
+	//																	y_t_Cheyette_[valuationIndex]) ;
 
 	return price;
 }
@@ -126,6 +129,7 @@ double MC_Cheyette::evaluateFixedLeg(	const size_t valuationIndex,
 
 	return price;
 }
+
 
 //! one simulation - pour les produits generiques derives
 //! for one couponLeg and one simulation

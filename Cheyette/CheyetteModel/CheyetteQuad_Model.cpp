@@ -51,6 +51,13 @@ double CheyetteQuad_Model::sigma_r_t_1stDerivative( double t,  double x_t) const
 	return b_t + 2 * c_t * x_t ;
 }
 
+double CheyetteQuad_Model::sigma_r_t_2ndDerivative( double t,  double x_t) const 
+{
+	double c_t		= cheyetteQuad_Parameter_.c_(t) ;
+
+	return 2 * c_t ;
+}
+
 //fonctions G(t, T), ZC B(t, T)...
 //k constant, calcul explicite de G(t, T)
 double CheyetteQuad_Model::G(double t, double T) const

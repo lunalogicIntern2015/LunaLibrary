@@ -126,7 +126,9 @@ CourbeInput_PTR createCourbeInput(int curveChoice)
 
 
 //CheyetteDD Model + swaption ATM
-CheyetteDD_VanillaSwaptionApproxPricer_PTR creeModeleATM(size_t a, size_t b, const Tenor& floatTenor, const Tenor& fixedTenor)
+CheyetteDD_VanillaSwaptionApproxPricer_PTR creeModeleATM(size_t a, size_t b, 
+														 const Tenor& floatTenor, const Tenor& fixedTenor, 
+														 double m, double sigma)
 {
 
 //courbe spot
@@ -141,8 +143,8 @@ CheyetteDD_VanillaSwaptionApproxPricer_PTR creeModeleATM(size_t a, size_t b, con
 	}
 	for (size_t i = 0 ; i < a+b ; ++i)
 	{
-		m_y[i] = 0. ;
-		sigma_y[i] = 0.20 ;
+		m_y[i] = m ;
+		sigma_y[i] = sigma ;
 	}
 	Piecewiseconst_RR_Function sigma(x, sigma_y) ; 
 	Piecewiseconst_RR_Function m(x, m_y) ;
@@ -406,13 +408,14 @@ void MCannuity(size_t a, size_t b, size_t nbSimus, const Tenor& floatTenor, cons
 	size_t nbPas = 200 ;
 	double dt = double(a)/double(nbPas) ;
 
-	CheyetteDD_VanillaSwaptionApproxPricer_PTR pApproxPricer = creeModeleATM(a, b, floatTenor, fixedTenor) ;
+	double m = 0. ;
+	double sigma = 0.6 ;
+	CheyetteDD_VanillaSwaptionApproxPricer_PTR pApproxPricer = creeModeleATM(a, b, floatTenor, fixedTenor, m, sigma) ;
 	VanillaSwaption_PTR pSwaption = pApproxPricer->get_VanillaSwaption() ;
 	double strikeATM = pSwaption->getUnderlyingSwap().get_strike() ;
 	std::cout << "strikeATM : " << strikeATM << std::endl ; 
 
 	double S0 = pApproxPricer->swapRate0() ;		//strike et S(0)
-	double sigma = pApproxPricer->get_CheyetteDD_Model()->get_CheyetteDD_Parameter().sigma_(0.5) ;//cste
 	double k = pApproxPricer->get_CheyetteDD_Model()->get_CheyetteDD_Parameter().k_ ;
 	double r0 = pApproxPricer->get_CheyetteDD_Model()->get_courbeInput_PTR()->get_f_0_t(0) ;
 
@@ -499,7 +502,9 @@ void MCannuity(size_t a, size_t b, size_t nbSimus, const Tenor& floatTenor, cons
 
 void MCforward(size_t a, size_t b, size_t nbSimus, const Tenor& floatTenor, const Tenor& fixedTenor)
 {
-	CheyetteDD_VanillaSwaptionApproxPricer_PTR pApproxPricer = creeModeleATM(a, b, floatTenor, fixedTenor) ;
+	double m = 0. ;
+	double sigma = 0.6 ;
+	CheyetteDD_VanillaSwaptionApproxPricer_PTR pApproxPricer = creeModeleATM(a, b, floatTenor, fixedTenor, m, sigma) ;
 	CheyetteDD_Model_PTR pModel = pApproxPricer->get_CheyetteDD_Model() ;
 	VanillaSwaption_PTR pSwaption = pApproxPricer->get_VanillaSwaption() ;
 	double strikeATM = pSwaption->getUnderlyingSwap().get_strike() ;
@@ -546,10 +551,6 @@ void MCforward(size_t a, size_t b, size_t nbSimus, const Tenor& floatTenor, cons
 
 	//o.close() ;
 }
-
-
-
-
 
 
 //param 
@@ -738,10 +739,10 @@ void test_approx_ATM(size_t a, size_t b, Tenor floatingLegTenor, Tenor fixedLegT
 	double tenor = std::min(floatingLegTenor.YearFraction() , fixedLegTenor.YearFraction() ) ;
 	size_t indexStart = size_t(a / tenor) ;
 	size_t indexEnd = size_t((a+b) / tenor) ;
-	double fwdProbaT = double(b) ;  //size_t vers double ok
+	size_t fwdProbaT = a + b ;  
 
 //param MC
-	size_t	discretizationBetweenDates = 200 ;
+	size_t	discretizationBetweenDates = 180 ;
 	LMMTenorStructure_PTR simulationStructure(new LMMTenorStructure(floatingLegTenor, a+b+1) );
 
 	unsigned long seed = 47;
@@ -1262,4 +1263,239 @@ void smile(size_t a, size_t b, double strikeATM, Tenor floatingLegTenor, Tenor f
 
 	o.close();
 						 
+}
+
+
+//swaption aYbY, coterminal = a + b
+//calibre sur toutes les swaptions coterminales
+//creation modele, et test MC vs approx
+void testApprox_print(size_t coterminal)
+{
+	Tenor tenorFloat = Tenor::_6M ;
+	Tenor tenorFixed = Tenor::_1YR ;  
+
+
+//ecriture dans fichier
+	std::stringstream fileName_s ;
+	std::string directory = LMMPATH::get_output_path() ;
+	fileName_s << directory << "Comparaison_Approx_MC.csv" ; 
+	std::string fileName = fileName_s.str();
+
+	ofstream o;
+
+	o.open(fileName,  ios::out | ios::app );
+	o	<<	endl;	
+
+	std::vector<double> vectM(3) ;  vectM[0] = 0. ; vectM[1] = 0.5 ; vectM[2] = 1. ; 
+	std::vector<double> vectSigma(3) ; vectSigma[0] = 0. ; vectSigma[1] = 0.5 ; vectSigma[2] = 1. ;
+
+	std::vector<size_t> nbSimus(2) ;
+	nbSimus[0] = 5 ; nbSimus[1] = 10 ; //nbSimus[2] = 20000 ; nbSimus[3] = 50000 ; nbSimus[4] = 100000 ;
+
+	for (size_t a = 1 ; a < coterminal ; ++a)
+	{
+		for (size_t indexM = 0 ; indexM < vectM.size() ; ++indexM)
+		{
+			for (size_t indexSigma = 0 ; indexM < vectSigma.size() ; ++indexSigma)
+			{
+				CheyetteDD_VanillaSwaptionApproxPricer_PTR pApproxPricer 
+											= creeModeleATM(a, coterminal - a, tenorFloat, tenorFixed,
+															vectM[indexM], vectSigma[indexSigma]) ;
+				CheyetteDD_Model_PTR pModel = pApproxPricer->get_CheyetteDD_Model() ;
+				o << "m = ;" << vectM[indexM] << "; sigma = ;" << vectSigma[indexSigma] << std::endl ;
+				test_approx_ATM(a, coterminal - a, tenorFloat, tenorFixed, pModel, nbSimus, o) ;		
+			}
+		}
+	o	<<	endl;	
+	}
+
+	o.close() ;
+}
+
+
+
+/*****************************************************************
+*
+* mc forward et annuity print
+*
+******************************************************************/
+
+
+
+void MCforward_vs_annuity()
+{
+	size_t coterminal = 10 ;
+
+	double m = 0. ;
+	double sigma = 0.6 ;
+
+	Tenor floatTenor = Tenor::_6M ;
+	Tenor fixedTenor = Tenor::_1YR ;  
+	
+	std::vector<double> vectSimus(3) ; vectSimus[0] = 5000 ; vectSimus[1] = 20000 ; vectSimus[2] = 100000 ; 
+
+	ofstream o;
+	std::stringstream fileName_s ;
+	std::string directory = LMMPATH::get_output_path() ;
+	fileName_s << directory << "TestMC_QT_annuity" << ".csv" ; 
+	std::string fileName = fileName_s.str();
+
+	o.open(fileName,  ios::out | ios::app );
+	o	<<	endl;
+
+//param MC
+	for (size_t a = 1 ; a < coterminal ; ++a)
+	{
+		o	<<	"-----------  SWAPTION " << a << "Y" << coterminal - a << "Y  -----------" << endl;
+		o	<<	endl;
+
+		//MC forward QT
+		o   << "Monte Carlo sous proba forward Q T ; T = ;" << coterminal << std::endl;
+		o   << "nbSimus ; MC swaption ; IC_left ; IC_right" << std::endl;
+		for (size_t indexSimu = 0 ; indexSimu < vectSimus.size() ; ++indexSimu)
+		{
+			CheyetteDD_VanillaSwaptionApproxPricer_PTR pApproxPricer = 
+									creeModeleATM(a, coterminal - a, floatTenor, fixedTenor, m, sigma) ;
+			CheyetteDD_Model_PTR pModel = pApproxPricer->get_CheyetteDD_Model() ;
+			VanillaSwaption_PTR pSwaption = pApproxPricer->get_VanillaSwaption() ;
+
+			MCforward(a, coterminal - a, vectSimus[indexSimu], pApproxPricer, o) ;	
+		}
+
+		//MC annuity
+		o	<<	endl;
+		o   << "Monte Carlo sous proba annuity" << std::endl;
+		o   << "nbSimus ; MC swaption ; IC_left ; IC_right" << std::endl;
+		for (size_t indexSimu = 0 ; indexSimu < vectSimus.size() ; ++indexSimu)
+		{
+			CheyetteDD_VanillaSwaptionApproxPricer_PTR pApproxPricer = 
+									creeModeleATM(a, coterminal - a, floatTenor, fixedTenor, m, sigma) ;
+			CheyetteDD_Model_PTR pModel = pApproxPricer->get_CheyetteDD_Model() ;
+			VanillaSwaption_PTR pSwaption = pApproxPricer->get_VanillaSwaption() ;
+
+			MCannuity(a, coterminal - a, vectSimus[indexSimu], pApproxPricer, o) ; 
+		}
+		o	<<	endl;
+
+	}
+
+	o.close() ;
+
+}
+
+
+void MCannuity(size_t a, size_t b, size_t nbSimus, 
+			   CheyetteDD_VanillaSwaptionApproxPricer_PTR pApproxPricer, std::ofstream& o)
+{
+	
+	size_t nbPas = 200 ;
+	double dt = double(a)/double(nbPas) ;
+
+	VanillaSwaption_PTR pSwaption = pApproxPricer->get_VanillaSwaption() ;
+	double strikeATM = pSwaption->getUnderlyingSwap().get_strike() ;
+
+	double S0 = pApproxPricer->swapRate0() ;		//strike et S(0)
+	double k = pApproxPricer->get_CheyetteDD_Model()->get_CheyetteDD_Parameter().k_ ;
+	double sigma = pApproxPricer->get_CheyetteDD_Model()->get_CheyetteDD_Parameter().sigma_(0.5) ;  //sigma constante
+	double r0 = pApproxPricer->get_CheyetteDD_Model()->get_courbeInput_PTR()->get_f_0_t(0) ;
+
+	unsigned long seed = 47;
+	RNGenerator_PTR  rnGenerator(new McGenerator(seed));
+	
+	std::vector<double> res(3) ;
+	double somme_xi	 = 0. ;
+	double somme_xi2 = 0. ;
+
+	for (size_t simu = 1 ; simu <= nbSimus ; ++simu)    
+	{
+		if ((simu*10) % nbSimus == 0){std::cout << double(simu)/double(nbSimus)*100 << "%" << std::endl ;}
+		std::vector<double>   gaussian_tmp(nbPas);  
+		rnGenerator->generate(gaussian_tmp);		// generate Gaussian.
+		double t = 0. ;
+		double S_t = S0 ;
+
+		for (size_t pasDiscretisation = 1 ; pasDiscretisation <= nbPas ; ++pasDiscretisation)    
+		{
+			double y_t, inv ;
+			if (t == 0.)
+			{
+				y_t = 0. ;
+				inv = 0. ;		
+			}
+			else 
+			{
+				y_t = sigma * sigma * r0 * r0 / (2 * k) * (1 - exp(-2 * k *t)) ;
+				inv = pApproxPricer->inverse(t, S_t) ;
+			}
+
+			double derivee = pApproxPricer->swapRate_1stDerivative(t, inv, y_t) ;
+			double sigma = pApproxPricer->get_CheyetteDD_Model()->sigma_r(t, inv, y_t) ;
+
+			double S_t_plus_dt = S_t + derivee * sigma * sqrt(dt) * gaussian_tmp[pasDiscretisation - 1] ;
+			S_t = S_t_plus_dt ;
+			t += dt ;
+		}
+		double res = std::max(S_t - S0, 0.) ; //  (S(T0) - K)+ 
+		
+		somme_xi += res ;
+		somme_xi2 += res * res ;
+	}
+
+	double A0 = pApproxPricer->swapRateDenominator(0., 0., 0.) ;
+	double mean_x	= A0 * somme_xi / nbSimus; // A(0) * E^QA( (S(T0) - K)+ )
+	double mean_x2	= A0 * A0 * somme_xi2 / nbSimus; 
+	double variance = mean_x2 - mean_x * mean_x ;
+
+	double IC_left	= mean_x - 2.57*std::sqrt(variance / nbSimus);
+	double IC_right = mean_x + 2.57*std::sqrt(variance / nbSimus);
+
+	res[0] = mean_x ;
+	res[1] = IC_left ;
+	res[2] = IC_right ;
+	 
+//	o   << "Monte Carlo sous proba annuity" << std::endl;
+	//o   << "MC swaption : ;" << mean_x << std::endl;
+	//o	<< "nb simulations : ;" << nbSimus << std::endl;
+	//o   << "99% confidence interval ; " << IC_left << " ; " << IC_right << std::endl;
+	//o   << "annuity : ;" << pApproxPricer->swapRateDenominator(0., 0., 0.) << std::endl;
+	//o	<< "swap rate 0 : ;" << pApproxPricer->swapRate0() << std::endl;
+	o   << nbSimus << " ; " << mean_x << " ; " << IC_left << " ; " << IC_right << std::endl;
+}
+
+
+
+void MCforward(size_t a, size_t b, size_t nbSimus, 
+			   CheyetteDD_VanillaSwaptionApproxPricer_PTR pApproxPricer, std::ofstream& o)
+{
+		
+//param MC
+	VanillaSwaption_PTR pSwaption = pApproxPricer->get_VanillaSwaption() ;
+	Tenor floatTenor = pSwaption->getUnderlyingSwap().get_floatingLegTenorType() ;
+	LMMTenorStructure_PTR simulationStructure(new LMMTenorStructure(floatTenor, a+b+1) );
+	
+	unsigned long seed = 47;
+	RNGenerator_PTR  rnGenerator(new McGenerator(seed));
+
+	CheyetteDD_Model_PTR pModel = pApproxPricer->get_CheyetteDD_Model() ;
+	size_t fwdProbaT = a + b ; 	
+	size_t discretizationBetweenDates = 200 ;
+	MC_CheyetteDD_VanillaSwaptionPricer_PTR mc(new MC_CheyetteDD_VanillaSwaptionPricer(pModel,
+															rnGenerator, simulationStructure, fwdProbaT,
+															discretizationBetweenDates   ) ) ;
+
+	std::vector<double> vectPrixMC(1), vectICinf(1), vectICsup(1) ; 
+	std::vector<double> resMC = mc->price(pSwaption, nbSimus) ;
+
+	double mean_x	= resMC[0] ;
+	double IC_left	= resMC[1] ;
+	double IC_right = resMC[2] ;
+
+//	o   << "Monte Carlo sous proba forward Q T ; T = ;" << fwdProbaT << std::endl;
+	//o   << "MC swaption : ;" << mean_x << std::endl;
+	//o	<< "nb simulations : ;" << nbSimus << std::endl;
+	//o   << "99% confidence interval  ;" << IC_left << " ; " << IC_right << std::endl;
+	//o   << "annuity : ;" << pApproxPricer->swapRateDenominator(0., 0., 0.) << std::endl;
+	//o	<< "swap rate 0 : ;" << pApproxPricer->swapRate0() << std::endl;
+	o   << nbSimus << " ; " << mean_x << " ; " << IC_left << " ; " << IC_right << std::endl;
+
 }

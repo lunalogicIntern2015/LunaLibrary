@@ -19,7 +19,8 @@
 CourbeInput_PTR createCourbeInput(int curveChoice) ;
 
 CheyetteDD_VanillaSwaptionApproxPricer_PTR creeModeleATM(size_t a, size_t b, 
-														 const Tenor& floatTenor, const Tenor& fixedTenor) ;
+														 const Tenor& floatTenor, const Tenor& fixedTenor,
+														 double m, double sigma) ;
 
 CheyetteDD_VanillaSwaptionApproxPricer_PTR creeModele(size_t a, size_t b, 
 														const Tenor& floatTenor, const Tenor& fixedTenor,
@@ -29,8 +30,16 @@ void TestMCSwapPricer(size_t a, size_t b, size_t nbSimus, const Tenor& floatTeno
 void TestMCSwapPricer_annuity(size_t a, size_t b, size_t nbSimus, const Tenor& floatTenor, const Tenor& fixedTenor) ;
 
 
-void MCannuity(size_t a, size_t b, size_t nbSimus, const Tenor& floatTenor, const Tenor& fixedTenor) ; 
+void MCannuity(size_t a, size_t b, size_t nbSimus, const Tenor& floatTenor, const Tenor& fixedTenor) ;
 void MCforward(size_t a, size_t b, size_t nbSimus, const Tenor& floatTenor, const Tenor& fixedTenor) ;
+
+
+//idem pour print
+void MCannuity(size_t a, size_t b, size_t nbSimus, 
+			   CheyetteDD_VanillaSwaptionApproxPricer_PTR pApproxPricer, std::ofstream& o) ;
+void MCforward(size_t a, size_t b, size_t nbSimus, 
+			   CheyetteDD_VanillaSwaptionApproxPricer_PTR pApproxPricer, std::ofstream& o) ;
+void MCforward_vs_annuity() ;
 
 
 void test_approx(double strike, size_t a, size_t b, Tenor floatingLegTenor, Tenor fixedLegTenor, 
@@ -84,3 +93,5 @@ void smile(size_t a, size_t b, double strikeATM, Tenor floatingLegTenor, Tenor f
 void test_approx_ATM(size_t a, size_t b, Tenor floatingLegTenor, Tenor fixedLegTenor, 
 					 CheyetteDD_Model_PTR pCheyetteDD_Model,
 					 std::vector<size_t> nbSimus, std::ofstream& o) ;
+
+void testApprox_print(size_t coterminal) ;
