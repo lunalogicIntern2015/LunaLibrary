@@ -9,8 +9,8 @@ class GeneticSwaption
 {
 	LMM::Index maturity_;
 	GeneticSwap_CONSTPTR geneticSwap_;
-	//check maturity_ <= firstindex
-	bool check()const; 
+	//check maturity_ <= firstindex	
+	bool check()const;		
 public:
 	//getter
 	LMM::Index getMaturity()const{return maturity_;}

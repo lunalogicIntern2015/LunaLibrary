@@ -10,7 +10,6 @@
 #include <JBLMM/Element/Coupon.h>
 
 
-
 class CouponLeg
 {
 	std::vector<Coupon_CONSTPTR>  leg_;	// couponPaymentDate in [indexStart, indexEnd[

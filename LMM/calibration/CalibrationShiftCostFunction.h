@@ -54,3 +54,5 @@ private:
 
 	QuantLib::Array computeCalibError(const Array& x)const;
 };
+
+typedef boost::shared_ptr<CalibrationShiftCostFunction> CalibrationShiftCostFunction_PTR;

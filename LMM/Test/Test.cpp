@@ -127,12 +127,12 @@ QuantLib::Array marketData_LMM_ABCD_calibration(const LmmCalibrationConfig& conf
 	LmmABCDCalibrator  lmm_abcd_calibrator(init_abcd, maxIterations, rootEpsilon,functionEpsilon,abcd_costFucntion);
 
 
-	//lmm_abcd_calibrator.add_ConstraintCell(std::pair<size_t,size_t>(1,1) );
-	//lmm_abcd_calibrator.add_ConstraintCell(std::pair<size_t,size_t>(2,2) );
-	////lmm_abcd_calibrator.add_ConstraintCell(std::pair<size_t,size_t>(3,3) );
-	//lmm_abcd_calibrator.add_ConstraintCell(std::pair<size_t,size_t>(4,4) );
-	//lmm_abcd_calibrator.add_ConstraintCell(std::pair<size_t,size_t>(6,6) );
-	//lmm_abcd_calibrator.add_ConstraintCell(std::pair<size_t,size_t>(8,8) );
+	lmm_abcd_calibrator.add_ConstraintCell(std::pair<size_t,size_t>(1,1) );
+	lmm_abcd_calibrator.add_ConstraintCell(std::pair<size_t,size_t>(2,2) );
+	//lmm_abcd_calibrator.add_ConstraintCell(std::pair<size_t,size_t>(3,3) );
+	lmm_abcd_calibrator.add_ConstraintCell(std::pair<size_t,size_t>(4,4) );
+	lmm_abcd_calibrator.add_ConstraintCell(std::pair<size_t,size_t>(6,6) );
+	lmm_abcd_calibrator.add_ConstraintCell(std::pair<size_t,size_t>(8,8) );
 
 	lmm_abcd_calibrator.activate_PositiveConstraint();
 	lmm_abcd_calibrator.solve();
@@ -443,7 +443,7 @@ void marketData_LMM_Global_gCalibration( const LmmCalibrationConfig& config
 	LmmGlobal_gCalibrator lmmCalibrator
 		(
 		*pGMatrixMapping.get()
-		, 2000 //maxIter
+		, 200 //maxIter
 		, 1e-11   //x_epsilon
 		, 1e-11   //f_epsilon    
 		, pLmmCostFunction

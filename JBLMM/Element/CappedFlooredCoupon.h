@@ -3,7 +3,7 @@
 #include <boost/shared_ptr.hpp>
 
 #include<JBLMM/Element/Coupon.h>
-#include<JBLMM/Element/Rate.h>
+#include<JBLMM/Element/Rate1.h>
 
 class CappedFlooredCoupon : public Coupon
 {
@@ -16,7 +16,7 @@ class CappedFlooredCoupon : public Coupon
 	bool   ifCapped_;
 	double capStrike_; 
 
-	Rate_CONSTPTR rate_;
+	Rate1_CONSTPTR rate_;
 	double multiFactor_;
 	double addFactor_; 
 	double valuationDate_; // t_i
@@ -29,26 +29,29 @@ public:
 	double			getFloorStrike()	const{return floorStrike_;}
 	bool			getIfCapped()		const{return ifCapped_;}
 	double			getCapStrike()		const{return capStrike_;}
-	Rate_CONSTPTR	getRate()			const{return rate_;}
+	Rate1_CONSTPTR	getRate()			const{return rate_;}
 	double			getMultiFactor()	const{return multiFactor_;}
 	double			getAddFactor()		const{return addFactor_;}
 	double			getValuationDate()	const{return valuationDate_;}
 
 	// constructor, constructor copie, destructor
-	CappedFlooredCoupon(LMM::Index		paymentDate,
-		                double			nominal,
-						double			period, 
-						bool			ifFloored,
-						double			floorStrike,
-						bool			ifCapped, 
-						double			capStrike, 
-						Rate_CONSTPTR	rate,
-						double			multiFactor,
-						double			addFactor, 
-						LMM::Index		valuationDateIndex);  
-
+	CappedFlooredCoupon(	LMM::Index		paymentDate,
+							double			nominal,
+							double			period, 
+							bool			ifFloored,
+							double			floorStrike,
+							bool			ifCapped, 
+							double			capStrike, 
+							Rate1_CONSTPTR	rate,
+							double			multiFactor,
+							double			addFactor, 
+							LMM::Index		valuationDateIndex);  
 	CappedFlooredCoupon(const CappedFlooredCoupon& c);
 	virtual ~CappedFlooredCoupon(){}
+	//show
+	virtual void show()const;
+	//print
+	void write_to_stream(std::ostream& out)const;
 	//clone
 	virtual Coupon_PTR clone()const;
 };	

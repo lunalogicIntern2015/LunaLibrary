@@ -9,7 +9,7 @@
 #include <LMM/helper/TenorType.h>
 #include <LMM/helper/LMMTenorStructure.h>
 #include <LMM/calibration/ATMSwaptionMarketData.h>
-#include <LMM/calibration/ATMSwaptionStructuredData.h>
+//#include <LMM/calibration/ATMSwaptionStructuredData.h>
 
 #include <LMM/ModelMCLMM/Lmm.h>
 #include <LMM/ModelMCLMM/Correlation.h>

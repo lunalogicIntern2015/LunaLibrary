@@ -2,24 +2,40 @@
 
 #include <vector>
 
-#include <JBLMM/Instrument/GeneticSwap.h>
+#include <boost/shared_ptr.hpp>
+
 #include <LMM/helper/Name.h>
 
-class CallableSwap
+#include <JBLMM/Instrument/GenericSwap.h>
+#include <JBLMM/Instrument/CallableInstrument.h>
+
+
+class CallableGenericSwap : public CallableInstrument
 {
-	GeneticSwap_CONSTPTR geneticSwap_;
-	std::vector<LMM::Index> exerciseTimes_;
+	GenericSwap_CONSTPTR genericSwap_;
+	//std::vector<LMM::Index> exerciseTimes_;
 	//check: exerciseTikme in [fistIndex, lastindex]
+	bool checkIfExerciseTime()const;
 public:
-	//getter
-	GeneticSwap_CONSTPTR getGeneticSwap()const{return geneticSwap_;}
+	//getters
+	GenericSwap_CONSTPTR getGenericSwap()const{return genericSwap_;}
 	const std::vector<LMM::Index>& getExerciseTimes()const{return exerciseTimes_;}
 
-	//constructeur
-	CallableSwap(GeneticSwap_CONSTPTR geneticSwap, const std::vector<LMM::Index>& exerciseTimes);
+	//constructor
+	CallableGenericSwap(GenericSwap_CONSTPTR genetricSwap, const std::vector<LMM::Index>& exerciseTimes);
 
-	//destructeur
-	virtual ~CallableSwap(){}
+	//destructor
+	virtual ~CallableGenericSwap(){}
+
+	//check if exercise time is valuable
+
+	Instrument_CONSTPTR getSubInstrument(const size_t indexStart, const size_t indexEnd) const
+	{
+		return getGenericSwap()->getSubGenericSwap(indexStart, indexEnd);
+	}
+
 	
 };
 
+typedef boost::shared_ptr<CallableGenericSwap> CallableGenericSwap_PTR;
+typedef boost::shared_ptr<const CallableGenericSwap> CallableGenericSwap_CONSTPTR;

@@ -83,7 +83,7 @@ private:
 	double numerical_value(std::string s) const ;
 
 	// check if case is a Tenor, containing text as YR, MO, ...
-	bool isTenor(const std::string& s)  const;
+	bool isTenor(const std::string& s)  const ;
 
 	// check if case is just label text as pillar, P, L, Expiry, ##### , empty case ...
 	bool isNotUsefulCase(const std::string& s) const; 

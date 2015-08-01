@@ -102,7 +102,7 @@ private:
 		                    , const double & strike_bump
 							, const std::vector<size_t>& missed_rows  
 							, const std::vector<size_t>& missed_cols  ) const;
-
+	
 	void buildSwationQuotes( const double & strike_bump
 		                   , const std::vector<double>& swpm_expirities
 		                   , const std::vector<double>& swpm_tenor

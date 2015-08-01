@@ -7,4 +7,8 @@ Rate_PTR Rate1::clone()const
 }
 
 
+void Rate1::show()const
+{	
+}
+
 

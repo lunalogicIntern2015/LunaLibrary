@@ -138,8 +138,36 @@ CheyetteDD_VanillaSwaptionApproxPricer_PTR createApproxPricer_PTR()
 	return approxPricerTest_PTR ;
 }
 
+void test_y_barre()
+{
+	std::vector<double> x, y, m_y ;
+	x.push_back(0) ; x.push_back(1) ; x.push_back(2) ; 
+	y.push_back(0.25) ; y.push_back(0.5) ;
+	m_y.push_back(0) ; m_y.push_back(0) ;
+	double k(1) ;
 
-void test_Derivative_ZC()
+	CourbeInput_PTR courbe_PTR_test(createCourbeInput());
+	VanillaSwaption_PTR swaption_PTR_test(createSwaption()) ;
+
+//cas m(t) = 0
+	Piecewiseconst_RR_Function sigma	= Piecewiseconst_RR_Function(x, y) ; 
+	Piecewiseconst_RR_Function m		= Piecewiseconst_RR_Function(x, m_y) ;
+	CheyetteDD_Model::CheyetteDD_Parameter monStruct(k, sigma, m) ;
+	CheyetteDD_Model_PTR modele_test_PTR(new CheyetteDD_Model(courbe_PTR_test, monStruct)) ;
+
+	CheyetteDD_VanillaSwaptionApproxPricer approx = 
+				CheyetteDD_VanillaSwaptionApproxPricer(modele_test_PTR, swaption_PTR_test); 
+
+	double t = 1 ;
+	double r0 = modele_test_PTR->get_courbeInput_PTR()->get_f_0_t(0) ;
+	double res_integrale(exp(- 2) * pow(0.25 * r0, 2) * (exp(2) - 1) / 2) ;
+
+	std::cout << "integrale_main   : " << res_integrale << std::endl ;
+	std::cout << "integrale_classe : " << approx.get_buffer_y_bar_t(t) << std::endl ;
+
+}
+
+void test_ZC_swapRate_Num_Denom()
 {
 	std::vector<double> listeMatu, tauxZC ;
 	listeMatu.push_back(0) ;	tauxZC.push_back(0.8/100) ; 
@@ -191,8 +219,14 @@ void test_Derivative_ZC()
 	std::cout << "derivee_2_classe T = 1Y   " << approxPricerTest_PTR->ZC_2ndDerivative_on_xt(0., 1.0, 0.) << std::endl ;
 	std::cout << "derivee_2_main   T = 1Y   "  << exp(- 0.85/100) * pow(1 - exp(-1),2) << std::endl ;
 	std::cout << "   " << std::endl ;
+//swap rate numerator
 	std::cout << "swap rate numerator   " << approxPricerTest_PTR->swapRateNumerator(0., 0.) << std::endl ;
-	std::cout << "swap rate numerator   " << 1 - exp(- 20 * 2.5/100) << std::endl ;  
+	std::cout << "swap rate numerator   " <<  exp(- 1 * 0.85/100) - exp(- 3 * 0.92/100) << std::endl ;
+	std::cout << "   " << std::endl ;
+//swap rate denominator
+	std::cout << "swap rate denominator " << approxPricerTest_PTR->swapRateDenominator(0., 0.) << std::endl ;
+	//somme sur les flux fixes : (2Y et 3Y) (delta_fixed = 1)
+	std::cout << "swap rate denominator " << 1 * (exp(- 2 * 0.9/100) + exp(- 3 * 0.92/100)) << std::endl ;  
 
 //t = 0.5
 	std::cout << " " << std::endl ;
@@ -212,6 +246,20 @@ void test_Derivative_ZC()
 	std::cout << exp(- 0.85/100) / exp(- 0.825/100 * 1/2) * exp(- 10 * g - 1/2 * 10 * g * g) ;
 	std::cout << " " << std::endl ;
 
+//swap rate numerator
+	//on fixe arbitrairement x_t = 1 pour le test (t = 0.5)
+	std::cout << "------------  t = 0.5  ------------" << std::endl ;
+	std::cout << "swap rate numerator   " << approxPricerTest_PTR->swapRateNumerator(0.5, 1) << std::endl ;
+	double y_bar_t = approxPricerTest_PTR->get_buffer_y_bar_t(0.5) ;
+	std::cout << "swap rate numerator   " <<  cheyetteDD_Model_PTR_Test->P(0.5, 1, 1, y_bar_t) +
+												- cheyetteDD_Model_PTR_Test->P(0.5, 3, 1, y_bar_t) << std::endl ;
+	std::cout << "   " << std::endl ;
+//swap rate denominator
+	std::cout << "swap rate denominator " << approxPricerTest_PTR->swapRateDenominator(0.5, 1) << std::endl ;
+	//somme sur les flux fixes : (2Y et 3Y) (delta_fixed = 1)
+	std::cout << "swap rate denominator " << 1 * (cheyetteDD_Model_PTR_Test->P(0.5, 2, 1, y_bar_t) 
+												+ cheyetteDD_Model_PTR_Test->P(0.5, 3, 1, y_bar_t)) << std::endl ;  
+
 //t = 2
 	std::cout << "P(2, 10, 1, 1)    " << cheyetteDD_Model_PTR_Test->P(2, 10, 1, 1)  << std::endl ;
 	g = 1 - exp(- 8) ;
@@ -225,34 +273,77 @@ void test_Derivative_ZC()
 	std::cout << "buffer T0 " << approxPricerTest_PTR->get_buffer_T0_() << std::endl ;  //1er flux
 	std::cout << "buffer TN " << approxPricerTest_PTR->get_buffer_TN_() << std::endl ;  //dernier flux
 
-	//// t = 0.5
-	////double y_barre_t = approxPricerTest_PTR->calculate_y_bar(0.5) ;
-	//double ge1 = 1 - exp(- 0.5) ;
+	// t = 0.5
+	double ge1 = 1 - exp(- 0.5) ;
 
-	//double PtT0 = exp( - 1 * 0.85/100) / exp( - 0.5 * 0.825/100) * exp(- 0.2 * ge1 - 1/2 * y_barre_t * ge1 * ge1) ;
-	//double ge2 = 1 - exp(- 3.5) ;
-	//double PtTN = exp( - 4 * 0.95/100) / exp( - 0.5 * 0.825/100) * exp(- 0.2 * ge2 - 1/2 * y_barre_t * ge2 * ge2) ;
+	double PtT0 = exp( - 1 * 0.85/100) / exp( - 0.5 * 0.825/100) * exp(- 0.2 * ge1 - 1/2 * y_bar_t * ge1 * ge1) ;
 
-	////flux fixe 2Y
-	//double ge3 = 1 - exp(- (2 - 0.5)) ;
-	//double PtT2Y = exp( - 2 * 0.9/100) / exp( - 0.5 * 0.825/100) * exp(- 0.2 * ge3 - 1/2 * y_barre_t * ge3 * ge3) ;
-	////flux fixe 3Y
-	//double ge4 = 1 - exp(- (3 - 0.5)) ;
-	//double PtT3Y = exp( - 3 * 0.92/100) / exp( - 0.5 * 0.825/100) * exp(- 0.2 * ge4 - 1/2 * y_barre_t * ge4 * ge4) ;
+	//flux fixe 2Y
+	double ge3 = 1 - exp(- (2 - 0.5)) ;
+	double PtT2Y = exp( - 2 * 0.9/100) / exp( - 0.5 * 0.825/100) * exp(- 0.2 * ge3 - 1/2 * y_bar_t * ge3 * ge3) ;
+	//flux fixe 3Y
+	double ge4 = 1 - exp(- (3 - 0.5)) ;
+	double PtT3Y = exp( - 3 * 0.92/100) / exp( - 0.5 * 0.825/100) * exp(- 0.2 * ge4 - 1/2 * y_bar_t * ge4 * ge4) ;
 
-	//std::cout << "swapRate(0.5, 0.2) : " << approxPricerTest_PTR.swapRate(0.5, 0.2) << std::endl ;
-	//std::cout << (PtT0 - PtTN) / (PtT2Y + PtT3Y + PtTN) << std::endl ;
+	std::cout << "swapRate(0.5, 0.2) : " << approxPricerTest_PTR->swapRate(0.5, 0.2) << std::endl ;
+	std::cout << (PtT0 - PtT3Y) / (PtT2Y + PtT3Y) << std::endl ;
 
+}
 
 
-	//std::cout << " " << std::endl ;
-	//std::cout << "------------  test swap rate 1st derivative  --------------" << std::endl ;
-	//std::cout << " " << std::endl ;
- //
-	//std::cout << "swapRate(0.5, 0.2) numerateur 1st deriv :  " << approxPricerTest_PTR.swapRateNumerator_1stDerivative(0.5, 0.2) << std::endl ;
+void test_fonction_inverse()
+{
+	std::vector<double> x, y, m_y ;
+	x.push_back(0) ; x.push_back(1) ; x.push_back(2) ; 
+	y.push_back(0.25) ; y.push_back(0.5) ;
+	m_y.push_back(0) ; m_y.push_back(0) ;
+	double k(1) ;
+
+	CourbeInput_PTR courbe_PTR_test(createCourbeInput());
+	VanillaSwaption_PTR swaption_PTR_test(createSwaption()) ;
+
+	Piecewiseconst_RR_Function sigma	= Piecewiseconst_RR_Function(x, y) ; 
+	Piecewiseconst_RR_Function m		= Piecewiseconst_RR_Function(x, m_y) ;
+	CheyetteDD_Model::CheyetteDD_Parameter monStruct(k, sigma, m) ;
+	CheyetteDD_Model_PTR modele_test_PTR(new CheyetteDD_Model(courbe_PTR_test, monStruct)) ;
+
+	CheyetteDD_VanillaSwaptionApproxPricer approx = 
+				CheyetteDD_VanillaSwaptionApproxPricer(modele_test_PTR, swaption_PTR_test); 
+
+	std::cout << "-----------  test fonction inverse  -----------------------" << std::endl ;
+	std::cout << " " << std::endl ;
+	std::cout	<< "swapRate(0, 0) : " << approx.swapRate(0, 0) 
+				<< ", approx.get_buffer_s0_ : " << approx.get_buffer_s0_() << std::endl ;
+	std::cout << "inverse : " << approx.inverse(0., approx.swapRate(0, 0)) << " vs 0" << std::endl ;
+	std::cout << " " << std::endl ;
+	std::cout << "swapRate(0.5, 2) : " << approx.swapRate(0.5, 2) << std::endl ;
+	std::cout << "inverse : " << approx.inverse(0.5, approx.swapRate(0.5, 2)) << " vs 2" << std::endl ;
+	std::cout << " " << std::endl ;
+	std::cout << "swapRate(0.5, 0.2) : " << approx.swapRate(0.5, 0.2) << std::endl ;
+	std::cout << "inverse : " << approx.inverse(0.5, approx.swapRate(0.5, 0.2)) << " vs 0.2" << std::endl ;
+	std::cout << " " << std::endl ;	
+	std::cout << "swapRate(1, 0.5) : " << approx.swapRate(1, 0.5) << std::endl ;
+	std::cout << "inverse : " << approx.inverse(1, approx.swapRate(1, 0.5)) << " vs 0.5" << std::endl ;
+	std::cout << " " << std::endl ;
+	std::cout << "swapRate(1, 5) : " << approx.swapRate(1, 5) << std::endl ;
+	std::cout << "inverse : " << approx.inverse(1, approx.swapRate(1, 5)) << " vs 5" << std::endl ;
+
+}
+
+
+
+
+void test_derivatives()
+{
+
+	std::cout << " " << std::endl ;
+	std::cout << "------------  test swap rate 1st derivative  --------------" << std::endl ;
+	std::cout << " " << std::endl ;
+ 
+	//std::cout << "swapRate(0.5, 0.2) numerateur 1st deriv :  " << approxPricerTest_PTR->swapRateNumerator_1stDerivative(0.5, 0.2) << std::endl ;
 	//std::cout << "swapRate(0.5, 0.2) numerateur deriv mano : " << -(1-exp(- 0.5)) * PtT0 + (1 - exp(-3.5)) * PtTN << std::endl ;
 
-	//std::cout << "swapRate(0.5, 0.2) denom 1st deriv :  " << approxPricerTest_PTR.swapRateDenominator_1stDerivative(0.5, 0.2) << std::endl ;
+	//std::cout << "swapRate(0.5, 0.2) denom 1st deriv :  " << approxPricerTest_PTR->swapRateDenominator_1stDerivative(0.5, 0.2) << std::endl ;
 	//std::cout << "swapRate(0.5, 0.2) denom deriv mano : " <<	- (1-exp(- 1.5)) * PtT2Y 
 	//															- (1-exp(- 2.5)) * PtT3Y 
 	//															- (1-exp(- 3.5)) * PtTN << std::endl ;
@@ -268,64 +359,6 @@ void test_Derivative_ZC()
 	//std::cout << "swapRate(0.5, 0.2) 1st deriv :  " << (np * d - n * dp) / (d * d) << std::endl ;
 
 	//std::cout << " " << std::endl ;
-	//std::cout << "-----------  test fonction inverse  -----------------------" << std::endl ;
-	//std::cout << " " << std::endl ;
-	//std::cout << "swapRate(0.5, 2) : " << approxPricerTest_PTR->swapRate(0.5, 2) << std::endl ;
-	//std::cout << "inverse : " << approxPricerTest_PTR->inverse(0.5, approxPricerTest_PTR->swapRate(0.5, 2)) << " vs 2" << std::endl ;
-	//std::cout << " " << std::endl ;
-	//std::cout << "swapRate(0.5, 0.2) : " << approxPricerTest_PTR->swapRate(0.5, 0.2) << std::endl ;
-	//std::cout << "inverse : " << approx.inverse(0.5, approx.swapRate(0.5, 0.2)) << " vs 0.2" << std::endl ;
-	//std::cout << " " << std::endl ;	
-	//std::cout << "swapRate(1, 0.5) : " << approx.swapRate(1, 0.5) << std::endl ;
-	//std::cout << "inverse : " << approx.inverse(1, approx.swapRate(1, 0.5)) << " vs 0.5" << std::endl ;
-	//std::cout << " " << std::endl ;
-	//std::cout << "swapRate(1, 5) : " << approx.swapRate(1, 5) << std::endl ;
-	//std::cout << "inverse : " << approx.inverse(1, approx.swapRate(1, 5)) << " vs 5" << std::endl ;
-
-
-}
-
-
-
-void test_y_barre()
-{
-	std::vector<double> x, y, m_y ;
-	x.push_back(0) ; x.push_back(1) ; x.push_back(2) ; 
-	y.push_back(0.25) ; y.push_back(0.5) ;
-	m_y.push_back(0) ; m_y.push_back(0) ;
-	double k(1) ;
-
-	CourbeInput_PTR courbe_PTR_test(createCourbeInput());
-	VanillaSwaption_PTR swaption_PTR_test(createSwaption()) ;
-
-//cas m(t) = 0
-	Piecewiseconst_RR_Function sigma	= Piecewiseconst_RR_Function(x, y) ; 
-	Piecewiseconst_RR_Function m		= Piecewiseconst_RR_Function(x, m_y) ;
-	CheyetteDD_Model::CheyetteDD_Parameter monStruct(k, sigma, m) ;
-	CheyetteDD_Model_PTR modele_test_PTR(new CheyetteDD_Model(courbe_PTR_test, monStruct)) ;
-
-	CheyetteDD_VanillaSwaptionApproxPricer approx = 
-				CheyetteDD_VanillaSwaptionApproxPricer(modele_test_PTR, swaption_PTR_test); 
-
-	double t = 1 ;
-	double r0 = modele_test_PTR->get_courbeInput_PTR()->get_f_0_t(0) ;
-	double res_integrale(exp(- 2) * pow(0.25 * r0, 2) * (exp(2) - 1) / 2) ;
-
-	std::cout << "integrale_main   : " << res_integrale << std::endl ;
-	std::cout << "integrale_classe : " << approx.get_buffer_y_bar_t(t) << std::endl ;
-
-	//	double domaine1 = y[0] * y[0] * (exp(2*k*std::min(0.5, t)) -               1          )/(2 * k) ;
-	//double domaine2 = y[1] * y[1] * (exp(2*k*std::min(1.0, t)) - exp(2*k*std::min(0.5, t)))/(2 * k) ;
-
-//	std::cout << "annuite" << std::endl ;
-	//std::cout <<  modele_test_PTR->annuity(w) << std::endl ;
-	//std::cout <<  exp(- 0.85/100) + exp(- 2 * 0.9/100) + exp(-3 * 0.92/100) + exp(-4 * 0.95/100) << std::endl ;
-
-	//std::cout << approx.swapRateDenominator_1stDerivative(0, 0) << std::endl ;
-	//std::cout <<    - (1 - exp(- 1)) * exp(- 0.85/100) 
-	//				- (1 - exp(- 2)) * exp(- 2 * 0.9/100) 
-	//				- (1 - exp(- 3)) * exp(- 3 * 0.92/100) 
-	//				- (1 - exp(- 4)) * exp(- 4 * 0.95/100) << std::endl ;
 }
 
 
@@ -351,18 +384,26 @@ void test_time_average()
 
 	double S0 = approx.get_buffer_s0_() ;
 	double inv = approx.inverse(0, S0) ;
+	std::cout << "S(0) = " << S0 << " , inverse(S0) en t = 0 : " << inv << std::endl ;
 	std::cout << "dS(t) = (A(t) S(t) + B(t) ) dW_t^A" << std::endl ;
 	std::cout << "A(0) = " << approx.swapRateVolatility_1stDerivative(0, inv) << std::endl ;
 	std::cout << "B(0) = " << approx.calculate_phi_t_s_bar(0) - S0 * approx.swapRateVolatility_1stDerivative(0, inv) << std::endl ;
+	double T0 = approx.get_buffer_T0_() ;//date, pas un index
+	inv = approx.inverse(T0, S0) ;
+	std::cout << "T0 = " << T0 << std::endl ;
+	std::cout << "A(T0) = " << approx.swapRateVolatility_1stDerivative(T0, inv) << std::endl ;
+	std::cout << "B(T0) = " << approx.calculate_phi_t_s_bar(T0) - S0 * approx.swapRateVolatility_1stDerivative(T0, inv) << std::endl ;
 	std::cout << "  " << std::endl ;
 
 	std::cout << "dS(t) = lambda(t) (b(t) S(t) + (1-b(t)) S0 ) dW_t A" << std::endl ;
 	std::cout << "lambda(0) = " << approx.lambda(0) << std::endl ;
 	std::cout << "b(0) = " << approx.b(0) << std::endl ;
 	std::cout << "  " << std::endl ;
+	std::cout << "lambda(T0) = " << approx.lambda(T0) << std::endl ;
+	std::cout << "b(T0) = " << approx.b(T0) << std::endl ;
+	std::cout << "  " << std::endl ;
 
-
-	std::cout << "gridSize = 11" << std::endl ;
+	std::cout << "gridSize = 101" << std::endl ;
 	std::cout << "prixSwaption" << std::endl ;
 	std::cout << approx.prixSwaptionApproxPiterbarg() << std::endl ;
 	std::cout << "  " << std::endl ;
@@ -443,53 +484,3 @@ void test_y_bar_cas_limite()
 	std::cout << approx.prixSwaptionApproxPiterbarg() << std::endl ;
 	std::cout << "OK ! " << std::endl ;
 }
-
-
-//	double f(double x)
-//	{
-//        return x;
-//	}
-//
-//// \int_0^1 u \int_0^u s ds du = 1/8
-//void test_incremental_integrale()
-//{
-//	double start = 0 ;
-//	double end = 1 ;
-//	size_t nbPoints = 100 + 1 ; //delta t = 1/100
-//	std::vector<double> f_grids ;
-//	for (size_t i = 0 ; i < nbPoints ; ++i)
-//	{
-//		f_grids.push_back(i/100.) ;		//modifier ici aussi le nb de points
-//	}
-//	numeric::IncrementalIntegrator1D_Riemann incr(start, end, nbPoints, f_grids); 
-//	//for (size_t i = 0 ; i < nbPoints ; ++i)			//debogage
-//	//{
-//	//	std::cout << incr.get_value(i) << std::endl ;
-//	//}
-//	boost::function<double(double)> func1 = f;
-//	std::cout << incr.integrate(func1) << std::endl ;
-//	std::cout << 1/8. << std::endl ;
-//}
-//
-//void test_incremental_b_barre()
-//{
-//	double start = 0 ;
-//	double end = 1 ;
-//	size_t nbPoints = 100 + 1 ; //delta t = 1/100
-//	std::vector<double> f_grids ;
-//	for (size_t i = 0 ; i < nbPoints ; ++i)
-//	{
-//		f_grids.push_back(i/100.) ;		//modifier ici aussi le nb de points
-//	}
-//	numeric::IncrementalIntegrator1D_Riemann incr(start, end, nbPoints, f_grids); 
-//	//for (size_t i = 0 ; i < nbPoints ; ++i)			//debogage
-//	//{
-//	//	std::cout << incr.get_value(i) << std::endl ;
-//	//}
-//	boost::function<double(double)> func1 = f;
-//	std::cout << incr.integrate(func1) << std::endl ;
-//	std::cout << 1/8. << std::endl ;
-//}
-//
-//
-

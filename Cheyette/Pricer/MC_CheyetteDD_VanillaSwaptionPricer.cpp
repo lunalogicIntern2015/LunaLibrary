@@ -2,14 +2,14 @@
 #include <Cheyette/Pricer/MC_CheyetteDD_VanillaSwaptionPricer.h>
 
 
-double MC_CheyetteDD_VanillaSwaptionPricer::price(double t_valo, 
+double MC_CheyetteDD_VanillaSwaptionPricer::price(double t_valo, double fwdProbaT_, 
 												const VanillaSwaption& vanillaSwaption, 
 												size_t nbSimulation)  const
 {
 	double dateFlux, x_t, y_t, fixedLegValue(0), floatLegValue(0), valueSwaption(0) ;
 	std::vector<double> x_t_one_sim, y_t_one_sim ;  //one simulation 
 	std::vector<double> dates = mcCheyette_->getDatesOfSimulation_() ;
-
+	 
 	VanillaSwap vanillaSwap = vanillaSwaption.getUnderlyingSwap() ;
 	std::vector<size_t> fixedLegIndexSchedule		= vanillaSwap.get_fixedLegPaymentIndexSchedule() ; 
 	std::vector<size_t> floatingLegIndexSchedule	= vanillaSwap.get_floatingLegPaymentIndexSchedule() ;
@@ -21,7 +21,7 @@ double MC_CheyetteDD_VanillaSwaptionPricer::price(double t_valo,
 
 	for(size_t itrSimulation=0; itrSimulation<nbSimulation; ++itrSimulation)
 	{
-		mcCheyette_->simulate_Euler() ;
+		mcCheyette_->simulate_Euler(fwdProbaT_) ;
 		x_t_one_sim = mcCheyette_->get_x_t_Cheyette_() ;
 		y_t_one_sim = mcCheyette_->get_y_t_Cheyette_() ;
 

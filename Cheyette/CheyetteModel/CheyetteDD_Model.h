@@ -89,10 +89,17 @@ public:
 	double r_t(double t, double x_t) const ;
 	double Libor(double t, double T1, double T2, double x_t, double y_t) const ;  
 
-	//EDS : drift et diffusion sous Q^T
+	//EDS : diffusion
+	double diffusion_x(double t, double x_t) const ;
+	
+	double drift_y(double t, double x_t, double y_t) const ;
+
+	double drift_x_Q(double t, double x_t, double y_t) const ;
+	//EDS : drift sous Q^T
 	double drift_x_QT(double t, double T_proba_fwd, double x_t, double y_t) const ;
-	double diffusion_x_QT(double t, double x_t) const ;
-	double drift_y_QT(double t, double x_t, double y_t) const ;
+
+	//EDS : drift sous Q^Annuity
+	double drift_x_QA(double t, double x_t, double y_t, const VanillaSwap& swap) const ;
 
 	//annuite A_0N(0)
 	//double annuity(double t, double x_t, double y_t, const VanillaSwap& vanillaSwap) ;

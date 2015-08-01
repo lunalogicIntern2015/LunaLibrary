@@ -289,7 +289,7 @@ void LmmSwaptionMarketData::parseFromMarketData(const std::string& filename)
 		{
 			getSwaptionQuoteFirstColumn(atm_swpm_experities_buffer, atm_swpm_quote_buffer);
 		}
-
+		
 		buildSwationQuotes( strike_bump, atm_swpm_experities_buffer, atm_swpm_tenor_buffer, atm_swpm_quote_buffer, atm_swpm_strike_buffer );
 	}
 

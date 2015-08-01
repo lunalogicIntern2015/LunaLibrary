@@ -20,7 +20,6 @@ private:
 	CheyetteDD_Model_PTR		cheyetteDD_Model_ ;
 	RNGenerator_PTR				rnGenerator_;
 
-	double fwdProbaT_;							// define the numeraire
 	//dates ou on veut recuperer le vecteur de simulation :
 	std::vector<double> datesOfSimulation_;				//fractions d'année ex 0.5 Y , 1Y, 1.5Y, 2Y  de taille N
 	std::vector<size_t> discretizationBetweenDates_ ;	//nb de simus entre 2 dates : 100 simus, ..., 100 simus de taille N
@@ -32,10 +31,9 @@ public:
 
 	MC_Cheyette(	CheyetteDD_Model_PTR		cheyetteDD_Model,
 					RNGenerator_PTR				rnGenerator,
-					double						fwdProbaT,
 					std::vector<double>&			datesOfSimulation,		
 					std::vector<size_t>&			discretizationBetweenDates   )
-				:cheyetteDD_Model_(cheyetteDD_Model), rnGenerator_(rnGenerator), fwdProbaT_(fwdProbaT), 
+				:cheyetteDD_Model_(cheyetteDD_Model), rnGenerator_(rnGenerator),
 				datesOfSimulation_(datesOfSimulation), discretizationBetweenDates_(discretizationBetweenDates), 
 				x_t_Cheyette_(datesOfSimulation.size()), y_t_Cheyette_(datesOfSimulation.size()) 
 	{
@@ -50,14 +48,14 @@ public:
 	//-- Getters 
 	CheyetteDD_Model_PTR		getCheyetteDD_Model_() const{return cheyetteDD_Model_ ;}
 	RNGenerator_PTR				getRNGenerator_() const{return rnGenerator_ ;}
-	double						getFwdProbaT_() const{return fwdProbaT_ ;}
 	std::vector<double>			getDatesOfSimulation_() const{return datesOfSimulation_ ;}
 	std::vector<size_t>			getDiscretizationBetweenDates_() const{return discretizationBetweenDates_ ;}
 	std::vector<double>			get_x_t_Cheyette_() const{return x_t_Cheyette_ ;}
 	std::vector<double>			get_y_t_Cheyette_() const{return y_t_Cheyette_ ;}
 
 	//remplit les vecteurs xt et yt aux dates de la tenor structure
-	void simulate_Euler() const;
+	//sous la mesure Q^T (T = fwdProbaT_)
+	void simulate_Euler(double fwdProbaT_) const;
 
 
 	//double get_numeraire(size_t index)				  const {return numeraires_[index];}  // P(t, fwdProbaT_), index of dateOfSimulation; 

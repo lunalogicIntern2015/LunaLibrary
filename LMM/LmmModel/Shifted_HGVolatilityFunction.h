@@ -142,7 +142,9 @@ public:
 		return shift_matrix_(indexLibor,indexTime);	
 	}
 	
-	
+
+	const Shifted_HGVolatilityParam::LowerTriangularMatrix&  get_gMatrix()const;
+
 	void reset_g_matrix(const LowerTriangularMatrix& other_g);
 
 	size_t get_horizon() const ;

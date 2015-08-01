@@ -1,4 +1,3 @@
-#include <LMM/Test/Tests.h>
 #include <LMM/Test/Test_CalibrationConfig.h>
 
 #include <iostream>

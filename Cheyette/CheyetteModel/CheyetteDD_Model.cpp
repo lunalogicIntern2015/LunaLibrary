@@ -89,6 +89,10 @@ double CheyetteDD_Model::Libor(double t, double T1, double T2, double x_t, doubl
 }
 
 //EDS : drift et diffusion sous Q^T
+double CheyetteDD_Model::diffusion_x(double t, double x_t) const
+{
+	return sigma_r(t, x_t) ;
+}
 
 double CheyetteDD_Model::drift_x_QT(double t, double T_proba_fwd, double x_t, double y_t) const
 {
@@ -96,22 +100,44 @@ double CheyetteDD_Model::drift_x_QT(double t, double T_proba_fwd, double x_t, do
 	double r_t			= x_t + courbeInput_PTR_->get_f_0_t(t) ;
 	double sigma_r_t	=  sigma_r(t, x_t) ;
 
-	return y_t - k * x_t - G(t, T_proba_fwd) * sigma_r_t * sigma_r_t ;	    ///  est ce le T de la proba forward :::
+	return y_t - k * x_t - G(t, T_proba_fwd) * sigma_r_t * sigma_r_t ;	    
 }
 
-double CheyetteDD_Model::diffusion_x_QT(double t, double x_t) const
-{
-	return sigma_r(t, x_t) ;
-}
 
-double CheyetteDD_Model::drift_y_QT(double t, double x_t, double y_t) const
+double CheyetteDD_Model::drift_y(double t, double x_t, double y_t) const
 {
 	double sigma_r_t	=  sigma_r(t, x_t) ;
 	double k			= cheyetteDD_Parameter_.k_ ;
 	return sigma_r_t * sigma_r_t - 2 * k * y_t ;
 }
 
+double CheyetteDD_Model::drift_x_Q(double t, double x_t, double y_t) const
+{
+	double k			= cheyetteDD_Parameter_.k_ ;
 
+	return y_t - k * x_t ;	    
+}
+
+//EDS : drift et diffusion sous Q^Annuity
+double CheyetteDD_Model::drift_x_QA(double t, double x_t, double y_t, const VanillaSwap& swap) const
+{
+	double k			= cheyetteDD_Parameter_.k_ ;
+	double r_t			= x_t + courbeInput_PTR_->get_f_0_t(t) ;
+	double sigma_r_t	=  sigma_r(t, x_t) ;
+
+	double T_k, drift(y_t) ;
+	double fixed_tenor = swap.get_fixedLegTenorType().YearFraction() ;
+	double float_tenor = swap.get_floatingLegTenorType().YearFraction() ;
+	double tenor_ref = std::min(fixed_tenor, float_tenor) ;   
+	std::vector<size_t> index = swap.get_fixedLegPaymentIndexSchedule() ;
+	for (size_t i = 0 ; i < index.size() ; ++i)
+	{
+		T_k = index[i] * tenor_ref ;
+		drift += - k * x_t - G(t, T_k) * sigma_r_t * sigma_r_t ; 	
+	}
+	
+	return drift ;	
+}
 
 //double CheyetteDD_Model::annuity(double t, double x_t, double y_t, const VanillaSwap& vanillaSwap)
 //{

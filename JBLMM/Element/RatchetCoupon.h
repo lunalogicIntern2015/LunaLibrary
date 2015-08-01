@@ -9,7 +9,7 @@
 class RatchetCoupon : public CappedFlooredCoupon
 {
 	double leverage_;
-	std::string dependentCoupon_;  // lastcoupon 
+	std::string dependentCoupon_;  // last coupon 
 
 public:
 
@@ -24,7 +24,7 @@ public:
 					double floorStrike,
 					bool   ifCapped, 
 					double capStrike, 
-					Rate_CONSTPTR rate,
+					Rate1_CONSTPTR rate,
 					double multiFactor,
 					double addFactor, 
 					LMM::Index valuationDateIndex,

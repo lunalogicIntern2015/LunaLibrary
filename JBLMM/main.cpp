@@ -1,7 +1,7 @@
 #include <LMM/Test/Tests.h>
 #include <stdio.h>
 
-
+#include <JBLMM/Test/JBTests.h>
 
 #include <Cheyette/unit_test/TestFonction.h>
 #include <Cheyette/unit_test/TestIntegrator1D_2D.h>
@@ -17,9 +17,10 @@ int main()
 
 	//test_beginner();							//test_JB
 	//vanillaSwapComparaisonExemple();			//test_JB		
-
 	//Test_McGeneticSwapLMMPricer();			//test_JB
 	//Test_McGeneticTargetSwapLMMPricing();		//test_JB
+	//Test_GeneticTargetSwapOneTrajectory();	//test_JB
+	JB_test_LmmCalibrationMarketData();		//test_JB
 
 	//test_Integrator1D();
 	//createDDModel_xyz() ;
@@ -35,7 +36,7 @@ int main()
 	//CheyetteDD_VanillaSwaptionApproxPricer_PTR test = createApproxPricer_PTR() ;
 
 
-	test_Derivative_ZC() ;  
+	//test_Derivative_ZC() ;  
 
 	//TestIncrementalIntegrator2D_Riemann() ;    
 	//std::cout << "pb lors de 2 appels consecutifs a integrale" << std::endl ;
@@ -77,18 +78,6 @@ int main()
 	//test_VanialSwaptionPricer_MCvsApprox(); 
 
 
-	//test_Noise();  
-	//test_HGVolatility();  
-	//test_Functional(); 
-	//test_BlackGreek(); 
-	//test_McTerminalLmm(); 
-
-	//test_VanillaFRAPricer();  
-	//test_VanillaCapletPricer(); 
-	//test_VanillaSwapPricer();  
-	//test_VanillaSwaptionPricer();    
-	//test_VanialSwaptionPricer_MCvsApprox(); 
-
 	//test_SwaptionMarketDataContainer();		
 	//test_CalibrationWithATMSwaptionVol();		
 	//test_CalibrationShiftWithSwaptionVolSkew();
@@ -103,8 +92,10 @@ int main()
 	//test_LmmABCDFinder();	
 	//test_LmmVirtualCalibration();	
 	//test_LmmCalibrationSensitivity();	
-	//test_LmmCalibrationMarketData();	
-	//test_LmmRegularizedCalibrationMarketData();   
+	
+	//test_LmmRegularizedCalibrationMarketData();  
+
+	//test_CalibrationShiftWithSwaptionVolSkew();
 
 	getchar();
 }

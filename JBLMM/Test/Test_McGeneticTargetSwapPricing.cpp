@@ -1,4 +1,4 @@
-#include <LMM/Test/Tests.h>
+#include <JBLMM/Test/JBTests.h>
 
 #include <iostream> 
 #include <fstream> 
@@ -13,15 +13,15 @@
 #include <LMM/LmmModel/Lmm.h>
 #include <LMM/LmmModel/ConstShifted_HGVolatilityFunction.h>
 
-#include <JBLMM/Pricer/McGeneticSwapLMMPricer.h>
+#include <JBLMM/Pricer/McLmmGenericSwapPricer.h>
 #include <JBLMM/Instrument/InstrumentFactory.h>
-#include <JBLMM/Pricer/GeneticVanillaSwapPricer.h>
-#include <JBLMM/Pricer/McGeneticTargetSwapLmmPricer.h>
+#include <JBLMM/Pricer/GenericVanillaSwapPricer.h>
+#include <JBLMM/Pricer/McLmmGenericTargetSwapPricer.h>
 
 
 void Test_McGeneticTargetSwapLMMPricing()
 {
-	//! LMMTenorStructure
+	//! Parameter
 	double	strike			=	0.02;
 	LMM::Index	indexStart	=	0;
 	LMM::Index	indexEnd	=	4;
@@ -30,7 +30,6 @@ void Test_McGeneticTargetSwapLMMPricing()
 	Tenor	tenorType		=	Tenor::_6M;
 	size_t	horizonYear		=	2;
 	LMMTenorStructure_PTR lmmTenorStructure( new LMMTenorStructure(tenorType, horizonYear));
-	size_t	nbSimulation	=	1;
 	double	nominal			=	1.0;
 	double	target			=	0.02;
 
@@ -61,42 +60,29 @@ void Test_McGeneticTargetSwapLMMPricing()
 	correlation->calculate(); // for print.
 	correlation->print("test_McTerminalLmm_Correlation.csv");
 
-	//McLmm
-	//double shiftValue = -0.01;
-	//std::vector<double> shifts(lmmTenorStructure->get_horizon()+1, shiftValue);
-
 	ConstShifted_HGVolatilityFunction_PTR hgVolatilityFunction (new ConstShifted_HGVolatilityFunction(lmmTenorStructure, correlation, hgParam)); 
 	hgVolatilityFunction->print("test_McTerminalLmm_Volatility.csv");
-
-	////! Correlation 2: don't do reduction.
-	//size_t nbFactor          = lmmTenorStructure.get_horizon()+1;; // need to test nbFactor  = 3, and nbFactor = 
-	//size_t correlFullRank    = lmmTenorStructure.get_horizon()+1;
-	//size_t correlReducedRank = nbFactor;
-	//CorrelationReductionType correlReductionType = CorrelationReductionType::PCA;
-	//double correlConst       = 1.0; 
-	//Correlation_PTR correlation(new Const_Correlation(correlFullRank,correlReducedRank,correlReductionType,correlConst));
-
 	//! Dispersion
 	Dispersion dispersion(hgVolatilityFunction);
 
-	unsigned long seed = 93;
+	unsigned long seed = 503333;
 	RNGenerator_PTR  rnGenerator(new McGenerator(seed));
 
+	//build lmm and mcLmm model
 	Lmm_PTR shiftedLmm (new Lmm(dispersion));
+	McLmm_PTR mcLmm(new McTerminalLmm(shiftedLmm, liborsInitValue, rnGenerator, MCSchemeType::EULER));
 
 	//build a McGeneticSwapLMMPricer
-	McGeneticSwapLMMPricer_PTR mcGeneticTargetSwapLMMPricer(new McGeneticTargetSwapLmmPricer(McLmm_PTR(new McTerminalLmm(shiftedLmm, liborsInitValue, rnGenerator, MCSchemeType::EULER))));
+	McLmmGenericSwapPricer_PTR mcGeneticTargetSwapLMMPricer(new McLmmGenericTargetSwapPricer(mcLmm));
+
 	//build the vanillaSwap in the way of GeneticSwap
-	GeneticSwap_CONSTPTR targetSwap_Genetic=InstrumentFactory::createStandardTARNSwap(
+	GenericSwap_CONSTPTR targetSwap_Genetic=InstrumentFactory::createStandardTARNSwap(
 			strike, indexStart, indexEnd, floatingTenor, fixedTenor, lmmTenorStructure, nominal, target);
 
 	//use Monte Carlo Method
+	size_t	nbSimulation	=	100;
 	double	MonteCarloTargetPrice		=	mcGeneticTargetSwapLMMPricer->swapNPV(targetSwap_Genetic, nbSimulation);
 
 	cout	<<	"MonteCarloTargetPrice: "	<<	MonteCarloTargetPrice	<<	endl;
-	//cout	<<	"Difference between MonteCarloPrice and OrdinaryGeneticVanillaSwapPrice: "		<<	MonteCarloTargetPrice-OrdinaryGeneticVanillaSwapPrice	<<	endl;	
 
-
-	McTerminalLmm mcTerminalLmm(shiftedLmm, liborsInitValue, rnGenerator, MCSchemeType::EULER);
-    mcTerminalLmm.print("test_McTerminalLmm_McTerminal.csv");  // Attention, there are two print: parent class and derived class
 }

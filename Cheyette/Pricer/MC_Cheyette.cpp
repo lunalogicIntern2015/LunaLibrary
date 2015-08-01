@@ -1,7 +1,7 @@
 #include <Cheyette\Pricer\MC_Cheyette.h>
 	
 
-void MC_Cheyette::simulate_Euler() const
+void MC_Cheyette::simulate_Euler(double fwdProbaT_) const
 {
 	
 	//initialisation
@@ -31,8 +31,8 @@ void MC_Cheyette::simulate_Euler() const
 			t_plus_dt += dt ;
 
 			x_t_plus_dt =  x_t	+ cheyetteDD_Model_->drift_x_QT(t, fwdProbaT_, x_t, y_t) * dt 
-								+ cheyetteDD_Model_->diffusion_x_QT(t, x_t) * sqrt(dt) * gaussian_tmp[pasDiscretisation - 1] ;
-			y_t_plus_dt =  y_t	+ cheyetteDD_Model_->drift_y_QT(t, x_t, y_t) * dt ;
+								+ cheyetteDD_Model_->diffusion_x(t, x_t) * sqrt(dt) * gaussian_tmp[pasDiscretisation - 1] ;
+			y_t_plus_dt =  y_t	+ cheyetteDD_Model_->drift_y(t, x_t, y_t) * dt ;
 			x_t = x_t_plus_dt ;
 			y_t = y_t_plus_dt ;
 			t = t_plus_dt ;

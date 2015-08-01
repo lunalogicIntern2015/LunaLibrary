@@ -3,7 +3,7 @@
 #include <string>
 
 #include <boost/shared_ptr.hpp>
-
+#include <JBLMM/Element/Coupon.h>
 #include <JBLMM/Element/CappedFlooredCoupon.h>
 
 class TargetCoupon : public CappedFlooredCoupon
@@ -15,6 +15,7 @@ public:
 	//getter
 	double getTarget()const{return target_;}
 	std::string getCouponDependency()const{return couponDependency_;}
+
 	//constructor, destructor
 	TargetCoupon(	LMM::Index paymentIndex,
 		            double nominal,
@@ -23,13 +24,22 @@ public:
 					double floorStrike,
 					bool   ifCapped, 
 					double capStrike, 
-					Rate_CONSTPTR rate,
+					Rate1_CONSTPTR rate,
 					double multiFactor,
 					double addFactor, 
 					LMM::Index valuationDateIndex,
 					double target,
 					std::string couponDependency);  
 	virtual ~TargetCoupon(){}
+
+	//check if target are the same with an another coupon
+	bool isSameTarget(Coupon_CONSTPTR coupon)const;
+
+	//print targetCoupon
+	void show()const;
+
+	//clone
+	virtual Coupon_PTR clone()const;
 };
 typedef boost::shared_ptr<TargetCoupon> TargetCoupon_PTR;
 typedef boost::shared_ptr<const TargetCoupon> TargetCoupon_CONSTPTR;

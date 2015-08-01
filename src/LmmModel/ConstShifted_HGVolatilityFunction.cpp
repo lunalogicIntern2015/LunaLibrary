@@ -49,7 +49,7 @@ ConstShifted_HGVolatilityParam::ConstShifted_HGVolatilityParam(
 	const Shifted_HGVolatilityParam::ABCDParameter& h_abcdParameter,
 	const LowerTriangularMatrix& g_matrix,
 	const std::vector<double>&   shiftConstVector)
-	:Shifted_HGVolatilityParam(pLMMTenorStructure,h_abcdParameter,g_matrix,createShiftLTM(shiftConstVector)){}
+	:Shifted_HGVolatilityParam(pLMMTenorStructure, h_abcdParameter, g_matrix, createShiftLTM(shiftConstVector)){}
 
 //Fully getting from shift matrix  by row
 QuantLib::Array ConstShifted_HGVolatilityParam::get_ArrayFrom_Shift() const

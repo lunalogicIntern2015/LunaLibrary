@@ -384,9 +384,6 @@
     <ClInclude Include="JBLMM\Instrument\InstrumentFactory.h">
       <Filter>LMM_instrument\GeneticSwap</Filter>
     </ClInclude>
-    <ClInclude Include="JBLMM\Instrument\VanillaSwapRate.h">
-      <Filter>LMM_instrument\GeneticSwap</Filter>
-    </ClInclude>
     <ClInclude Include="JBLMM\Element\CappedFlooredCoupon.h">
       <Filter>LMM_helper\Element</Filter>
     </ClInclude>
@@ -426,6 +423,17 @@
     <ClInclude Include="Cheyette\InverseFunction.h" />
     <ClInclude Include="Cheyette\Pricer\MC_CheyetteDD_ZCPricer.h" />
     <ClInclude Include="Cheyette\Pricer\MC_CheyetteDD_VanillaSwaptionPricer.h" />
+    <ClInclude Include="JBLMM\Test\JBTests.h" />
+    <ClInclude Include="JBLMM\Element\VanillaSwapRate.h" />
+    <ClInclude Include="LMM\calibration\ATMSwaptionMarketData.h" />
+    <ClInclude Include="LMM\calibration\Calibration.h" />
+    <ClInclude Include="LMM\calibration\CalibrationShiftCostFunction.h" />
+    <ClInclude Include="LMM\calibration\CalibrationVolCostFunction.h" />
+    <ClInclude Include="LMM\calibration\RebonatoVolatilityCostFunction.h" />
+    <ClInclude Include="LMM\calibration\SwaptionMarketDataContainer.h" />
+    <ClInclude Include="LMM\calibration\SwaptionMarketDataManager.h" />
+    <ClInclude Include="LMM\calibration\TestCostFunction.h" />
+    <ClInclude Include="LMM\calibration\TestHGVolatilityParam.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\pricer\LmmTarnPricer.cpp">
@@ -491,7 +499,6 @@
     <ClCompile Include="LMM\Test\Test_VanillaSwaptionPricer_MCvsApprox.cpp">
       <Filter>Test</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp" />
     <ClCompile Include="src\pricer\McLmmVanillaSwapPricer.cpp">
       <Filter>LMM_pricer\SwapPricer</Filter>
     </ClCompile>
@@ -597,9 +604,6 @@
     <ClCompile Include="LMM\Test\Test_createLmmModel.cpp">
       <Filter>Test\Test_CreateLmmModel</Filter>
     </ClCompile>
-    <ClCompile Include="src\LmmModel\ConstShifted_HGVolatilityFunction.cpp">
-      <Filter>LMM_Model\Volatility</Filter>
-    </ClCompile>
     <ClCompile Include="src\LmmModel\Shifted_HGVolatilityFunction.cpp">
       <Filter>LMM_Model\Volatility</Filter>
     </ClCompile>
@@ -682,9 +686,6 @@
     <ClCompile Include="LMM\Test\Test_LmmGnuplotPrinterMatrix.cpp">
       <Filter>Test</Filter>
     </ClCompile>
-    <ClCompile Include="src\calibration\LmmCalibrationConfig.cpp">
-      <Filter>LMM_Model\Calibration</Filter>
-    </ClCompile>
     <ClCompile Include="LMM\Test\Test_LmmVirtualCorrelationCalibraton.cpp">
       <Filter>Test</Filter>
     </ClCompile>
@@ -760,9 +761,6 @@
     <ClCompile Include="JBLMM\Instrument\InstrumentFactory.cpp">
       <Filter>LMM_instrument\GeneticSwap</Filter>
     </ClCompile>
-    <ClCompile Include="JBLMM\Instrument\VanillaSwapRate.cpp">
-      <Filter>LMM_instrument\GeneticSwap</Filter>
-    </ClCompile>
     <ClCompile Include="JBLMM\Element\CappedFlooredCoupon.cpp">
       <Filter>LMM_helper\Element</Filter>
     </ClCompile>
@@ -795,7 +793,6 @@
     </ClCompile>
     <ClCompile Include="Cheyette\CheyetteModel\CheyetteDD_Model.cpp" />
     <ClCompile Include="Cheyette\CheyetteModel\CheyetteModel.cpp" />
-    <ClCompile Include="Cheyette\CheyetteModel\CourbeInput.cpp" />
     <ClCompile Include="Cheyette\Pricer\CheyetteDD_VanillaSwaptionApproxPricer.cpp" />
     <ClCompile Include="Cheyette\Pricer\MC_Cheyette.cpp" />
     <ClCompile Include="Cheyette\Pricer\MC_CheyetteDD_VanillaSwapPricer.cpp" />
@@ -807,6 +804,19 @@
     <ClCompile Include="Cheyette\InverseFunction.cpp" />
     <ClCompile Include="Cheyette\Pricer\MC_CheyetteDD_ZCPricer.cpp" />
     <ClCompile Include="Cheyette\Pricer\MC_CheyetteDD_VanillaSwaptionPricer.cpp" />
+    <ClCompile Include="JBLMM\Test\Test_GeneticTargetSwapOneTrajectory.cpp" />
+    <ClCompile Include="Cheyette\CheyetteModel\CourbeInput.cpp" />
+    <ClCompile Include="JBLMM\Element\VanillaSwapRate.cpp" />
+    <ClCompile Include="JBLMM\main.cpp" />
+    <ClCompile Include="src\LmmModel\ConstShifted_HGVolatilityFunction.cpp" />
+    <ClCompile Include="src\calibration\LmmCalibrationConfig.cpp" />
+    <ClCompile Include="JBLMM\main.cpp" />
+    <ClCompile Include="JBLMM\Test\Test_JBLmmCalibrationMarketData.cpp" />
+    <ClCompile Include="JBLMM\Test\JBTest.cpp" />
+    <ClCompile Include="LMM\Test\Test_CalibrationShiftWithSwaptionVolSkew.cpp" />
+    <ClCompile Include="src\calibration\CalibrationShiftCostFunction.cpp" />
+    <ClCompile Include="src\calibration\SwaptionMarketDataContainer.cpp" />
+    <ClCompile Include="src\calibration\SwaptionMarketDataManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="TODO" />

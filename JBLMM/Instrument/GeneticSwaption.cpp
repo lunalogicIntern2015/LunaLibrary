@@ -1,15 +1,15 @@
-#include "JBLMM/Instrument/GeneticSwaption.h"
+#include "JBLMM/Instrument/GenericSwaption.h"
 
-GeneticSwaption::GeneticSwaption(const LMM::Index maturity, GeneticSwap_CONSTPTR geneticSwap)
+GenericSwaption::GenericSwaption(const LMM::Index maturity, GenericSwap_CONSTPTR geneticSwap)
 	:
 	maturity_(maturity),
-	geneticSwap_(geneticSwap_)
+	genericSwap_(geneticSwap)
 {
 }
 
-bool GeneticSwaption::check()const
+bool GenericSwaption::check()const		//suppose the start index is the smallest payment index
 {
-	LMM::Index leg1StartIndex=getGeneticSwap()->getLeg1()->getLeg()[0]->getPaymentIndex();
-	LMM::Index leg2StartIndex=getGeneticSwap()->getLeg2()->getLeg()[0]->getPaymentIndex();
+	LMM::Index leg1StartIndex=getGenericSwap()->getLeg1()->getLeg()[0]->getPaymentIndex();
+	LMM::Index leg2StartIndex=getGenericSwap()->getLeg2()->getLeg()[0]->getPaymentIndex();
 	return (getMaturity()<=leg1StartIndex&&getMaturity()<=leg2StartIndex);
 }

@@ -1,7 +1,7 @@
 #include "JBLMM/Element/LiborRate.h"
 #include <LMM/helper/TenorType.h>
 
-LiborRate::LiborRate(double fixingTime, const Tenor duration)
+LiborRate::LiborRate(LMM::Index fixingTime, const Tenor duration)
 	:
 		fixingTime_(fixingTime),
 		duration_(duration)
@@ -9,21 +9,35 @@ LiborRate::LiborRate(double fixingTime, const Tenor duration)
 }
 
 
-Rate_PTR LiborRate::clone()const
+Rate1_PTR LiborRate::clone()const
 {
-	return Rate_PTR(new LiborRate(*this));
+	return Rate1_PTR(new LiborRate(*this));
 }
 
-ConstRate::ConstRate(const double constRateValue)
-	:
-	constRateValue_(constRateValue)
+void LiborRate::show()const
 {
+
+	std::cout	<<	"----------------------------LiborRate-------------------------------------"	<<	std::endl;
+	Rate1::show();
+	std::cout	<<	"fixingTime:        "	<<	fixingTime_					<<	std::endl;
+	std::cout	<<	"duration:          "	<<	duration_.NbOfMonth()		<<	" Months"		<<	std::endl;
+	std::cout	<<	"----------------------------LiborRateEND----------------------------------"	<<	std::endl;
 }
 
-Rate_PTR ConstRate::clone()const
+
+void LiborRate::write_to_stream(std::ostream& out)const
 {
-	return Rate_PTR(new ConstRate(*this));
+	out	<<	"----LiborRate----"	<<	std::endl;
+	out	<<	"fixingTime:       ; "	<<	fixingTime_					<<	std::endl;
+	out	<<	"duration (Month):         ; "	<<	duration_.NbOfMonth()		<<	std::endl;
+	out	<<	"----LiborRateEND---"	<<	std::endl;	
 }
+
+
+
+
+
+
 
 
 

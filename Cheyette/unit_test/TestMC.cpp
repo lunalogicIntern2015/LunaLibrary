@@ -35,7 +35,7 @@ void UneTrajectoireEuler()
 	std::vector<size_t>			discretizationBetweenDates ;
 	discretizationBetweenDates.push_back(10) ; discretizationBetweenDates.push_back(5) ;
 
-	MC_Cheyette MC_Cheyette_Test(modele_test_PTR, rnGenerator, fwdProbaT, datesOfSimulation, discretizationBetweenDates) ;
+	MC_Cheyette MC_Cheyette_Test(modele_test_PTR, rnGenerator, datesOfSimulation, discretizationBetweenDates) ;
 
 
 	std::vector<double> x_t = MC_Cheyette_Test.get_x_t_Cheyette_() ;
@@ -107,7 +107,6 @@ void TestMCSwapPricer()
 
 	MC_Cheyette_PTR mc_Cheyette_Test_PTR(new MC_Cheyette(modele_test_PTR, 
 														rnGenerator, 
-														fwdProbaT, 
 														datesOfSimulation, 
 														discretizationBetweenDates) ) ;
 	MC_CheyetteDD_VanillaSwapPricer mc_Cheyette_vanillaSwpaPricer_Test(mc_Cheyette_Test_PTR) ;
@@ -116,13 +115,13 @@ void TestMCSwapPricer()
 	double t_valo = 1 ;
 	size_t nbSimu = 1000 ;
 
-	MC_CheyetteDD_ZCPricer mc_CheyetteDD_ZCPricer(mc_Cheyette_Test_PTR) ;
-	std::cout << "Prix ZC : " << mc_CheyetteDD_ZCPricer.price(t_valo, 2, nbSimu) << std::endl ;
+	//MC_CheyetteDD_ZCPricer mc_CheyetteDD_ZCPricer(mc_Cheyette_Test_PTR) ;
+	//std::cout << "Prix ZC : " << mc_CheyetteDD_ZCPricer.price(t_valo, 2, nbSimu) << std::endl ;
 
 	std::cout << "Prix swap MC : " << mc_Cheyette_vanillaSwpaPricer_Test.swapNPV(t_valo, swap, nbSimu) << std::endl ;
 
 	VanillaSwaption swaption(swap, OptionType::OptionType::CALL) ;
 	MC_CheyetteDD_VanillaSwaptionPricer mc_Cheyette_vanillaSwaptionPricer_Test(mc_Cheyette_Test_PTR) ;
-	std::cout << "Prix swaption MC : " << mc_Cheyette_vanillaSwaptionPricer_Test.price(t_valo, swaption, nbSimu) << std::endl ;
+	std::cout << "Prix swaption MC : " << mc_Cheyette_vanillaSwaptionPricer_Test.price(t_valo, fwdProbaT, swaption, nbSimu) << std::endl ;
 
 }

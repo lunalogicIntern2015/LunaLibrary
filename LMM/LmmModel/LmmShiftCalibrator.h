@@ -29,7 +29,7 @@ public :
 		, costFunction_(costFunction)
 		, minimization_time_(-1000)
 	{}
-	
+	     
 	void solve();
 
 	//! method retreiving information from QuantLib::EndCriteria

@@ -99,7 +99,7 @@ void test_CalibrationShiftWithSwaptionVolSkew()
 	QuantLib::Array init_calib(perturbed_full_param);
 	QuantLib::Problem myProb ( myFunc , constraint , init_calib );
 
-	QuantLib::Size maxIterations       = 5000 ;
+	QuantLib::Size maxIterations       = 200 ;
 	QuantLib::Size minStatIterations   = 30  ;
 	QuantLib::Real rootEpsilon         = 1e-12; 
 	QuantLib::Real functionEpsilon     = 1e-15; 
@@ -127,8 +127,8 @@ LmmVanillaSwaptionApproxPricer_Rebonato_PTR createLmmVanillaSwaptionApproxPricer
 	// =================   CREATION OF LMM_PTR   =============================
 	ConstShifted_HGVolatilityParam_PTR volParams_ptr = createConstShifted_HGVolatilityParam(pLmmTenorStructure,const_shift);
 
-	const unsigned int nbVolParams = volParams_ptr->get_nbCalibrateParam();
-	QuantLib::Array init_volparam(nbVolParams, 1.0, 0.); // vector 1. everywhere
+	//const unsigned int nbVolParams = volParams_ptr->get_nbCalibrateParam();
+	//QuantLib::Array init_volparam(nbVolParams, 1.0, 0.); // vector 1. everywhere
 
 	// =================  END  CREATION OF LMM_PTR   =============================
 	//! Correlation 

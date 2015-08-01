@@ -7,7 +7,7 @@
 //#include <boost/pointer_cast.hpp>
 
 
-const size_t gridSize  = 11 ;
+const size_t gridSize  = 101 ;
 
 
 CheyetteDD_VanillaSwaptionApproxPricer::CheyetteDD_VanillaSwaptionApproxPricer
@@ -158,13 +158,14 @@ double CheyetteDD_VanillaSwaptionApproxPricer::swapRateNumerator(double t, doubl
 	assert( t >= 0 ) ;
 	double y_bar_t = buffer_y_bar_(t) ;
 	double ZC_T0, ZC_TN ;
+//les 2 versions sont cohérentes en t = 0 :	
 	if (t == 0){  // bad comparision   // prefer to do: if (t==0) { check x_t ==0 }
 		ZC_T0 = exp( - buffer_courbeInput_->get_tauxZC0(buffer_T0_) * buffer_T0_) ;
 		ZC_TN = exp( - buffer_courbeInput_->get_tauxZC0(buffer_TN_) * buffer_TN_) ; 
 	}
 	else
 	{
-		ZC_T0 = cheyetteDD_Model_->P(t, buffer_T0_, x_t, y_bar_t) ; //tester si OK en t = 0 avec y barre
+		ZC_T0 = cheyetteDD_Model_->P(t, buffer_T0_, x_t, y_bar_t) ; 
 		ZC_TN = cheyetteDD_Model_->P(t, buffer_TN_, x_t, y_bar_t) ;	
 	}
 	return  ZC_T0 - ZC_TN ; 
@@ -191,6 +192,7 @@ double CheyetteDD_VanillaSwaptionApproxPricer::swapRateDenominator(double t, dou
 	double float_tenor = buffer_UnderlyingSwap_.get_floatingLegTenorType().YearFraction() ;
 	double tenor_ref = std::min(fixed_tenor, float_tenor) ;  //le plus petit 
 
+//coherence entre les 2 boucles (la 2eme boucle evaluée en t=0 est identique à la 1ere)
 	if (t == 0)
 	{
 		//somme sur tous les flux fixes
@@ -350,23 +352,26 @@ double CheyetteDD_VanillaSwaptionApproxPricer::swapRateVolatility_1stDerivative(
 	
 }
 
-//evaluee en t=0 et pour un taux de swap s_bar = s0_
+//pour un taux de swap s_bar = s0_
 double CheyetteDD_VanillaSwaptionApproxPricer::calculate_phi_t_s_bar(double t) const
 {
 	//retourne dS(t)/dx(t) sigma_r(t) (t=0, inverse, y_bar)
-	double s_bar = inverse(t, buffer_s0_) ;
-	double sigma_r_t_sbar	= cheyetteDD_Model_->sigma_r(t, s_bar) ;	
+	double s_bar			= buffer_s0_ ;
+	double inverse_s_bar	= inverse(t, buffer_s0_) ; 
+	//std::cout << "S_0^(-1)(S_0) = 0.1 vs 0 dans calculate_phi_t_s_bar" << std::endl ;
+	double sigma_r_t_inv_sbar	= cheyetteDD_Model_->sigma_r(t, inverse_s_bar) ;	
 	//return swapRate_1stDerivative(t, s_bar) * (m.evaluate(t) * s_bar + (1-m.evaluate(t))* r0) * sigma.evaluate(t)  ;
-	return swapRate_1stDerivative(t, s_bar) * sigma_r_t_sbar ;
+	return swapRate_1stDerivative(t, inverse_s_bar) * sigma_r_t_inv_sbar ;
 }
 
+//s_bar = S0
 double CheyetteDD_VanillaSwaptionApproxPricer::swapRateVolatility_approx_lineaire(double t, double s) const
 {
 	//dérivée à évaluer en x_t = S^{-1}(s)
 	//calcul de l'inverse de S(t, x_t) = s 
 	//retourne x_t
-	double inverse_s0 = inverse(t, buffer_s0_) ;
-	return ( calculate_phi_t_s_bar(t) + swapRateVolatility_1stDerivative(t, inverse_s0) * (s - buffer_s0_) ) ;
+	double inverse_s_bar = inverse(t, buffer_s0_) ;
+	return calculate_phi_t_s_bar(t) + swapRateVolatility_1stDerivative(t, inverse_s_bar) * (s - buffer_s0_) ;
 }
 
 
@@ -387,6 +392,7 @@ double CheyetteDD_VanillaSwaptionApproxPricer::A(double t) const
 	return calculate_phi_t_s_bar(t) - swapRateVolatility_1stDerivative(t, inverse_s0) * buffer_s0_  ;
 }
 
+//à optimiser pour éviter le recalcul entre A(t) et B(t)
 //B(t) 
 double CheyetteDD_VanillaSwaptionApproxPricer::B(double t) const
 {
@@ -451,7 +457,6 @@ double CheyetteDD_VanillaSwaptionApproxPricer::timeAverage(double t) const
 	boost::function<double(double)> f_inner = boost::bind(&CheyetteDD_VanillaSwaptionApproxPricer::lambda2, *this, _1);
 	boost::function<double(double)> f_outer = boost::bind(&CheyetteDD_VanillaSwaptionApproxPricer::f_outer_num, *this, _1);
 	
-	
 	double integrale_numerateur = int2D.integrate(f_outer, f_inner) ;
 
 //integrale denominateur
@@ -487,6 +492,8 @@ double CheyetteDD_VanillaSwaptionApproxPricer::prixSwaptionApproxPiterbarg() con
 
 	double vol = sqrt(integrale) ;
 
+	std::cout << "def du strike K pour la swaption, 0 ou K du swap ? " << std::endl ;
+	//K_tilde = 0 ;
 	return annuity0 / b_barre * NumericalMethods::Black_Price_vol2(1, K_tilde, vol, buffer_T0_) ;
 }
 
