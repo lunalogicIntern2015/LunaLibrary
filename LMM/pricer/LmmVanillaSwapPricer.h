@@ -3,7 +3,9 @@
 #include <LMM/instrument/VanillaSwap.h> 
 #include <LMM/helper/LMMTenorStructure.h>
 
-class LmmVanillaSwapPricer
+#include <JBLMM/Pricer/McLmmPricer.h>
+
+class LmmVanillaSwapPricer : public McLmmPricer
 {
 
 public:
@@ -30,6 +32,11 @@ public:
 							const std::vector<double>& liborsInitValue)  const;
 
 	virtual double omega0(LMM::Index liborIndex, const double& annuity_T0, const std::vector<double>& bonds_T0) const;
+
+	double price_on_oneSimulation(	Instrument_CONSTPTR instrument,
+											LMM::Index evaluationDateIndex, 
+											const matrix& liborMatrix, 
+											const std::vector<double>& numeraire)const;
 
 protected: 
 

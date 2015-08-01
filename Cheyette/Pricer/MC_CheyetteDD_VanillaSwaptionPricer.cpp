@@ -2,46 +2,189 @@
 #include <Cheyette/Pricer/MC_CheyetteDD_VanillaSwaptionPricer.h>
 
 
-double MC_CheyetteDD_VanillaSwaptionPricer::price(double t_valo, double fwdProbaT_, 
-												const VanillaSwaption& vanillaSwaption, 
-												size_t nbSimulation)  const
-{
-	double dateFlux, x_t, y_t, fixedLegValue(0), floatLegValue(0), valueSwaption(0) ;
-	std::vector<double> x_t_one_sim, y_t_one_sim ;  //one simulation 
-	std::vector<double> dates = mcCheyette_->getDatesOfSimulation_() ;
-	 
-	VanillaSwap vanillaSwap = vanillaSwaption.getUnderlyingSwap() ;
-	std::vector<size_t> fixedLegIndexSchedule		= vanillaSwap.get_fixedLegPaymentIndexSchedule() ; 
-	std::vector<size_t> floatingLegIndexSchedule	= vanillaSwap.get_floatingLegPaymentIndexSchedule() ;
-	double fixed_tenor = vanillaSwap.get_fixedLegTenorType().YearFraction() ;
-	double float_tenor = vanillaSwap.get_floatingLegTenorType().YearFraction() ;
-	double tenor_ref = std::min(fixed_tenor, float_tenor) ;  //le plus petit 
-	double strike = vanillaSwap.get_strike() ;
-	size_t index = numeric::findClosestDate(t_valo, dates) ;
 
+
+//simulation
+std::vector<double> MC_CheyetteDD_VanillaSwaptionPricer::price(VanillaSwaption_PTR pVanillaSwaption, size_t nbSimulation) const
+{
+	VanillaSwap vanillaSwap = pVanillaSwaption->getUnderlyingSwap() ;
+	Tenor floatingLegTenor = vanillaSwap.get_floatingLegTenorType() ;
+	Tenor fixedLegTenor = vanillaSwap.get_fixedLegTenorType() ;
+
+	assert(floatingLegTenor.YearFraction() >= pTenorStructure_->get_tenorType().YearFraction()) ;
+	assert(fixedLegTenor.YearFraction() >= pTenorStructure_->get_tenorType().YearFraction()) ;
+	assert(vanillaSwap.get_EndDate() <= fwdProbaT_) ;
+
+	std::vector<double> res(3) ;
+	double somme_xi   = 0.0;
+	double somme_xi_2 = 0.0;
+
+	size_t valuationIndexSwaption = 0 ;
+	size_t valuationIndexSwap = pVanillaSwaption->getUnderlyingSwap().get_indexStart() ;
+	
 	for(size_t itrSimulation=0; itrSimulation<nbSimulation; ++itrSimulation)
 	{
-		mcCheyette_->simulate_Euler(fwdProbaT_) ;
-		x_t_one_sim = mcCheyette_->get_x_t_Cheyette_() ;
-		y_t_one_sim = mcCheyette_->get_y_t_Cheyette_() ;
+		if ((itrSimulation*10) % nbSimulation == 0){std::cout << double(itrSimulation)/double(nbSimulation)*100 << "%" << std::endl ;}	
 
-			x_t = x_t_one_sim[index] ;
-			y_t = y_t_one_sim[index] ;
-		//fixedLeg
-		for (size_t i = 0 ; i < fixedLegIndexSchedule.size() ; ++i)
-		{
-			dateFlux = fixedLegIndexSchedule[i] * tenor_ref ;
-			fixedLegValue += fixed_tenor * strike * mcCheyette_->getCheyetteDD_Model_()->P(t_valo, dateFlux, x_t, y_t) ; 
-		}	
-		//floatLeg
-		for (size_t i = 0 ; i < floatingLegIndexSchedule.size() ; ++i)
-		{
-			dateFlux = floatingLegIndexSchedule[i] * tenor_ref ;
-			double libor = mcCheyette_->getCheyetteDD_Model_()->Libor(t_valo, dateFlux - float_tenor, dateFlux, x_t, y_t) ;
-			floatLegValue += float_tenor * libor * mcCheyette_->getCheyetteDD_Model_()->P(t_valo, dateFlux, x_t, y_t) ; 
-		}	
-		valueSwaption += std::max(floatLegValue - fixedLegValue, 0.) ;
+		simulate_Euler() ;
+		double npvFloatingLeg = evaluateFloatLeg(valuationIndexSwap, 
+												vanillaSwap.get_floatingLegPaymentIndexSchedule(), floatingLegTenor);
+		double npvFixedLeg = evaluateFixedLeg(valuationIndexSwap, vanillaSwap.get_fixedLegPaymentIndexSchedule(), 
+										fixedLegTenor, vanillaSwap.get_strike());
+		double payoffAtMaturity    = pVanillaSwaption->payoff(npvFloatingLeg,npvFixedLeg);			
+		double value = payoffAtMaturity * numeraires_[valuationIndexSwaption]/numeraires_[valuationIndexSwap] ;
+
+		somme_xi					  += value;	
+		somme_xi_2 += value*value;
 	}
 
-	return valueSwaption / nbSimulation ;
+	double mean_x	= somme_xi / nbSimulation; 
+	double mean_x2	= somme_xi_2 / nbSimulation; 
+	double variance = mean_x2 - mean_x * mean_x ;
+
+	double IC_left	= mean_x - 2.57*std::sqrt(variance / nbSimulation);
+	double IC_right = mean_x + 2.57*std::sqrt(variance / nbSimulation);
+
+	res[0] = mean_x ;
+	res[1] = IC_left ;
+	res[2] = IC_right ;
+
+	std::cout   << "prix MC swaption : " << mean_x << std::endl;
+	std::cout	<< "nbSimulations    : " << nbSimulation << std::endl;
+	std::cout   << "99% confidence interval  [" << IC_left << " , " << IC_right	<< "]" << std::endl;
+
+	return res ;
+}
+
+
+void MC_CheyetteDD_VanillaSwaptionPricer::print(VanillaSwaption_PTR vanillaSwaption, 
+												std::vector<size_t> nbSimus, 
+												std::vector<double> prixMC,
+												std::vector<double> IC_inf,
+												std::vector<double> IC_sup) const
+{
+	assert(nbSimus.size() == prixMC.size() );
+	assert(IC_inf.size() == IC_sup.size() ) ;
+	assert(prixMC.size() == IC_inf.size() ) ; 
+	time_t _time;
+	struct tm timeInfo;
+	char format[32];
+ 
+	time(&_time);
+	localtime_s(&timeInfo, &_time);
+ 
+	strftime(format, 32, "%Y-%m-%d %H-%M", &timeInfo);
+ 
+	std::cout << format << std::endl;
+	ofstream o;
+	std::stringstream fileName_s ;
+	std::string directory = LMMPATH::get_runtime_datapath() ;
+	fileName_s << directory << "TestMC_GenericSwaption_" << format << ".csv" ; 
+	std::string fileName = fileName_s.str();
+
+	o.open(fileName,  ios::out | ios::app );
+	o	<<	endl;
+	o	<<	endl;
+	o	<<	endl;
+	cheyetteDD_Model_->print(o) ;
+
+	vanillaSwaption->getUnderlyingSwap().print(o) ;
+
+	for (size_t i = 0 ; i < nbSimus.size() ; ++i)
+	{
+		o << "nb simulations : ; "	<< nbSimus[i] << " ; prix MC : ; " 
+									<< prixMC[i] << " ; IC inf : ; " 
+									<< IC_inf[i] << " ; IC sup : ; " 
+									<< IC_sup[i] << endl ;
+	}
+	o.close();
+}
+
+void MC_CheyetteDD_VanillaSwaptionPricer::printMC_vs_approx(double approx, double b_barre, 
+															double annuityA0, double swapRateS0, double volBlack, 
+															double a, double b,
+															VanillaSwaption_PTR vanillaSwaption, 
+															std::vector<size_t> nbSimus, 
+															std::vector<double> prixMC,
+															std::vector<double> IC_inf,
+															std::vector<double> IC_sup) const 
+{
+	assert(nbSimus.size() == prixMC.size() );
+	assert(IC_inf.size() == IC_sup.size() ) ;
+	assert(prixMC.size() == IC_inf.size() ) ; 
+	time_t _time;
+	struct tm timeInfo;
+	char format[32];
+ 
+	time(&_time);
+	localtime_s(&timeInfo, &_time);
+ 
+	strftime(format, 32, "%Y-%m-%d %H-%M", &timeInfo);
+ 
+	std::cout << format << std::endl;
+	ofstream o;
+	std::stringstream fileName_s ;
+	std::string directory = LMMPATH::get_output_path() ;
+	fileName_s << directory << "Swaption_" << a << "Y" << b << "Y" << format << ".csv" ; 
+	std::string fileName = fileName_s.str();
+
+	o.open(fileName,  ios::out | ios::app );
+	o	<<	endl;
+	o	<<	endl;
+	o	<<	endl;
+	cheyetteDD_Model_->print(o) ;
+
+	cheyetteDD_Model_->get_courbeInput_PTR()->print(o) ;
+
+	vanillaSwaption->getUnderlyingSwap().print(o) ;
+
+	o	<<	endl;
+	o	<< "Prix approximation : ; " << approx << endl ;
+	o	<< "b_barre : ; " << b_barre << endl ;
+	o	<< "annuity A(0) : ; " << annuityA0 << endl ;
+	o	<< "swap rate S(0) : ; " << swapRateS0 << endl ;
+	o	<<	endl;
+
+	o	<< "vol Black impli : ; " << volBlack << endl ;
+	o	<<	endl;
+
+	o << "prix approximation ; " <<"nb simulations ; " << " prix MC ; " << "IC inf ; " << "IC sup " << endl ;
+	for (size_t i = 0 ; i < nbSimus.size() ; ++i)
+	{
+		o << approx << " ; " << nbSimus[i] << " ; " << prixMC[i] << " ; " << IC_inf[i] << " ; " << IC_sup[i] << endl ;
+	}
+	o.close();
+}
+
+void MC_CheyetteDD_VanillaSwaptionPricer::printMC_vs_approx(std::ofstream& o,
+															double approx, double b_barre, 
+															double annuityA0, double swapRateS0, double volBlack, 
+															double a, double b,
+															VanillaSwaption_PTR vanillaSwaption, 
+															std::vector<size_t> nbSimus, 
+															std::vector<double> prixMC,
+															std::vector<double> IC_inf,
+															std::vector<double> IC_sup) const 
+{
+	assert(nbSimus.size() == prixMC.size() );
+	assert(IC_inf.size() == IC_sup.size() ) ;
+	assert(prixMC.size() == IC_inf.size() ) ; 
+
+	o << "Swaption_" << a << "Y" << b << "Y" << endl ; 
+	o	<<	endl;
+
+	o	<< "Prix approximation : ; " << approx << endl ;
+	o	<< "b_barre : ; " << b_barre << endl ;
+	o	<< "annuity A(0) : ; " << annuityA0 << endl ;
+	o	<< "swap rate S(0) : ; " << swapRateS0 << endl ;
+	o	<<	endl;
+
+	o	<< "vol Black impli : ; " << volBlack << endl ;
+	o	<<	endl;
+
+	o << "prix approximation ; " <<"nb simulations ; " << " prix MC ; " << "IC inf ; " << "IC sup " << endl ;
+	for (size_t i = 0 ; i < nbSimus.size() ; ++i)
+	{
+		o << approx << " ; " << nbSimus[i] << " ; " << prixMC[i] << " ; " << IC_inf[i] << " ; " << IC_sup[i] << endl ;
+	}
 }

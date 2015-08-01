@@ -76,6 +76,8 @@ LMM::Index LMMTenorStructure::get_Index(const double& date) const
 LMM::Index LMMTenorStructure::get_horizon() const { return horizon_ ;}   // horizon = N
 LMM::Index LMMTenorStructure::get_nbLIBOR() const { return horizon_ +1;} // nbLibor = N+1
 
+int	LMMTenorStructure::get_max_nbOfYear() const {return horizon_ * tenorType_.YearFraction() ;}
+
 double              LMMTenorStructure::get_EndDate()            const { return tenorDates_.back(); }
 
 double              LMMTenorStructure::get_deltaT(size_t index) const { return tenorDeltaT_[index]; }

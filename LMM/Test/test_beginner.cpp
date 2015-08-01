@@ -1,4 +1,4 @@
-#include <JBLMM/Test/JBTests.h>
+#include <LMM/Test/Tests.h>
 #include <LMM/helper/Name.h>
 #include <LMM/helper/TenorType.h>
 

@@ -5,61 +5,55 @@
 #include <Cheyette/Pricer/MC_CheyetteDD_VanillaSwapPricer.h>
 
 
-
-double MC_CheyetteDD_VanillaSwapPricer::swapNPV(double t_valo, 
-												const VanillaSwap& vanillaSwap, 
-												size_t nbSimulation)  const
+//simulation
+double MC_CheyetteDD_VanillaSwapPricer::swapNPV (VanillaSwap_PTR vanillaSwap, size_t nbSimulation, 
+												 size_t valuationIndex,
+												 Tenor tenorFloatingLeg, Tenor tenorFixedLeg) const
 {
-	double dateFlux, x_t, y_t, fixedLegValue(0), floatLegValue(0), valueSwap(0) ;
-	std::vector<double> x_t_one_sim, y_t_one_sim ;  //one simulation 
-	std::vector<double> dates = mcCheyette_->getDatesOfSimulation_() ;
+	assert(tenorFloatingLeg.YearFraction() >= pTenorStructure_->get_tenorType().YearFraction()) ;
+	assert(tenorFixedLeg.YearFraction() >= pTenorStructure_->get_tenorType().YearFraction()) ;
+	assert(vanillaSwap->get_EndDate() <= fwdProbaT_) ;
 
-	std::vector<size_t> fixedLegIndexSchedule		= vanillaSwap.get_fixedLegPaymentIndexSchedule() ; 
-	std::vector<size_t> floatingLegIndexSchedule	= vanillaSwap.get_floatingLegPaymentIndexSchedule() ;
-	double fixed_tenor = vanillaSwap.get_fixedLegTenorType().YearFraction() ;
-	double float_tenor = vanillaSwap.get_floatingLegTenorType().YearFraction() ;
-	double tenor_ref = std::min(fixed_tenor, float_tenor) ;  //le plus petit 
-	double strike = vanillaSwap.get_strike() ;
-	size_t pos, index = numeric::findClosestDate(t_valo, dates) ;
+	double TEST_sommeLeg1 = 0. ;
+	double TEST_sommeLeg2 = 0. ;
 
+	double result	= 0. ;
+	double result_2	= 0. ;
+
+	std::vector<size_t> floatingLegIndexSchedule	= vanillaSwap->get_floatingLegPaymentIndexSchedule() ;
+	std::vector<size_t> fixedLegIndexSchedule		= vanillaSwap->get_fixedLegPaymentIndexSchedule() ; 
+
+	//MC
 	for(size_t itrSimulation=0; itrSimulation<nbSimulation; ++itrSimulation)
 	{
-		pos = 0 ;
-		//boucle sur le calendrier le plus fin (floatingSchedule)
-		for (size_t i = 0 ; i < floatingLegIndexSchedule.size() ; ++i)
-		{
-			dateFlux = floatingLegIndexSchedule[i] * tenor_ref ;
-			mcCheyette_->simulate_Euler(dateFlux) ;
+		if ((itrSimulation*10) % nbSimulation == 0){std::cout << double(itrSimulation)/double(nbSimulation)*100 << "%" << std::endl ;}
+		simulate_Euler() ;
+		double npv1  = evaluateFloatLeg(valuationIndex, floatingLegIndexSchedule, tenorFloatingLeg);
 
-			x_t_one_sim = mcCheyette_->get_x_t_Cheyette_() ; y_t_one_sim = mcCheyette_->get_y_t_Cheyette_() ;
-			x_t = x_t_one_sim[index] ; y_t = y_t_one_sim[index] ;
+		double npv2  = evaluateFixedLeg(valuationIndex, fixedLegIndexSchedule, tenorFixedLeg, vanillaSwap->get_strike());
 
-			//floatLeg
-			double libor = mcCheyette_->getCheyetteDD_Model_()->Libor(t_valo, dateFlux - float_tenor, dateFlux, x_t, y_t) ;
-			floatLegValue += float_tenor * libor * mcCheyette_->getCheyetteDD_Model_()->P(t_valo, dateFlux, x_t, y_t) ; 
-
-			//fixedLeg
-			if (floatingLegIndexSchedule[i] == fixedLegIndexSchedule[pos])
-			{
-				dateFlux = fixedLegIndexSchedule[pos] * tenor_ref ;
-				fixedLegValue += fixed_tenor * strike * mcCheyette_->getCheyetteDD_Model_()->P(t_valo, dateFlux, x_t, y_t) ; 
-				++pos ;
-			}	
-		}	
-		valueSwap += floatLegValue - fixedLegValue ;
+		TEST_sommeLeg1 += npv1 ;
+		TEST_sommeLeg2 += npv2 ;
+		double res = npv1 - npv2;
+		result += res ;
+		result_2 += res* res ;
 	}
+	double TEST_meanLeg1 = TEST_sommeLeg1 / nbSimulation ;
+	double TEST_meanLeg2 = TEST_sommeLeg2 / nbSimulation ;
 
-	return valueSwap / nbSimulation ;
+	double mean_x	= result / nbSimulation; 
+	double mean_x2	= result_2 / nbSimulation; 
+ 
+	double variance = mean_x2 - mean_x * mean_x ;
+
+	double IC_left	= mean_x - 2.57*std::sqrt(variance / nbSimulation);
+	double IC_right = mean_x + 2.57*std::sqrt(variance / nbSimulation);
+
+	std::cout   << "prix MC swap : " << mean_x << std::endl;
+	std::cout   << "prix leg1 : " << TEST_meanLeg1 << std::endl;
+	std::cout   << "prix leg2 : " << TEST_meanLeg2 << std::endl;
+	std::cout   << "99% confidence interval  [" << IC_left << " , " << IC_right	<< "]" << std::endl;
+
+	return mean_x ;
 }
 
-
-//double MC_CheyetteDD_VanillaSwapPricer:: swapRate(LMM::Index indexValuationDate,
-//										 const VanillaSwap& vanillaSwap,
-//										 const std::vector<double>& numeraire, 
-//										 const std::vector<double>& xt_Cheyette,
-//										 const std::vector<double>& yt_Cheyette) const
-//{
-//	double pvFloating = pvFloatingLeg( indexValuationDate,vanillaSwap,numeraire, xt_Cheyette, yt_Cheyette);
-//	double annuity = pvFixedLeg   (indexValuationDate, vanillaSwap, numeraire);
-//	return pvFloating / annuity;
-//}

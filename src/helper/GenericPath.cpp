@@ -28,7 +28,8 @@ std::string LMMPATH::get_Root_OutputPath()
 {
 	// set the absolute path to your output folder here (use in execute time)
 	// absolute path common for Yuan Li's computer 
-	return "E:\\Visual_Studio_Project\\Visual_Studio_2012_Project\\LunaLibrary\\data\\output\\";
+	//return "C:\\Users\\junbin.liu\\Documents\\LunaLMM\\data\\output\\";
+	return "C:\\stageCheyette\\LunaLibrary\\data\\output\\Cheyette\\";
 }
 
 void LMMPATH::reset_Output_SubFolder(const std::string& foldername)
@@ -55,7 +56,11 @@ std::string LMMPATH::get_runtime_datapath()
 	// set the absolute path to your input folder here (use in execute time)
 
 	// absolute path common for Yuan Li's computer 
-	return "E:\\Visual_Studio_Project\\Visual_Studio_2012_Project\\LunaLibrary\\data\\input\\";		        
+	//return "C:\\stageCheyette\\LunaLibrary\\data\\output\\Cheyette\\"; 
+	//return "C:\\stageCheyette\\LunaLibrary\\data\\input\\" ;
+
+	//JB's path
+	return "E:\\Visual_Studio_Project\\Visual_Studio_2012_Project\\LunaLibrary\\data\\input\\";
 }
 
 // tested for both directory name end with double slash or not

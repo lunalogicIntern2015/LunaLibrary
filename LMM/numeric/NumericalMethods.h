@@ -23,16 +23,23 @@ namespace NumericalMethods
 	double d2(const double& fwd, const double& strike, const double& vol, const double& T);
 
 	// Compute a derivative's price using Black's formula
-	double Black_Price(const double& fwd, const double& strike, const double& vol, const double& T);
+	double Black_Price(double fwd, double strike, double vol, double T);
+
+	double swaptionBlack_Price(double annuity0, double fwd, double strike, double vol, double T) ;
 
 	//avec vol non constante
-	double Black_Price_vol2(const double& fwd, const double& strike, const double& vol, const double& T);
+	double Black_Price_vol2(double fwd, double strike, double vol_T, double T);
 
-	double Black_Vega(const double& fwd, const double& strike, const double& vol, const double& T);
+	double Black_Price_vol2_allStrike(double fwd, double strike, double sqrt_int_sigma2, double T) ;
+
+	double Black_Vega(const double fwd, const double strike, const double vol, const double T);
+	double Black_Vega_swaption(const double annuity0, const double fwd, const double strike, const double vol, const double T) ;
 
 	double Black_Volga(const double& fwd, const double& strike, const double& vol, const double& T);
 
-	double Black_impliedVolatility(const double& bs_call_price, const double& fwd, const double& strike, const double& T);
+	double Black_impliedVolatility(const double bs_call_price, const double fwd, const double strike, const double T);
+	double Black_SwaptionImpliedVolatility(const double bs_call_price, const double annuity0,   							  
+										const double  fwd, const double  strike, const double  T) ;
 
 	double linearInterpolation(
 							   const double& t, 
@@ -48,5 +55,10 @@ namespace NumericalMethods
 
 	double vectorProduct(std::vector<double>& v1, std::vector<double>& v2) ;
 	
+	//spline cubique
+	void spline(const std::vector<double>& x, const std::vector<double>& y, 
+			double yp1, double ypn, std::vector<double>& y2) ;
+	double splineCubique(const std::vector<double>& xa, const std::vector<double>& ya, 
+					 const std::vector<double>& y2a, double x) ;
 } // end NumericalMethods
 

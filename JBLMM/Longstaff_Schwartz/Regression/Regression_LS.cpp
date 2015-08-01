@@ -101,16 +101,14 @@ void LS::Regression::regress(const std::vector<double>& Z,
 	std::copy(Z.begin(), Z.end(),Z_vector.begin());
 	//---------------------End of change vector of vector to Rmatrix---------------------------------------//
 
-	// do matrix multiplication: Z regression on basis, result save to regressionRepresentation_'s coeff ! 
-
-	//TODO: junbin : copy the matrix multiplication code here ... 
+	// //TODO: junbin : copy the matrix multiplication code here ... 
 	Rmatrix inverse_TransposeX_multiple_X(nbCol,nbCol); 
 	const Rmatrix& transposeX = ublas::trans(basis_value_on_allPath_boostMatrix);
 	assert(InvertMatrix(ublas::prod(transposeX, basis_value_on_allPath_boostMatrix), inverse_TransposeX_multiple_X));
 	const ublas::vector<double>& matrix_transposeX_multiple_Y = ublas::prod(transposeX,Z_vector);
 	const ublas::vector<double>& rg_coef_vect = ublas::prod(inverse_TransposeX_multiple_X, matrix_transposeX_multiple_Y);
 
-
+	//result save to regressionRepresentation_'s coeff ! 
 	size_t nbRgCoef = rg_coef_vect.size();
 	if(regressionRepresentation_.getRegressionCoeffs().size()!=nbRgCoef)
 		regressionRepresentation_.getRegressionCoeffs().resize(nbRgCoef);
@@ -126,7 +124,6 @@ void LS::Regression::constructBasisMatrix(	const std::vector<McLmm_LS::LMMSimula
 	size_t nbSimulation = lmmSimulationResults.size();
 	if(basis_value_on_allPath_buffer.size()!=nbSimulation)
 		basis_value_on_allPath_buffer.resize(nbSimulation); 
-	size_t nbBasis = regressionRepresentation_.getBasis().size();
 	
 	//! construct Basis matrix 
 	for(size_t path_index = 0; path_index < lmmSimulationResults.size(); ++path_index)

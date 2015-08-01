@@ -33,8 +33,8 @@
 LmmSwaptionMarketData_PTR get_LmmSwaptionMarketData(const LmmCalibrationConfig& config, const std::string& input_file)
 {
 	size_t nbYear = config.model_nbYear_;
-	Tenor tenorfixedleg(config.fixedLegTenor_) ;
-	Tenor tenorfloatleg(config.floatLegTenor_)  ;
+	Tenor tenorfixedleg(Tenor::_1YR) ;
+	Tenor tenorfloatleg(Tenor::_6M)  ;
 
 	LmmSwaptionMarketData_PTR pLmmSwaptionMarketData( new LmmSwaptionMarketData(tenorfixedleg, tenorfloatleg , nbYear ) );
 
@@ -42,6 +42,35 @@ LmmSwaptionMarketData_PTR get_LmmSwaptionMarketData(const LmmCalibrationConfig& 
 
 	return pLmmSwaptionMarketData;
 }
+
+//pour la compatibilité avec CheyetteDD_Config
+LmmSwaptionMarketData_PTR get_LmmSwaptionMarketData(const size_t model_nbYear, const std::string& input_file)
+{
+	size_t nbYear = model_nbYear ;
+	Tenor tenorfixedleg(Tenor::_1YR) ;
+	Tenor tenorfloatleg(Tenor::_6M)  ;
+
+	LmmSwaptionMarketData_PTR pLmmSwaptionMarketData( new LmmSwaptionMarketData(tenorfixedleg, tenorfloatleg , nbYear ) );
+
+	pLmmSwaptionMarketData->parseFromMarketData(input_file);
+
+	return pLmmSwaptionMarketData;
+}
+
+//pour la compatibilité avec CheyetteDD_Config
+//LmmSwaptionMarketDataFull_PTR get_LmmSwaptionMarketDataFull(const size_t model_nbYear, const std::string& input_file)
+//{
+//	size_t nbYear = model_nbYear ;
+//	Tenor tenorfixedleg(Tenor::_1YR) ;
+//	Tenor tenorfloatleg(Tenor::_6M)  ;
+//
+//	LmmSwaptionMarketDataFull_PTR 
+//			pLmmSwaptionMarketData( new LmmSwaptionMarketDataFull(tenorfixedleg, tenorfloatleg , nbYear ) );
+//
+//	pLmmSwaptionMarketData->parseFromMarketData(input_file);
+//
+//	return pLmmSwaptionMarketData;
+//}
 
 LMMTenorStructure_PTR create___LMMTenorStructure_PTR(const size_t nbyear)
 {
@@ -55,7 +84,14 @@ Correlation_PTR create_InitCorrelation(const LmmCalibrationConfig& config)
 {
 	size_t nbYear = config.model_nbYear_;
 
+	Tenor tenorfixedleg = Tenor::_1YR ;
+	Tenor tenorfloatleg = Tenor::_6M  ;
+
+	//create LMM components
+	LMMTenorStructure_PTR pLMMTenorStructure( new LMMTenorStructure(tenorfloatleg,nbYear) );
+
 	size_t correlFullRank = config.correl_FullRank_;
+	//size_t nbFactor       = (size_t) ( 0.6 * correlFullRank ) ; 
 	size_t nbFactor       = config.correl_ReducedRank_ ; 
 	size_t correlReducedRank = nbFactor;
 	CorrelationReductionType::CorrelationReductionType correlReductionType = CorrelationReductionType::PCA;
@@ -77,10 +113,8 @@ QuantLib::Array marketData_LMM_ABCD_calibration(const LmmCalibrationConfig& conf
 	std::string base_name = pLmmSwaptionMarketData->get_MarketDataBaseFileName() ;
 
 	size_t nbYear = pLmmSwaptionMarketData->get_nbYear();
-	
-	Tenor tenorfixedleg(config.fixedLegTenor_);
-	Tenor tenorfloatleg(config.floatLegTenor_);
-
+	Tenor tenorfixedleg = Tenor::_1YR ;
+	Tenor tenorfloatleg = Tenor::_6M  ;
 	size_t fixedfloatRatio = tenorfixedleg.ratioTo(tenorfloatleg);
 
 	//create LMM components
@@ -122,15 +156,10 @@ QuantLib::Array marketData_LMM_ABCD_calibration(const LmmCalibrationConfig& conf
 	LmmABCDCalibrator  lmm_abcd_calibrator(init_abcd, maxIterations, rootEpsilon,functionEpsilon,abcd_costFucntion);
 
 
-	lmm_abcd_calibrator.add_ConstraintCell(std::pair<size_t,size_t>(1,9) );
-	lmm_abcd_calibrator.add_ConstraintCell(std::pair<size_t,size_t>(1,8) );
-	lmm_abcd_calibrator.add_ConstraintCell(std::pair<size_t,size_t>(1,7) );
-	lmm_abcd_calibrator.add_ConstraintCell(std::pair<size_t,size_t>(1,6) );
-	lmm_abcd_calibrator.add_ConstraintCell(std::pair<size_t,size_t>(1,5) );
-	lmm_abcd_calibrator.add_ConstraintCell(std::pair<size_t,size_t>(1,4) );
-	lmm_abcd_calibrator.add_ConstraintCell(std::pair<size_t,size_t>(1,3) );
-	lmm_abcd_calibrator.add_ConstraintCell(std::pair<size_t,size_t>(1,2) );
-	lmm_abcd_calibrator.add_ConstraintCell(std::pair<size_t,size_t>(1,1) );
+	//lmm_abcd_calibrator.add_ConstraintCell(std::pair<size_t,size_t>(1,1) );
+	//lmm_abcd_calibrator.add_ConstraintCell(std::pair<size_t,size_t>(2,2) );
+	////lmm_abcd_calibrator.add_ConstraintCell(std::pair<size_t,size_t>(3,3) );
+	//lmm_abcd_calibrator.add_ConstraintCell(std::pair<size_t,size_t>(4,4) );
 	//lmm_abcd_calibrator.add_ConstraintCell(std::pair<size_t,size_t>(6,6) );
 	//lmm_abcd_calibrator.add_ConstraintCell(std::pair<size_t,size_t>(8,8) );
 
@@ -358,7 +387,7 @@ GMatrixMapping_PTR marketData_LMM_CascadeExact_calibration( const LmmCalibration
 	return pGMatrixMapping;
 }
 
-Shifted_HGVolatilityFunction_PTR marketData_LMM_Global_gCalibration( const LmmCalibrationConfig& config
+void marketData_LMM_Global_gCalibration( const LmmCalibrationConfig& config
 										, LmmSwaptionMarketData_PTR pLmmSwaptionMarketData 
 										, const QuantLib::Array& abcd_param 
 										, Correlation_PTR found_correlation_ptr  
@@ -369,8 +398,8 @@ Shifted_HGVolatilityFunction_PTR marketData_LMM_Global_gCalibration( const LmmCa
 	size_t nbYear = pLmmSwaptionMarketData->get_nbYear();
 	std::string base_file_name = pLmmSwaptionMarketData->get_MarketDataBaseFileName();
 
-	Tenor tenorfixedleg(config.fixedLegTenor_);
-	Tenor tenorfloatleg(config.floatLegTenor_);
+	Tenor tenorfixedleg = Tenor::_1YR ;
+	Tenor tenorfloatleg = Tenor::_6M  ;
 	size_t fixedfloatRatio = tenorfixedleg.ratioTo(tenorfloatleg);
 
 	std::string base_name;
@@ -443,9 +472,9 @@ Shifted_HGVolatilityFunction_PTR marketData_LMM_Global_gCalibration( const LmmCa
 	LmmGlobal_gCalibrator lmmCalibrator
 		(
 		*pGMatrixMapping.get()
-		, 200 //maxIter
-		, 1e-14   //x_epsilon
-		, 1e-14   //f_epsilon    
+		, 2000 //maxIter
+		, 1e-11   //x_epsilon
+		, 1e-11   //f_epsilon    
 		, pLmmCostFunction
 		);
 
@@ -504,7 +533,6 @@ Shifted_HGVolatilityFunction_PTR marketData_LMM_Global_gCalibration( const LmmCa
 
 		final_result.close();	
 	}
-	return pVolatilityFunction;
 }
 
 
@@ -586,7 +614,7 @@ void marketData_LMM_Local_gCalibration( const LmmCalibrationConfig& config
 	LmmLocal_gCalibrator lmmCalibrator
 		(
 		*pGMatrixMapping.get()
-		, 200 //maxIter
+		, 3000 //maxIter
 		, 1e-11   //x_epsilon
 		, 1e-11   //f_epsilon    
 		, pLmmCostFunction

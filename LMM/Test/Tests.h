@@ -4,6 +4,8 @@
 #include <string>
 
 #include <LMM/LmmModel/LmmSwaptionMarketData.h>
+#include <LMM/LmmModel/LmmSwaptionMarketDataFull.h>
+
 #include <LMM/calibration/LmmCalibrationConfig.h>
 #include <LMM/LmmModel/GMatrixMapping.h>
 
@@ -46,9 +48,18 @@ void test_LmmCalibrationMarketData();
 void test_LmmCalibrationSensitivity();	
 void test_LmmRegularizedCalibrationMarketData();
 
+//test JB
+void test_beginner();
+void vanillaSwapComparaisonExemple();
+void Test_McGeneticSwapLMMPricer();
+void Test_McGeneticTargetSwapLMMPricing();
 
 LmmSwaptionMarketData_PTR get_LmmSwaptionMarketData(const LmmCalibrationConfig& config, const std::string& input_file);
 
+//pour la compatibilité avec CheyetteDD_config
+LmmSwaptionMarketData_PTR get_LmmSwaptionMarketData(const size_t model_nbYear, const std::string& input_file) ;
+
+//LmmSwaptionMarketDataFull_PTR get_LmmSwaptionMarketDataFull(const size_t model_nbYear, const std::string& input_file) ;
 
 LMMTenorStructure_PTR create___LMMTenorStructure_PTR(const size_t nbyear);
 
@@ -69,12 +80,12 @@ GMatrixMapping_PTR marketData_LMM_CascadeExact_calibration( const LmmCalibration
 														  , Correlation_PTR found_correlation_ptr 
 														  );
 
-Shifted_HGVolatilityFunction_PTR marketData_LMM_Global_gCalibration( const LmmCalibrationConfig& config
-																	, LmmSwaptionMarketData_PTR pLmmSwaptionMarketData 
-																	, const QuantLib::Array& abcd_param 
-																	, Correlation_PTR found_correlation_ptr 
-																	, GMatrixMapping_PTR init_gMapping /*should be NULL*/
-																	);
+void marketData_LMM_Global_gCalibration( const LmmCalibrationConfig& config
+										   , LmmSwaptionMarketData_PTR pLmmSwaptionMarketData 
+										   , const QuantLib::Array& abcd_param 
+										   , Correlation_PTR found_correlation_ptr 
+										   , GMatrixMapping_PTR init_gMapping /*should be NULL*/
+										   );
 
 void marketData_LMM_Local_gCalibration( const LmmCalibrationConfig& config
 										   , LmmSwaptionMarketData_PTR pLmmSwaptionMarketData 

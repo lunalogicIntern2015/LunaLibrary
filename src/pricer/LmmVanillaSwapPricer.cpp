@@ -244,3 +244,12 @@ double LmmVanillaSwapPricer::pvFixedLeg(
 	const double calculatedAnuity = this->annuity(indexValuationDate,vanillaSwap,numeraire);
 	return vanillaSwap.get_strike()*calculatedAnuity;
 }
+
+
+double LmmVanillaSwapPricer::price_on_oneSimulation(	Instrument_CONSTPTR instrument,
+														LMM::Index evaluationDateIndex, 
+														const matrix& liborMatrix, 
+														const std::vector<double>& numeraire)const
+{
+	throw("LmmVanillaSwapPricer is not with liborMatrix and numeraire");
+}

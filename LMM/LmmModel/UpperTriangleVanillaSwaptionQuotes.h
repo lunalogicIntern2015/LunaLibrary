@@ -56,6 +56,8 @@ public:
 		return discountFactor_[dateIndex] ; 
 	}
 
+	std::vector<double> get_VectDiscountFactor() const {return discountFactor_ ; }
+
 	void print(const std::string& filename, const bool erase_file=true) const;
 
 	bool check_data_consistency() const;

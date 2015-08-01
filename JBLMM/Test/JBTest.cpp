@@ -722,13 +722,13 @@ Shifted_HGVolatilityFunction_PTR JB_marketData_LMM_shift_Calibration(	const LmmC
 											   , pLmmSwaptionMarketData->get_SwaptionQuotes_skew()// instrument to calibrate 
 											   , param_h_g );
 
-	for(size_t i = 0; i < 3; i++)
-	{
-		for (size_t j = 1; j < nbYear-i; j++)
-			{
-				lmmSkewCostFunction.addContraintCell(std::pair<size_t,size_t>(j,nbYear-i-j));
-			}
-	}
+	//for(size_t i = 0; i < 3; i++)
+	//{
+	//	for (size_t j = 1; j < nbYear-i; j++)
+	//		{
+	//			lmmSkewCostFunction.addContraintCell(std::pair<size_t,size_t>(j,nbYear-i-j));
+	//		}
+	//}
 
 	//costumize swaptions weights
 	//UpperTriangularDoubleMatrix swpm_weight_matrix = pLmmCostFunction->get_SwaptionWeightMatrix();

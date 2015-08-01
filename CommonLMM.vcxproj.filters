@@ -108,9 +108,6 @@
     <ClInclude Include="LMM\instrument\CMS.h">
       <Filter>LMM_instrument</Filter>
     </ClInclude>
-    <ClInclude Include="LMM\instrument\instrument.h">
-      <Filter>LMM_instrument</Filter>
-    </ClInclude>
     <ClInclude Include="LMM\instrument\Product.h">
       <Filter>LMM_instrument</Filter>
     </ClInclude>
@@ -225,9 +222,6 @@
     <ClInclude Include="LMM\helper\CombinationOperator.h">
       <Filter>LMM_helper\Rubish</Filter>
     </ClInclude>
-    <ClInclude Include="LMM\helper\DerivatibleFunction.h">
-      <Filter>LMM_helper\Rubish</Filter>
-    </ClInclude>
     <ClInclude Include="LMM\pricer\LmmVanillaSwaptionApproxPricer_Piterbarg.h">
       <Filter>LMM_pricer\SwaptionPricer</Filter>
     </ClInclude>
@@ -272,9 +266,6 @@
     </ClInclude>
     <ClInclude Include="LMM\pricer\McLmmBermudanSwaptionPricer.h">
       <Filter>LMM_pricer\CallableOptionPricer</Filter>
-    </ClInclude>
-    <ClInclude Include="LMM\instrument\BermudanSwaption.h">
-      <Filter>LMM_instrument\CallableOption</Filter>
     </ClInclude>
     <ClInclude Include="LMM\instrument\CallableOption.h">
       <Filter>LMM_instrument\CallableOption</Filter>
@@ -366,19 +357,7 @@
     <ClInclude Include="LMM\numeric\Integrator1D.h">
       <Filter>LMM_numeric</Filter>
     </ClInclude>
-    <ClInclude Include="JBLMM\Pricer\GeneticVanillaSwapPricer.h">
-      <Filter>LMM_pricer\GeneticSwapPricer</Filter>
-    </ClInclude>
-    <ClInclude Include="JBLMM\Pricer\McGeneticSwapLMMPricer.h">
-      <Filter>LMM_pricer\GeneticSwapPricer</Filter>
-    </ClInclude>
     <ClInclude Include="JBLMM\Instrument\CallableSwap.h">
-      <Filter>LMM_instrument\GeneticSwap</Filter>
-    </ClInclude>
-    <ClInclude Include="JBLMM\Instrument\GeneticSwap.h">
-      <Filter>LMM_instrument\GeneticSwap</Filter>
-    </ClInclude>
-    <ClInclude Include="JBLMM\Instrument\GeneticSwaption.h">
       <Filter>LMM_instrument\GeneticSwap</Filter>
     </ClInclude>
     <ClInclude Include="JBLMM\Instrument\InstrumentFactory.h">
@@ -399,14 +378,8 @@
     <ClInclude Include="JBLMM\Element\RatchetCoupon.h">
       <Filter>LMM_helper\Element</Filter>
     </ClInclude>
-    <ClInclude Include="JBLMM\Element\Rate.h">
-      <Filter>LMM_helper\Element</Filter>
-    </ClInclude>
     <ClInclude Include="JBLMM\Element\TargetCoupon.h">
       <Filter>LMM_helper\Element</Filter>
-    </ClInclude>
-    <ClInclude Include="JBLMM\Pricer\McGeneticTargetSwapLmmPricer.h">
-      <Filter>LMM_pricer\GeneticSwapPricer</Filter>
     </ClInclude>
     <ClInclude Include="Cheyette\CheyetteModel\CheyetteDD_Model.h" />
     <ClInclude Include="Cheyette\CheyetteModel\CheyetteModel.h" />
@@ -434,6 +407,45 @@
     <ClInclude Include="LMM\calibration\SwaptionMarketDataManager.h" />
     <ClInclude Include="LMM\calibration\TestCostFunction.h" />
     <ClInclude Include="LMM\calibration\TestHGVolatilityParam.h" />
+    <ClInclude Include="LMM\calibration\DerivatibleFunction.h">
+      <Filter>LMM_helper\Rubish</Filter>
+    </ClInclude>
+    <ClInclude Include="JBLMM\Element\ZC.h" />
+    <ClInclude Include="JBLMM\Longstaff_Schwartz\EV_Basis\Basis.h" />
+    <ClInclude Include="JBLMM\Longstaff_Schwartz\EV_Basis\Basis_Evaluator.h" />
+    <ClInclude Include="JBLMM\Longstaff_Schwartz\EV_Basis\EV.h" />
+    <ClInclude Include="JBLMM\Longstaff_Schwartz\EV_Basis\EV_Evaluator.h" />
+    <ClInclude Include="JBLMM\Longstaff_Schwartz\EV_Basis\TO_Delete\EV_Basis_Collection_old.h" />
+    <ClInclude Include="JBLMM\Longstaff_Schwartz\EV_Basis\TO_Delete\Basis_old.h" />
+    <ClInclude Include="JBLMM\Longstaff_Schwartz\EV_Basis\TO_Delete\ExplanatoryVariable_old.h" />
+    <ClInclude Include="JBLMM\Longstaff_Schwartz\EV_Basis\TO_Delete\LS_old.h" />
+    <ClInclude Include="JBLMM\Longstaff_Schwartz\EV_Basis\TO_Delete\RegressionLS_old.h" />
+    <ClInclude Include="JBLMM\Longstaff_Schwartz\Simulation\McLmm_LS.h" />
+    <ClInclude Include="JBLMM\Instrument\BermudanVanillaSwaption.h" />
+    <ClInclude Include="JBLMM\Instrument\GenericSwap.h">
+      <Filter>LMM_instrument\GeneticSwap</Filter>
+    </ClInclude>
+    <ClInclude Include="JBLMM\Instrument\GenericSwaption.h">
+      <Filter>LMM_instrument\GeneticSwap</Filter>
+    </ClInclude>
+    <ClInclude Include="JBLMM\Element\ConstRate.h" />
+    <ClInclude Include="JBLMM\Element\Rate1.h">
+      <Filter>LMM_helper\Element</Filter>
+    </ClInclude>
+    <ClInclude Include="JBLMM\Instrument\CallableInstrument.h" />
+    <ClInclude Include="JBLMM\Instrument\Instrument.h" />
+    <ClInclude Include="JBLMM\Pricer\LmmInstrumentPricer.h" />
+    <ClInclude Include="JBLMM\Pricer\McLmmPricer.h" />
+    <ClInclude Include="JBLMM\Pricer\McLmmGenericSwapPricer.h" />
+    <ClInclude Include="JBLMM\Pricer\GenericVanillaSwapPricer.h">
+      <Filter>LMM_pricer\GeneticSwapPricer</Filter>
+    </ClInclude>
+    <ClInclude Include="JBLMM\Pricer\McLmmGenericTargetSwapPricer.h" />
+    <ClInclude Include="JBLMM\Longstaff_Schwartz\LS_ForwardAlgo.h" />
+    <ClInclude Include="JBLMM\Longstaff_Schwartz\LS_BackwardAlgo.h" />
+    <ClInclude Include="JBLMM\Pricer\JB_McLmmVanillaSwapPricer.h" />
+    <ClInclude Include="JBLMM\Longstaff_Schwartz\Regression\Regression_LS.h" />
+    <ClInclude Include="Cheyette\CheyetteModel\CheyetteQuad_Model.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\pricer\LmmTarnPricer.cpp">
@@ -444,9 +456,6 @@
     </ClCompile>
     <ClCompile Include="src\pricer\StaticReplicationCMS.cpp">
       <Filter>LMM_pricer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\instrument\instrument.cpp">
-      <Filter>LMM_instrument</Filter>
     </ClCompile>
     <ClCompile Include="src\instrument\Tarn.cpp">
       <Filter>LMM_instrument</Filter>
@@ -743,18 +752,6 @@
     <ClCompile Include="JBLMM\Test\Test_McGeneticSwapLMMPricer.cpp">
       <Filter>Test\Test_JL</Filter>
     </ClCompile>
-    <ClCompile Include="JBLMM\Pricer\GeneticVanillaSwapPricer.cpp">
-      <Filter>LMM_pricer\GeneticSwapPricer</Filter>
-    </ClCompile>
-    <ClCompile Include="JBLMM\Pricer\McGeneticSwapLMMPricer.cpp">
-      <Filter>LMM_pricer\GeneticSwapPricer</Filter>
-    </ClCompile>
-    <ClCompile Include="JBLMM\Instrument\CallableSwap.cpp">
-      <Filter>LMM_instrument\GeneticSwap</Filter>
-    </ClCompile>
-    <ClCompile Include="JBLMM\Instrument\GeneticSwap.cpp">
-      <Filter>LMM_instrument\GeneticSwap</Filter>
-    </ClCompile>
     <ClCompile Include="JBLMM\Instrument\GeneticSwaption.cpp">
       <Filter>LMM_instrument\GeneticSwap</Filter>
     </ClCompile>
@@ -776,14 +773,8 @@
     <ClCompile Include="JBLMM\Element\RatchetCoupon.cpp">
       <Filter>LMM_helper\Element</Filter>
     </ClCompile>
-    <ClCompile Include="JBLMM\Element\Rate.cpp">
-      <Filter>LMM_helper\Element</Filter>
-    </ClCompile>
     <ClCompile Include="JBLMM\Element\TargetCoupon.cpp">
       <Filter>LMM_helper\Element</Filter>
-    </ClCompile>
-    <ClCompile Include="JBLMM\Pricer\McGeneticTargetSwapLmmPricer.cpp">
-      <Filter>LMM_pricer\GeneticSwapPricer</Filter>
     </ClCompile>
     <ClCompile Include="JBLMM\Test\Test_Comparaison_VanillaSwap.cpp">
       <Filter>Test\Test_JL</Filter>
@@ -792,7 +783,6 @@
       <Filter>Test\Test_JL</Filter>
     </ClCompile>
     <ClCompile Include="Cheyette\CheyetteModel\CheyetteDD_Model.cpp" />
-    <ClCompile Include="Cheyette\CheyetteModel\CheyetteModel.cpp" />
     <ClCompile Include="Cheyette\Pricer\CheyetteDD_VanillaSwaptionApproxPricer.cpp" />
     <ClCompile Include="Cheyette\Pricer\MC_Cheyette.cpp" />
     <ClCompile Include="Cheyette\Pricer\MC_CheyetteDD_VanillaSwapPricer.cpp" />
@@ -817,6 +807,56 @@
     <ClCompile Include="src\calibration\CalibrationShiftCostFunction.cpp" />
     <ClCompile Include="src\calibration\SwaptionMarketDataContainer.cpp" />
     <ClCompile Include="src\calibration\SwaptionMarketDataManager.cpp" />
+    <ClCompile Include="JBLMM\Element\ZC.cpp" />
+    <ClCompile Include="JBLMM\Longstaff_Schwartz\EV_Basis\Basis.cpp" />
+    <ClCompile Include="JBLMM\Longstaff_Schwartz\EV_Basis\Basis_Evaluator.cpp" />
+    <ClCompile Include="JBLMM\Longstaff_Schwartz\EV_Basis\EV.cpp" />
+    <ClCompile Include="JBLMM\Longstaff_Schwartz\EV_Basis\EV_Evaluator.cpp" />
+    <ClCompile Include="JBLMM\Longstaff_Schwartz\EV_Basis\TO_Delete\Basis_old.cpp" />
+    <ClCompile Include="JBLMM\Longstaff_Schwartz\EV_Basis\TO_Delete\EV_Basis_Collection_old.cpp" />
+    <ClCompile Include="JBLMM\Longstaff_Schwartz\EV_Basis\TO_Delete\ExplanatoryVariable_old.cpp" />
+    <ClCompile Include="JBLMM\Longstaff_Schwartz\EV_Basis\TO_Delete\LS_old.cpp" />
+    <ClCompile Include="JBLMM\Longstaff_Schwartz\EV_Basis\TO_Delete\RegressionLS_old.cpp" />
+    <ClCompile Include="JBLMM\Longstaff_Schwartz\Simulation\McLmm_LS.cpp" />
+    <ClCompile Include="JBLMM\Instrument\BermudanVanillaSwaption.cpp" />
+    <ClCompile Include="JBLMM\Instrument\CallableSwap.cpp">
+      <Filter>LMM_instrument\GeneticSwap</Filter>
+    </ClCompile>
+    <ClCompile Include="JBLMM\Instrument\GenericSwap.cpp">
+      <Filter>LMM_instrument\GeneticSwap</Filter>
+    </ClCompile>
+    <ClCompile Include="JBLMM\Pricer\GenericVanillaSwapPricer.cpp">
+      <Filter>LMM_pricer\GeneticSwapPricer</Filter>
+    </ClCompile>
+    <ClCompile Include="JBLMM\Element\ConstRate.cpp" />
+    <ClCompile Include="JBLMM\Element\Rate1.cpp">
+      <Filter>LMM_helper\Element</Filter>
+    </ClCompile>
+    <ClCompile Include="JBLMM\Instrument\CallableInstrument.cpp" />
+    <ClCompile Include="JBLMM\Pricer\LmmInstrumentPricer.cpp" />
+    <ClCompile Include="JBLMM\Instrument\Instrument.cpp" />
+    <ClCompile Include="JBLMM\Pricer\McLmmGenericSwapPricer.cpp" />
+    <ClCompile Include="JBLMM\Pricer\McLmmGenericTargetSwapPricer.cpp" />
+    <ClCompile Include="JBLMM\Longstaff_Schwartz\LS_BackwardAlgo.cpp" />
+    <ClCompile Include="JBLMM\Longstaff_Schwartz\LS_ForwardAlgo.cpp" />
+    <ClCompile Include="JBLMM\Pricer\JB_McLmmVanillaSwapPricer.cpp" />
+    <ClCompile Include="JBLMM\Longstaff_Schwartz\Regression\Regression_LS.cpp" />
+    <ClCompile Include="JBLMM\Test\Test_Longstaff_Schwartz.cpp" />
+    <ClCompile Include="JBLMM\Test\unit_test\TODELETE\Test_BermudianOption.cpp" />
+    <ClCompile Include="JBLMM\Test\unit_test\TODELETE\Test_LS.cpp" />
+    <ClCompile Include="JBLMM\Test\unit_test\TODELETE\Test_InverseMatrix.cpp" />
+    <ClCompile Include="JBLMM\Test\unit_test\TODELETE\Test_EV.cpp" />
+    <ClCompile Include="JBLMM\Test\unit_test\TODELETE\Test_basis.cpp" />
+    <ClCompile Include="JBLMM\Test\unit_test\Test_LS_BackwardAlgo.cpp" />
+    <ClCompile Include="JBLMM\Test\unit_test\Test_regression_LS_Backward.cpp" />
+    <ClCompile Include="JBLMM\Test\unit_test\Test_pricing_forward_LS.cpp" />
+    <ClCompile Include="JBLMM\Test\Test_getBasis.cpp" />
+    <ClCompile Include="JBLMM\Test\unit_test\Test_evaluation_basis.cpp" />
+    <ClCompile Include="JBLMM\Test\Test_oneset_basis_pricing.cpp" />
+    <ClCompile Include="JBLMM\Test\unit_test\Test_evaluate_basis.cpp" />
+    <ClCompile Include="JBLMM\Test\Test_10_basis.cpp" />
+    <ClCompile Include="Cheyette\CheyetteModel\CheyetteQuad_Model.cpp" />
+    <ClCompile Include="Cheyette\Pricer\CheyetteQuad_VanillaSwaptionApproxPricer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="TODO" />

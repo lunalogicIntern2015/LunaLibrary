@@ -52,10 +52,11 @@ public:
 	//! approximatively compute the index of the nearest LMMTenorStructure'sdate giving an arbitrary date
 	LMM::Index   get_Index(const double& date) const ;
 
+	
 	//! getter
 	LMM::Index   get_horizon()   const ;  // N
 	LMM::Index   get_nbLIBOR()   const ;  // N+1	
-
+	int			 get_max_nbOfYear() const ;
 	//! get the TenorType of this LMMTenorStructure
 	Tenor get_tenorType() const;
 

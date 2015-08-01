@@ -16,6 +16,8 @@ LmmCalibrationConfig::LmmCalibrationConfig()
 	, test_folder_("calibration")
 	, use_local_calib_(false)
 	, use_positive_constraint_(false)
+	, floatLegTenor_(Tenor::_6M)
+	, fixedLegTenor_(Tenor::_12M)
 {
 	reset_result();
 

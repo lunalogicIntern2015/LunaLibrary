@@ -14,7 +14,6 @@
 
 #include <JBLMM/Instrument/Instrument.h>
 
-
 /*! \class VanillaSwap manage leg's INDICES in the simulation structures see <LMM\lmmModel\LMMTenorStructure.h>
  * Each simulation index correspond to a simulated Libor
  *
@@ -28,7 +27,7 @@
  *
  * !!! For instance, floatTenor=simulationTenor = T_{i+1} - T_i for a swap
  */
-class VanillaSwap :public Instrument
+class VanillaSwap : public Instrument
 {
 public:
 
@@ -46,6 +45,9 @@ public:
 	double  get_strike() const        {return strike_;} 
 	double& get_strikeRef()           {return strike_;} 
 	
+	void set_indexStart(size_t indexStart) {indexStart_ = indexStart;}
+	void set_indexEnd(size_t indexEnd) {indexEnd_ = indexEnd;}
+
 	Tenor get_fixedLegTenorType()	 const { return fixedLegTenorType_     ; }
 	Tenor get_floatingLegTenorType() const { return floatingLegTenorType_  ; }	
 	Tenor get_lmmTenorStructureTenorType()  const { return lmmTenorStructure_->get_tenorType();} // to compare with the pricer's LMM's structure
@@ -69,10 +71,11 @@ public:
 	double get_StartDate() const { return lmmTenorStructure_->get_tenorDate()[get_indexStart()] ; }
 	double get_EndDate()   const { return lmmTenorStructure_->get_tenorDate()[get_indexEnd()]   ; }
 
+
 	// print swap informations to csv file
 	void print(const std::string& filename) const ;
-
-	void show()const ;
+	void print(std::ostream& o) const ;
+	void show() const ;
 
 private:
 
@@ -100,9 +103,9 @@ private:
 public:
 	void write_to_stream(std::ostream& outputstream)const ;
 };
+
 typedef boost::shared_ptr<VanillaSwap> VanillaSwap_PTR;
 typedef boost::shared_ptr<const VanillaSwap> VanillaSwap_CONSTPTR;
-
 
 
 std::ostream& operator<<(std::ostream& os, const VanillaSwap& swap);

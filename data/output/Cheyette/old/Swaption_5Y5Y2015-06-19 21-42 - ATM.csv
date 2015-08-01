@@ -1,0 +1,42 @@
+
+
+
+---------------------------------------------
+------------- Cheyette DD Model ------------
+  SIGMA piecewise constant 
+       for x in [0, 5], y = 0.1
+       for x in [5, 10], y = 0.2
+  M piecewise constant 
+       for x in [0, 5], y = 1
+       for x in [5, 10], y = 1
+  k constant 
+       k = 0.2
+---------------------------------------------
+courbe des taux ZC spot (yield)
+listeMatu   ;   tauxZC
+0 ; 0.008
+1 ; 0.0085
+2 ; 0.009
+3 ; 0.0092
+4 ; 0.0095
+5 ; 0.01
+10 ; 0.015
+15 ; 0.02
+20 ; 0.025
+25 ; 0.023
+
+---------------------------------------
+------------- GeneticSwap -------------
+LEG 1 TenorType_ Tenor6M[6MO|0.5YR]
+LEG 2 TenorType_ TenorNon[0MO|0YR]  fixed rate : 0.0201199
+indices des flux Leg 1
+11  12  13  14  15  16  17  18  19  20   
+indices des flux Leg 2
+12  14  16  18  20   
+---------------------------------------
+
+Prix approximation : ; 0.00182828
+
+prix approximation ; nb simulations ;  prix MC ; IC inf ; IC sup 
+0.00182828 ; 10000 ; 0.00548254 ; 0.0052475 ; 0.00571758
+0.00182828 ; 30000 ; 0.00555868 ; 0.00542112 ; 0.00569624

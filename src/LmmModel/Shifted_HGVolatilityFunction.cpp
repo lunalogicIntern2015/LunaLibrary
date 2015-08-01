@@ -3,7 +3,6 @@
 #include <LMM/helper/GenericPath.h>
 #include <LMM/helper/Printer.h>
 #include <LMM/LmmModel/ConstShifted_HGVolatilityFunction.h>
-#include <LMM/LmmModel/Shifted_HGVolatilityFunction.h>
 #include <cmath>
 #include <boost/pointer_cast.hpp>
 
@@ -143,12 +142,6 @@ void Shifted_HGVolatilityParam::init_shift_matrix(const std::vector<double>& shi
 		}	
 	}
 }
-
-const Shifted_HGVolatilityParam::LowerTriangularMatrix&   Shifted_HGVolatilityParam::get_gMatrix()const
-{
-	return g_matrix_;
-}
-
 
 void Shifted_HGVolatilityParam::reset_g_matrix(const LowerTriangularMatrix& other_g)
 {

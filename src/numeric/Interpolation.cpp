@@ -245,4 +245,6 @@ namespace numeric
 		}
 	}
 
-} //end namespace numerica
+
+
+} //end namespace numeric

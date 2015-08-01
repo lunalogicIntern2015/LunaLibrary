@@ -1,0 +1,78 @@
+
+
+
+---------------------------------------------
+------------- Cheyette DD Model ------------
+  SIGMA piecewise constant 
+       for x in [0, 1], y =  ;0.2
+       for x in [1, 2[, y = ;0.2
+       for x in [2, 3[, y = ;0.2
+       for x in [3, 4[, y = ;0.2
+       for x in [4, 5[, y = ;0.2
+       for x in [5, 6[, y = ;0.2
+       for x in [6, 7[, y = ;0.2
+       for x in [7, 8[, y = ;0.2
+       for x in [8, 9[, y = ;0.2
+       for x in [9, 10[, y = ;0.2
+       for x in [10, 11[, y = ;0.2
+       for x in [11, 12[, y = ;0.2
+       for x in [12, 13[, y = ;0.2
+       for x in [13, 14[, y = ;0.2
+       for x in [14, 15], y = ;0.2
+  M piecewise constant 
+       for x in [0, 1], y =  ;0
+       for x in [1, 2[, y = ;0
+       for x in [2, 3[, y = ;0
+       for x in [3, 4[, y = ;0
+       for x in [4, 5[, y = ;0
+       for x in [5, 6[, y = ;0
+       for x in [6, 7[, y = ;0
+       for x in [7, 8[, y = ;0
+       for x in [8, 9[, y = ;0
+       for x in [9, 10[, y = ;0
+       for x in [10, 11[, y = ;0
+       for x in [11, 12[, y = ;0
+       for x in [12, 13[, y = ;0
+       for x in [13, 14[, y = ;0
+       for x in [14, 15], y = ;0
+  k constant 
+       k = ; 0.02
+---------------------------------------------
+courbe des taux ZC spot (yield)
+listeMatu   ;   tauxZC
+0 ; 0.01
+1 ; 0.01
+2 ; 0.01
+3 ; 0.01
+4 ; 0.01
+5 ; 0.01
+10 ; 0.01
+15 ; 0.01
+20 ; 0.01
+25 ; 0.01
+
+---------------------------------------------
+-------------  VanillaSwap ------------------
+floatingLegTenorType_ Tenor6M[6MO|0.5YR]
+fixedLegTenorType_    Tenor12M[12MO|1YR]
+indexStart_           2
+indexEnd_             28
+indices des flux fixes
+4  6  8  10  12  14  16  18  20  22  24  26  28   
+indices des flux flottants
+3  4  5  6  7  8  9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26  27  28   
+deltaTFloatingLeg_ i
+0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5   
+deltaTFixedLeg_ i
+1  1  1  1  1  1  1  1  1  1  1  1  1   
+---------------------------------------------
+
+Prix approximation : ; 0.00846109
+b_barre : ; 0.0154926
+annuity A(0) : ; 12.0089
+swap rate S(0) : ; 0.0100502
+
+vol Black impli : ; 0.175954
+
+prix approximation ; nb simulations ;  prix MC ; IC inf ; IC sup 
+0.00846109 ; 20000 ; 0.0193892 ; 0.0188657 ; 0.0199127

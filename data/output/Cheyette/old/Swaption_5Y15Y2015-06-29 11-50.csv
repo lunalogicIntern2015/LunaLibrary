@@ -1,0 +1,54 @@
+
+
+
+---------------------------------------------
+------------- Cheyette DD Model ------------
+  SIGMA piecewise constant 
+       for x in [0, 10], y = 0.05
+       for x in [10, 25], y = 0.1
+  M piecewise constant 
+       for x in [0, 10], y = 0
+       for x in [10, 25], y = 0
+  k constant 
+       k = 0.2
+---------------------------------------------
+courbe des taux ZC spot (yield)
+listeMatu   ;   tauxZC
+0 ; 0.008
+1 ; 0.0085
+2 ; 0.009
+3 ; 0.0092
+4 ; 0.0095
+5 ; 0.01
+10 ; 0.015
+15 ; 0.02
+20 ; 0.025
+25 ; 0.023
+
+---------------------------------------------
+-------------  VanillaSwap ------------------
+floatingLegTenorType_ Tenor6M[6MO|0.5YR]
+fixedLegTenorType_    Tenor1YR[12MO|1YR]
+indexStart_           10
+indexEnd_             40
+indices des flux fixes
+12  14  16  18  20  22  24  26  28  30  32  34  36  38  40   
+indices des flux flottants
+11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35  36  37  38  39  40   
+deltaTFloatingLeg_ i
+0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5   
+deltaTFixedLeg_ i
+1  1  1  1  1  1  1  1  1  1  1  1  1  1  1   
+---------------------------------------------
+
+Prix approximation : ; 0.250653
+b_barre : ; 0.201413
+annuity A(0) : ; 11.7558
+swap rate S(0) : ; 0.0293217
+
+vol Black impli : ; 0.000100006
+
+prix approximation ; nb simulations ;  prix MC ; IC inf ; IC sup 
+0.250653 ; 10000 ; 0.250582 ; 0.250418 ; 0.250747
+0.250653 ; 40000 ; 0.250633 ; 0.25055 ; 0.250717
+0.250653 ; 100000 ; 0.250669 ; 0.250616 ; 0.250722

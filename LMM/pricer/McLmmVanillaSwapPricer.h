@@ -39,6 +39,11 @@ public:
 					const std::vector<double>& numeraire, 
 					const matrix& liborMatrix) const;
 
+	double price_on_oneSimulation(	Instrument_CONSTPTR instrument,
+									LMM::Index evaluationDateIndex, 
+									const matrix& liborMatrix, 
+									const std::vector<double>& numeraire)const;
+
 	//double annuity(LMM::Index indexValuationDate,
 	//			   const lmmModel& lmmModel,
 	//			   const std::vector<double>& numeraire) const;

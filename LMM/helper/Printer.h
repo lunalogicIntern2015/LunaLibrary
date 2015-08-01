@@ -120,12 +120,14 @@ public:
 			}
 		}		
 	}
+
+
 };
 //typedef boost::shared_ptr<MatrixPrintElement> MatrixPrintElement_PTR;
 
-
 // specialise for printing upper triangular matrix
 typedef boost::numeric::ublas::matrix<double> UpperTriangularDoubleMatrix; // UTDM
+typedef boost::numeric::ublas::matrix<double> Matrice ;
 
 template<>  // T is a upper triangular matrix
 class MatrixPrintElement<UpperTriangularDoubleMatrix> : public PrintElement
@@ -146,18 +148,38 @@ public:
 			// print only the upper part
 			for(size_t i=0; i< (nbCol_ - indexElementRow); ++i)
 			{
-				myfile << element_(indexElementRow,i) <<",";
+				myfile << element_(indexElementRow,i) <<";";
 			}
 			for(size_t i= (nbCol_ - indexElementRow) ; i< nbCol_ ; ++i)
 			{
-				myfile  <<"0,";
+				myfile  <<"0;";
 			}
 		}
 		else  // has nothing to print
 		{
 			for(size_t i=0; i<nbCol_; ++i)
 			{
-				myfile  <<",";
+				myfile  <<";";
+			}
+		}		
+	}
+
+	//imprime toute la ligne
+	void print_element2(std::ofstream& myfile, size_t indexElementRow) const
+	{
+		if(indexElementRow < nbRow_) // row 0 is for the head
+		{
+			// print only the upper part
+			for(size_t i=0; i< nbCol_ ; ++i)
+			{
+				myfile << element_(indexElementRow,i) <<";";
+			}
+		}
+		else  // has nothing to print
+		{
+			for(size_t i=0; i<nbCol_; ++i)
+			{
+				myfile  <<";";
 			}
 		}		
 	}

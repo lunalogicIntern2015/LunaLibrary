@@ -25,6 +25,11 @@ public:
 
 	std::string test_folder_;
 
+	size_t nbSimulation_;
+	Tenor floatLegTenor_;
+	Tenor fixedLegTenor_;
+	double g;
+
 	mutable bool use_local_calib_;
 	bool use_positive_constraint_;
 
