@@ -13,7 +13,7 @@
 #include <LMM/LmmModel/RebonatoAngle.h>
 
 using namespace std;
-using namespace QuantLib;
+
 
 //! YY TODO: need to do the check: the finally approximated matrix: B*B^T is positively defined!
 //           what happens if the matrix is not positively defined ? ----  it's not a correlation matrix.
@@ -34,9 +34,9 @@ class Correlation
 protected:
 	size_t fullRank_;                   // rank of correlation matrix.
 	size_t reducedRank_;                // rank of the reduced correlation matrix 
-	Matrix originalCorrelMatrix_;       // originalCorrelMatrix, size = (fullRank_, fullRank_)
-	Matrix reducedCorrelMatrixB_;       // size = (fullRank_,reducedRank_)
-	Matrix reducedCorrelMatrixApprox_ ; // approximate the originalCorrelMatrix, value = B*B^T, size = (rank_, rank_)
+	QuantLib::Matrix originalCorrelMatrix_;       // originalCorrelMatrix, size = (fullRank_, fullRank_)
+	QuantLib::Matrix reducedCorrelMatrixB_;       // size = (fullRank_,reducedRank_)
+ 	QuantLib::Matrix reducedCorrelMatrixApprox_ ; // approximate the originalCorrelMatrix, value = B*B^T, size = (rank_, rank_)
 	CorrelationReductionType::CorrelationReductionType reductionType_;
 
 	bool   flagApproxConstruced_;
@@ -75,9 +75,9 @@ public:
 	//! getter.
 	size_t get_fullRank();
 	size_t get_reducedRank();
-	const  Matrix& get_originalCorrelMatrix() const;
-	const  Matrix& get_reducedCorrelMatrixB() const;
-	const  Matrix& get_reducedCorrelMatrixApprox() const;
+	const  QuantLib::Matrix& get_originalCorrelMatrix() const;
+	const  QuantLib::Matrix& get_reducedCorrelMatrixB() const;
+	const  QuantLib::Matrix& get_reducedCorrelMatrixApprox() const;
 	const  CorrelationReductionType::CorrelationReductionType& get_reductionType() const;
 	const  std::string get_reductionTypeString() const;
 	bool   get_flagApproxConstruced()const;

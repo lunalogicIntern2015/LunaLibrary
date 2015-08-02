@@ -22,19 +22,19 @@ private:
 	CheyetteDD_CostFunctionLevel_PTR		costFunctionLevel_PTR_ ;
 	CheyetteDD_CostFunctionSkew_PTR			costFunctionSkew_PTR_ ;
 	//points de depart
-	Array	sigmaInitiate_1D_ ;	//param initial pour sigma(t)				
-	Array	mInitiate_1D_ ;			//param initial pour m(t)	
+	QuantLib::Array	sigmaInitiate_1D_ ;	//param initial pour sigma(t)				
+	QuantLib::Array	mInitiate_1D_ ;			//param initial pour m(t)	
 
-	mutable Array	calibrated_sigma_1D_ ;			//sigma(t) calibre				
-	mutable Array	calibrated_m_1D_ ;				//m(t) calibre
+	mutable QuantLib::Array	calibrated_sigma_1D_ ;			//sigma(t) calibre				
+	mutable QuantLib::Array	calibrated_m_1D_ ;				//m(t) calibre
 
 public :
 	CheyetteDD_LocalCalibrator(	std::ostream& o,
 								const QuantLib::Size & maxIterations,       
 								const QuantLib::Real & rootEpsilon,        
 								const QuantLib::Real & functionEpsilon,    
-								Array sigmaInitiate_1D, Array mInitiate_1D,
-								Array calibrated_sigma_1D, Array calibrated_m_1D,
+								QuantLib::Array sigmaInitiate_1D, QuantLib::Array mInitiate_1D,
+								QuantLib::Array calibrated_sigma_1D, QuantLib::Array calibrated_m_1D,
 								CheyetteDD_CostFunctionLevel_PTR		costFunctionLevel_PTR,
 								CheyetteDD_CostFunctionSkew_PTR		costFunctionSkew_PTR)
 		: CheyetteBaseCalibrator(o, maxIterations, rootEpsilon , functionEpsilon),

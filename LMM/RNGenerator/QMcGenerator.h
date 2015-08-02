@@ -10,15 +10,14 @@
 
 #include <LMM/RNGenerator/RNGenerator.h>
 
-using namespace QuantLib ;
 
 class QMcGenerator : RNGenerator
 {
 private:
 	size_t   sequence_size_; 
 	size_t   skipRank_; // Number of sobol points to skip (to avoid badly generated sequences)
-	SobolRsg sobol_;    // QuantLib Sobol LDS generator
-	InverseCumulativeRsg<SobolRsg,InverseCumulativeNormal> generator_;
+	QuantLib::SobolRsg sobol_;    // QuantLib Sobol LDS generator
+	QuantLib::InverseCumulativeRsg<QuantLib::SobolRsg,QuantLib::InverseCumulativeNormal> generator_;
 	
 public:
 	QMcGenerator(unsigned long qmcSeed, size_t sequence_size, size_t skipRank);

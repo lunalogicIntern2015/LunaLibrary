@@ -7,13 +7,13 @@
 #include <iostream>
 
 #include <boost/function.hpp>
-#include <boost/shared_ptr.hpp>
+
 
 #include <LMM/instrument/VanillaSwap.h> 
 #include <LMM/helper/LMMTenorStructure.h>
 
 #include <ql/math/array.hpp>
-using namespace QuantLib ;
+
 /*  -----------------------------------------------------------
 	Cheyette Model Displaced Diffusion (DD)
 
@@ -58,9 +58,10 @@ public:
 
 private:
 
-	CourbeInput_PTR					courbeInput_PTR_ ;          // yield y(0,t)
+	CourbeInput_PTR					courbeInput_PTR_ ;          // yield y(0,t)  // YY: really need this ??? 
 	mutable CheyetteDD_Parameter	cheyetteDD_Parameter_;
-	int								shiftChoice_ ; 
+
+	int								shiftChoice_ ;              // YY: ugly code, to change 
 	Boost_R3R_Function_PTR			shift1_;					//ex: r(t)/r(0), r(t)/f(0,t), S(t)/S(0) ou Li(t)/Li(0)
 	Boost_R3R_Function_PTR			shift2_;
 	Boost_R3R_Function_PTR			derivative_x_shift1_;
@@ -109,7 +110,8 @@ public:
 			case 3 :{	//S(t) / S(0)
 				//shift defini plus tard une fois connue la swaption
 				//cf constructeur de CheyetteDD_VanillaSwaptionApproxPricer
-				setShiftPointer(NULL, NULL, NULL, NULL) ;				
+				throw("Bug !");
+				//setShiftPointer(NULL, NULL, NULL, NULL) ;				
 				break;
 					}
 			default :
@@ -152,7 +154,8 @@ public:
 
 	//shift functions
 	double shift_rt(double t,  double x_t, double y_t) const ;							
-	double shift_f_0_t(double t,  double x_t, double y_t) const ;				
+	double shift_f_0_t(double t,  double x_t, double y_t) const ;	
+
 	//derivee du shift wrt x_t
 	double shift_rt_1stDerivative(double t, double x_t, double y_t) const ;  
 	double shift_r0_1stDerivative(double t, double x_t, double y_t) const ;  
@@ -164,15 +167,17 @@ public:
 
 	double r_t(double t, double x_t) const ;
 
-	double Libor(double t, double T1, double T2, double x_t, double y_t) const ;  
+	double Libor(double t, double T1, double T2, double x_t, double y_t) const ;   
 
 	//EDS : diffusion
+	double drift_x_Q(double t, double x_t, double y_t) const ;                      // risk neutral proba
+	double drift_x_QT(double t, double T_proba_fwd, double x_t, double y_t) const ; // forward proba
 	double diffusion_x(double t, double x_t, double y_t) const ;
 	
 	double drift_y(double t, double x_t, double y_t) const ;
 
 	//EDS : drift sous Q^T
-	double drift_x_QT(double t, double T_proba_fwd, double x_t, double y_t) const ;
+	
 
 };
 

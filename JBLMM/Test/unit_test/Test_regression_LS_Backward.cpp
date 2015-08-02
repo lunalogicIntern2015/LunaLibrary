@@ -40,6 +40,7 @@
 
 void Test_regression_LS()
 {
+	/*
 	LMM::Index  indexStart = 2;		//1Y
 	LMM::Index  indexEnd   = 6;		//4Y
 	Tenor	floatingLegTenorType = Tenor::_6M;
@@ -184,4 +185,6 @@ void Test_regression_LS()
 	//0.00692709, -1.65404, 3.02145
 	//valid getSubInstrument
 	//valid price_for_oneSimulation
+
+	*/
 }

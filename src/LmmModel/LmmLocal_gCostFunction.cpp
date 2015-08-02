@@ -30,7 +30,7 @@ void LmmLocal_gCostFunction::reset_CalibrationParams(const QuantLib::Array & par
 }
 
 //const Array& param_array
-Disposable<Array> LmmLocal_gCostFunction::values(const Array& param_array) const
+QuantLib::Disposable<QuantLib::Array> LmmLocal_gCostFunction::values(const QuantLib::Array& param_array) const
 {
 	// NOTE : 
 	// Costfunction::values has to compute only values, not absolute values, nor squared values
@@ -41,7 +41,7 @@ Disposable<Array> LmmLocal_gCostFunction::values(const Array& param_array) const
 	this->partially_UpdateSwaptionMdlValues();
 
 	//! diff upperTriangleVanillaSwaptionMktQuotes_ - upperTriangleVanillaSwaptionMdlValues_
-	Array diff_cost( nbSwaptionOnRow_ );
+	QuantLib::Array diff_cost( nbSwaptionOnRow_ );
 	size_t vector_counter=0;
 
 	size_t swaption_matrix_size = upperTriangleVanillaSwaptionMdlValues_.size1();

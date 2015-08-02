@@ -43,7 +43,7 @@ public:
 	virtual void reset_CalibrationParams(const QuantLib::Array & params) const ;
 	
 	//const Array& param_array
-	Disposable<Array> values(const Array& x) const ; 
+	QuantLib::Disposable<QuantLib::Array> values(const QuantLib::Array& x) const ; 
 
 	// Getter!
 	Correlation_PTR get_Correlation() const { return pCorrelation_ ;}

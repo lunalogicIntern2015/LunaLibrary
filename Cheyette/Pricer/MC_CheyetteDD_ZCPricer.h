@@ -4,7 +4,7 @@
 #include <Cheyette/CheyetteModel/CheyetteDD_Model.h>
 #include <Cheyette/Pricer/MC_Cheyette.h>	
 
-//#include "GeneticSwap.h"
+//#include "GenericSwap.h"
 #include <LMM/instrument/VanillaSwap.h>  
 #include <LMM/numeric/Integrator1D.h>  //pour la fonction closestDate
 

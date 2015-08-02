@@ -83,9 +83,9 @@ void Correlation::calculateReducedCorrelApprox()
 //! getter.
 size_t Correlation::get_fullRank(){return fullRank_;}      
 size_t Correlation::get_reducedRank(){return reducedRank_;}
-const  Matrix& Correlation::get_originalCorrelMatrix() const {return originalCorrelMatrix_;}
-const  Matrix& Correlation::get_reducedCorrelMatrixB() const {return reducedCorrelMatrixB_;}
-const  Matrix& Correlation::get_reducedCorrelMatrixApprox() const {return reducedCorrelMatrixApprox_;}
+const  QuantLib::Matrix& Correlation::get_originalCorrelMatrix() const {return originalCorrelMatrix_;}
+const  QuantLib::Matrix& Correlation::get_reducedCorrelMatrixB() const {return reducedCorrelMatrixB_;}
+const  QuantLib::Matrix& Correlation::get_reducedCorrelMatrixApprox() const {return reducedCorrelMatrixApprox_;}
 const  CorrelationReductionType::CorrelationReductionType& Correlation::get_reductionType() const {return reductionType_;}
 const  std::string Correlation::get_reductionTypeString() const
 {

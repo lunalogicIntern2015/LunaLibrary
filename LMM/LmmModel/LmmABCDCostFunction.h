@@ -38,7 +38,7 @@ public:
 	virtual void reset_CalibrationParams(const QuantLib::Array & params) const ;
 	
 	//const Array& param_array
-	virtual Disposable<Array> values(const Array& x) const ; 
+	virtual QuantLib::Disposable<QuantLib::Array> values(const QuantLib::Array& x) const ; 
 
 	void add_ConstraintCell(const std::pair<size_t,size_t>& cell) // YY TODO: change name index_swaptions_to_calibrate
 	{

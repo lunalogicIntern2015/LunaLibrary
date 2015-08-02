@@ -1,6 +1,6 @@
 #pragma once
 #include <Cheyette/Pricer/MC_Cheyette.h>	
-#include <JBLMM/Instrument/GeneticSwaption.h>
+#include <JBLMM/Instrument/GenericSwaption.h>
 
 class MC_CheyetteDD_GenericSwaptionPricer : public MC_Cheyette
 {
@@ -16,9 +16,9 @@ public:
 	virtual ~MC_CheyetteDD_GenericSwaptionPricer(){}
 
 	//! Pricing at time T0=0
-	std::vector<double> price(GeneticSwaption_CONSTPTR genericSwaption, size_t nbSimulation) const;
+	std::vector<double> price(GenericSwaption_CONSTPTR genericSwaption, size_t nbSimulation) const;
 
-	void print(GeneticSwaption_CONSTPTR genericSwaption, 
+	void print(GenericSwaption_CONSTPTR genericSwaption, 
 				std::vector<size_t> nbSimus, 
 				std::vector<double> prixMC,
 				std::vector<double> IC_inf,
@@ -27,7 +27,7 @@ public:
 	void printMC_vs_approx(double approx, double b_barre, 
 							double annuityA0, double swapRateS0, double volBlack, 
 							double a, double b,
-							GeneticSwaption_CONSTPTR genericSwaption, 
+							GenericSwaption_CONSTPTR genericSwaption, 
 							std::vector<size_t> nbSimus, 
 							std::vector<double> prixMC,
 							std::vector<double> IC_inf,

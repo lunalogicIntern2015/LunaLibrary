@@ -1,4 +1,5 @@
 #include "JBLMM/Instrument/GenericSwap.h"
+#include <cstddef>
 
 GenericSwap::GenericSwap(CouponLeg_CONSTPTR leg1, CouponLeg_CONSTPTR leg2)
 	:

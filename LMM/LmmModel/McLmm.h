@@ -32,7 +32,7 @@ protected:
 	//! YY exist in Dispersion, but only for the simplicity of writing the code, put them here.
 	size_t nbFactor_;   // = 3,5,10::::
 	size_t horizon_;    // N: max Libor
-	Matrix B_; 
+	QuantLib::Matrix B_; 
 	std::vector<double> liborsInitValue_; // used for equivalentShift for BetaLmm.
 
 	//! comes from simulation
@@ -50,7 +50,7 @@ protected:
 
 	//! diffusion integration.
 	//! int_{T_{k-1}}^{T_k} sigma_i(t) dW_t,   indexTime = k
-	Real computeIntSto(size_t indexTime, size_t indexLibor, const std::vector<double>& G) const;
+	QuantLib::Real computeIntSto(size_t indexTime, size_t indexLibor, const std::vector<double>& G) const;
 
 public:
 

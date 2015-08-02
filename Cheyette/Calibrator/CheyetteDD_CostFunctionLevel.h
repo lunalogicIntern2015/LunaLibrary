@@ -25,7 +25,7 @@ public:
 	CoTerminalSwaptionVol_CONSTPTR	getCoTerminalSwaptionVol_PTR() const{return coTerminalSwaptionVol_PTR_ ;}
 
 	//m fixé, on fait varier sigma
-	virtual Disposable<Array> values(const Array& param_sigma1D) const ;
+	virtual QuantLib::Disposable<QuantLib::Array> values(const QuantLib::Array& param_sigma1D) const ;
 
 };
 

@@ -135,13 +135,13 @@ void testCalib(size_t fileNumber, size_t coterminal)
 					new CheyetteDD_CostFunctionSkew(o, coTerminalSwaptionSkew_PTR, approx, indexSwaption)) ;
 
 		std::vector<double> v_sigma(1) ; v_sigma[0] = sigma ;
-		Array sigmaInitiate = vectorToArray(v_sigma) ; 
+		QuantLib::Array sigmaInitiate = vectorToArray(v_sigma) ; 
 
 		std::vector<double> v_m(1) ; v_m[0] = m ;
-		Array mInitiate = vectorToArray(v_m) ;
+		QuantLib::Array mInitiate = vectorToArray(v_m) ;
 
-		Array calibrated_sigma(sigmaInitiate) ;
-		Array calibrated_m(mInitiate) ;
+		QuantLib::Array calibrated_sigma(sigmaInitiate) ;
+		QuantLib::Array calibrated_m(mInitiate) ;
 
 		CheyetteDD_LocalCalibrator calibrator(	o, 
 												maxIterations,  rootEpsilon,   functionEpsilon,    

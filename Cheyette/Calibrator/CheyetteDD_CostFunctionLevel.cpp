@@ -7,7 +7,7 @@
 //m fixé, on fait varier sigma
 
 //parametre array 1D
-Disposable<Array> CheyetteDD_CostFunctionLevel::values(const Array& param_sigma1D) const
+QuantLib::Disposable<QuantLib::Array> CheyetteDD_CostFunctionLevel::values(const QuantLib::Array& param_sigma1D) const
 {
 	// difference between Swaption Market Quotes and Swaption Model Values
 	double marketQuote = coTerminalSwaptionVol_PTR_->getDiagonalSwaptionVol() ;
@@ -29,7 +29,7 @@ Disposable<Array> CheyetteDD_CostFunctionLevel::values(const Array& param_sigma1
 	std::cout << "volModel : " << modelQuote << ", volQuote : " << marketQuote << std::endl ;
 	o_ << "; volModel : ;" << modelQuote << "; volQuote : ;" << marketQuote << std::endl ;
 	//array de dimension 1
-	Array res(1) ;
+	QuantLib::Array res(1) ;
 	res[0] = modelQuote - marketQuote ;	
 
 	return res ;

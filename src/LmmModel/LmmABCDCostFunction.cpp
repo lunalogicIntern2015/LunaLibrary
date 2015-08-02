@@ -17,7 +17,7 @@ void LmmABCDCostFunction::reset_CalibrationParams(const QuantLib::Array & params
 }
 
 //const Array& param_array
-Disposable<Array> LmmABCDCostFunction::values(const Array& param_array) const
+QuantLib::Disposable<QuantLib::Array> LmmABCDCostFunction::values(const QuantLib::Array& param_array) const
 {
 	// NOTE : 
 	// Costfunction::values has to compute only values, not absolute values, nor squared values
@@ -29,7 +29,7 @@ Disposable<Array> LmmABCDCostFunction::values(const Array& param_array) const
 	size_t nbSwaption = calc_nbSwaptions() ;
 
 	//! diff upperTriangleVanillaSwaptionMktQuotes_ - upperTriangleVanillaSwaptionMdlValues_
-	Array diff_cost( nbSwaption );
+	QuantLib::Array diff_cost( nbSwaption );
 	size_t vector_counter=0;
 
 	const UpperTriangularVanillaSwaptionQuotes & mkt_swaption_quote = pUpperTriangleVanillaSwaptionQuotes_->get_UpperTriangularVanillaSwaptionQuotes() ;

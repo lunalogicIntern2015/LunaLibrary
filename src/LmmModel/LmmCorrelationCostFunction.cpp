@@ -18,7 +18,7 @@ void LmmCorrelationCostFunction::reset_CalibrationParams(const QuantLib::Array &
 }
 
 //const Array& param_array
-Disposable<Array> LmmCorrelationCostFunction::values(const Array& param_array) const
+QuantLib::Disposable<QuantLib::Array> LmmCorrelationCostFunction::values(const QuantLib::Array& param_array) const
 {
 	// NOTE : 
 	// Costfunction::values has to compute only values, not absolute values, nor squared values
@@ -29,7 +29,7 @@ Disposable<Array> LmmCorrelationCostFunction::values(const Array& param_array) c
 
 	size_t nbSwaption = calc_nbSwaptions();
 
-	Array diff_cost( nbSwaption);
+	QuantLib::Array diff_cost( nbSwaption);
 	size_t vector_counter=0;	
 	size_t swaption_matrix_size = upperTriangleVanillaSwaptionMdlValues_.size1();
 	const UpperTriangularVanillaSwaptionQuotes & mkt_swaption_quote = pUpperTriangleVanillaSwaptionQuotes_->get_UpperTriangularVanillaSwaptionQuotes() ;

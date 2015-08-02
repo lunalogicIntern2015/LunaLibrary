@@ -23,12 +23,11 @@
 
 
 
-using namespace QuantLib;
 
 const double PI = boost::math::constants::pi<double>(); 
 
 //! construct the matrix from Rebonato Angle
-RebonatoAngle::RebonatoAngle(size_t matrixSize, size_t rank, const Array& angles) // Angle -> BMatrix, correlMatrix
+RebonatoAngle::RebonatoAngle(size_t matrixSize, size_t rank, const QuantLib::Array& angles) // Angle -> BMatrix, correlMatrix
 	: matrixSize_(matrixSize), rank_(rank), angles_(angles), BMatrix_(matrixSize, rank)
 {
 	if(!checkAngle(angles))
@@ -39,7 +38,7 @@ RebonatoAngle::RebonatoAngle(size_t matrixSize, size_t rank, const Array& angles
 }
 
 //! construct the matrix from Rebonato Angle
-RebonatoAngle::RebonatoAngle(const Matrix& BMatrix) // BMatrix -> Angle, correlMatrix
+RebonatoAngle::RebonatoAngle(const QuantLib::Matrix& BMatrix) // BMatrix -> Angle, correlMatrix
 	: matrixSize_(BMatrix.rows()), rank_(BMatrix.columns()), angles_((rank_-1) * matrixSize_, 0.0), BMatrix_(BMatrix)
 {
 	if(matrixSize_< rank_ || rank_ <2)
@@ -53,7 +52,7 @@ RebonatoAngle::RebonatoAngle(const Matrix& BMatrix) // BMatrix -> Angle, correlM
 
 
 //! given the originalCorrelMatrix then find the nearest approximation RebonatoAngle
-RebonatoAngle::RebonatoAngle(const Matrix& originalCorrelMatrix, size_t reducedRank)
+RebonatoAngle::RebonatoAngle(const QuantLib::Matrix& originalCorrelMatrix, size_t reducedRank)
 	: matrixSize_(originalCorrelMatrix.rows())
 	, rank_(reducedRank)
 	, angles_((rank_-1) * matrixSize_, 0.0)
@@ -80,7 +79,7 @@ RebonatoAngle::RebonatoAngle(const Matrix& originalCorrelMatrix, size_t reducedR
 	correlMatrix_ = BMatrix_*transpose(BMatrix_);
 }
 
-void RebonatoAngle::solveTheNearestCorrelProblem(const Matrix& target)
+void RebonatoAngle::solveTheNearestCorrelProblem(const QuantLib::Matrix& target)
 {
 	//! test the dim of target matrix
 	if(target.rows()!=matrixSize_ || target.columns()!=matrixSize_ )
@@ -90,29 +89,29 @@ void RebonatoAngle::solveTheNearestCorrelProblem(const Matrix& target)
 	//! angles_: first guess
 
 	//! To creat the optimization problem and then to solve it ... 
-	Size maxIterations = 1000;
-	Size minStatIterations = 500;
-	Real rootEpsilon =1e-8;
-	Real functionEpsilon =1e-9;
-	Real gradientNormEpsilon =1e-5;
+	size_t maxIterations = 1000;
+	size_t minStatIterations = 500;
+	QuantLib::Real rootEpsilon =1e-8;
+	QuantLib::Real functionEpsilon =1e-9;
+	QuantLib::Real gradientNormEpsilon =1e-5;
 
-	EndCriteria myEndCrit ( maxIterations ,
+	QuantLib::EndCriteria myEndCrit ( maxIterations ,
 		minStatIterations ,
 		rootEpsilon ,
 		functionEpsilon ,
 		gradientNormEpsilon );
-	boost::function<Disposable<Matrix>(const Array&, size_t, size_t)> f = QuantLib::triangularAnglesParametrization;
+	boost::function<QuantLib::Disposable<QuantLib::Matrix>(const QuantLib::Array&, size_t, size_t)> f = QuantLib::triangularAnglesParametrization;
 	RebonatoAngle::FrobeniusCostFunctionYY myFunc(target,
 		RebonatoAngle::triangularAnglesParametrizationYY,// QuantLib::triangularAnglesParametrization,
 		matrixSize_,
 		rank_);
 
-	NoConstraint constraint ;
-	Problem myProb ( myFunc , constraint , angles_);
+	QuantLib::NoConstraint constraint ;
+	QuantLib::Problem myProb ( myFunc , constraint , angles_);
 	//ConjugateGradient solver ; // give L2 norm, optimization result will be quite similar to PCA!
-	LevenbergMarquardt solver ;
+	QuantLib::LevenbergMarquardt solver ;
 
-	EndCriteria :: Type solvedCrit1 = solver . minimize ( myProb , myEndCrit ); // angles_ update at each iteration ... 
+	QuantLib::EndCriteria :: Type solvedCrit1 = solver . minimize ( myProb , myEndCrit ); // angles_ update at each iteration ... 
 	//YYYYYYYYYYYYYYYYYYY
 	angles_ = myProb . currentValue ();
 
@@ -138,7 +137,7 @@ void RebonatoAngle::solveTheNearestCorrelProblem(const Matrix& target)
 //}
 
 
-void RebonatoAngle::calculateBMatrixFromAngle(const Array& angles)
+void RebonatoAngle::calculateBMatrixFromAngle(const QuantLib::Array& angles)
 {
 	// what if rank == 1?
 	//QL_REQUIRE((rank_-1) * (matrixSize_ ) == angles.size(),
@@ -148,7 +147,7 @@ void RebonatoAngle::calculateBMatrixFromAngle(const Array& angles)
 
 	size_t k = 0; //angles index
 	for (size_t i=0; i<matrixSize_; ++i) {
-		Real sinProduct = 1.0;
+		QuantLib::Real sinProduct = 1.0;
 		for (size_t j=0; j<rank_-1; ++j) {
 			BMatrix_[i][j] = std::cos(angles[k]);
 			BMatrix_[i][j] *= sinProduct;
@@ -159,16 +158,16 @@ void RebonatoAngle::calculateBMatrixFromAngle(const Array& angles)
 	}
 }
 
-void RebonatoAngle::calculateAngleFromBMatrix(const Matrix& BMatrix)
+void RebonatoAngle::calculateAngleFromBMatrix(const QuantLib::Matrix& BMatrix)
 {
 	if(BMatrix.rows() != matrixSize_ || BMatrix.columns() != rank_)
 		throw("Error matrix size dismatch.");
 
-	Matrix m(BMatrix);
+	QuantLib::Matrix m(BMatrix);
 	size_t k = 0; // angle index
 	for(size_t i=0; i<matrixSize_; ++i)    
 	{
-		Real sinProduct = 1.0;
+		QuantLib::Real sinProduct = 1.0;
 		for(size_t j=0; j<rank_-1; ++j)    
 		{
 			m[i][j] /= sinProduct;
@@ -191,7 +190,7 @@ bool RebonatoAngle::isSpecialAnlge(size_t index_i) const
 	return isSpecialAnlge(index_i, rank_);
 }
 
-bool RebonatoAngle::checkAngle(const Array& angles) const
+bool RebonatoAngle::checkAngle(const QuantLib::Array& angles) const
 {
 	double PI = boost::math::constants::pi<double>();
 	for(size_t i=0; i<angles.size(); ++i)
@@ -308,25 +307,25 @@ QuantLib::Disposable<QuantLib::Matrix> RebonatoAngle::triangularAnglesParametriz
 
 
 //! used by Conjugate gradiant
-Real RebonatoAngle::FrobeniusCostFunctionYY::value(const Array& x) const {
-	Array temp = values(x);
+QuantLib::Real RebonatoAngle::FrobeniusCostFunctionYY::value(const QuantLib::Array& x) const {
+	QuantLib::Array temp = values(x);
 	double error = DotProduct(temp, temp);
 	std::cout << error << std::endl;
 	return error;
 }
 
 //! used by Levenberg Marquart
-Disposable<Array> RebonatoAngle::FrobeniusCostFunctionYY::values(const Array& x) const 
+QuantLib::Disposable<QuantLib::Array> RebonatoAngle::FrobeniusCostFunctionYY::values(const QuantLib::Array& x) const 
 {
 	//! because the matrix is symetric, only need to do half of them :) 
-	Array result((target_.rows()*(target_.columns()-1))/2);
-	Matrix pseudoRoot = f_(x, matrixSize_, rank_);
-	Matrix correl = pseudoRoot * transpose(pseudoRoot);
-	Matrix differences = correl - target_;
-	Size k = 0;
+	QuantLib::Array result((target_.rows()*(target_.columns()-1))/2);
+	QuantLib::Matrix pseudoRoot = f_(x, matrixSize_, rank_);
+	QuantLib::Matrix correl = pseudoRoot * transpose(pseudoRoot);
+	QuantLib::Matrix differences = correl - target_;
+	size_t k = 0;
 	// then we store the elementwise differences in a vector.
-	for (Size i=0; i<target_.rows(); ++i) {
-		for (Size j=0; j<i; ++j)
+	for (size_t i=0; i<target_.rows(); ++i) {
+		for (size_t j=0; j<i; ++j)
 		{			
 			//double weight = (std::abs((double)i-(double)j)+1);
 			//if(i-j<20 || j-i<20)

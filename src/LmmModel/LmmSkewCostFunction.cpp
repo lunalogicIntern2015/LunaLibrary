@@ -39,11 +39,11 @@ Shifted_HGVolatilityParam_PTR LmmSkewCostFunction::get_Shifted_HGVolatilityParam
 	return buffer_Shifted_HGVolatilityParam_; 
 }
 
-Real LmmSkewCostFunction::value(const Array & x) const
+QuantLib::Real LmmSkewCostFunction::value(const QuantLib::Array & x) const
 {
-	Array diff_cost = values(x);
+	QuantLib::Array diff_cost = values(x);
 
-	Real res = 0;
+	QuantLib::Real res = 0;
 	for (size_t i = 0; i < diff_cost.size(); ++i)
 	{
 		res += diff_cost[i]*diff_cost[i];
@@ -54,7 +54,7 @@ Real LmmSkewCostFunction::value(const Array & x) const
 }
 
 //const Array& param_array
-Disposable<Array> LmmSkewCostFunction::values(const Array& param_array) const
+QuantLib::Disposable<QuantLib::Array> LmmSkewCostFunction::values(const QuantLib::Array& param_array) const
 {
 	buffer_Shifted_HGVolatilityParam_->reset_Shift_FromArray( param_array );
 	pLmmVanillaSwaptionApproxPricer_Rebonato_->update_VolatilityParam( buffer_Shifted_HGVolatilityParam_ );
@@ -62,7 +62,7 @@ Disposable<Array> LmmSkewCostFunction::values(const Array& param_array) const
 	size_t nbSwaption = calc_nbSwaptions() ;
 
 	//! diff upperTriangleVanillaSwaptionMktQuotes_ - mdl_swaption_skew
-	Array diff_cost( nbSwaption );
+	QuantLib::Array diff_cost( nbSwaption );
 	size_t vector_counter=0;
 	update_SwaptionMdlSkewValues();
 	

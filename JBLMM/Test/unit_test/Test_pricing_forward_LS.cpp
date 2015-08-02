@@ -40,6 +40,7 @@
 
 void Test_pricing_forward_LS()
 {
+	/*
 	LMM::Index  indexStart = 2;		//1Y
 	LMM::Index  indexEnd   = 6;		//4Y
 	Tenor	floatingLegTenorType = Tenor::_6M;
@@ -194,4 +195,5 @@ void Test_pricing_forward_LS()
 
 	out<< "time : ;" << timeInSeconds << endl;
 	cout<< "time : " << timeInSeconds << endl;
+	*/
 }

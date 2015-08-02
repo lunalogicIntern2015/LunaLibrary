@@ -1,5 +1,6 @@
 #include <JBLMM/Instrument/BermudanVanillaSwaption.h>
 #include <LMM/helper/LMMTenorStructure.h>
+#include <cstddef>
 
 BermudanVanillaSwaption::BermudanVanillaSwaption(VanillaSwap_CONSTPTR vanillaSwap, std::vector<LMM::Index>& exerciseTimes)
 	:
@@ -50,8 +51,8 @@ bool BermudanVanillaSwaption::checkIfExerciseTime()
 Instrument_CONSTPTR BermudanVanillaSwaption::getSubInstrument(const LMM::Index startIndex, const LMM::Index endIndex)const
 {
 
-	if(startIndex==endIndex)
-		return nullptr;
+	//if(startIndex==endIndex)
+	//	return nullptr;
 
 	VanillaSwap_CONSTPTR vanillaswap_PTR = getVanillaSwap_PTR();
 	assert(startIndex<endIndex);

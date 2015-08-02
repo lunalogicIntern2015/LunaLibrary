@@ -88,6 +88,42 @@
     <Filter Include="LMM_helper\Element">
       <UniqueIdentifier>{962da269-82ae-449c-8de3-0503196e9273}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Cheyette">
+      <UniqueIdentifier>{eef2efba-b664-4bd7-97b0-f1c64c11a2ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PDE">
+      <UniqueIdentifier>{7d93a498-24c8-4dde-b096-7eadd833e1a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PDE\BoundaryCondition">
+      <UniqueIdentifier>{6f028517-abef-4e24-8efe-2455f4873377}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PDE\Scheme">
+      <UniqueIdentifier>{70120605-8c49-44bc-99bf-f8c0976de9de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PDE\Test">
+      <UniqueIdentifier>{47fd3c69-de82-448e-8aa4-eb5fd2c691f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PDE\PDE_Model">
+      <UniqueIdentifier>{31090975-26e7-4e70-8c5b-a885a6a9d800}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PDE\Solver">
+      <UniqueIdentifier>{1f201b5a-7ce2-49be-8350-60bd3945d148}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PDE\Discretization">
+      <UniqueIdentifier>{201ee692-f98e-4e39-978a-75ff42fb93da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PDE\PDE_Pricer">
+      <UniqueIdentifier>{ba6e2824-5014-4aad-b66f-cd4a2f51956d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PDE\Others">
+      <UniqueIdentifier>{a2643663-7a79-46d3-8d2a-c44dfce76398}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Cheyette\PDE_Cheyette_Pricer">
+      <UniqueIdentifier>{41e3c5c6-f6a7-4d10-9e41-695a67c4d56f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PDE\Matrix">
+      <UniqueIdentifier>{fd1067f3-c43c-4c83-bb31-4a3db49aef8b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LMM\RNGenerator\McGenerator.h">
@@ -381,12 +417,7 @@
     <ClInclude Include="JBLMM\Element\TargetCoupon.h">
       <Filter>LMM_helper\Element</Filter>
     </ClInclude>
-    <ClInclude Include="Cheyette\CheyetteModel\CheyetteDD_Model.h" />
-    <ClInclude Include="Cheyette\CheyetteModel\CheyetteModel.h" />
     <ClInclude Include="Cheyette\CheyetteModel\CourbeInput.h" />
-    <ClInclude Include="Cheyette\Pricer\CheyetteDD_VanillaSwaptionApproxPricer.h" />
-    <ClInclude Include="Cheyette\Pricer\MC_Cheyette.h" />
-    <ClInclude Include="Cheyette\Pricer\MC_CheyetteDD_VanillaSwapPricer.h" />
     <ClInclude Include="Cheyette\unit_test\Test_CheyetteDD_Model.h" />
     <ClInclude Include="Cheyette\unit_test\TestApproxDD.h" />
     <ClInclude Include="Cheyette\unit_test\TestFonction.h" />
@@ -394,8 +425,6 @@
     <ClInclude Include="Cheyette\unit_test\TestMC.h" />
     <ClInclude Include="Cheyette\Fonction.h" />
     <ClInclude Include="Cheyette\InverseFunction.h" />
-    <ClInclude Include="Cheyette\Pricer\MC_CheyetteDD_ZCPricer.h" />
-    <ClInclude Include="Cheyette\Pricer\MC_CheyetteDD_VanillaSwaptionPricer.h" />
     <ClInclude Include="JBLMM\Test\JBTests.h" />
     <ClInclude Include="JBLMM\Element\VanillaSwapRate.h" />
     <ClInclude Include="LMM\calibration\ATMSwaptionMarketData.h" />
@@ -445,7 +474,162 @@
     <ClInclude Include="JBLMM\Longstaff_Schwartz\LS_BackwardAlgo.h" />
     <ClInclude Include="JBLMM\Pricer\JB_McLmmVanillaSwapPricer.h" />
     <ClInclude Include="JBLMM\Longstaff_Schwartz\Regression\Regression_LS.h" />
-    <ClInclude Include="Cheyette\CheyetteModel\CheyetteQuad_Model.h" />
+    <ClInclude Include="Cheyette\CheyetteModel\CheyetteDD_Model.h">
+      <Filter>Cheyette</Filter>
+    </ClInclude>
+    <ClInclude Include="Cheyette\Pricer\CheyetteDD_VanillaSwaptionApproxPricer.h">
+      <Filter>Cheyette</Filter>
+    </ClInclude>
+    <ClInclude Include="Cheyette\CheyetteModel\CheyetteQuad_Model.h">
+      <Filter>Cheyette</Filter>
+    </ClInclude>
+    <ClInclude Include="Cheyette\Pricer\MC_Cheyette.h">
+      <Filter>Cheyette</Filter>
+    </ClInclude>
+    <ClInclude Include="Cheyette\Pricer\MC_CheyetteDD_VanillaSwapPricer.h">
+      <Filter>Cheyette</Filter>
+    </ClInclude>
+    <ClInclude Include="Cheyette\Pricer\MC_CheyetteDD_VanillaSwaptionPricer.h">
+      <Filter>Cheyette</Filter>
+    </ClInclude>
+    <ClInclude Include="Cheyette\Pricer\MC_CheyetteDD_ZCPricer.h">
+      <Filter>Cheyette</Filter>
+    </ClInclude>
+    <ClInclude Include="PDE\BoundaryCondition_D2.h">
+      <Filter>PDE\BoundaryCondition</Filter>
+    </ClInclude>
+    <ClInclude Include="PDE\BoundaryCondition_D2_density.h">
+      <Filter>PDE\BoundaryCondition</Filter>
+    </ClInclude>
+    <ClInclude Include="PDE\BoundaryCondition_Heston_Put.h">
+      <Filter>PDE\BoundaryCondition</Filter>
+    </ClInclude>
+    <ClInclude Include="PDE\Scheme_ADI.h">
+      <Filter>PDE\Scheme</Filter>
+    </ClInclude>
+    <ClInclude Include="PDE\Scheme_CS.h">
+      <Filter>PDE\Scheme</Filter>
+    </ClInclude>
+    <ClInclude Include="PDE\Scheme_Douglas.h">
+      <Filter>PDE\Scheme</Filter>
+    </ClInclude>
+    <ClInclude Include="PDE\Scheme_HV.h">
+      <Filter>PDE\Scheme</Filter>
+    </ClInclude>
+    <ClInclude Include="PDE\Scheme_MCS.h">
+      <Filter>PDE\Scheme</Filter>
+    </ClInclude>
+    <ClInclude Include="PDE\Scheme_Yanenko.h">
+      <Filter>PDE\Scheme</Filter>
+    </ClInclude>
+    <ClInclude Include="PDE\Space_BoundaryCondition.h">
+      <Filter>PDE\BoundaryCondition</Filter>
+    </ClInclude>
+    <ClInclude Include="PDE\Space_BoundaryCondition_Diriclet.h">
+      <Filter>PDE\BoundaryCondition</Filter>
+    </ClInclude>
+    <ClInclude Include="PDE\Space_BoundaryCondition_Neumann.h">
+      <Filter>PDE\BoundaryCondition</Filter>
+    </ClInclude>
+    <ClInclude Include="PDE\Space_BoundaryCondition_PDE.h">
+      <Filter>PDE\BoundaryCondition</Filter>
+    </ClInclude>
+    <ClInclude Include="PDE\Test_PDE.h">
+      <Filter>PDE\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="PDE\PDE_2D_Model.h">
+      <Filter>PDE\PDE_Model</Filter>
+    </ClInclude>
+    <ClInclude Include="PDE\PDE_Model_Heston.h">
+      <Filter>PDE\PDE_Model</Filter>
+    </ClInclude>
+    <ClInclude Include="PDE\PDE_Model_SABR.h">
+      <Filter>PDE\PDE_Model</Filter>
+    </ClInclude>
+    <ClInclude Include="PDE\PDE_Model_SLV_SABR.h">
+      <Filter>PDE\PDE_Model</Filter>
+    </ClInclude>
+    <ClInclude Include="PDE\Linear_Equation_Solver.h">
+      <Filter>PDE\Solver</Filter>
+    </ClInclude>
+    <ClInclude Include="PDE\PDE_ADI_Solver.h">
+      <Filter>PDE\Solver</Filter>
+    </ClInclude>
+    <ClInclude Include="PDE\Discretization.h">
+      <Filter>PDE\Discretization</Filter>
+    </ClInclude>
+    <ClInclude Include="PDE\Discretization_D2.h">
+      <Filter>PDE\Discretization</Filter>
+    </ClInclude>
+    <ClInclude Include="PDE\Discretization_Simple.h">
+      <Filter>PDE\Discretization</Filter>
+    </ClInclude>
+    <ClInclude Include="PDE\Range.h">
+      <Filter>PDE\Discretization</Filter>
+    </ClInclude>
+    <ClInclude Include="PDE\PDE_2D_Pricer.h">
+      <Filter>PDE\PDE_Pricer</Filter>
+    </ClInclude>
+    <ClInclude Include="PDE\FFT.h">
+      <Filter>PDE\Others</Filter>
+    </ClInclude>
+    <ClInclude Include="PDE\Heston_analytical_pricer.h">
+      <Filter>PDE\Others</Filter>
+    </ClInclude>
+    <ClInclude Include="PDE\Interpolator.h">
+      <Filter>PDE\Others</Filter>
+    </ClInclude>
+    <ClInclude Include="PDE\Params.h">
+      <Filter>PDE\Others</Filter>
+    </ClInclude>
+    <ClInclude Include="PDE\Payoff.h">
+      <Filter>PDE\Others</Filter>
+    </ClInclude>
+    <ClInclude Include="PDE\Quadrature.h">
+      <Filter>PDE\Others</Filter>
+    </ClInclude>
+    <ClInclude Include="PDE\Term_Structure.h">
+      <Filter>PDE\Others</Filter>
+    </ClInclude>
+    <ClInclude Include="PDE\TimeInitial_BoundaryCondition.h">
+      <Filter>PDE\Others</Filter>
+    </ClInclude>
+    <ClInclude Include="PDE\useful_function.h">
+      <Filter>PDE\Others</Filter>
+    </ClInclude>
+    <ClInclude Include="Cheyette\Pricer\PDE_Cheyette_Model.h">
+      <Filter>Cheyette\PDE_Cheyette_Pricer</Filter>
+    </ClInclude>
+    <ClInclude Include="Cheyette\Pricer\PDE_Cheyette_Pricer.h">
+      <Filter>Cheyette\PDE_Cheyette_Pricer</Filter>
+    </ClInclude>
+    <ClInclude Include="Cheyette\Pricer\PDE_CheyetteDD_GenericSwapPricer.h">
+      <Filter>Cheyette\PDE_Cheyette_Pricer</Filter>
+    </ClInclude>
+    <ClInclude Include="Cheyette\Pricer\PDE_CheyetteDD_VanillaSwapPricer.h">
+      <Filter>Cheyette\PDE_Cheyette_Pricer</Filter>
+    </ClInclude>
+    <ClInclude Include="PDE\HestonModel.h">
+      <Filter>PDE\PDE_Model</Filter>
+    </ClInclude>
+    <ClInclude Include="PDE\HestonModelYuan.h">
+      <Filter>PDE\PDE_Model</Filter>
+    </ClInclude>
+    <ClInclude Include="PDE\Model.h">
+      <Filter>PDE\PDE_Model</Filter>
+    </ClInclude>
+    <ClInclude Include="PDE\Matrix\Matrix.h">
+      <Filter>PDE\Matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="PDE\Matrix\svd.h">
+      <Filter>PDE\Matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="PDE\Matrix\svdcmp_.h">
+      <Filter>PDE\Matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="PDE\Matrix\TridiagonalMatrix.h">
+      <Filter>PDE\Matrix</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\pricer\LmmTarnPricer.cpp">
@@ -782,18 +966,12 @@
     <ClCompile Include="JBLMM\Test\Test_McGeneticTargetSwapPricing.cpp">
       <Filter>Test\Test_JL</Filter>
     </ClCompile>
-    <ClCompile Include="Cheyette\CheyetteModel\CheyetteDD_Model.cpp" />
-    <ClCompile Include="Cheyette\Pricer\CheyetteDD_VanillaSwaptionApproxPricer.cpp" />
-    <ClCompile Include="Cheyette\Pricer\MC_Cheyette.cpp" />
-    <ClCompile Include="Cheyette\Pricer\MC_CheyetteDD_VanillaSwapPricer.cpp" />
     <ClCompile Include="Cheyette\unit_test\Test_CheyetteDD_Model.cpp" />
     <ClCompile Include="Cheyette\unit_test\TestApproxDD.cpp" />
     <ClCompile Include="Cheyette\unit_test\TestFonction.cpp" />
     <ClCompile Include="Cheyette\unit_test\TestIntegrator1D_2D.cpp" />
     <ClCompile Include="Cheyette\unit_test\TestMC.cpp" />
     <ClCompile Include="Cheyette\InverseFunction.cpp" />
-    <ClCompile Include="Cheyette\Pricer\MC_CheyetteDD_ZCPricer.cpp" />
-    <ClCompile Include="Cheyette\Pricer\MC_CheyetteDD_VanillaSwaptionPricer.cpp" />
     <ClCompile Include="JBLMM\Test\Test_GeneticTargetSwapOneTrajectory.cpp" />
     <ClCompile Include="Cheyette\CheyetteModel\CourbeInput.cpp" />
     <ClCompile Include="JBLMM\Element\VanillaSwapRate.cpp" />
@@ -855,10 +1033,139 @@
     <ClCompile Include="JBLMM\Test\Test_oneset_basis_pricing.cpp" />
     <ClCompile Include="JBLMM\Test\unit_test\Test_evaluate_basis.cpp" />
     <ClCompile Include="JBLMM\Test\Test_10_basis.cpp" />
-    <ClCompile Include="Cheyette\CheyetteModel\CheyetteQuad_Model.cpp" />
-    <ClCompile Include="Cheyette\Pricer\CheyetteQuad_VanillaSwaptionApproxPricer.cpp" />
+    <ClCompile Include="Cheyette\CheyetteModel\CheyetteDD_Model.cpp">
+      <Filter>Cheyette</Filter>
+    </ClCompile>
+    <ClCompile Include="Cheyette\Pricer\CheyetteDD_VanillaSwaptionApproxPricer.cpp">
+      <Filter>Cheyette</Filter>
+    </ClCompile>
+    <ClCompile Include="Cheyette\CheyetteModel\CheyetteQuad_Model.cpp">
+      <Filter>Cheyette</Filter>
+    </ClCompile>
+    <ClCompile Include="Cheyette\Pricer\CheyetteQuad_VanillaSwaptionApproxPricer.cpp">
+      <Filter>Cheyette</Filter>
+    </ClCompile>
+    <ClCompile Include="Cheyette\Pricer\MC_Cheyette.cpp">
+      <Filter>Cheyette</Filter>
+    </ClCompile>
+    <ClCompile Include="Cheyette\Pricer\MC_CheyetteDD_VanillaSwapPricer.cpp">
+      <Filter>Cheyette</Filter>
+    </ClCompile>
+    <ClCompile Include="Cheyette\Pricer\MC_CheyetteDD_VanillaSwaptionPricer.cpp">
+      <Filter>Cheyette</Filter>
+    </ClCompile>
+    <ClCompile Include="Cheyette\Pricer\MC_CheyetteDD_ZCPricer.cpp">
+      <Filter>Cheyette</Filter>
+    </ClCompile>
+    <ClCompile Include="PDE\Scheme_ADI.cpp">
+      <Filter>PDE\Scheme</Filter>
+    </ClCompile>
+    <ClCompile Include="PDE\Scheme_CS.cpp">
+      <Filter>PDE\Scheme</Filter>
+    </ClCompile>
+    <ClCompile Include="PDE\Scheme_Douglas.cpp">
+      <Filter>PDE\Scheme</Filter>
+    </ClCompile>
+    <ClCompile Include="PDE\Scheme_HV.cpp">
+      <Filter>PDE\Scheme</Filter>
+    </ClCompile>
+    <ClCompile Include="PDE\Scheme_MCS.cpp">
+      <Filter>PDE\Scheme</Filter>
+    </ClCompile>
+    <ClCompile Include="PDE\Scheme_Yanenko.cpp">
+      <Filter>PDE\Scheme</Filter>
+    </ClCompile>
+    <ClCompile Include="PDE\Space_BoundaryCondition_Diriclet.cpp">
+      <Filter>PDE\BoundaryCondition</Filter>
+    </ClCompile>
+    <ClCompile Include="PDE\Space_BoundaryCondition_Neumann.cpp">
+      <Filter>PDE\BoundaryCondition</Filter>
+    </ClCompile>
+    <ClCompile Include="PDE\Space_BoundaryCondition_PDE.cpp">
+      <Filter>PDE\BoundaryCondition</Filter>
+    </ClCompile>
+    <ClCompile Include="PDE\Test_FFT.cpp">
+      <Filter>PDE\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="PDE\Test_interpolator.cpp">
+      <Filter>PDE\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="PDE\Test_PDE.cpp">
+      <Filter>PDE\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="PDE\Test_PDE_SABR.cpp">
+      <Filter>PDE\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="PDE\Test_PDE_SLV.cpp">
+      <Filter>PDE\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="PDE\Linear_Equation_Solver.cpp">
+      <Filter>PDE\Solver</Filter>
+    </ClCompile>
+    <ClCompile Include="PDE\PDE_ADI_Solver.cpp">
+      <Filter>PDE\Solver</Filter>
+    </ClCompile>
+    <ClCompile Include="PDE\Discretization.cpp">
+      <Filter>PDE\Discretization</Filter>
+    </ClCompile>
+    <ClCompile Include="PDE\Discretization_Simple.cpp">
+      <Filter>PDE\Discretization</Filter>
+    </ClCompile>
+    <ClCompile Include="PDE\Range.cpp">
+      <Filter>PDE\Discretization</Filter>
+    </ClCompile>
+    <ClCompile Include="PDE\FFT.cpp">
+      <Filter>PDE\Others</Filter>
+    </ClCompile>
+    <ClCompile Include="PDE\GaussLegendre.cpp">
+      <Filter>PDE\Others</Filter>
+    </ClCompile>
+    <ClCompile Include="PDE\Heston_analytical_pricer.cpp">
+      <Filter>PDE\Others</Filter>
+    </ClCompile>
+    <ClCompile Include="PDE\Interpolator.cpp">
+      <Filter>PDE\Others</Filter>
+    </ClCompile>
+    <ClCompile Include="PDE\useful_function.cpp">
+      <Filter>PDE\Others</Filter>
+    </ClCompile>
+    <ClCompile Include="Cheyette\Pricer\PDE_CheyetteDD_GenericSwapPricer.cpp">
+      <Filter>Cheyette\PDE_Cheyette_Pricer</Filter>
+    </ClCompile>
+    <ClCompile Include="Cheyette\Pricer\PDE_CheyetteDD_VanillaSwapPricer.cpp">
+      <Filter>Cheyette\PDE_Cheyette_Pricer</Filter>
+    </ClCompile>
+    <ClCompile Include="PDE\Matrix\Matrix.cpp">
+      <Filter>PDE\Matrix</Filter>
+    </ClCompile>
+    <ClCompile Include="PDE\Matrix\svd.cpp">
+      <Filter>PDE\Matrix</Filter>
+    </ClCompile>
+    <ClCompile Include="PDE\Matrix\TridiagonalMatrix.cpp">
+      <Filter>PDE\Matrix</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="TODO" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="PDE\TODO.txt">
+      <Filter>PDE</Filter>
+    </Text>
+    <Text Include="PDE\TODO (2).txt">
+      <Filter>PDE</Filter>
+    </Text>
+    <Text Include="PDE\TO_DO.txt">
+      <Filter>PDE</Filter>
+    </Text>
+    <Text Include="PDE\C++.txt">
+      <Filter>PDE</Filter>
+    </Text>
+    <Text Include="PDE\BC_note.txt">
+      <Filter>PDE\BoundaryCondition</Filter>
+    </Text>
+    <Text Include="PDE\Boundary_Condition_note.txt">
+      <Filter>PDE\BoundaryCondition</Filter>
+    </Text>
   </ItemGroup>
 </Project>

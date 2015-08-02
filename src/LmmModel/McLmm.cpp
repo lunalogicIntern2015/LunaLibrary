@@ -48,13 +48,13 @@ McLmm::McLmm(Lmm_PTR lmm,
 
 //! \int_{T_{k-1}}^{T_k} sigma_i(t)  dW_t,   indexTime = k
 //! we suppose the correlation is constant: \int_{T_{k-1}}^{T_k} ||sigma_i(t)||^2 dt * <B,G>, where  G is nbFactor indepedent Gaussian.
-Real McLmm::computeIntSto(size_t indexTime, 
+QuantLib::Real McLmm::computeIntSto(size_t indexTime, 
 						  size_t indexLibor, 
 						  const std::vector<double>& G)  const // nbFactor D, independent Gaussian
 {
-	Real varTmp = sqrt(lmm_->get_covarianceTensor(indexTime, indexLibor, indexLibor));  
+	QuantLib::Real varTmp = sqrt(lmm_->get_covarianceTensor(indexTime, indexLibor, indexLibor));  
 
-	Real gaussian = 0;  // 1D correlated gaussian
+	QuantLib::Real gaussian = 0;  // 1D correlated gaussian
 	for (size_t k = 0; k < nbFactor_; ++k) 
 		gaussian += B_[indexLibor][k] * G[k];
 

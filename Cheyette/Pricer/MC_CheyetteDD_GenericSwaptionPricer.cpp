@@ -3,13 +3,13 @@
 
 
 //simulation
-std::vector<double> MC_CheyetteDD_GenericSwaptionPricer::price(GeneticSwaption_CONSTPTR geneticSwaption, size_t nbSimulation) const
+std::vector<double> MC_CheyetteDD_GenericSwaptionPricer::price(GenericSwaption_CONSTPTR genericSwaption, size_t nbSimulation) const
 {
 	std::vector<double> res(3) ;
 	double somme_xi	= 0. ;
 	double somme_xi2	= 0. ;
 	size_t indexValuationDate = 0 ;
-	GeneticSwap_CONSTPTR genericSwap = geneticSwaption->getGeneticSwap() ;
+	GenericSwap_CONSTPTR genericSwap = genericSwaption->getGenericSwap() ;
 
 	//MC
 	for(size_t itrSimulation=0; itrSimulation<nbSimulation; ++itrSimulation)
@@ -44,7 +44,7 @@ std::vector<double> MC_CheyetteDD_GenericSwaptionPricer::price(GeneticSwaption_C
 }
 
 
-void MC_CheyetteDD_GenericSwaptionPricer::print(GeneticSwaption_CONSTPTR genericSwaption, 
+void MC_CheyetteDD_GenericSwaptionPricer::print(GenericSwaption_CONSTPTR genericSwaption, 
 												std::vector<size_t> nbSimus, 
 												std::vector<double> prixMC,
 												std::vector<double> IC_inf,
@@ -75,7 +75,7 @@ void MC_CheyetteDD_GenericSwaptionPricer::print(GeneticSwaption_CONSTPTR generic
 	o	<<	endl;
 	cheyetteDD_Model_->print(o) ;
 
-	genericSwaption->getGeneticSwap()->print(o) ;
+	genericSwaption->getGenericSwap()->print(o) ;
 
 	for (size_t i = 0 ; i < nbSimus.size() ; ++i)
 	{
@@ -90,7 +90,7 @@ void MC_CheyetteDD_GenericSwaptionPricer::print(GeneticSwaption_CONSTPTR generic
 void MC_CheyetteDD_GenericSwaptionPricer::printMC_vs_approx(double approx, double b_barre, 
 															double annuityA0, double swapRateS0, double volBlack, 
 															double a, double b,
-															GeneticSwaption_CONSTPTR genericSwaption, 
+															GenericSwaption_CONSTPTR genericSwaption, 
 															std::vector<size_t> nbSimus, 
 															std::vector<double> prixMC,
 															std::vector<double> IC_inf,
@@ -123,7 +123,7 @@ void MC_CheyetteDD_GenericSwaptionPricer::printMC_vs_approx(double approx, doubl
 
 	cheyetteDD_Model_->get_courbeInput_PTR()->print(o) ;
 
-	genericSwaption->getGeneticSwap()->print(o) ;
+	genericSwaption->getGenericSwap()->print(o) ;
 
 	o	<<	endl;
 	o	<< "Prix approximation : ; " << approx << endl ;

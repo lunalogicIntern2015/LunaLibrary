@@ -24,7 +24,7 @@ public:
 	CoTerminalSwaptionSkew_CONSTPTR getCoTerminalSwaptionSkew_PTR() const {return coTerminalSwaptionSkew_PTR_ ;}
 
 	//sigma fixé, on fait varier m pour prendre en compte le skew
-	virtual Disposable<Array> values(const Array& param_m1D) const ;
+	virtual QuantLib::Disposable<QuantLib::Array> values(const QuantLib::Array& param_m1D) const ;
 
 	double volShift(double strike, double shift) const ;  //plus d'index swaption car il n'y a plus qu 'une swaption
 };
