@@ -631,56 +631,25 @@
     <ClInclude Include="PDE\Matrix\TridiagonalMatrix.h">
       <Filter>PDE\Matrix</Filter>
     </ClInclude>
+    <ClInclude Include="Cheyette\Calibrator\CheyetteBaseCalibrator.h" />
+    <ClInclude Include="Cheyette\Calibrator\CheyetteBaseCostFunction.h" />
+    <ClInclude Include="Cheyette\Calibrator\CheyetteDD_CalibrationConfig.h" />
+    <ClInclude Include="Cheyette\Calibrator\CheyetteDD_CostFunctionLevel.h" />
+    <ClInclude Include="Cheyette\Calibrator\CheyetteDD_CostFunctionSkew.h" />
+    <ClInclude Include="Cheyette\Calibrator\CheyetteDD_LocalCalibrator.h" />
+    <ClInclude Include="Cheyette\Calibrator\CoTerminalSwaptionQuotes.h" />
+    <ClInclude Include="Cheyette\Calibrator\CoTerminalSwaptionSkew.h" />
+    <ClInclude Include="Cheyette\Calibrator\CoTerminalSwaptionVol.h" />
+    <ClInclude Include="Cheyette\Calibrator\MarketData.h" />
+    <ClInclude Include="Cheyette\Calibrator\MarketDataConvertor.h" />
+    <ClInclude Include="Cheyette\Pricer\CheyetteQuad_VanillaSwaptionApproxPricer.h" />
+    <ClInclude Include="Cheyette\Pricer\MC_CheyetteDD_GenericSwapPricer.h" />
+    <ClInclude Include="Cheyette\Pricer\MC_CheyetteDD_GenericSwaptionPricer.h" />
+    <ClInclude Include="Cheyette\unit_test\TestCalibrator.h" />
+    <ClInclude Include="Cheyette\unit_test\TestMCGeneric.h" />
+    <ClInclude Include="JBLMM\Instrument\GeneticSwap.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\pricer\LmmTarnPricer.cpp">
-      <Filter>LMM_pricer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\pricer\McPricer.cpp">
-      <Filter>LMM_pricer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\pricer\StaticReplicationCMS.cpp">
-      <Filter>LMM_pricer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\instrument\Tarn.cpp">
-      <Filter>LMM_instrument</Filter>
-    </ClCompile>
-    <ClCompile Include="src\instrument\VanillaSwap.cpp">
-      <Filter>LMM_instrument</Filter>
-    </ClCompile>
-    <ClCompile Include="src\instrument\VanillaSwaption.cpp">
-      <Filter>LMM_instrument</Filter>
-    </ClCompile>
-    <ClCompile Include="src\helper\LMMTenorStructure.cpp">
-      <Filter>LMM_helper</Filter>
-    </ClCompile>
-    <ClCompile Include="src\helper\StaticReplicationFormula.cpp">
-      <Filter>LMM_helper</Filter>
-    </ClCompile>
-    <ClCompile Include="src\helper\TenorType.cpp">
-      <Filter>LMM_helper</Filter>
-    </ClCompile>
-    <ClCompile Include="src\helper\Tensor.cpp">
-      <Filter>LMM_helper</Filter>
-    </ClCompile>
-    <ClCompile Include="src\helper\TypeConverter.cpp">
-      <Filter>LMM_helper</Filter>
-    </ClCompile>
-    <ClCompile Include="src\numeric\BilinearInterpolation.cpp">
-      <Filter>LMM_numeric</Filter>
-    </ClCompile>
-    <ClCompile Include="src\numeric\Interpolation.cpp">
-      <Filter>LMM_numeric</Filter>
-    </ClCompile>
-    <ClCompile Include="src\numeric\NumericalMethods.cpp">
-      <Filter>LMM_numeric</Filter>
-    </ClCompile>
-    <ClCompile Include="src\RNGenerator\McGenerator.cpp">
-      <Filter>RNGenerator</Filter>
-    </ClCompile>
-    <ClCompile Include="src\RNGenerator\QMcGenerator.cpp">
-      <Filter>RNGenerator</Filter>
-    </ClCompile>
     <ClCompile Include="LMM\Test\Test_BlackGreek.cpp">
       <Filter>Test</Filter>
     </ClCompile>
@@ -693,68 +662,8 @@
     <ClCompile Include="LMM\Test\Test_VanillaSwaptionPricer_MCvsApprox.cpp">
       <Filter>Test</Filter>
     </ClCompile>
-    <ClCompile Include="src\pricer\McLmmVanillaSwapPricer.cpp">
-      <Filter>LMM_pricer\SwapPricer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\pricer\McLmmVanillaSwaptionPricer.cpp">
-      <Filter>LMM_pricer\SwaptionPricer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\instrument\VanillaCaplet.cpp">
-      <Filter>LMM_instrument</Filter>
-    </ClCompile>
-    <ClCompile Include="src\pricer\LmmVanillaCapletPricer.cpp">
-      <Filter>LMM_pricer\CapletPricer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\pricer\McLmmVanillaCapletPricer.cpp">
-      <Filter>LMM_pricer\CapletPricer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LmmModel\Correlation.cpp">
-      <Filter>LMM_Model\Correlation</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LmmModel\PCA.cpp">
-      <Filter>LMM_Model\Correlation</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LmmModel\McLmm.cpp">
-      <Filter>LMM_Model\LmmMC</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LmmModel\McSpotLmm.cpp">
-      <Filter>LMM_Model\LmmMC</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LmmModel\McTerminalLmm.cpp">
-      <Filter>LMM_Model\LmmMC</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LmmModel\VolatilityGridBuilder.cpp">
-      <Filter>LMM_Model\Volatility</Filter>
-    </ClCompile>
-    <ClCompile Include="src\pricer\LmmVanillaSwaptionApproxPricer_Rebonato.cpp">
-      <Filter>LMM_pricer\SwaptionPricer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LmmModel\RebonatoAngle.cpp">
-      <Filter>LMM_Model\Correlation</Filter>
-    </ClCompile>
-    <ClCompile Include="src\instrument\VanillaFRA.cpp">
-      <Filter>LMM_instrument</Filter>
-    </ClCompile>
-    <ClCompile Include="src\pricer\LmmVanillaFRAPricer.cpp">
-      <Filter>LMM_pricer\FRAPricer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\pricer\McLmmVanillaFRAPricer.cpp">
-      <Filter>LMM_pricer\FRAPricer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\helper\Functional.cpp">
-      <Filter>LMM_helper</Filter>
-    </ClCompile>
     <ClCompile Include="LMM\Test\Test_Functional.cpp">
       <Filter>Test</Filter>
-    </ClCompile>
-    <ClCompile Include="src\helper\CombinationOperator.cpp">
-      <Filter>LMM_helper\Rubish</Filter>
-    </ClCompile>
-    <ClCompile Include="src\helper\DerivatibleFunction.cpp">
-      <Filter>LMM_helper\Rubish</Filter>
-    </ClCompile>
-    <ClCompile Include="src\instrument\CMS.cpp">
-      <Filter>LMM_instrument</Filter>
     </ClCompile>
     <ClCompile Include="LMM\Test\Test_VanillaFRAPricer.cpp">
       <Filter>Test\Test_OK</Filter>
@@ -762,99 +671,33 @@
     <ClCompile Include="LMM\Test\Test_VanillaCapletPricer.cpp">
       <Filter>Test\Test_OK</Filter>
     </ClCompile>
-    <ClCompile Include="src\pricer\LmmVanillaSwaptionApproxPricer_Piterbarg.cpp">
-      <Filter>LMM_pricer\SwaptionPricer</Filter>
-    </ClCompile>
     <ClCompile Include="LMM\Test\Test_VanillaSwapPricer.cpp">
       <Filter>Test\Test_OK</Filter>
-    </ClCompile>
-    <ClCompile Include="src\pricer\LmmVanillaSwapPricer.cpp">
-      <Filter>LMM_pricer\SwapPricer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\pricer\LmmVanillaSwaptionApproxPricer_MP.cpp">
-      <Filter>LMM_pricer\SwaptionPricer</Filter>
     </ClCompile>
     <ClCompile Include="LMM\Test\Test_Interpolation.cpp">
       <Filter>Test</Filter>
     </ClCompile>
-    <ClCompile Include="src\helper\Noise.cpp">
-      <Filter>LMM_helper</Filter>
-    </ClCompile>
     <ClCompile Include="LMM\Test\Test_Noise.cpp">
       <Filter>Test</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LmmModel\Lmm.cpp">
-      <Filter>LMM_Model\Lmm</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LmmModel\ShiftedLmm.cpp">
-      <Filter>LMM_Model\Lmm</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LmmModel\BetaLmm.cpp">
-      <Filter>LMM_Model\Lmm</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LmmModel\Dispersion.cpp">
-      <Filter>LMM_Model\Dispersion</Filter>
     </ClCompile>
     <ClCompile Include="LMM\Test\Test_createLmmModel.cpp">
       <Filter>Test\Test_CreateLmmModel</Filter>
     </ClCompile>
-    <ClCompile Include="src\LmmModel\Shifted_HGVolatilityFunction.cpp">
-      <Filter>LMM_Model\Volatility</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LmmModel\BetaShifted_HGVolatilityFunction.cpp">
-      <Filter>LMM_Model\Volatility</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LmmModel\UpperTriangleVanillaSwaptionQuotes.cpp">
-      <Filter>LMM_Model\Calibration</Filter>
-    </ClCompile>
     <ClCompile Include="LMM\Test\Test_UpperTriangleVanillaSwaptionQuotes.cpp">
       <Filter>Test</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LmmModel\GMatrixMapping.cpp">
-      <Filter>LMM_Model\Calibration</Filter>
     </ClCompile>
     <ClCompile Include="LMM\Test\Test_GMatrixMapping.cpp">
       <Filter>Test</Filter>
     </ClCompile>
-    <ClCompile Include="src\pricer\McLmmBermudanSwaptionPricer.cpp">
-      <Filter>LMM_pricer\CallableOptionPricer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\instrument\BermudanSwaption.cpp">
-      <Filter>LMM_instrument\CallableOption</Filter>
-    </ClCompile>
-    <ClCompile Include="src\instrument\CallableOption.cpp">
-      <Filter>LMM_instrument\CallableOption</Filter>
-    </ClCompile>
-    <ClCompile Include="src\pricer\Regression.cpp">
-      <Filter>LMM_pricer\CallableOptionPricer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\pricer\McLmmCallableOptionPricer.cpp">
-      <Filter>LMM_pricer\CallableOptionPricer</Filter>
-    </ClCompile>
     <ClCompile Include="src\pricer\McLmmCallableOptionPricer.cpp" />
-    <ClCompile Include="src\LmmModel\LmmPenalty.cpp">
-      <Filter>LMM_Model\Calibration</Filter>
-    </ClCompile>
     <ClCompile Include="LMM\Test\Test_CalibrationConfig.cpp">
       <Filter>Test\Test_CreateLmmModel</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LmmModel\LmmSwaptionMarketData.cpp">
-      <Filter>LMM_Model\Calibration</Filter>
     </ClCompile>
     <ClCompile Include="LMM\Test\Test_LmmSwaptionMarketData.cpp">
       <Filter>Test</Filter>
     </ClCompile>
-    <ClCompile Include="src\LmmModel\LmmABCDFinder.cpp">
-      <Filter>LMM_Model\Calibration</Filter>
-    </ClCompile>
     <ClCompile Include="LMM\Test\Test_LmmABCDFinder.cpp">
       <Filter>Test</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LmmModel\LmmSkewCostFunction.cpp">
-      <Filter>LMM_Model\Calibration</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LmmModel\LmmShiftCalibrator.cpp">
-      <Filter>LMM_Model\Calibration</Filter>
     </ClCompile>
     <ClCompile Include="LMM\Test\Test_LmmVirtualCalibration.cpp">
       <Filter>Test</Filter>
@@ -862,74 +705,23 @@
     <ClCompile Include="LMM\Test\Test_LmmCalibrationMarketData.cpp">
       <Filter>Test</Filter>
     </ClCompile>
-    <ClCompile Include="src\LmmModel\LmmABCDCostFunction.cpp">
-      <Filter>LMM_Model\Calibration</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LmmModel\LmmABCDCalibrator.cpp">
-      <Filter>LMM_Model\Calibration</Filter>
-    </ClCompile>
-    <ClCompile Include="src\numeric\UpperTriangularMatrixInterpolator.cpp">
-      <Filter>LMM_numeric</Filter>
-    </ClCompile>
-    <ClCompile Include="src\helper\CalibrationType.cpp">
-      <Filter>LMM_helper</Filter>
-    </ClCompile>
-    <ClCompile Include="src\helper\LmmGnuplotPrinterMatrix.cpp">
-      <Filter>LMM_helper</Filter>
-    </ClCompile>
     <ClCompile Include="LMM\Test\Test_LmmGnuplotPrinterMatrix.cpp">
       <Filter>Test</Filter>
     </ClCompile>
     <ClCompile Include="LMM\Test\Test_LmmVirtualCorrelationCalibraton.cpp">
       <Filter>Test</Filter>
     </ClCompile>
-    <ClCompile Include="src\LmmModel\LmmCorrelationCostFunction.cpp">
-      <Filter>LMM_Model\Calibration</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LmmModel\LmmCorrelationCalibrator.cpp">
-      <Filter>LMM_Model\Calibration</Filter>
-    </ClCompile>
     <ClCompile Include="LMM\Test\Test.cpp">
       <Filter>Test</Filter>
-    </ClCompile>
-    <ClCompile Include="src\helper\GenericPath.cpp">
-      <Filter>LMM_helper</Filter>
     </ClCompile>
     <ClCompile Include="LMM\Test\Test_LmmCalibrationSensitivity.cpp">
       <Filter>Test</Filter>
     </ClCompile>
-    <ClCompile Include="src\LmmModel\LmmGlobal_gCostFunction.cpp">
-      <Filter>LMM_Model\Calibration</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LmmModel\LmmLocal_gCostFunction.cpp">
-      <Filter>LMM_Model\Calibration</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LmmModel\LmmCascade_gCostFunction.cpp">
-      <Filter>LMM_Model\Calibration</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LmmModel\LmmBaseCalibrator.cpp">
-      <Filter>LMM_Model\Calibration</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LmmModel\LmmGlobal_gCalibrator.cpp">
-      <Filter>LMM_Model\Calibration</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LmmModel\LmmLocal_gCalibrator.cpp">
-      <Filter>LMM_Model\Calibration</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LmmModel\LmmCascade_gCalibrator.cpp">
-      <Filter>LMM_Model\Calibration</Filter>
-    </ClCompile>
     <ClCompile Include="LMM\Test\Test_LmmRegularizedCalibrationMarketData.cpp">
       <Filter>Test</Filter>
     </ClCompile>
-    <ClCompile Include="src\helper\BuildVariable.cpp">
-      <Filter>LMM_helper</Filter>
-    </ClCompile>
     <ClCompile Include="LMM\Test\test_beginner.cpp">
       <Filter>Test\Test_JL</Filter>
-    </ClCompile>
-    <ClCompile Include="src\numeric\Integrator1D.cpp">
-      <Filter>LMM_numeric</Filter>
     </ClCompile>
     <ClCompile Include="test\unit_test\test_Integrator1D.cpp">
       <Filter>Test</Filter>
@@ -976,15 +768,9 @@
     <ClCompile Include="JBLMM\Test\Test_GeneticTargetSwapOneTrajectory.cpp" />
     <ClCompile Include="Cheyette\CheyetteModel\CourbeInput.cpp" />
     <ClCompile Include="JBLMM\Element\VanillaSwapRate.cpp" />
-    <ClCompile Include="src\LmmModel\ConstShifted_HGVolatilityFunction.cpp" />
-    <ClCompile Include="src\calibration\LmmCalibrationConfig.cpp" />
-    <ClCompile Include="JBLMM\main.cpp" />
     <ClCompile Include="JBLMM\Test\Test_JBLmmCalibrationMarketData.cpp" />
     <ClCompile Include="JBLMM\Test\JBTest.cpp" />
     <ClCompile Include="LMM\Test\Test_CalibrationShiftWithSwaptionVolSkew.cpp" />
-    <ClCompile Include="src\calibration\CalibrationShiftCostFunction.cpp" />
-    <ClCompile Include="src\calibration\SwaptionMarketDataContainer.cpp" />
-    <ClCompile Include="src\calibration\SwaptionMarketDataManager.cpp" />
     <ClCompile Include="JBLMM\Element\ZC.cpp" />
     <ClCompile Include="JBLMM\Longstaff_Schwartz\EV_Basis\Basis.cpp" />
     <ClCompile Include="JBLMM\Longstaff_Schwartz\EV_Basis\Basis_Evaluator.cpp" />
@@ -1143,6 +929,251 @@
     </ClCompile>
     <ClCompile Include="PDE\Matrix\TridiagonalMatrix.cpp">
       <Filter>PDE\Matrix</Filter>
+    </ClCompile>
+    <ClCompile Include="Cheyette\Calibrator\CheyetteBaseCalibrator.cpp" />
+    <ClCompile Include="Cheyette\Calibrator\CheyetteBaseCostFunction.cpp" />
+    <ClCompile Include="Cheyette\Calibrator\CheyetteDD_CalibrationConfig.cpp" />
+    <ClCompile Include="Cheyette\Calibrator\CheyetteDD_CostFunctionLevel.cpp" />
+    <ClCompile Include="Cheyette\Calibrator\CheyetteDD_CostFunctionSkew.cpp" />
+    <ClCompile Include="Cheyette\Calibrator\CheyetteDD_LocalCalibrator.cpp" />
+    <ClCompile Include="Cheyette\Calibrator\CoTerminalSwaptionSkew.cpp" />
+    <ClCompile Include="Cheyette\Calibrator\CoTerminalSwaptionVol.cpp" />
+    <ClCompile Include="Cheyette\Calibrator\MarketData.cpp" />
+    <ClCompile Include="Cheyette\Pricer\MC_CheyetteDD_GenericSwapPricer.cpp" />
+    <ClCompile Include="Cheyette\Pricer\MC_CheyetteDD_GenericSwaptionPricer.cpp" />
+    <ClCompile Include="Cheyette\unit_test\TestCalibrator.cpp" />
+    <ClCompile Include="Cheyette\unit_test\TestMCGeneric.cpp" />
+    <ClCompile Include="JBLMM\Instrument\GeneticSwap.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="LMM\calibration\CalibrationShiftCostFunction.cpp" />
+    <ClCompile Include="LMM\calibration\LmmCalibrationConfig.cpp" />
+    <ClCompile Include="LMM\calibration\SwaptionMarketDataContainer.cpp" />
+    <ClCompile Include="LMM\calibration\SwaptionMarketDataManager.cpp" />
+    <ClCompile Include="LMM\helper\BuildVariable.cpp">
+      <Filter>LMM_helper</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\helper\CalibrationType.cpp">
+      <Filter>LMM_helper</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\helper\CombinationOperator.cpp">
+      <Filter>LMM_helper\Rubish</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\helper\DerivatibleFunction.cpp">
+      <Filter>LMM_helper\Rubish</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\helper\Functional.cpp">
+      <Filter>LMM_helper</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\helper\GenericPath.cpp">
+      <Filter>LMM_helper</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\helper\LmmGnuplotPrinterMatrix.cpp">
+      <Filter>LMM_helper</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\helper\LMMTenorStructure.cpp">
+      <Filter>LMM_helper</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\helper\Noise.cpp">
+      <Filter>LMM_helper</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\helper\StaticReplicationFormula.cpp">
+      <Filter>LMM_helper</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\helper\TenorType.cpp">
+      <Filter>LMM_helper</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\helper\Tensor.cpp">
+      <Filter>LMM_helper</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\helper\TypeConverter.cpp">
+      <Filter>LMM_helper</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\instrument\BermudanSwaption.cpp">
+      <Filter>LMM_instrument\CallableOption</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\instrument\CallableOption.cpp">
+      <Filter>LMM_instrument\CallableOption</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\instrument\CMS.cpp">
+      <Filter>LMM_instrument</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\instrument\Tarn.cpp">
+      <Filter>LMM_instrument</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\instrument\VanillaCaplet.cpp">
+      <Filter>LMM_instrument</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\instrument\VanillaFRA.cpp">
+      <Filter>LMM_instrument</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\instrument\VanillaSwap.cpp">
+      <Filter>LMM_instrument</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\instrument\VanillaSwaption.cpp">
+      <Filter>LMM_instrument</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\LmmModel\BetaLmm.cpp">
+      <Filter>LMM_Model\Lmm</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\LmmModel\BetaShifted_HGVolatilityFunction.cpp">
+      <Filter>LMM_Model\Volatility</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\LmmModel\ConstShifted_HGVolatilityFunction.cpp" />
+    <ClCompile Include="LMM\LmmModel\Correlation.cpp">
+      <Filter>LMM_Model\Correlation</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\LmmModel\Dispersion.cpp">
+      <Filter>LMM_Model\Dispersion</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\LmmModel\GMatrixMapping.cpp">
+      <Filter>LMM_Model\Calibration</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\LmmModel\Lmm.cpp">
+      <Filter>LMM_Model\Lmm</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\LmmModel\LmmABCDCalibrator.cpp">
+      <Filter>LMM_Model\Calibration</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\LmmModel\LmmABCDCostFunction.cpp">
+      <Filter>LMM_Model\Calibration</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\LmmModel\LmmABCDFinder.cpp">
+      <Filter>LMM_Model\Calibration</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\LmmModel\LmmBaseCalibrator.cpp">
+      <Filter>LMM_Model\Calibration</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\LmmModel\LmmCascade_gCalibrator.cpp">
+      <Filter>LMM_Model\Calibration</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\LmmModel\LmmCascade_gCostFunction.cpp">
+      <Filter>LMM_Model\Calibration</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\LmmModel\LmmCorrelationCalibrator.cpp">
+      <Filter>LMM_Model\Calibration</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\LmmModel\LmmCorrelationCostFunction.cpp">
+      <Filter>LMM_Model\Calibration</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\LmmModel\LmmGlobal_gCalibrator.cpp">
+      <Filter>LMM_Model\Calibration</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\LmmModel\LmmGlobal_gCostFunction.cpp">
+      <Filter>LMM_Model\Calibration</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\LmmModel\LmmLocal_gCalibrator.cpp">
+      <Filter>LMM_Model\Calibration</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\LmmModel\LmmLocal_gCostFunction.cpp">
+      <Filter>LMM_Model\Calibration</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\LmmModel\LmmPenalty.cpp">
+      <Filter>LMM_Model\Calibration</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\LmmModel\LmmShiftCalibrator.cpp">
+      <Filter>LMM_Model\Calibration</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\LmmModel\LmmSkewCostFunction.cpp">
+      <Filter>LMM_Model\Calibration</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\LmmModel\LmmSwaptionMarketData.cpp">
+      <Filter>LMM_Model\Calibration</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\LmmModel\McLmm.cpp">
+      <Filter>LMM_Model\LmmMC</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\LmmModel\McSpotLmm.cpp">
+      <Filter>LMM_Model\LmmMC</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\LmmModel\McTerminalLmm.cpp">
+      <Filter>LMM_Model\LmmMC</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\LmmModel\PCA.cpp">
+      <Filter>LMM_Model\Correlation</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\LmmModel\RebonatoAngle.cpp">
+      <Filter>LMM_Model\Correlation</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\LmmModel\Shifted_HGVolatilityFunction.cpp">
+      <Filter>LMM_Model\Volatility</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\LmmModel\ShiftedLmm.cpp">
+      <Filter>LMM_Model\Lmm</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\LmmModel\UpperTriangleVanillaSwaptionQuotes.cpp">
+      <Filter>LMM_Model\Calibration</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\LmmModel\VolatilityGridBuilder.cpp">
+      <Filter>LMM_Model\Volatility</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\numeric\BilinearInterpolation.cpp">
+      <Filter>LMM_numeric</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\numeric\Integrator1D.cpp">
+      <Filter>LMM_numeric</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\numeric\Interpolation.cpp">
+      <Filter>LMM_numeric</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\numeric\NumericalMethods.cpp">
+      <Filter>LMM_numeric</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\numeric\UpperTriangularMatrixInterpolator.cpp">
+      <Filter>LMM_numeric</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\pricer\LmmTarnPricer.cpp">
+      <Filter>LMM_pricer</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\pricer\LmmVanillaCapletPricer.cpp">
+      <Filter>LMM_pricer\CapletPricer</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\pricer\LmmVanillaFRAPricer.cpp">
+      <Filter>LMM_pricer\FRAPricer</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\pricer\LmmVanillaSwapPricer.cpp">
+      <Filter>LMM_pricer\SwapPricer</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\pricer\LmmVanillaSwaptionApproxPricer_MP.cpp">
+      <Filter>LMM_pricer\SwaptionPricer</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\pricer\LmmVanillaSwaptionApproxPricer_Piterbarg.cpp">
+      <Filter>LMM_pricer\SwaptionPricer</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\pricer\LmmVanillaSwaptionApproxPricer_Rebonato.cpp">
+      <Filter>LMM_pricer\SwaptionPricer</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\pricer\McLmmBermudanSwaptionPricer.cpp">
+      <Filter>LMM_pricer\CallableOptionPricer</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\pricer\McLmmCallableOptionPricer.cpp">
+      <Filter>LMM_pricer\CallableOptionPricer</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\pricer\McLmmVanillaCapletPricer.cpp">
+      <Filter>LMM_pricer\CapletPricer</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\pricer\McLmmVanillaFRAPricer.cpp">
+      <Filter>LMM_pricer\FRAPricer</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\pricer\McLmmVanillaSwapPricer.cpp">
+      <Filter>LMM_pricer\SwapPricer</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\pricer\McLmmVanillaSwaptionPricer.cpp">
+      <Filter>LMM_pricer\SwaptionPricer</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\pricer\McPricer.cpp">
+      <Filter>LMM_pricer</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\pricer\Regression.cpp">
+      <Filter>LMM_pricer\CallableOptionPricer</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\pricer\StaticReplicationCMS.cpp">
+      <Filter>LMM_pricer</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\RNGenerator\McGenerator.cpp">
+      <Filter>RNGenerator</Filter>
+    </ClCompile>
+    <ClCompile Include="LMM\RNGenerator\QMcGenerator.cpp">
+      <Filter>RNGenerator</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

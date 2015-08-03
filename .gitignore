@@ -197,5 +197,4 @@ FakesAssemblies/
 
 #execute
 *.txt
-*.vcxproj
 *.csv
