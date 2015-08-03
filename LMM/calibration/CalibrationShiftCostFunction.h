@@ -10,7 +10,7 @@
 
 
 
-class CalibrationShiftCostFunction: public CostFunction
+class CalibrationShiftCostFunction: public QuantLib::CostFunction
 {
 public:
 
@@ -32,8 +32,8 @@ public:
 
 	unsigned int get_nbCalled() const;
 	
-	Real value(const Array & x) const; 
-	Disposable<Array> values(const Array& x) const; 
+	QuantLib::Real value(const QuantLib::Array & x) const; 
+	QuantLib::Disposable<QuantLib::Array> values(const QuantLib::Array& x) const; 
 	
 private:
 	
@@ -52,5 +52,5 @@ private:
 	
 	bool breakForPrintOut(unsigned int nbIter) const ;
 
-	QuantLib::Array computeCalibError(const Array& x)const;
+	QuantLib::Array computeCalibError(const QuantLib::Array& x)const;
 };

@@ -19,7 +19,7 @@
 #include <ql/math/matrix.hpp>
 #include <ql/utilities/disposable.hpp>
 //ctnrefactor move to numeric
-//using namespace QuantLib;
+
 
 //! YY not efficient at all, memory usage or algorithm. need to improve.
 //! all angles in [0,pi] expect esp angles \in [0,2*pi]

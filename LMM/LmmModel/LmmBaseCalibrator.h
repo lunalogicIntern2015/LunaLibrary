@@ -68,7 +68,7 @@ protected :
 	QuantLib::EndCriteria::Type endConvergenceType_;
 
 	bool use_positive_constraint_;
-	boost::shared_ptr<Constraint> pConstraint_;
+	boost::shared_ptr<QuantLib::Constraint> pConstraint_;
 	LmmBaseCostFunction_PTR pLmmBaseCostFunction_ ;
 
 	//! storage information after minimization

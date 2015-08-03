@@ -57,7 +57,7 @@ void McSpotLmm::computeNumeraires()
 void McSpotLmm::SpotLmmModel_Euler()
 {
 	size_t nbFactors = lmm_->get_dispersionRef().getNbFactors();
-	std::vector<Real>   gaussian_tmp(nbFactors,0.); 
+	std::vector<QuantLib::Real>   gaussian_tmp(nbFactors,0.); 
 	const std::vector<double>& deltaT = lmm_->get_dispersionRef().get_LMMTenorStructure_PTR()->get_deltaT();
 	std::vector<double> drift_coeff(horizon_+1); // working place: delta_k*libor_k/(1+delta_k*libor_k)
 
@@ -79,7 +79,7 @@ void McSpotLmm::SpotLmmModel_Euler()
 		for (size_t indexLibor = indexTime; indexLibor <= horizon_; ++indexLibor)  // Backward indexLibor: N -> indexTime   i
 		{ 		 
 			//! integral on: [indexTime-1, indexTime] 
-			Real diffusion_factor = -0.5 * lmm_->get_covarianceTensor(indexTime, indexLibor, indexLibor)
+			QuantLib::Real diffusion_factor = -0.5 * lmm_->get_covarianceTensor(indexTime, indexLibor, indexLibor)
 				+computeIntSto(indexTime,indexLibor,gaussian_tmp); 
 
 			double drift_factor = 0.0;
@@ -99,7 +99,7 @@ void McSpotLmm::SpotLmmModel_Euler()
 void McSpotLmm::SpotLmmModel_Pc()
 {
 	size_t nbFactors = lmm_->get_dispersionRef().getNbFactors();
-	std::vector<Real>   gaussian_tmp(nbFactors,0.); 
+	std::vector<QuantLib::Real>   gaussian_tmp(nbFactors,0.); 
 	const std::vector<double>& deltaT = lmm_->get_dispersionRef().get_LMMTenorStructure_PTR()->get_deltaT();
 	std::vector<double> drift_coeff(horizon_+1); // working place: delta_k*libor_k/(1+delta_k*libor_k)
 
@@ -120,7 +120,7 @@ void McSpotLmm::SpotLmmModel_Pc()
 		for (size_t indexLibor = indexTime; indexLibor <= horizon_; ++indexLibor)  // Backward indexLibor: N -> indexTime   i
 		{ 		 
 			//! integral on: [indexTime-1, indexTime] 
-			Real diffusion_factor = -0.5 * lmm_->get_covarianceTensor(indexTime, indexLibor, indexLibor)
+			QuantLib::Real diffusion_factor = -0.5 * lmm_->get_covarianceTensor(indexTime, indexLibor, indexLibor)
 				+computeIntSto(indexTime,indexLibor,gaussian_tmp); 
 
 			double drift_factor = 0.0;
@@ -145,7 +145,7 @@ void McSpotLmm::SpotLmmModel_Pc()
 		for (size_t indexLibor = indexTime; indexLibor <= horizon_; ++indexLibor)  // Backward indexLibor: N -> indexTime   i
 		{ 		 
 			//! integral on: [indexTime-1, indexTime] 
-			Real diffusion_factor = -0.5 * lmm_->get_covarianceTensor(indexTime, indexLibor, indexLibor)
+			QuantLib::Real diffusion_factor = -0.5 * lmm_->get_covarianceTensor(indexTime, indexLibor, indexLibor)
 				+computeIntSto(indexTime,indexLibor,gaussian_tmp); 
 
 			double drift_factor = 0.0;

@@ -34,12 +34,12 @@ void LmmCascade_gCostFunction::reset_CalibrationParams(const QuantLib::Array & p
 	pLmmVanillaSwaptionApproxPricer_Rebonato_->update_VolatilityParam( buffer_Shifted_HGVolatilityParam_ );
 }
 
-Disposable<Array> LmmCascade_gCostFunction::values(const Array& param_array) const
+QuantLib::Disposable<QuantLib::Array> LmmCascade_gCostFunction::values(const QuantLib::Array& param_array) const
 {
 	reset_CalibrationParams(param_array);
 	partially_UpdateSwaptionMdlValues();
 
-	Array diff_cost( 1 );
+	QuantLib::Array diff_cost( 1 );
 	size_t iExperity = current_cell_.first;
 	size_t jTenor = current_cell_.second;
 	

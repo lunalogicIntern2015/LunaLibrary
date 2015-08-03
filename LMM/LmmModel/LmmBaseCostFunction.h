@@ -21,7 +21,7 @@
 *
 */
 
-class LmmBaseCostFunction : public CostFunction
+class LmmBaseCostFunction : public QuantLib::CostFunction
 {
 public:
 
@@ -61,11 +61,11 @@ public:
 
 	virtual void reset_CalibrationParams(const QuantLib::Array & params) const = 0 ;
 
-	virtual Real value(const Array & x) const 
+	virtual QuantLib::Real value(const QuantLib::Array & x) const 
 	{
-		Array diff_cost = values(x);
+		QuantLib::Array diff_cost = values(x);
 
-		Real res = 0;
+		QuantLib::Real res = 0;
 		for (size_t i = 0; i < diff_cost.size(); ++i)
 		{
 			res += diff_cost[i]*diff_cost[i];
@@ -76,7 +76,7 @@ public:
 	}
 
 	//const Array& param_array
-	virtual Disposable<Array> values(const Array& x) const = 0 ;
+	virtual QuantLib::Disposable<QuantLib::Array> values(const QuantLib::Array& x) const = 0 ;
 
 	virtual void print(const std::string& filename) const = 0 ;
 

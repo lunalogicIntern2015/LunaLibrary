@@ -42,11 +42,11 @@ unsigned int CalibrationShiftCostFunction::get_nbCalled() const
 }
 
 
-Real CalibrationShiftCostFunction::value(const Array & shift_array) const
+QuantLib::Real CalibrationShiftCostFunction::value(const QuantLib::Array & shift_array) const
 {
-	Array squared_diffs = values(shift_array);
+	QuantLib::Array squared_diffs = values(shift_array);
 
-	Real res = 0;
+	QuantLib::Real res = 0;
 	for (size_t i = 0; i < shift_array.size(); ++i)
 	{
 		res += shift_array[i];
@@ -57,7 +57,7 @@ Real CalibrationShiftCostFunction::value(const Array & shift_array) const
 	return res;
 }
 
-Disposable<Array> CalibrationShiftCostFunction::values(const Array& shift_array) const
+QuantLib::Disposable<QuantLib::Array> CalibrationShiftCostFunction::values(const QuantLib::Array& shift_array) const
 {
 	pHGVolatilityParamBuffer_->reset_Shift_FromArray(shift_array);
 
@@ -69,7 +69,7 @@ Disposable<Array> CalibrationShiftCostFunction::values(const Array& shift_array)
 	const double & strike_bump = pSkewMarketDataContainer_->get_StrikeBump();
 	size_t nbValues = mkt_skews.size();
 	
-	Array squared_diff_vol(nbValues,0. );
+	QuantLib::Array squared_diff_vol(nbValues,0. );
 
 	for(size_t iSwaption=0;iSwaption<nbValues;++iSwaption)
 	{
@@ -103,7 +103,7 @@ Disposable<Array> CalibrationShiftCostFunction::values(const Array& shift_array)
 	return squared_diff_vol;
 }
 
-QuantLib::Array CalibrationShiftCostFunction::computeCalibError(const Array& x)const
+QuantLib::Array CalibrationShiftCostFunction::computeCalibError(const QuantLib::Array& x)const
 {
 	assert(!calib_reference_.empty() && calib_reference_.size() == x.size() );
 

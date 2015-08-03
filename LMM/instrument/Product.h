@@ -7,7 +7,7 @@
 //
 //using namespace boost;
 //using namespace boost::numeric::ublas;
-//using namespace QuantLib;
+
 //
 ///**
 // * @brief Product defintion class

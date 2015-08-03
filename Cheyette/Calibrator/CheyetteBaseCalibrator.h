@@ -17,7 +17,7 @@
 
 #include <ql/math/optimization/costfunction.hpp>
 
-using namespace QuantLib ;  //pour CostFunction, Real, Array
+//using namespace QuantLib ;  //pour CostFunction, Real, Array
 
 //classe mere. Pour le moment, seul LocalCalibrator en dérive
 //possibilité de faire GlobalCalibrator
@@ -37,7 +37,7 @@ protected :
 	QuantLib::EndCriteria::Type endConvergenceType_;
 
 	bool use_positive_constraint_;
-	boost::shared_ptr<Constraint> pConstraint_;
+	boost::shared_ptr<QuantLib::Constraint> pConstraint_;
 
 
 	//! storage information after minimization

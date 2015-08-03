@@ -40,18 +40,18 @@ private:
 			low_[3] = d_mm ;
 			high_[3] = d_pp;
 
-			for (Size i = 0; i < 4; i++) 
+			for (size_t i = 0; i < 4; i++) 
 			{
 				assert( low_[i] < high_[i] ) ; 
 				std::cout<< i << "  Low_"<<low_[i] <<"    high_"<<high_[i]<<std::endl;//ctndebug to comment
 			}
 		}
 
-		bool test(const Array& params) const 
+		bool test(const QuantLib::Array& params) const 
 		{
 			QL_ENSURE(params.size()==4, " Number of abcd parameters has to be 4")
 
-				for (Size i = 0; i < params.size(); i++) 
+				for (size_t i = 0; i < params.size(); i++) 
 				{
 					if ((params[i] < low_[i]) || (params[i] > high_[i])) return false;
 				}
@@ -61,8 +61,8 @@ private:
 				return true;
 		}
 
-		QuantLib::Array upperBound(const Array&) const { return high_; }
-		QuantLib::Array lowerBound(const Array&) const { return low_ ; }
+		QuantLib::Array upperBound(const QuantLib::Array&) const { return high_; }
+		QuantLib::Array lowerBound(const QuantLib::Array&) const { return low_ ; }
 	private:
 		QuantLib::Array low_, high_;
 	};

@@ -12,7 +12,7 @@ QMcGenerator::QMcGenerator(unsigned long qmcSeed, size_t sequence_size, size_t s
 
 {
 	sobol_.skipTo(skipRank_);
-	generator_ = InverseCumulativeRsg<SobolRsg,InverseCumulativeNormal>(sobol_);
+	generator_ = QuantLib::InverseCumulativeRsg<QuantLib::SobolRsg,QuantLib::InverseCumulativeNormal>(sobol_);
 }
 
 

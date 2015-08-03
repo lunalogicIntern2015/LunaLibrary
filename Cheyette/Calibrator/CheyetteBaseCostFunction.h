@@ -12,10 +12,10 @@
 #include <Cheyette/Pricer/CheyetteDD_VanillaSwaptionApproxPricer.h>
 #include <LMM/instrument/VanillaSwaption.h>
 
-using namespace QuantLib ;  //pour CostFunction, Real, Array
+//using namespace QuantLib ;  //pour CostFunction, Real, Array
 
 
-class CheyetteBaseCostFunction : public CostFunction
+class CheyetteBaseCostFunction : public QuantLib::CostFunction
 {
 protected :
 	size_t indexSwaption_ ;		
@@ -31,9 +31,9 @@ public:
 
 	//value: method to overload to compute the cost functon value in x.
 	//ici norme 2 = sqrt(sum of squares	
-	virtual Real value(const Array& param_array1D) const ;
+	virtual QuantLib::Real value(const QuantLib::Array& param_array1D) const ;
 	
-	virtual Disposable<Array> values(const Array& param_sigma1D) const = 0 ;
+	virtual QuantLib::Disposable<QuantLib::Array> values(const QuantLib::Array& param_sigma1D) const = 0 ;
 
 	CheyetteDD_VanillaSwaptionApproxPricer_PTR	getCheyetteDD_ApproxPricer_PTR() const {return cheyetteApprox_PTR_ ;}
 

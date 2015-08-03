@@ -97,12 +97,19 @@
     <ClInclude Include="Cheyette\Calibrator\MarketData.h" />
     <ClInclude Include="Cheyette\Calibrator\MarketDataConvertor.h" />
     <ClInclude Include="Cheyette\CheyetteModel\CheyetteQuad_Model.h" />
+<<<<<<< HEAD
     <ClInclude Include="Cheyette\Pricer\CheyetteQuad_VanillaSwaptionApproxPricer.h" />
     <ClInclude Include="Cheyette\Pricer\MC_CheyetteDD_GenericSwapPricer.h" />
     <ClInclude Include="Cheyette\Pricer\MC_CheyetteDD_GenericSwaptionPricer.h" />
     <ClInclude Include="Cheyette\unit_test\TestCalibrator.h" />
     <ClInclude Include="Cheyette\unit_test\TestMCGeneric.h" />
     <ClInclude Include="JBLMM\Instrument\GeneticSwap.h" />
+=======
+    <ClInclude Include="Cheyette\Pricer\PDE_CheyetteDD_GenericSwapPricer.h" />
+    <ClInclude Include="Cheyette\Pricer\PDE_CheyetteDD_VanillaSwapPricer.h" />
+    <ClInclude Include="Cheyette\Pricer\PDE_Cheyette_Model.h" />
+    <ClInclude Include="Cheyette\Pricer\PDE_Cheyette_Pricer.h" />
+>>>>>>> a27f3db5e5163d8a7304d3c0d0dfbe83f1940eac
     <ClInclude Include="JBLMM\Instrument\Instrument.h" />
     <ClInclude Include="JBLMM\Instrument\CallableInstrument.h" />
     <ClInclude Include="Cheyette\CheyetteModel\CheyetteDD_Model.h" />
@@ -253,6 +260,47 @@
     <ClInclude Include="JBLMM\Element\ZC.h" />
     <ClInclude Include="JBLMM\Pricer\McLmmPricer.h" />
     <ClInclude Include="JBLMM\Longstaff_Schwartz\LS_ForwardAlgo.h" />
+    <ClInclude Include="PDE\BoundaryCondition_D2.h" />
+    <ClInclude Include="PDE\BoundaryCondition_D2_density.h" />
+    <ClInclude Include="PDE\BoundaryCondition_Heston_Put.h" />
+    <ClInclude Include="PDE\Discretization.h" />
+    <ClInclude Include="PDE\Discretization_D2.h" />
+    <ClInclude Include="PDE\Discretization_Simple.h" />
+    <ClInclude Include="PDE\FFT.h" />
+    <ClInclude Include="PDE\HestonModel.h" />
+    <ClInclude Include="PDE\HestonModelYuan.h" />
+    <ClInclude Include="PDE\Heston_analytical_pricer.h" />
+    <ClInclude Include="PDE\Interpolator.h" />
+    <ClInclude Include="PDE\Linear_Equation_Solver.h" />
+    <ClInclude Include="PDE\Matrix\Matrix.h" />
+    <ClInclude Include="PDE\Matrix\svd.h" />
+    <ClInclude Include="PDE\Matrix\svdcmp_.h" />
+    <ClInclude Include="PDE\Matrix\TridiagonalMatrix.h" />
+    <ClInclude Include="PDE\Model.h" />
+    <ClInclude Include="PDE\Params.h" />
+    <ClInclude Include="PDE\Payoff.h" />
+    <ClInclude Include="PDE\PDE_2D_Model.h" />
+    <ClInclude Include="PDE\PDE_2D_Pricer.h" />
+    <ClInclude Include="PDE\PDE_ADI_Solver.h" />
+    <ClInclude Include="PDE\PDE_Model_Heston.h" />
+    <ClInclude Include="PDE\PDE_Model_SABR.h" />
+    <ClInclude Include="PDE\PDE_Model_SLV_SABR.h" />
+    <ClInclude Include="PDE\Quadrature.h" />
+    <ClInclude Include="PDE\Range.h" />
+    <ClInclude Include="PDE\Scheme_ADI.h" />
+    <ClInclude Include="PDE\Scheme_CS.h" />
+    <ClInclude Include="PDE\Scheme_Douglas.h" />
+    <ClInclude Include="PDE\Scheme_HV.h" />
+    <ClInclude Include="PDE\Scheme_MCS.h" />
+    <ClInclude Include="PDE\Scheme_Yanenko.h" />
+    <ClInclude Include="PDE\Space_BoundaryCondition.h" />
+    <ClInclude Include="PDE\Space_BoundaryCondition_Diriclet.h" />
+    <ClInclude Include="PDE\Space_BoundaryCondition_Neumann.h" />
+    <ClInclude Include="PDE\Space_BoundaryCondition_PDE.h" />
+    <ClInclude Include="PDE\Term_Structure.h" />
+    <ClInclude Include="PDE\Test_PDE.h" />
+    <ClInclude Include="PDE\TimeInitial_BoundaryCondition.h" />
+    <ClInclude Include="PDE\useful_function.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cheyette\Calibrator\CheyetteBaseCalibrator.cpp" />
@@ -266,11 +314,16 @@
     <ClCompile Include="Cheyette\Calibrator\MarketData.cpp" />
     <ClCompile Include="Cheyette\CheyetteModel\CheyetteQuad_Model.cpp" />
     <ClCompile Include="Cheyette\Pricer\CheyetteQuad_VanillaSwaptionApproxPricer.cpp" />
+<<<<<<< HEAD
     <ClCompile Include="Cheyette\Pricer\MC_CheyetteDD_GenericSwapPricer.cpp" />
     <ClCompile Include="Cheyette\Pricer\MC_CheyetteDD_GenericSwaptionPricer.cpp" />
     <ClCompile Include="Cheyette\unit_test\TestCalibrator.cpp" />
     <ClCompile Include="Cheyette\unit_test\TestMCGeneric.cpp" />
     <ClCompile Include="JBLMM\Instrument\GeneticSwap.cpp" />
+=======
+    <ClCompile Include="Cheyette\Pricer\PDE_CheyetteDD_GenericSwapPricer.cpp" />
+    <ClCompile Include="Cheyette\Pricer\PDE_CheyetteDD_VanillaSwapPricer.cpp" />
+>>>>>>> a27f3db5e5163d8a7304d3c0d0dfbe83f1940eac
     <ClCompile Include="JBLMM\Instrument\Instrument.cpp" />
     <ClCompile Include="JBLMM\Instrument\CallableInstrument.cpp" />
     <ClCompile Include="Cheyette\CheyetteModel\CheyetteDD_Model.cpp" />
@@ -364,6 +417,33 @@
     <ClCompile Include="LMM\Test\Test_VanillaSwaptionPricer_MCvsApprox.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="JBLMM\Longstaff_Schwartz\LS_ForwardAlgo.cpp" />
+    <ClCompile Include="PDE\Discretization.cpp" />
+    <ClCompile Include="PDE\Discretization_Simple.cpp" />
+    <ClCompile Include="PDE\FFT.cpp" />
+    <ClCompile Include="PDE\GaussLegendre.cpp" />
+    <ClCompile Include="PDE\Heston_analytical_pricer.cpp" />
+    <ClCompile Include="PDE\Interpolator.cpp" />
+    <ClCompile Include="PDE\Linear_Equation_Solver.cpp" />
+    <ClCompile Include="PDE\Matrix\Matrix.cpp" />
+    <ClCompile Include="PDE\Matrix\svd.cpp" />
+    <ClCompile Include="PDE\Matrix\TridiagonalMatrix.cpp" />
+    <ClCompile Include="PDE\PDE_ADI_Solver.cpp" />
+    <ClCompile Include="PDE\Range.cpp" />
+    <ClCompile Include="PDE\Scheme_ADI.cpp" />
+    <ClCompile Include="PDE\Scheme_CS.cpp" />
+    <ClCompile Include="PDE\Scheme_Douglas.cpp" />
+    <ClCompile Include="PDE\Scheme_HV.cpp" />
+    <ClCompile Include="PDE\Scheme_MCS.cpp" />
+    <ClCompile Include="PDE\Scheme_Yanenko.cpp" />
+    <ClCompile Include="PDE\Space_BoundaryCondition_Diriclet.cpp" />
+    <ClCompile Include="PDE\Space_BoundaryCondition_Neumann.cpp" />
+    <ClCompile Include="PDE\Space_BoundaryCondition_PDE.cpp" />
+    <ClCompile Include="PDE\Test_FFT.cpp" />
+    <ClCompile Include="PDE\Test_interpolator.cpp" />
+    <ClCompile Include="PDE\Test_PDE.cpp" />
+    <ClCompile Include="PDE\Test_PDE_SABR.cpp" />
+    <ClCompile Include="PDE\Test_PDE_SLV.cpp" />
+    <ClCompile Include="PDE\useful_function.cpp" />
     <ClCompile Include="src\calibration\CalibrationShiftCostFunction.cpp" />
     <ClCompile Include="src\calibration\LmmCalibrationConfig.cpp" />
     <ClCompile Include="src\calibration\SwaptionMarketDataContainer.cpp" />
@@ -449,6 +529,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="TODO" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="PDE\BC_note.txt" />
+    <Text Include="PDE\Boundary_Condition_note.txt" />
+    <Text Include="PDE\C++.txt" />
+    <Text Include="PDE\TODO (2).txt" />
+    <Text Include="PDE\TODO.txt" />
+    <Text Include="PDE\TO_DO.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

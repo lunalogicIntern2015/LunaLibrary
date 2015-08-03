@@ -607,12 +607,12 @@ void test_approx(double strike, size_t a, size_t b, Tenor floatingLegTenor, Teno
 //MC
 	//double nominal = 1 ;
 	//LMMTenorStructure_CONSTPTR swapStructure(new LMMTenorStructure(floatingLegTenor, a+b+1)) ;
-	//GeneticSwap_CONSTPTR genericSwapTest = InstrumentFactory::createVanillaSwap(strike, indexStart, 
+	//GenericSwap_CONSTPTR genericSwapTest = InstrumentFactory::createVanillaSwap(strike, indexStart, 
 	//												indexEnd, floatingLegTenor, fixedLegTenor,
 	//												swapStructure, nominal);
 
 	//size_t maturity = indexStart ; //index
-	//GeneticSwaption_CONSTPTR 	genericSwaptionTest(new GeneticSwaption(maturity, genericSwapTest)) ;
+	//GenericSwaption_CONSTPTR 	genericSwaptionTest(new GenericSwaption(maturity, genericSwapTest)) ;
 
 	size_t nbMC = nbSimus.size() ;
 	std::vector<double> vectPrixMC(nbMC), vectICinf(nbMC), vectICsup(nbMC) ; 

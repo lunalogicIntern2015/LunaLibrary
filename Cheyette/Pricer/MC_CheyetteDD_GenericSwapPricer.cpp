@@ -2,7 +2,7 @@
 
 
 //simulation
-double MC_CheyetteDD_GenericSwapPricer::swapNPV(GeneticSwap_CONSTPTR geneticSwap, size_t nbSimulation, 
+double MC_CheyetteDD_GenericSwapPricer::swapNPV(GenericSwap_CONSTPTR genericSwap, size_t nbSimulation, 
 												Tenor tenorLeg1, Tenor tenorLeg2) const
 {
 	double TEST_sommeLeg1 = 0. ;
@@ -16,9 +16,9 @@ double MC_CheyetteDD_GenericSwapPricer::swapNPV(GeneticSwap_CONSTPTR geneticSwap
 	{
 		if ((itrSimulation*10) % nbSimulation == 0){std::cout << double(itrSimulation)/double(nbSimulation)*100 << "%" << std::endl ;}
 		//simulate_Euler() ;
-		//double npv1  = evaluateCouponLeg(indexValuationDate, geneticSwap->getLeg1(), tenorLeg1);
+		//double npv1  = evaluateCouponLeg(indexValuationDate, genericSwap->getLeg1(), tenorLeg1);
 
-		//double npv2  = evaluateCouponLeg(indexValuationDate, geneticSwap->getLeg2(), tenorLeg2);			
+		//double npv2  = evaluateCouponLeg(indexValuationDate, genericSwap->getLeg2(), tenorLeg2);			
 		//TEST_sommeLeg1 += npv1 ;
 		//TEST_sommeLeg2 += npv2 ;
 		//result += npv1 - npv2;

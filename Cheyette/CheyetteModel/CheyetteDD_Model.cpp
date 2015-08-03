@@ -113,18 +113,23 @@ double CheyetteDD_Model::Libor(double t, double T1, double T2, double x_t, doubl
 }
 
 //EDS : drift et diffusion sous Q^T
+double CheyetteDD_Model::drift_x_Q(double t, double x_t, double y_t) const                       // risk neutral proba
+{
+	double k	= cheyetteDD_Parameter_.k_ ;
+	return y_t - k * x_t;	  	 
+}
+double CheyetteDD_Model::drift_x_QT(double t, double T_proba_fwd, double x_t, double y_t) const  // forward proba
+{
+	double sigma_r_t	= sigma_r(t, x_t, y_t) ;
+
+	return drift_x_Q(t,x_t,y_t) - G(t, T_proba_fwd) * sigma_r_t * sigma_r_t ;	  	  
+}
 double CheyetteDD_Model::diffusion_x(double t, double x_t, double y_t) const
 {
 	return sigma_r(t, x_t, y_t) ;
 }
 
-double CheyetteDD_Model::drift_x_QT(double t, double T_proba_fwd, double x_t, double y_t) const
-{
-	double k			= cheyetteDD_Parameter_.k_ ;
-	double sigma_r_t	= sigma_r(t, x_t, y_t) ;
 
-	return y_t - k * x_t - G(t, T_proba_fwd) * sigma_r_t * sigma_r_t ;	  	  
-}
 
 
 double CheyetteDD_Model::drift_y(double t, double x_t, double y_t) const

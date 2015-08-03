@@ -1,6 +1,6 @@
 #pragma once
 #include <Cheyette/Pricer/MC_Cheyette.h>	
-#include <JBLMM/Instrument/GeneticSwap.h>
+#include <JBLMM/Instrument/GenericSwap.h>
 
 class MC_CheyetteDD_GenericSwapPricer : public MC_Cheyette
 {
@@ -17,7 +17,7 @@ public:
 
 
 	//! Pricing at time T0=0
-	double swapNPV(GeneticSwap_CONSTPTR geneticSwap, size_t nbSimulation, Tenor tenorLeg1, Tenor tenorLeg2) const ;
+	double swapNPV(GenericSwap_CONSTPTR genericSwap, size_t nbSimulation, Tenor tenorLeg1, Tenor tenorLeg2) const ;
 
 
 

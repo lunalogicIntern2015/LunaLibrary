@@ -2,7 +2,7 @@
 
 //value: method to overload to compute the cost functon value in x.
 //ici norme 2 = sqrt(sum of squares)
-Disposable<Array> CheyetteDD_CostFunctionSkew::values(const Array& param_m1D) const
+QuantLib::Disposable<QuantLib::Array> CheyetteDD_CostFunctionSkew::values(const QuantLib::Array& param_m1D) const
 {
 	// difference between Swaption Market Quotes and Swaption Model Values
 	double skewQuote = coTerminalSwaptionSkew_PTR_->getDiagonalSwaptionSkew() ;
@@ -19,7 +19,7 @@ Disposable<Array> CheyetteDD_CostFunctionSkew::values(const Array& param_m1D) co
 	std::cout << "skewModel : " << skewModel << ", skewQuote : " << skewQuote << std::endl ;
 	o_ << "; skewModel : ;" << skewModel << "; skewQuote : ;" << skewQuote << std::endl ;
 
-	Array res(1) ;
+	QuantLib::Array res(1) ;
 	res[0] = skewModel - skewQuote ;		
 	return res ;
 }

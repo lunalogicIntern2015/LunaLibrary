@@ -19,7 +19,7 @@
  *
  */
 
-class LmmSkewCostFunction : public CostFunction
+class LmmSkewCostFunction : public QuantLib::CostFunction
 {
 public:
 
@@ -30,10 +30,10 @@ public:
 		           , UpperTriangleVanillaSwaptionQuotes_ConstPTR pUpperTriangleVanillaSkewQuotes // instrument to calibrate 
 				   , Shifted_HGVolatilityParam_PTR pShifted_HGVolatilityParam );
 		
-	Real value(const Array & x) const ; 
+	QuantLib::Real value(const QuantLib::Array & x) const ; 
 	
 	//const Array& param_array
-	Disposable<Array> values(const Array& x) const ; 
+	QuantLib::Disposable<QuantLib::Array> values(const QuantLib::Array& x) const ; 
 
 	// Getter!
 	// attention, methods returning matrix copies, do not use in a loop
