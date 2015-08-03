@@ -648,6 +648,7 @@
     <ClInclude Include="Cheyette\unit_test\TestCalibrator.h" />
     <ClInclude Include="Cheyette\unit_test\TestMCGeneric.h" />
     <ClInclude Include="JBLMM\Instrument\GeneticSwap.h" />
+    <ClInclude Include="JBLMM\Element\Header_Test_GitHub.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="LMM\Test\Test_BlackGreek.cpp">
@@ -689,7 +690,6 @@
     <ClCompile Include="LMM\Test\Test_GMatrixMapping.cpp">
       <Filter>Test</Filter>
     </ClCompile>
-    <ClCompile Include="src\pricer\McLmmCallableOptionPricer.cpp" />
     <ClCompile Include="LMM\Test\Test_CalibrationConfig.cpp">
       <Filter>Test\Test_CreateLmmModel</Filter>
     </ClCompile>
@@ -1175,6 +1175,7 @@
     <ClCompile Include="LMM\RNGenerator\QMcGenerator.cpp">
       <Filter>RNGenerator</Filter>
     </ClCompile>
+    <ClCompile Include="JBLMM\Element\Header_Test_GitHub.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="TODO" />

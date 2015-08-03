@@ -39,14 +39,14 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>E:\Visual_Studio_Project\Visual_Studio_2012_Project\LunaLibrary;E:\DevLib\boost;E:\DevLib\QuantLib;$(IncludePath)</IncludePath>
+    <IncludePath>F:\test_GitHub;E:\Visual_Studio_Project\Visual_Studio_2012_Project\LunaLibrary;E:\DevLib\boost;E:\DevLib\QuantLib;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)VCBuild\$(Configuration)\</OutDir>
     <IntDir>VCBuild\$(Configuration)\</IntDir>
     <LibraryPath>E:\DevLib\QuantLib\lib;E:\DevLib\boost\stage\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>E:\DevLib\QuantLib;E:\DevLib\boost;C:\boost&amp;quantlib\QuantLib-1.2.1 ; C:\boost&amp;quantlib\boost_1_58_0\ ; C:\boost&amp;quantlib\boost_1_58_0\boost ; C:\stageCheyette\LunaLibrary ; E:\Visual_Studio_Project\Visual_Studio_2012_Project\LunaLibrary;$(IncludePath)</IncludePath>
-    <LibraryPath>E:\DevLib\QuantLib\lib;E:\DevLib\boost\stage\lib; C:\boost&amp;quantlib\boost_1_58_0\libs ; C:\boost&amp;quantlib\QuantLib-1.2.1\lib ; $(LibraryPath)</LibraryPath>
+    <IncludePath>E:\DevLib\QuantLib;E:\DevLib\boost;D:\DevLib\QuantLib;D:\DevLib\boost;C:\boost&amp;quantlib\QuantLib-1.2.1 ; C:\boost&amp;quantlib\boost_1_58_0\ ; C:\boost&amp;quantlib\boost_1_58_0\boost ; C:\stageCheyette\LunaLibrary ; E:\Visual_Studio_Project\Visual_Studio_2012_Project\LunaLibrary;$(IncludePath)</IncludePath>
+    <LibraryPath>E:\DevLib\QuantLib\lib;E:\DevLib\boost\stage\lib;D:\DevLib\QuantLib\lib;D:\DevLib\boost\stage\lib;  C:\boost&amp;quantlib\boost_1_58_0\libs ; C:\boost&amp;quantlib\QuantLib-1.2.1\lib ; $(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)VCBuild\$(Configuration)\</OutDir>
     <IntDir>VCBuild\$(Configuration)\</IntDir>
   </PropertyGroup>
@@ -54,7 +54,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>E:\Visual_Studio_Project\Visual_Studio_2012_Project\LunaLibrary;E:\DevLib\boost</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\Visual_Studio_Project\Visual_Studio_2012_Project\LunaLibrary;E:\DevLib\boost;</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
@@ -63,7 +63,7 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>E:\DevLib\QuantLib\lib\QuantLib-vc110-mt-gd.lib;</AdditionalDependencies>
-      <AdditionalLibraryDirectories>E:\DevLib\boost\stage\lib;E:\DevLib\QuantLib\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>E:\DevLib\boost\stage\lib;E:\DevLib\QuantLib\lib;</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -72,13 +72,13 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>E:\DevLib\boost; C:\boost&amp;quantlib\boost_1_58_0\ ; C:\stageCheyette\LunaLibrary ; E:\Visual_Studio_Project\Visual_Studio_2012_Project\LunaLibrary</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\DevLib\boost; D:\DevLib\boost; C:\boost&amp;quantlib\boost_1_58_0\ ; C:\stageCheyette\LunaLibrary ; E:\Visual_Studio_Project\Visual_Studio_2012_Project\LunaLibrary</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>E:\DevLib\QuantLib\lib\QuantLib-vc110-mt.lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>E:\DevLib\QuantLib\lib\QuantLib-vc110-mt.lib;D:\DevLib\QuantLib\lib\QuantLib-vc110-mt.lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>C:\boost&amp;quantlib\QuantLib-1.2.1\lib\QuantLib-vc110-mt.lib</AdditionalDependencies>
       <StackReserveSize>100000000</StackReserveSize>
       <StackCommitSize>100000000</StackCommitSize>
@@ -102,6 +102,7 @@
     <ClInclude Include="Cheyette\Pricer\MC_CheyetteDD_GenericSwaptionPricer.h" />
     <ClInclude Include="Cheyette\unit_test\TestCalibrator.h" />
     <ClInclude Include="Cheyette\unit_test\TestMCGeneric.h" />
+    <ClInclude Include="JBLMM\Element\Header_Test_GitHub.h" />
     <ClInclude Include="JBLMM\Instrument\GeneticSwap.h" />
     <ClInclude Include="Cheyette\Pricer\PDE_CheyetteDD_GenericSwapPricer.h" />
     <ClInclude Include="Cheyette\Pricer\PDE_CheyetteDD_VanillaSwapPricer.h" />
@@ -315,6 +316,7 @@
     <ClCompile Include="Cheyette\Pricer\MC_CheyetteDD_GenericSwaptionPricer.cpp" />
     <ClCompile Include="Cheyette\unit_test\TestCalibrator.cpp" />
     <ClCompile Include="Cheyette\unit_test\TestMCGeneric.cpp" />
+    <ClCompile Include="JBLMM\Element\Header_Test_GitHub.cpp" />
     <ClCompile Include="JBLMM\Instrument\GeneticSwap.cpp" />
     <ClCompile Include="Cheyette\Pricer\PDE_CheyetteDD_GenericSwapPricer.cpp" />
     <ClCompile Include="Cheyette\Pricer\PDE_CheyetteDD_VanillaSwapPricer.cpp" />
