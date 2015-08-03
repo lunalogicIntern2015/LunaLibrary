@@ -75,7 +75,7 @@ void MC_CheyetteDD_GenericSwaptionPricer::print(GeneticSwaption_CONSTPTR generic
 	o	<<	endl;
 	cheyetteDD_Model_->print(o) ;
 
-	genericSwaption->getGeneticSwap()->print(o) ;
+//	genericSwaption->getGeneticSwap()->print(o) ;
 
 	for (size_t i = 0 ; i < nbSimus.size() ; ++i)
 	{
@@ -123,7 +123,7 @@ void MC_CheyetteDD_GenericSwaptionPricer::printMC_vs_approx(double approx, doubl
 
 	cheyetteDD_Model_->get_courbeInput_PTR()->print(o) ;
 
-	genericSwaption->getGeneticSwap()->print(o) ;
+//	genericSwaption->getGeneticSwap()->print(o) ;
 
 	o	<<	endl;
 	o	<< "Prix approximation : ; " << approx << endl ;

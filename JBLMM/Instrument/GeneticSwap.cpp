@@ -12,3 +12,4 @@ GeneticSwap::GeneticSwap(CouponLeg_CONSTPTR leg1, CouponLeg_CONSTPTR leg2)
 	return GeneticSwap_PTR(new GeneticSwap(getLeg1()->getSubCouponLeg(indexStart,indexEnd), 
 		                                   getLeg2()->getSubCouponLeg(indexStart,indexEnd)));
 }
+

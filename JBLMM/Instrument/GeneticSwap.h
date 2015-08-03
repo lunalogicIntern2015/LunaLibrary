@@ -36,6 +36,8 @@ public:
 	virtual ~GeneticSwap(){}
 	//get subGeneticSwap
 	boost::shared_ptr<GeneticSwap> getSubGeneticSwap(const size_t indexStart, const size_t indexEnd) const;
+
+
 };
 typedef boost::shared_ptr<GeneticSwap> GeneticSwap_PTR;
 typedef boost::shared_ptr<const GeneticSwap> GeneticSwap_CONSTPTR;

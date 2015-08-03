@@ -178,40 +178,40 @@ void testCalib(size_t fileNumber, size_t coterminal)
 
 void generateSmile(size_t model_nbYear, size_t fileNumber, size_t coterminal, std::ofstream& o)
 {
-	//lecture du fichier et recuperation des market data
-	std::vector<std::string> mkt_file_list = InputFileManager::get_VCUB_FileList() ;
-	std::string mkt_data_file = mkt_file_list[fileNumber] ;
-
-	LmmSwaptionMarketDataFull_PTR pLmmSwaptionMarketData = get_LmmSwaptionMarketDataFull(model_nbYear, mkt_data_file) ;
-
-	//recuperation des quotations vol ATM, ATM+5bp, ATM-5bp pour tracer smile
-	UpperTriangleVanillaSwaptionQuotes_PTR volATM_ptr =  pLmmSwaptionMarketData->get_SwaptionQuotes_ATM() ;
-	UpperTriangleVanillaSwaptionQuotes_PTR volATMmm_ptr =  pLmmSwaptionMarketData->get_SwaptionQuotes_ATMmm() ;
-	UpperTriangleVanillaSwaptionQuotes_PTR volATMpp_ptr =  pLmmSwaptionMarketData->get_SwaptionQuotes_ATMpp() ;
-
-	UpperTriangleVanillaSwaptionQuotes_PTR volATM_p50 =  pLmmSwaptionMarketData->get_SwaptionQuotes_ATMp50() ;
-	UpperTriangleVanillaSwaptionQuotes_PTR volATM_p100 =  pLmmSwaptionMarketData->get_SwaptionQuotes_ATMp100() ;
-	UpperTriangleVanillaSwaptionQuotes_PTR volATM_p200 =  pLmmSwaptionMarketData->get_SwaptionQuotes_ATMp200() ;
-
-	UpperTriangleVanillaSwaptionQuotes_PTR volATM_m50 =  pLmmSwaptionMarketData->get_SwaptionQuotes_ATMm50() ;
-	UpperTriangleVanillaSwaptionQuotes_PTR volATM_m100 =  pLmmSwaptionMarketData->get_SwaptionQuotes_ATMm100() ;
-	UpperTriangleVanillaSwaptionQuotes_PTR volATM_m200 =  pLmmSwaptionMarketData->get_SwaptionQuotes_ATMm200() ;
-
-	o	<< "swaption ; volATM - 200bp ; volATM - 100bp ; volATM - 50bp ; volATM - 5bp ; volATM ; "
-		<< "volATM + 5 bp ; volATM + 50 bp ; volATM + 100 bp ; volATM + 200 bp " << std::endl ;
-	for (size_t i = 1 ; i < coterminal ; ++i)
-	{
-		o << "vol ATM swaption " << i << "Y" << coterminal - i << "Y ; "  
-			<< volATM_m200->get_UpperTriangularVanillaSwaptionQuotes()(i, coterminal - i).second	<< ";"
-			<< volATM_m100->get_UpperTriangularVanillaSwaptionQuotes()(i, coterminal - i).second		<< ";"
-			<< volATM_m50->get_UpperTriangularVanillaSwaptionQuotes()(i, coterminal - i).second	<< ";"
-			<< volATMmm_ptr->get_UpperTriangularVanillaSwaptionQuotes()(i, coterminal - i).second	<< ";"
-			<< volATM_ptr->get_UpperTriangularVanillaSwaptionQuotes()(i, coterminal - i).second		<< ";"
-			<< volATMpp_ptr->get_UpperTriangularVanillaSwaptionQuotes()(i, coterminal - i).second	<< ";"
-			<< volATM_p50->get_UpperTriangularVanillaSwaptionQuotes()(i, coterminal - i).second		<< ";"
-			<< volATM_p100->get_UpperTriangularVanillaSwaptionQuotes()(i, coterminal - i).second	<< ";"
-			<< volATM_p200->get_UpperTriangularVanillaSwaptionQuotes()(i, coterminal - i).second	<<std::endl ;
-	}
+//	//lecture du fichier et recuperation des market data
+//	std::vector<std::string> mkt_file_list = InputFileManager::get_VCUB_FileList() ;
+//	std::string mkt_data_file = mkt_file_list[fileNumber] ;
+//
+////	LmmSwaptionMarketDataFull_PTR pLmmSwaptionMarketData = get_LmmSwaptionMarketDataFull(model_nbYear, mkt_data_file) ;
+//
+//	//recuperation des quotations vol ATM, ATM+5bp, ATM-5bp pour tracer smile
+//	UpperTriangleVanillaSwaptionQuotes_PTR volATM_ptr =  pLmmSwaptionMarketData->get_SwaptionQuotes_ATM() ;
+//	UpperTriangleVanillaSwaptionQuotes_PTR volATMmm_ptr =  pLmmSwaptionMarketData->get_SwaptionQuotes_ATMmm() ;
+//	UpperTriangleVanillaSwaptionQuotes_PTR volATMpp_ptr =  pLmmSwaptionMarketData->get_SwaptionQuotes_ATMpp() ;
+//
+//	UpperTriangleVanillaSwaptionQuotes_PTR volATM_p50 =  pLmmSwaptionMarketData->get_SwaptionQuotes_ATMp50() ;
+//	UpperTriangleVanillaSwaptionQuotes_PTR volATM_p100 =  pLmmSwaptionMarketData->get_SwaptionQuotes_ATMp100() ;
+//	UpperTriangleVanillaSwaptionQuotes_PTR volATM_p200 =  pLmmSwaptionMarketData->get_SwaptionQuotes_ATMp200() ;
+//
+//	UpperTriangleVanillaSwaptionQuotes_PTR volATM_m50 =  pLmmSwaptionMarketData->get_SwaptionQuotes_ATMm50() ;
+//	UpperTriangleVanillaSwaptionQuotes_PTR volATM_m100 =  pLmmSwaptionMarketData->get_SwaptionQuotes_ATMm100() ;
+//	UpperTriangleVanillaSwaptionQuotes_PTR volATM_m200 =  pLmmSwaptionMarketData->get_SwaptionQuotes_ATMm200() ;
+//
+//	o	<< "swaption ; volATM - 200bp ; volATM - 100bp ; volATM - 50bp ; volATM - 5bp ; volATM ; "
+//		<< "volATM + 5 bp ; volATM + 50 bp ; volATM + 100 bp ; volATM + 200 bp " << std::endl ;
+//	for (size_t i = 1 ; i < coterminal ; ++i)
+//	{
+//		o << "vol ATM swaption " << i << "Y" << coterminal - i << "Y ; "  
+//			<< volATM_m200->get_UpperTriangularVanillaSwaptionQuotes()(i, coterminal - i).second	<< ";"
+//			<< volATM_m100->get_UpperTriangularVanillaSwaptionQuotes()(i, coterminal - i).second		<< ";"
+//			<< volATM_m50->get_UpperTriangularVanillaSwaptionQuotes()(i, coterminal - i).second	<< ";"
+//			<< volATMmm_ptr->get_UpperTriangularVanillaSwaptionQuotes()(i, coterminal - i).second	<< ";"
+//			<< volATM_ptr->get_UpperTriangularVanillaSwaptionQuotes()(i, coterminal - i).second		<< ";"
+//			<< volATMpp_ptr->get_UpperTriangularVanillaSwaptionQuotes()(i, coterminal - i).second	<< ";"
+//			<< volATM_p50->get_UpperTriangularVanillaSwaptionQuotes()(i, coterminal - i).second		<< ";"
+//			<< volATM_p100->get_UpperTriangularVanillaSwaptionQuotes()(i, coterminal - i).second	<< ";"
+//			<< volATM_p200->get_UpperTriangularVanillaSwaptionQuotes()(i, coterminal - i).second	<<std::endl ;
+//	}
 }
 
 

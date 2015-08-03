@@ -45,8 +45,8 @@
     <LibraryPath>D:\DevLib\QuantLib\lib;D:\DevLib\boost\stage\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>E:\Visual_Studio_Project\Visual_Studio_2012_Project\LunaLibrary;D:\DevLib\QuantLib;D:\DevLib\boost;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\DevLib\QuantLib\lib;D:\DevLib\boost\stage\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\boost&amp;quantlib\QuantLib-1.2.1 ; C:\boost&amp;quantlib\boost_1_58_0\ ; C:\boost&amp;quantlib\boost_1_58_0\boost ; C:\stageCheyette\LunaLibrary ; E:\Visual_Studio_Project\Visual_Studio_2012_Project\LunaLibrary;D:\DevLib\QuantLib;D:\DevLib\boost;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\boost&amp;quantlib\boost_1_58_0\libs ; C:\boost&amp;quantlib\QuantLib-1.2.1\lib ; D:\DevLib\QuantLib\lib;D:\DevLib\boost\stage\lib;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)VCBuild\$(Configuration)\</OutDir>
     <IntDir>VCBuild\$(Configuration)\</IntDir>
   </PropertyGroup>
@@ -72,20 +72,37 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>E:\Visual_Studio_Project\Visual_Studio_2012_Project\LunaLibrary</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\boost&amp;quantlib\boost_1_58_0\ ; C:\stageCheyette\LunaLibrary ; E:\Visual_Studio_Project\Visual_Studio_2012_Project\LunaLibrary</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>D:\DevLib\boost\stage\lib;D:\DevLib\QuantLib\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>D:\DevLib\QuantLib\lib\QuantLib-vc110-mt.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\boost&amp;quantlib\QuantLib-1.2.1\lib\QuantLib-vc110-mt.lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>C:\boost&amp;quantlib\QuantLib-1.2.1\lib\QuantLib-vc110-mt.lib</AdditionalDependencies>
       <StackReserveSize>100000000</StackReserveSize>
       <StackCommitSize>100000000</StackCommitSize>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Cheyette\Calibrator\CheyetteBaseCalibrator.h" />
+    <ClInclude Include="Cheyette\Calibrator\CheyetteBaseCostFunction.h" />
+    <ClInclude Include="Cheyette\Calibrator\CheyetteDD_CalibrationConfig.h" />
+    <ClInclude Include="Cheyette\Calibrator\CheyetteDD_CostFunctionLevel.h" />
+    <ClInclude Include="Cheyette\Calibrator\CheyetteDD_CostFunctionSkew.h" />
+    <ClInclude Include="Cheyette\Calibrator\CheyetteDD_LocalCalibrator.h" />
+    <ClInclude Include="Cheyette\Calibrator\CoTerminalSwaptionQuotes.h" />
+    <ClInclude Include="Cheyette\Calibrator\CoTerminalSwaptionSkew.h" />
+    <ClInclude Include="Cheyette\Calibrator\CoTerminalSwaptionVol.h" />
+    <ClInclude Include="Cheyette\Calibrator\MarketData.h" />
+    <ClInclude Include="Cheyette\Calibrator\MarketDataConvertor.h" />
     <ClInclude Include="Cheyette\CheyetteModel\CheyetteQuad_Model.h" />
+    <ClInclude Include="Cheyette\Pricer\CheyetteQuad_VanillaSwaptionApproxPricer.h" />
+    <ClInclude Include="Cheyette\Pricer\MC_CheyetteDD_GenericSwapPricer.h" />
+    <ClInclude Include="Cheyette\Pricer\MC_CheyetteDD_GenericSwaptionPricer.h" />
+    <ClInclude Include="Cheyette\unit_test\TestCalibrator.h" />
+    <ClInclude Include="Cheyette\unit_test\TestMCGeneric.h" />
+    <ClInclude Include="JBLMM\Instrument\GeneticSwap.h" />
     <ClInclude Include="JBLMM\Instrument\Instrument.h" />
     <ClInclude Include="JBLMM\Instrument\CallableInstrument.h" />
     <ClInclude Include="Cheyette\CheyetteModel\CheyetteDD_Model.h" />
@@ -238,8 +255,22 @@
     <ClInclude Include="JBLMM\Longstaff_Schwartz\LS_ForwardAlgo.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Cheyette\Calibrator\CheyetteBaseCalibrator.cpp" />
+    <ClCompile Include="Cheyette\Calibrator\CheyetteBaseCostFunction.cpp" />
+    <ClCompile Include="Cheyette\Calibrator\CheyetteDD_CalibrationConfig.cpp" />
+    <ClCompile Include="Cheyette\Calibrator\CheyetteDD_CostFunctionLevel.cpp" />
+    <ClCompile Include="Cheyette\Calibrator\CheyetteDD_CostFunctionSkew.cpp" />
+    <ClCompile Include="Cheyette\Calibrator\CheyetteDD_LocalCalibrator.cpp" />
+    <ClCompile Include="Cheyette\Calibrator\CoTerminalSwaptionSkew.cpp" />
+    <ClCompile Include="Cheyette\Calibrator\CoTerminalSwaptionVol.cpp" />
+    <ClCompile Include="Cheyette\Calibrator\MarketData.cpp" />
     <ClCompile Include="Cheyette\CheyetteModel\CheyetteQuad_Model.cpp" />
     <ClCompile Include="Cheyette\Pricer\CheyetteQuad_VanillaSwaptionApproxPricer.cpp" />
+    <ClCompile Include="Cheyette\Pricer\MC_CheyetteDD_GenericSwapPricer.cpp" />
+    <ClCompile Include="Cheyette\Pricer\MC_CheyetteDD_GenericSwaptionPricer.cpp" />
+    <ClCompile Include="Cheyette\unit_test\TestCalibrator.cpp" />
+    <ClCompile Include="Cheyette\unit_test\TestMCGeneric.cpp" />
+    <ClCompile Include="JBLMM\Instrument\GeneticSwap.cpp" />
     <ClCompile Include="JBLMM\Instrument\Instrument.cpp" />
     <ClCompile Include="JBLMM\Instrument\CallableInstrument.cpp" />
     <ClCompile Include="Cheyette\CheyetteModel\CheyetteDD_Model.cpp" />
@@ -331,7 +362,7 @@
     <ClCompile Include="LMM\Test\Test_VanillaSwapPricer.cpp" />
     <ClCompile Include="LMM\Test\Test_VanillaSwaptionPricer.cpp" />
     <ClCompile Include="LMM\Test\Test_VanillaSwaptionPricer_MCvsApprox.cpp" />
-    <ClCompile Include="JBLMM\main.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="JBLMM\Longstaff_Schwartz\LS_ForwardAlgo.cpp" />
     <ClCompile Include="src\calibration\CalibrationShiftCostFunction.cpp" />
     <ClCompile Include="src\calibration\LmmCalibrationConfig.cpp" />
