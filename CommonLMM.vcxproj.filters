@@ -648,6 +648,7 @@
     <ClInclude Include="Cheyette\unit_test\TestCalibrator.h" />
     <ClInclude Include="Cheyette\unit_test\TestMCGeneric.h" />
     <ClInclude Include="JBLMM\Instrument\GeneticSwap.h" />
+    <ClInclude Include="JBLMM\Element\filters_test.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="LMM\Test\Test_BlackGreek.cpp">
@@ -1174,6 +1175,7 @@
     <ClCompile Include="LMM\RNGenerator\QMcGenerator.cpp">
       <Filter>RNGenerator</Filter>
     </ClCompile>
+    <ClCompile Include="JBLMM\Element\filters_test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="TODO" />

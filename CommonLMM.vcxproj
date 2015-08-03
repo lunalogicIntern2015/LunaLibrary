@@ -102,6 +102,7 @@
     <ClInclude Include="Cheyette\Pricer\MC_CheyetteDD_GenericSwaptionPricer.h" />
     <ClInclude Include="Cheyette\unit_test\TestCalibrator.h" />
     <ClInclude Include="Cheyette\unit_test\TestMCGeneric.h" />
+    <ClInclude Include="JBLMM\Element\filters_test.h" />
     <ClInclude Include="JBLMM\Instrument\GeneticSwap.h" />
     <ClInclude Include="Cheyette\Pricer\PDE_CheyetteDD_GenericSwapPricer.h" />
     <ClInclude Include="Cheyette\Pricer\PDE_CheyetteDD_VanillaSwapPricer.h" />
@@ -315,6 +316,7 @@
     <ClCompile Include="Cheyette\Pricer\MC_CheyetteDD_GenericSwaptionPricer.cpp" />
     <ClCompile Include="Cheyette\unit_test\TestCalibrator.cpp" />
     <ClCompile Include="Cheyette\unit_test\TestMCGeneric.cpp" />
+    <ClCompile Include="JBLMM\Element\filters_test.cpp" />
     <ClCompile Include="JBLMM\Instrument\GeneticSwap.cpp" />
     <ClCompile Include="Cheyette\Pricer\PDE_CheyetteDD_GenericSwapPricer.cpp" />
     <ClCompile Include="Cheyette\Pricer\PDE_CheyetteDD_VanillaSwapPricer.cpp" />
