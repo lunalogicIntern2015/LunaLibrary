@@ -39,7 +39,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>E:\Visual_Studio_Project\Visual_Studio_2012_Project\LunaLibrary;E:\DevLib\boost;E:\DevLib\QuantLib;$(IncludePath)</IncludePath>
+    <IncludePath>H:\Visual_Studio_Project\Visual_Studio_2012_Project\LunaLibrary;E:\DevLib\boost;E:\DevLib\QuantLib;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)VCBuild\$(Configuration)\</OutDir>
     <IntDir>VCBuild\$(Configuration)\</IntDir>
     <LibraryPath>E:\DevLib\QuantLib\lib;E:\DevLib\boost\stage\lib;$(LibraryPath)</LibraryPath>
