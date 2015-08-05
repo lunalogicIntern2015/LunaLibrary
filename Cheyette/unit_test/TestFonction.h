@@ -1,10 +1,10 @@
 #ifndef _TEST_FONCTION_
 #define _TEST_FONCTION_
 
-#include <Cheyette\CheyetteModel\CheyetteDD_Model.h>	
+#include <Cheyette\Model\CheyetteDD_Model.h>	
 #include <Cheyette\Fonction.h>
 #include <Cheyette\InverseFunction.h>
-#include <LMM/instrument/VanillaSwaption.h>
+#include <Instrument/VanillaSwaption.h>
 
 
 void TestFonctionConstanteMorceaux() ;

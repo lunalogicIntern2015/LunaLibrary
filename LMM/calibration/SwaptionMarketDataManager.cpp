@@ -11,9 +11,9 @@
 #include <LMM/helper/GenericPath.h>
 #include <LMM/helper/BuildVariable.h>
 #include <LMM/helper/Noise.h>
-#include <LMM/numeric/Interpolation.h>
+#include <Numeric/Interpolation.h>
 
-#include <LMM/pricer/LmmVanillaSwapPricer.h> // pre computing annuities and omega0
+#include <LMM/Pricer/LmmAnalyticalPricer/LmmVanillaSwapPricer.h> // pre computing annuities and omega0
 
 SwaptionMarketDataManager::SwaptionMarketDataManager(const LMMTenorStructure_PTR& pLMMTenorStructure)
 	: pLMMTenorStructure_(pLMMTenorStructure)

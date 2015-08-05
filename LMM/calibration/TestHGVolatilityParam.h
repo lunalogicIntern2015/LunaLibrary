@@ -5,8 +5,8 @@
 
 #include <ql/termstructures/volatility/abcd.hpp>
 
-#include <LMM/helper/LMMTenorStructure.h>
-#include <LMM/LmmModel/ConstShifted_HGVolatilityFunction.h>
+#include <LMM/Helper/LMMTenorStructure.h>
+#include <LMM/Model/ConstShifted_HGVolatilityFunction.h>
 
 
 //==================  TEST HGABCD VOLATILITY PARAMETER ========================

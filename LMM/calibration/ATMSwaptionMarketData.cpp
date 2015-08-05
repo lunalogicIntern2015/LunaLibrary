@@ -6,7 +6,7 @@
 #include <cstdlib>
 #include <algorithm>
 
-#include <LMM/helper/GenericPath.h>
+#include <LMM/Helper/GenericPath.h>
 
 
 ATMSwaptionMarketData::ATMSwaptionMarketData()

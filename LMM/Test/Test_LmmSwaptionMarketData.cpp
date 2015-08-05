@@ -3,10 +3,10 @@
 #include <ctime>
 #include <iostream>
 
-#include <LMM/helper/TenorType.h>
-#include <LMM/helper/LMMTenorStructure.h>
+#include <LMM/Helper/TenorType.h>
+#include <LMM/Helper/LMMTenorStructure.h>
 
-#include <LMM/LmmModel/LmmSwaptionMarketData.h>
+#include <LMM/LmmSwaptionMarketData.h>
 
 void test_ParseData_5YR();
 void test_ParseData_10YR();

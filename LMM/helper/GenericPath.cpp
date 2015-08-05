@@ -1,4 +1,4 @@
-#include <LMM/helper/GenericPath.h>
+#include <LMM/Helper/GenericPath.h>
 #include <vector>
 #include <iostream>
 #include <sstream>

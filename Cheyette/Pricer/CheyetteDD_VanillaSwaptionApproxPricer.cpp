@@ -1,5 +1,5 @@
 #include <Cheyette\Pricer\CheyetteDD_VanillaSwaptionApproxPricer.h>
-#include "LMM/numeric/NumericalMethods.h"
+#include "Numeric/NumericalMethods.h"
 
 #include <cassert>
 #include <vector>

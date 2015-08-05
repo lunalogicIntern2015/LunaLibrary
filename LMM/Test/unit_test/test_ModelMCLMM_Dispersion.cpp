@@ -3,10 +3,10 @@
 
 #include <ql/math/matrixutilities/symmetricschurdecomposition.hpp>
 
-#include <LMM/helper/Name.h>
-#include <LMM/helper/GenericPath.h>
-#include <LMM/ModelMCLMM/Correlation.h>
-#include <LMM/ModelMCLMM/HGVolatilityFunction.h>
+#include <LMM/Helper/Name.h>
+#include <LMM/Helper/GenericPath.h>
+#include <LMM/Model/Correlation.h>
+#include <LMM/Model/HGVolatilityFunction.h>
 #include <LMM/ModelMCLMM/Dispersion.h>
 
 BOOST_AUTO_TEST_SUITE(lmm_test_model_Dispersion)

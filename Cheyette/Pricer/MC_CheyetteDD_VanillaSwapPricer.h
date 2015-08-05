@@ -1,6 +1,6 @@
 #pragma once
 #include <Cheyette/Pricer/MC_Cheyette.h>	
-#include <LMM/instrument/VanillaSwap.h>  
+#include <Instrument/VanillaSwap.h>  
 
 
 class MC_CheyetteDD_VanillaSwapPricer : public MC_Cheyette

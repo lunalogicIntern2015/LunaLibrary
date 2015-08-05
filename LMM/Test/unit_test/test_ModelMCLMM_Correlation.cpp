@@ -3,8 +3,8 @@
 
 #include <ql/math/matrixutilities/symmetricschurdecomposition.hpp>
 
-#include <LMM/helper/GenericPath.h>
-#include <LMM/ModelMCLMM/Correlation.h>
+#include <LMM/Helper/GenericPath.h>
+#include <LMM/Model/Correlation.h>
 
 //ctnrefactor write here a common CorrelConfig as test fixture
 //-----------------------------------------------------------------------------------------------

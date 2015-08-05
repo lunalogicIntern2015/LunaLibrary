@@ -2,7 +2,7 @@
 
 #include <boost/test/included/unit_test.hpp>
 
-#include <LMM/numeric/NumericalMethods.h>
+#include <Numeric/NumericalMethods.h>
 
 BOOST_AUTO_TEST_SUITE(lmm_numeric_numericalmethods)
 

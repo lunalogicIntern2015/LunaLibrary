@@ -1,5 +1,5 @@
 #include <LMM/Test/Tests.h>
-#include <LMM/LmmModel/LmmABCDFinder.h>
+#include <LMM/LmmABCDFinder.h>
 
 #include <iostream>
 #include <cassert>
@@ -8,15 +8,15 @@
 #include <fstream>
 
 #include <ql/termstructures/volatility/abcdcalibration.hpp>
-#include <LMM/helper/TenorType.h>
-#include <LMM/helper/LMMTenorStructure.h>
-#include <LMM/helper/InputFileManager.h>
-#include <LMM/LmmModel/LmmSwaptionMarketData.h>
-#include <LMM/helper/GenericPath.h>
+#include <LMM/Helper/TenorType.h>
+#include <LMM/Helper/LMMTenorStructure.h>
+#include <LMM/Helper/InputFileManager.h>
+#include <LMM/LmmSwaptionMarketData.h>
+#include <LMM/Helper/GenericPath.h>
 
-#include <LMM/LmmModel/ConstShifted_HGVolatilityFunction.h>
-#include <LMM/LmmModel/LmmABCDCostFunction.h>
-#include <LMM/LmmModel/LmmABCDCalibrator.h>
+#include <LMM/Model/ConstShifted_HGVolatilityFunction.h>
+#include <LMM/Calibration/Calibrator_CostFunction/LmmBaseCalibrator.h>
+#include <LMM/Calibration/Calibrator_CostFunction/LmmABCDCalibrator.h>
 
 enum SWAPTIONCHOICE
 {

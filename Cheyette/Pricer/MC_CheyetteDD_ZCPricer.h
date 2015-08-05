@@ -1,12 +1,12 @@
 #pragma once
 
 #include <boost/shared_ptr.hpp>
-#include <Cheyette/CheyetteModel/CheyetteDD_Model.h>
+#include <Cheyette/Model/CheyetteDD_Model.h>
 #include <Cheyette/Pricer/MC_Cheyette.h>	
 
 //#include "GenericSwap.h"
-#include <LMM/instrument/VanillaSwap.h>  
-#include <LMM/numeric/Integrator1D.h>  //pour la fonction closestDate
+#include <Instrument/VanillaSwap.h>  
+#include <Numeric/Integrator1D.h>  //pour la fonction closestDate
 
 class MC_CheyetteDD_ZCPricer
 {

@@ -22,31 +22,31 @@
 #include <ql/math/optimization/levenbergmarquardt.hpp>
 // ---- include for QuantLib calibration -------
 
-#include <LMM/helper/GenericPath.h>
-#include <LMM/helper/TenorType.h>
-#include <LMM/helper/LMMTenorStructure.h>
-#include <LMM/numeric/NumericalMethods.h>
-#include <LMM/RNGenerator/McGenerator.h>
-#include <LMM/helper/Noise.h>
-#include <LMM/helper/LmmGnuplotPrinterMatrix.h>
+#include <LMM/Helper/GenericPath.h>
+#include <LMM/Helper/TenorType.h>
+#include <LMM/Helper/LMMTenorStructure.h>
+#include <Numeric/NumericalMethods.h>
+#include <RNGenerator/McGenerator.h>
+#include <LMM/Helper/Noise.h>
+#include <LMM/Helper/LmmGnuplotPrinterMatrix.h>
 
 #include <LMM/calibration/ATMSwaptionMarketData.h>
 #include <LMM/calibration/SwaptionMarketDataContainer.h>
 #include <LMM/calibration/SwaptionMarketDataManager.h>
 
-#include <LMM/LmmModel/Lmm.h>
-#include <LMM/LmmModel/Correlation.h>
-#include <LMM/LmmModel/ConstShifted_HGVolatilityFunction.h>
-#include <LMM/LmmModel/LmmSkewCostFunction.h>
-#include <LMM/LmmModel/LmmBaseCostFunction.h>
-#include <LMM/LmmModel/LmmBaseCalibrator.h>
-#include <LMM/pricer/LmmVanillaSwaptionApproxPricer_Rebonato.h>
-#include <LMM/LmmModel/LmmSwaptionMarketData.h>
-#include <LMM/LmmModel/LmmShiftCalibrator.h>
+#include <LMM/Model/Lmm.h>
+#include <LMM/Model/Correlation.h>
+#include <LMM/Model/ConstShifted_HGVolatilityFunction.h>
+#include <LMM/Calibration/Calibrator_CostFunction/LmmSkewCostFunction.h>
+#include <LMM/Calibration/Calibrator_CostFunction/LmmBaseCostFunction.h>
+#include <LMM/Calibration/Calibrator_CostFunction/LmmBaseCalibrator.h>
+#include <LMM/Pricer/LmmApproximationPricer/LmmVanillaSwaptionApproxPricer_Rebonato.h>
+#include <LMM/LmmSwaptionMarketData.h>
+#include <LMM/Calibration/Calibrator_CostFunction/LmmShiftCalibrator.h>
 
-#include <LMM/LmmModel/LmmGlobal_gCalibrator.h>
-#include <LMM/LmmModel/LmmLocal_gCalibrator.h>
-#include <LMM/LmmModel/LmmCascade_gCalibrator.h>
+#include <LMM/Calibration/Calibrator_CostFunction/LmmGlobal_gCalibrator.h>
+#include <LMM/Calibration/Calibrator_CostFunction/LmmLocal_gCalibrator.h>
+#include <LMM/Calibration/Calibrator_CostFunction/LmmCascade_gCalibrator.h>
 
 void test_LmmVirtual_gCalibration(const Test_CalibrationConfig& config);
 //void test_LmmVirtualCalibrationShift(const Test_CalibrationConfig& config);

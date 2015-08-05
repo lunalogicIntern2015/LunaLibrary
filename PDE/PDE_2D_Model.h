@@ -2,7 +2,7 @@
 
 #include <vector>
 #include "Model.h"
-#include <PDE/Discretization.h>
+#include <PDE/Discretization/Discretization.h>
 #include <string>
 #include <PDE/Matrix/Matrix.h>
 #include <boost/shared_ptr.hpp>

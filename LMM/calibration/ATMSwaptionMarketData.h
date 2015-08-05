@@ -6,8 +6,8 @@
 #include <vector>
 #include <string>
 
-#include <LMM/helper/Name.h>
-#include <LMM/helper/TenorType.h>
+#include <LMM/Helper/Name.h>
+#include <LMM/Helper/TenorType.h>
 
 /*! \class ATMSwaptionMarketData
  *

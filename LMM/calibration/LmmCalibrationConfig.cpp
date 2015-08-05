@@ -1,5 +1,5 @@
 #include <LMM/calibration/LmmCalibrationConfig.h>
-#include <LMM/helper/GenericPath.h>
+#include <LMM/Helper/GenericPath.h>
 
 #include <iostream>
 #include <cassert>

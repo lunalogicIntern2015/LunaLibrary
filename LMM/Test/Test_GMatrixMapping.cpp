@@ -1,12 +1,12 @@
 #include <vector>
 
-#include <LMM/helper/GenericPath.h>
-#include <LMM/helper/Printer.h>
-#include <LMM/helper/LmmGnuplotPrinterMatrix.h>
+#include <LMM/Helper/GenericPath.h>
+#include <LMM/Helper/Printer.h>
+#include <LMM/Helper/LmmGnuplotPrinterMatrix.h>
 
-#include <LMM/LmmModel/GMatrixMapping.h>
-#include <LMM/LmmModel/ConstShifted_HGVolatilityFunction.h>
-#include <LMM/pricer/LmmVanillaSwaptionApproxPricer_Rebonato.h>
+#include <LMM/Calibration/GMatrixMapping.h>
+#include <LMM/Model/ConstShifted_HGVolatilityFunction.h>
+#include <LMM/Pricer/LmmApproximationPricer/LmmVanillaSwaptionApproxPricer_Rebonato.h>
 
 //#include <LMM/calibration/TestHGVolatilityParam.h>
 

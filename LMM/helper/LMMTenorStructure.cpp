@@ -1,10 +1,10 @@
-//#include <LMM/LmmModel/LMMTenorStructure.h>
-#include <LMM/helper/LMMTenorStructure.h>
+//#include <LMM/Model/LMMTenorStructure.h>
+#include <LMM/Helper/LMMTenorStructure.h>
 
-#include <LMM/helper/GenericPath.h>
-#include <LMM/helper/Printer.h>
-#include <LMM/helper/BuildVariable.h>
-#include <LMM/helper/EqualOperator.h>
+#include <LMM/Helper/GenericPath.h>
+#include <LMM/Helper/Printer.h>
+#include <LMM/Helper/BuildVariable.h>
+#include <LMM/Helper/EqualOperator.h>
 
 
 LMMTenorStructure::LMMTenorStructure(const Tenor&  tenorType, int max_nbOfYear)

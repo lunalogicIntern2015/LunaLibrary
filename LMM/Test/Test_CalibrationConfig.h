@@ -3,23 +3,23 @@
 
 #include <iostream>
 
-#include <LMM/helper/Name.h>
-#include <LMM/helper/GenericPath.h>
-#include <LMM/helper/Printer.h>
-#include <LMM/helper/Noise.h>
-#include <LMM/helper/CalibrationType.h>
-#include <LMM/helper/LMMTenorStructure.h>
+#include <LMM/Helper/Name.h>
+#include <LMM/Helper/GenericPath.h>
+#include <LMM/Helper/Printer.h>
+#include <LMM/Helper/Noise.h>
+#include <LMM/Calibration/CalibrationType.h>
+#include <LMM/Helper/LMMTenorStructure.h>
 
-#include <LMM/LmmModel/ConstShifted_HGVolatilityFunction.h>
-#include <LMM/LmmModel/McTerminalLmm.h>
+#include <LMM/Model/ConstShifted_HGVolatilityFunction.h>
+#include <LMM/Mc/McTerminalLmm.h>
 
-#include <LMM/pricer/LmmVanillaSwaptionApproxPricer_Rebonato.h>
+#include <LMM/Pricer/LmmApproximationPricer/LmmVanillaSwaptionApproxPricer_Rebonato.h>
 
-#include <LMM/LmmModel/LmmPenalty.h>
-#include <LMM/LmmModel/GMatrixMapping.h>
-#include <LMM/LmmModel/UpperTriangleVanillaSwaptionQuotes.h>
+#include <LMM/Calibration/LmmPenalty.h>
+#include <LMM/Calibration/GMatrixMapping.h>
+#include <LMM/UpperTriangleVanillaSwaptionQuotes.h>
 
-#include <LMM/LmmModel/LmmBaseCostFunction.h>
+#include <LMM/Calibration/Calibrator_CostFunction/LmmBaseCostFunction.h>
 /*! \class Test_CalibrationConfig
 *
 *	class use for configurating a calibration test

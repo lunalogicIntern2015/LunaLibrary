@@ -7,28 +7,28 @@
 #include <fstream>
 
 #include <ql/termstructures/volatility/abcdcalibration.hpp>
-#include <LMM/helper/LMMTenorStructure.h>
-#include <LMM/helper/InputFileManager.h>
-#include <LMM/LmmModel/LmmSwaptionMarketData.h>
-#include <LMM/helper/GenericPath.h>
+#include <LMM/Helper/LMMTenorStructure.h>
+#include <LMM/Helper/InputFileManager.h>
+#include <LMM/LmmSwaptionMarketData.h>
+#include <LMM/Helper/GenericPath.h>
 
-#include <LMM/LmmModel/ConstShifted_HGVolatilityFunction.h>
+#include <LMM/Model/ConstShifted_HGVolatilityFunction.h>
 
-#include <LMM/LmmModel/LmmABCDCostFunction.h>
-#include <LMM/LmmModel/LmmABCDCalibrator.h>
+#include <LMM/Calibration/Calibrator_CostFunction/LmmBaseCalibrator.h>
+#include <LMM/Calibration/Calibrator_CostFunction/LmmABCDCalibrator.h>
 
-#include <LMM/LmmModel/LmmCorrelationCostFunction.h>
-#include <LMM/LmmModel/LmmCorrelationCalibrator.h>
+#include <LMM/Calibration/Calibrator_CostFunction/LmmCorrelationCostFunction.h>
+#include <LMM/Calibration/Calibrator_CostFunction/LmmCorrelationCalibrator.h>
 
-#include <LMM/LmmModel/LmmBaseCalibrator.h>
-#include <LMM/LmmModel/LmmBaseCostFunction.h>
+#include <LMM/Calibration/Calibrator_CostFunction/LmmBaseCalibrator.h>
+#include <LMM/Calibration/Calibrator_CostFunction/LmmBaseCostFunction.h>
 
-#include <LMM/LmmModel/LmmGlobal_gCalibrator.h>
-#include <LMM/LmmModel/LmmGlobal_gCostFunction.h>
-#include <LMM/LmmModel/LmmLocal_gCalibrator.h>
-#include <LMM/LmmModel/LmmLocal_gCostFunction.h>
-#include <LMM/LmmModel/LmmCascade_gCalibrator.h>
-#include <LMM/LmmModel/LmmCascade_gCostFunction.h>
+#include <LMM/Calibration/Calibrator_CostFunction/LmmGlobal_gCalibrator.h>
+#include <LMM/Calibration/Calibrator_CostFunction/LmmGlobal_gCostFunction.h>
+#include <LMM/Calibration/Calibrator_CostFunction/LmmLocal_gCalibrator.h>
+#include <LMM/Calibration/Calibrator_CostFunction/LmmLocal_gCostFunction.h>
+#include <LMM/Calibration/Calibrator_CostFunction/LmmCascade_gCalibrator.h>
+#include <LMM/Calibration/Calibrator_CostFunction/LmmCascade_gCostFunction.h>
 
 LmmSwaptionMarketData_PTR get_LmmSwaptionMarketData(const LmmCalibrationConfig& config, const std::string& input_file)
 {

@@ -1,14 +1,14 @@
 #include <LMM/Test/Tests.h>
 #include <stdio.h>
 
-#include <LMM/pricer/LmmVanillaSwaptionApproxPricer_Rebonato.h>
-#include <LMM/numeric/NumericalMethods.h>
+#include <LMM/Pricer/LmmApproximationPricer/LmmVanillaSwaptionApproxPricer_Rebonato.h>
+#include <Numeric/NumericalMethods.h>
 
 #include <Cheyette/unit_test/TestFonction.h>
 #include <Cheyette/unit_test/TestIntegrator1D_2D.h>
 #include <Cheyette/unit_test/TestApproxDD.h>
-#include <Cheyette/CheyetteModel/CheyetteDD_Model.h>
-#include <LMM/numeric/Integrator1D.h>
+#include <Cheyette/Model/CheyetteDD_Model.h>
+#include <Numeric/Integrator1D.h>
 #include <Cheyette/unit_test/TestMC.h>
 
 

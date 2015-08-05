@@ -3,7 +3,7 @@
 #include <cmath>
 
 #include <Cheyette/Pricer/PDE_CheyetteDD_VanillaSwapPricer.h>
-#include <PDE/BoundaryCondition_D2.h>
+#include <PDE/BoundaryCondition/BoundaryCondition_D2.h>
 
 ////simulation
 //double PDE_CheyetteDD_VanillaSwapPricer::swapNPV (VanillaSwap_PTR vanillaSwap, size_t valuationIndex) const

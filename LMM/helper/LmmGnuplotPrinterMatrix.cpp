@@ -8,7 +8,7 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/numeric/ublas/triangular.hpp>  // Triangular matrix
 
-#include <LMM/helper/LmmGnuplotPrinterMatrix.h>
+#include <LMM/Helper/LmmGnuplotPrinterMatrix.h>
 
 
 

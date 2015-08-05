@@ -5,13 +5,13 @@
 
 #include <boost/test/included/unit_test.hpp>
 
-#include <LMM/helper/Name.h>
-#include <LMM/helper/GenericPath.h>
-#include <LMM/helper/TenorType.h>
-#include <LMM/helper/LMMTenorStructure.h>
+#include <LMM/Helper/Name.h>
+#include <LMM/Helper/GenericPath.h>
+#include <LMM/Helper/TenorType.h>
+#include <LMM/Helper/LMMTenorStructure.h>
 
-#include <LMM/instrument/VanillaSwap.h>
-#include <LMM/instrument/VanillaSwaption.h>
+#include <Instrument/VanillaSwap.h>
+#include <Instrument/VanillaSwaption.h>
 
 
 BOOST_AUTO_TEST_SUITE(lmm_instrument_VanillaSwap)

@@ -2,7 +2,7 @@
 
 #include <boost/test/included/unit_test.hpp>
 
-#include <LMM/helper/Tensor.h>
+#include <LMM/Helper/Tensor.h>
 
 BOOST_AUTO_TEST_SUITE(lmm_test_helper_tensor)
 

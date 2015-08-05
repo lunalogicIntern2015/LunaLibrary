@@ -1,4 +1,4 @@
-#include <LMM/helper/Functional.h>
+#include <StaticReplication/Functional.h>
 #include <iostream>
 
 double func_f1(double x){return x;}

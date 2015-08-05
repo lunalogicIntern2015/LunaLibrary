@@ -1,11 +1,11 @@
 #define BOOST_TEST_MODULE LMM_unit_test_model
 #include <boost/test/included/unit_test.hpp>
 
-#include <LMM/RNGenerator/McGenerator.h>
-#include <LMM/RNGenerator/RNGenerator.h>
+#include <RNGenerator/McGenerator.h>
+#include <RNGenerator/RNGenerator.h>
 
-#include <LMM/ModelMCLMM/Correlation.h>
-#include <LMM/ModelMCLMM/HGVolatilityFunction.h>
+#include <LMM/Model/Correlation.h>
+#include <LMM/Model/HGVolatilityFunction.h>
 #include <LMM/ModelMCLMM/McTerminalLmm.h>
 
 

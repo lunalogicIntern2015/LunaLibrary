@@ -1,15 +1,15 @@
 #include <iostream>
 
-#include <LMM/helper/Name.h>
-#include <LMM/helper/GenericPath.h>
-#include <LMM/helper/Printer.h>
-#include <LMM/RNGenerator/McGenerator.h>
-#include <LMM/LmmModel/ConstShifted_HGVolatilityFunction.h>
-#include <LMM/LmmModel/BetaShifted_HGVolatilityFunction.h>
-#include <LMM/LmmModel/McTerminalLmm.h>
-#include <LMM/LmmModel/McSpotLmm.h>
-#include <LMM/LmmModel/Lmm.h>
-#include <LMM/helper/Tensor.h>
+#include <LMM/Helper/Name.h>
+#include <LMM/Helper/GenericPath.h>
+#include <LMM/Helper/Printer.h>
+#include <RNGenerator/McGenerator.h>
+#include <LMM/Model/ConstShifted_HGVolatilityFunction.h>
+#include <LMM/Model/BetaShifted_HGVolatilityFunction.h>
+#include <LMM/Mc/McTerminalLmm.h>
+#include <LMM/Mc/McSpotLmm.h>
+#include <LMM/Model/Lmm.h>
+#include <LMM/Helper/Tensor.h>
 
 #include <stdlib.h>     // for C++ random number generator: srand, rand 
 //----------------------------------------------------------------------------------------------

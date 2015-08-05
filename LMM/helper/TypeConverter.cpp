@@ -1,4 +1,4 @@
-#include <LMM/helper/TypeConverter.h>
+#include <LMM/Helper/TypeConverter.h>
 
 boost::numeric::ublas::matrix<double> QLMatrix2BoostMatrix(const QuantLib::Matrix& m)
 {

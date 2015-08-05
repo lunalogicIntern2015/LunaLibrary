@@ -1,14 +1,14 @@
 #include <LMM/Test/Tests.h>
 
-#include <LMM/helper/LMMTenorStructure.h>
-#include <LMM/instrument/VanillaSwap.h>
-#include <LMM/instrument/VanillaSwaption.h>
-#include <LMM/LmmModel/Lmm.h>
-#include <LMM/LmmModel/Correlation.h>
-#include <LMM/LmmModel/ConstShifted_HGVolatilityFunction.h>
+#include <LMM/Helper/LMMTenorStructure.h>
+#include <Instrument/VanillaSwap.h>
+#include <Instrument/VanillaSwaption.h>
+#include <LMM/Model/Lmm.h>
+#include <LMM/Model/Correlation.h>
+#include <LMM/Model/ConstShifted_HGVolatilityFunction.h>
 //#include <LMM/calibration/TestHGVolatilityParam.h>
 
-#include <LMM/LmmModel/UpperTriangleVanillaSwaptionQuotes.h>
+#include <LMM/UpperTriangleVanillaSwaptionQuotes.h>
 
 void test_ResetSwap();
 

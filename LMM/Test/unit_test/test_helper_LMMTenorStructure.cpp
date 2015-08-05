@@ -2,7 +2,7 @@
 
 #include <boost/test/included/unit_test.hpp>
 
-#include <LMM/helper/LMMTenorStructure.h>
+#include <LMM/Helper/LMMTenorStructure.h>
 
 
 BOOST_AUTO_TEST_SUITE(lmm_test_LMMTenorStructure)

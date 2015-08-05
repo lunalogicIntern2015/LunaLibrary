@@ -8,29 +8,29 @@
 //#include <ctime>
 //#include <cmath>
 //
-//#include "Discretization.h"
+//#include <PDE/Discretization/Discretization.h>
 //#include "BoundaryCondition_Heston_Put.h"
-//#include "BoundaryCondition_D2_density.h"
+//#include <PDE/BoundaryCondition/BoundaryCondition_D2_density.h>
 //
-//#include "PDE_ADI_Solver.h"
+//#include <PDE/Solver/PDE_ADI_Solver.h>
 ////#include "PDE_ADI_Extrapolation_Solver.h"
 //
-//#include "Scheme_ADI.h"
-//#include "Scheme_Yanenko.h"  // 1
-//#include "Scheme_Douglas.h"  // 2 
-//#include "Scheme_CS.h"       // 3
-//#include "Scheme_MCS.h"      // 4
-//#include "Scheme_HV.h"       // 5
+//#include <PDE/Scheme/Scheme_ADI.h>
+//#include <PDE/Scheme/Scheme_Yanenko.h>  // 1
+//#include <PDE/Scheme/Scheme_Douglas.h>  // 2 
+//#include <PDE/Scheme/Scheme_CS.h>      // 3
+//#include <PDE/Scheme/Scheme_MCS.h>      // 4
+//#include <PDE/Scheme/Scheme_HV.h>       // 5
 //
-////#include "HestonModel.h"
+////#include <PDE/HestonModel.h>
 ////#include "Model_discret.h"
 ////#include "Model.h"
 //#include "Model_discret.h"
-//#include "Heston_analytical_pricer.h"
-//#include "useful_function.h"
+//#include <PDE/Heston_analytical_pricer.h>
+//#include <PDE/useful_function.h>
 //
 //#include <PDE/Matrix/Matrix.h>
-//#include "Params.h"
+//#include <PDE/Params.h>
 //#include <fstream>
 //
 //#include "Interpolator.h"

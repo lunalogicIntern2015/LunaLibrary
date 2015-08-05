@@ -3,8 +3,8 @@
 #include <cmath>
 
 #include <Cheyette/Pricer/PDE_CheyetteDD_GenericSwapPricer.h>
-#include <PDE/BoundaryCondition_D2.h>
-#include <JBLMM/Instrument/GenericSwap.h>
+#include <PDE/BoundaryCondition/BoundaryCondition_D2.h>
+#include <Instrument/GenericSwap/GenericSwap.h>
 //
 ////simulation
 //double PDE_CheyetteDD_GenericSwapPricer::swapNPV (GenericSwap_PTR genericSwap, size_t valuationIndex) const

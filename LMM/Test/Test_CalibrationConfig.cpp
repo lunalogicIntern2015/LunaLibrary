@@ -4,9 +4,9 @@
 #include <string.h>
 #include <fstream>
 
-#include <LMM/LmmModel/LmmGlobal_gCostFunction.h>
-#include <LMM/LmmModel/LmmLocal_gCostFunction.h>
-#include <LMM/LmmModel/LmmCascade_gCostFunction.h>
+#include <LMM/Calibration/Calibrator_CostFunction/LmmGlobal_gCostFunction.h>
+#include <LMM/Calibration/Calibrator_CostFunction/LmmLocal_gCostFunction.h>
+#include <LMM/Calibration/Calibrator_CostFunction/LmmCascade_gCostFunction.h>
 
 void Test_CalibrationConfig::printExacCalibResult(const std::string& filename, const QuantLib::Array& init_shift, const QuantLib::Array& perturb_shift, const QuantLib::Array& calib_shift)
 {

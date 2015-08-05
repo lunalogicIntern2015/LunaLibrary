@@ -3,8 +3,8 @@
 #include <fstream>
 #include <vector>
 #include "Interpolator.h"
-#include "Heston_analytical_pricer.h"
-#include "Params.h"
+#include <PDE/Heston_analytical_pricer.h>
+#include <PDE/Params.h>
 #include "Quadrature.h"
 
 using namespace std;

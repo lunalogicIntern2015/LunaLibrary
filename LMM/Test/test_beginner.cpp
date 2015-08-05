@@ -1,19 +1,19 @@
 #include <LMM/Test/Tests.h>
-#include <LMM/helper/Name.h>
-#include <LMM/helper/TenorType.h>
+#include <LMM/Helper/Name.h>
+#include <LMM/Helper/TenorType.h>
 
-#include <LMM/instrument/VanillaSwap.h>
+#include <Instrument/VanillaSwap.h>
 
-#include <LMM/LmmModel/Correlation.h>
+#include <LMM/Model/Correlation.h>
 
-#include <LMM/LmmModel/Lmm.h>
+#include <LMM/Model/Lmm.h>
 
-#include <LMM/LmmModel/McTerminalLmm.h>
+#include <LMM/Mc/McTerminalLmm.h>
 
-#include <LMM/LmmModel/McLmm.h>
+#include <LMM/Mc/McLmm.h>
 
-#include <LMM/RNGenerator/RNGenerator.h>
-#include <LMM/RNGenerator/McGenerator.h>
+#include <RNGenerator/RNGenerator.h>
+#include <RNGenerator/McGenerator.h>
 
 void test_beginner()
 {

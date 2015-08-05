@@ -1,19 +1,19 @@
 #include <iostream>
 
-#include <LMM/helper/Name.h>
-#include <LMM/helper/GenericPath.h>
-#include <LMM/helper/Printer.h>
-#include <LMM/RNGenerator/McGenerator.h>
-#include <LMM/instrument/VanillaSwaption.h>
-#include <LMM/LmmModel/ConstShifted_HGVolatilityFunction.h>
-#include <LMM/LmmModel/McTerminalLmm.h>
-#include <LMM/LmmModel/McSpotLmm.h>
-#include <LMM/pricer/McLmmVanillaSwaptionPricer.h>
-#include <LMM/pricer/LmmVanillaSwaptionApproxPricer_Rebonato.h>
-#include <LMM/pricer/LmmVanillaSwaptionApproxPricer_Piterbarg.h>
+#include <LMM/Helper/Name.h>
+#include <LMM/Helper/GenericPath.h>
+#include <LMM/Helper/Printer.h>
+#include <RNGenerator/McGenerator.h>
+#include <Instrument/VanillaSwaption.h>
+#include <LMM/Model/ConstShifted_HGVolatilityFunction.h>
+#include <LMM/Mc/McTerminalLmm.h>
+#include <LMM/Mc/McSpotLmm.h>
+#include <LMM/Pricer/McLmmPricer/McLmmVanillaSwaptionPricer.h>
+#include <LMM/Pricer/LmmApproximationPricer/LmmVanillaSwaptionApproxPricer_Rebonato.h>
+#include <LMM/Pricer/LmmApproximationPricer/LmmVanillaSwaptionApproxPricer_Piterbarg.h>
 
-#include <LMM/LmmModel/Lmm.h>
-#include <LMM/LmmModel/Shifted_HGVolatilityFunction.h>
+#include <LMM/Model/Lmm.h>
+#include <LMM/Model/Shifted_HGVolatilityFunction.h>
 
 #include <LMM/Test/Test_createLmmModel.h>
 

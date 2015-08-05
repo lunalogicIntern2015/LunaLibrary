@@ -5,7 +5,7 @@
 #include <cassert>
 #include <string.h>
 
-#include <LMM/helper/TenorType.h>
+#include <LMM/Helper/TenorType.h>
 
 BOOST_AUTO_TEST_SUITE(lmm_test_instrument_Tenor)
 

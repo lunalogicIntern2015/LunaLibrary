@@ -1,5 +1,5 @@
 #pragma once
-#include <LMM/LmmModel/ConstShifted_HGVolatilityFunction.h>
+#include <LMM/Model/ConstShifted_HGVolatilityFunction.h>
 
 // LmmCalibrationConfig play the role of parameters holders for the whole model
 //

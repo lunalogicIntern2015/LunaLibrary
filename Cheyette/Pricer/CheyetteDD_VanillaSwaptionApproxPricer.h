@@ -1,10 +1,10 @@
 ﻿#pragma once
 
-#include <Cheyette\CheyetteModel\CheyetteDD_Model.h>						
-#include <LMM/instrument/VanillaSwaption.h>
-#include <LMM/numeric/Integrator1D.h>
+#include <Cheyette\Model\CheyetteDD_Model.h>							
+#include <Instrument/VanillaSwaption.h>
+#include <Numeric/Integrator1D.h>
 
-#include <LMM/numeric/NumericalMethods.h>  //pour le prix Black
+#include <Numeric/NumericalMethods.h>  //pour le prix Black
 
 #include <cassert>
 #include <vector>

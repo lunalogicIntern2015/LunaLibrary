@@ -1,5 +1,5 @@
 #include "FFT.h"
-#include "Params.h"
+#include <PDE/Params.h>
 
 complex<double> gaussian_f(double x)
 { 

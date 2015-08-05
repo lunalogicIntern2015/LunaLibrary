@@ -2,7 +2,7 @@
 #include <boost/test/included/unit_test.hpp>
 
 
-#include <LMM/RNGenerator/QMcGenerator.h>
+#include <RNGenerator/QMcGenerator.h>
 
 BOOST_AUTO_TEST_SUITE(lmm_test_helper_qmcgenerator)
 

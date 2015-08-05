@@ -1,8 +1,8 @@
 #include <vector>
 
-#include <LMM/helper/GenericPath.h>
-#include <LMM/helper/Printer.h>
-#include <LMM/numeric/NumericalMethods.h>
+#include <LMM/Helper/GenericPath.h>
+#include <LMM/Helper/Printer.h>
+#include <Numeric/NumericalMethods.h>
 
 
 void test_BlackGreek()

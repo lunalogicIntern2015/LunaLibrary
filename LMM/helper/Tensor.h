@@ -7,7 +7,7 @@
 #include <boost/numeric/ublas/io.hpp>
 #include <boost/numeric/ublas/matrix.hpp>
 
-#include <LMM/helper/GenericPath.h>
+#include <LMM/Helper/GenericPath.h>
 
 
 /*! The tensor is a 3D matrix storing for precomputed value of time integral in each intervall [T_{k-1},T_k]

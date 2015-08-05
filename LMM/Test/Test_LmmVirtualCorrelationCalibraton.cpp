@@ -1,5 +1,5 @@
-#include <LMM/LmmModel/Lmm.h>
-#include <LMM/LmmModel/Correlation.h>
+#include <LMM/Model/Lmm.h>
+#include <LMM/Model/Correlation.h>
 #include <LMM/Test/Test_CalibrationConfig.h>
 
 #include <iostream>
@@ -23,10 +23,10 @@
 #include <ql/math/optimization/levenbergmarquardt.hpp>
 // ---- include for QuantLib calibration -------
 
-#include <LMM/LmmModel/LmmCorrelationCostFunction.h>
-#include <LMM/LmmModel/LmmCorrelationCalibrator.h>
+#include <LMM/Calibration/Calibrator_CostFunction/LmmCorrelationCostFunction.h>
+#include <LMM/Calibration/Calibrator_CostFunction/LmmCorrelationCalibrator.h>
 
-#include <LMM/helper/InputFileManager.h>
+#include <LMM/Helper/InputFileManager.h>
 
 
 void test_LmmVirtualCalibration_XY_beta_Correlation(const Test_CalibrationConfig& config);

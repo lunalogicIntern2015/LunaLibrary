@@ -5,18 +5,18 @@
 #include <cassert>
 #include <string.h>
 
-#include <LMM/helper/Name.h>
-#include <LMM/helper/GenericPath.h>
-#include <LMM/helper/Printer.h>
-#include <LMM/RNGenerator/McGenerator.h>
+#include <LMM/Helper/Name.h>
+#include <LMM/Helper/GenericPath.h>
+#include <LMM/Helper/Printer.h>
+#include <RNGenerator/McGenerator.h>
 
-#include <LMM/helper/TenorType.h>
-#include <LMM/instrument/VanillaSwaption.h>
-#include <LMM/ModelMCLMM/Lmm.h>
-#include <LMM/ModelMCLMM/Correlation.h>
-#include <LMM/ModelMCLMM/HGVolatilityFunction.h>
+#include <LMM/Helper/TenorType.h>
+#include <Instrument/VanillaSwaption.h>
+#include <LMM/Model/Lmm.h>
+#include <LMM/Model/Correlation.h>
+#include <LMM/Model/HGVolatilityFunction.h>
 
-#include <LMM/pricer/LmmApproxVanillaSwaptionPricer.h>
+#include <LMM/Pricer/LmmApproximationPricer/LmmApproxVanillaSwaptionPricer.h>
 
 BOOST_AUTO_TEST_SUITE(lmm_test_pricer_LmmApproxVanillaSwaptionPricer)
 

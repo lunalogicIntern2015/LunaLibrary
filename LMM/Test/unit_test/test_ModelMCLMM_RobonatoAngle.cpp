@@ -19,8 +19,8 @@
 #include <ql/math/matrixutilities/pseudosqrt.hpp>
 //#include <ql/errors.hpp>
 
-#include <LMM/helper/GenericPath.h>
-#include <LMM/ModelMCLMM/PCA.h>
+#include <LMM/Helper/GenericPath.h>
+#include <Numeric/PCA.h>
 #include <LMM/ModelMCLMM/RobonatoAngle.h>
 
 BOOST_AUTO_TEST_SUITE(lmm_test_model_RobonatoAngle)

@@ -1,24 +1,24 @@
 #include <iostream>
 
-#include <LMM/helper/Name.h>
-#include <LMM/helper/GenericPath.h>
-#include <LMM/helper/Printer.h>
-#include <LMM/RNGenerator/McGenerator.h>
-#include <LMM/helper/TenorType.h>
-#include <LMM/helper/LMMTenorStructure.h>
-#include <LMM/instrument/VanillaSwap.h>
-#include <LMM/LmmModel/Correlation.h>
-#include <LMM/LmmModel/ConstShifted_HGVolatilityFunction.h>
-#include <LMM/LmmModel/McTerminalLmm.h>
-#include <LMM/LmmModel/McSpotLmm.h>
-#include <LMM/pricer/McLmmVanillaSwapPricer.h>
+#include <LMM/Helper/Name.h>
+#include <LMM/Helper/GenericPath.h>
+#include <LMM/Helper/Printer.h>
+#include <RNGenerator/McGenerator.h>
+#include <LMM/Helper/TenorType.h>
+#include <LMM/Helper/LMMTenorStructure.h>
+#include <Instrument/VanillaSwap.h>
+#include <LMM/Model/Correlation.h>
+#include <LMM/Model/ConstShifted_HGVolatilityFunction.h>
+#include <LMM/Mc/McTerminalLmm.h>
+#include <LMM/Mc/McSpotLmm.h>
+#include <LMM/Pricer/McLmmPricer/McLmmVanillaSwapPricer.h>
 
 //! check FRA
-#include <LMM/pricer/LmmVanillaFRAPricer.h>
-#include <LMM/instrument/VanillaFRA.h>
+#include <LMM/Pricer/LmmAnalyticalPricer/LmmVanillaFRAPricer.h>
+#include <Instrument/VanillaFRA.h>
 
-#include <LMM/LmmModel/Lmm.h>
-#include <LMM/LmmModel/Shifted_HGVolatilityFunction.h>
+#include <LMM/Model/Lmm.h>
+#include <LMM/Model/Shifted_HGVolatilityFunction.h>
 
 #include <LMM/Test/Test_createLmmModel.h>
 //----------------------------------------------------------------------------------------------

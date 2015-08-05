@@ -1,9 +1,9 @@
 #include <LMM/Test/Tests.h>
-#include <LMM/helper/Noise.h>
+#include <LMM/Helper/Noise.h>
 
 #include <iostream>
 #include <fstream>
-#include <LMM/helper/GenericPath.h>
+#include <LMM/Helper/GenericPath.h>
 
 #include <climits>//test
 

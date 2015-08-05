@@ -1,8 +1,8 @@
 #include <cassert>
 
-#include <LMM/helper/GenericPath.h>
-#include <LMM/helper/Printer.h>
-#include <LMM/numeric/Interpolation.h>
+#include <LMM/Helper/GenericPath.h>
+#include <LMM/Helper/Printer.h>
+#include <Numeric/Interpolation.h>
 #include <LMM/calibration/TestHGVolatilityParam.h>
 #include <cmath>
 

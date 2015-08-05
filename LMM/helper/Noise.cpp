@@ -1,4 +1,4 @@
-#include <LMM/helper/Noise.h>
+#include <LMM/Helper/Noise.h>
 
 #include <ctime>
 #include <cassert>

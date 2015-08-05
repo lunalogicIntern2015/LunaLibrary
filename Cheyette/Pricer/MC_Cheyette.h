@@ -5,17 +5,17 @@
 #include <string>
 #include <boost/shared_ptr.hpp>
 
-#include <Cheyette/CheyetteModel/CheyetteDD_Model.h>
-#include <LMM/LmmModel/McLmm.h>  //pour le namespace MCSchemeType
-#include <LMM/RNGenerator/RNGenerator.h>
-#include <LMM/RNGenerator/McGenerator.h>
-#include <LMM/helper/TenorType.h>
-#include <LMM/helper/LMMTenorStructure.h>
+#include <Cheyette/Model/CheyetteDD_Model.h>
+#include <LMM/Mc/McLmm.h>  //pour le namespace MCSchemeType
+#include <RNGenerator/RNGenerator.h>
+#include <RNGenerator/McGenerator.h>
+#include <LMM/Helper/TenorType.h>
+#include <LMM/Helper/LMMTenorStructure.h>
 
-#include <JBLMM/Element/Coupon.h>
-#include <JBLMM/Element/CouponLeg.h>
-#include <JBLMM/Element/CappedFlooredCoupon.h>
-#include <JBLMM/Element/LiborRate.h>
+#include <Instrument/Coupon/Coupon.h>
+#include <Instrument/Coupon/CouponLeg.h>
+#include <Instrument/Coupon/CappedFlooredCoupon.h>
+#include <Instrument/Rate/LiborRate.h>
 
 
 /**************  generation de x(t) et y(t) sous la proba forward Q_T  **************

@@ -6,7 +6,7 @@
 //
 #include <complex>  //#include <boost/tr1/complex.hpp>
 #include <PDE/Matrix/Matrix.h>
-#include "Params.h"
+#include <PDE/Params.h>
 
 
 

@@ -1,11 +1,11 @@
-#include <LMM/RNGenerator/McGenerator.h>
-#include <LMM/RNGenerator/RNGenerator.h>
+#include <RNGenerator/McGenerator.h>
+#include <RNGenerator/RNGenerator.h>
 
-#include <LMM/LmmModel/Correlation.h>
-#include <LMM/LmmModel/McTerminalLmm.h>
+#include <LMM/Model/Correlation.h>
+#include <LMM/Mc/McTerminalLmm.h>
 
-#include <LMM/LmmModel/Lmm.h>
-#include <LMM/LmmModel/ConstShifted_HGVolatilityFunction.h>
+#include <LMM/Model/Lmm.h>
+#include <LMM/Model/ConstShifted_HGVolatilityFunction.h>
 
 void test_McTerminalLmm()  // OK: Test passed!
 {

@@ -1,7 +1,7 @@
 //#include "Interpolator.h"
-//#include "Params.h"
+//#include <PDE/Params.h>
 //#include <PDE/Matrix/Matrix.h>
-//#include "useful_function.h"
+//#include <PDE/useful_function.h>
 //
 //
 //double f(double x, double y)

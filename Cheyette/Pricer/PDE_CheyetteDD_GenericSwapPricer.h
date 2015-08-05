@@ -1,8 +1,8 @@
 #pragma once
 
 #include <Cheyette/Pricer/PDE_Cheyette_Pricer.h>	
-#include <LMM/instrument/VanillaSwap.h>  
-#include <PDE/BoundaryCondition_D2.h>
+#include <Instrument/VanillaSwap.h>  
+#include <PDE/BoundaryCondition/BoundaryCondition_D2.h>
 #include <boost/shared_ptr.hpp>
 
 

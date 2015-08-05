@@ -23,44 +23,44 @@
 #include <ql/math/optimization/levenbergmarquardt.hpp>
 // ---- include for QuantLib calibration -------
 
-#include <LMM/helper/GenericPath.h>
-#include <LMM/helper/TenorType.h>
-#include <LMM/helper/LMMTenorStructure.h>
-#include <LMM/numeric/NumericalMethods.h>
-#include <LMM/RNGenerator/McGenerator.h>
-#include <LMM/helper/Noise.h>
-#include <LMM/helper/InputFileManager.h>
-#include <LMM/helper/LmmGnuplotPrinterMatrix.h>
+#include <LMM/Helper/GenericPath.h>
+#include <LMM/Helper/TenorType.h>
+#include <LMM/Helper/LMMTenorStructure.h>
+#include <Numeric/NumericalMethods.h>
+#include <RNGenerator/McGenerator.h>
+#include <LMM/Helper/Noise.h>
+#include <LMM/Helper/InputFileManager.h>
+#include <LMM/Helper/LmmGnuplotPrinterMatrix.h>
 
 #include <LMM/calibration/ATMSwaptionMarketData.h>
 #include <LMM/calibration/SwaptionMarketDataContainer.h>
 #include <LMM/calibration/SwaptionMarketDataManager.h>
 
-#include <LMM/LmmModel/Lmm.h>
-#include <LMM/LmmModel/Correlation.h>
-#include <LMM/LmmModel/ConstShifted_HGVolatilityFunction.h>
-#include <LMM/LmmModel/LmmABCDCostFunction.h>
-#include <LMM/LmmModel/LmmABCDCalibrator.h>
-#include <LMM/LmmModel/LmmSkewCostFunction.h>
-#include <LMM/pricer/LmmVanillaSwaptionApproxPricer_Rebonato.h>
+#include <LMM/Model/Lmm.h>
+#include <LMM/Model/Correlation.h>
+#include <LMM/Model/ConstShifted_HGVolatilityFunction.h>
+#include <LMM/Calibration/Calibrator_CostFunction/LmmBaseCalibrator.h>
+#include <LMM/Calibration/Calibrator_CostFunction/LmmABCDCalibrator.h>
+#include <LMM/Calibration/Calibrator_CostFunction/LmmSkewCostFunction.h>
+#include <LMM/Pricer/LmmApproximationPricer/LmmVanillaSwaptionApproxPricer_Rebonato.h>
 
-#include <LMM/LmmModel/LmmSwaptionMarketData.h>
+#include <LMM/LmmSwaptionMarketData.h>
 
-#include <LMM/LmmModel/LmmShiftCalibrator.h>
+#include <LMM/Calibration/Calibrator_CostFunction/LmmShiftCalibrator.h>
 
-#include <LMM/LmmModel/LmmGlobal_gCalibrator.h>
-#include <LMM/LmmModel/LmmGlobal_gCostFunction.h>
-#include <LMM/LmmModel/LmmLocal_gCalibrator.h>
-#include <LMM/LmmModel/LmmLocal_gCostFunction.h>
-#include <LMM/LmmModel/LmmCascade_gCalibrator.h>
-#include <LMM/LmmModel/LmmCascade_gCostFunction.h>
+#include <LMM/Calibration/Calibrator_CostFunction/LmmGlobal_gCalibrator.h>
+#include <LMM/Calibration/Calibrator_CostFunction/LmmGlobal_gCostFunction.h>
+#include <LMM/Calibration/Calibrator_CostFunction/LmmLocal_gCalibrator.h>
+#include <LMM/Calibration/Calibrator_CostFunction/LmmLocal_gCostFunction.h>
+#include <LMM/Calibration/Calibrator_CostFunction/LmmCascade_gCalibrator.h>
+#include <LMM/Calibration/Calibrator_CostFunction/LmmCascade_gCostFunction.h>
 
 //pour Cheyette
-#include <Cheyette/Calibrator/CheyetteDD_CalibrationConfig.h>
-#include <Cheyette/CheyetteModel/CheyetteDD_Model.h>
+#include <Cheyette/Calibration/CheyetteDD_CalibrationConfig.h>
+#include <Cheyette/Model/CheyetteDD_Model.h>
 #include <Cheyette/Pricer/CheyetteDD_VanillaSwaptionApproxPricer.h>
-#include <Cheyette/Calibrator/CheyetteBaseCalibrator.h>
-#include <Cheyette/Calibrator/CheyetteDD_LocalCalibrator.h>
+#include <Cheyette/Calibration/CheyetteBaseCalibrator.h>
+#include <Cheyette/Calibration/CheyetteDD_LocalCalibrator.h>
 
 
 void test_calib_gMatrix_OneFile(const std::string& mkt_data_file);

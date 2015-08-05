@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Cheyette/CheyetteModel/CheyetteDD_Model.h>
+#include <Cheyette/Model/CheyetteDD_Model.h>
 #include <PDE/PDE_2D_Model.h>
 #include <boost/shared_ptr.hpp>
 

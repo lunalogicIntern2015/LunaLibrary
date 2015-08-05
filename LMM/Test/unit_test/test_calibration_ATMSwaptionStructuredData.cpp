@@ -2,9 +2,9 @@
 #include <boost/test/included/unit_test.hpp>
 #include <boost/test/floating_point_comparison.hpp>
 
-#include <LMM/helper/GenericPath.h>
-#include <LMM/helper/TenorType.h>
-#include <LMM/helper/LMMTenorStructure.h>
+#include <LMM/Helper/GenericPath.h>
+#include <LMM/Helper/TenorType.h>
+#include <LMM/Helper/LMMTenorStructure.h>
 
 #include <LMM/calibration/ATMSwaptionMarketData.h>
 #include <LMM/calibration/ATMSwaptionStructuredData.h>

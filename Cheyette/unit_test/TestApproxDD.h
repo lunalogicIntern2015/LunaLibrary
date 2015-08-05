@@ -1,12 +1,12 @@
 #pragma once
 
-#include <Cheyette\CheyetteModel\CourbeInput.h>	
-#include <LMM/instrument/VanillaSwaption.h>
+#include <Cheyette/Model/CourbeInput.h>	
+#include <Instrument/VanillaSwaption.h>
 #include <Cheyette/Fonction.h>
 #include <Cheyette/Pricer/CheyetteDD_VanillaSwaptionApproxPricer.h>
-#include <Cheyette/CheyetteModel/CheyetteDD_Model.h>
-#include <Cheyette/CheyetteModel/CourbeInput.h>
-#include <LMM/numeric/Integrator1D.h>
+#include <Cheyette/Model/CheyetteDD_Model.h>
+#include <Cheyette/Model/CourbeInput.h>
+#include <Numeric/Integrator1D.h>
 
 #include <iostream>
 #include <vector>

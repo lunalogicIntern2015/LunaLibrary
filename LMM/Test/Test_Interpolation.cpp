@@ -4,11 +4,11 @@
 
 #include <ql/math/matrix.hpp>
 
-#include <LMM/helper/GenericPath.h>
-#include <LMM/helper/Printer.h>
+#include <LMM/Helper/GenericPath.h>
+#include <LMM/Helper/Printer.h>
 #include <LMM/Test/Tests.h>
-#include <LMM/numeric/Interpolation.h>
-#include <LMM/numeric/UpperTriangularMatrixInterpolator.h>
+#include <Numeric/Interpolation.h>
+#include <Numeric/UpperTriangularMatrixInterpolator.h>
 
 
 using namespace numeric;

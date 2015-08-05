@@ -10,9 +10,9 @@
 
 #include <LMM/helper/Name.h>
 #include <LMM/helper/LMMTenorStructure.h>
-#include <LMM/instrument/VanillaSwaption.h>
+#include <Instrument/VanillaSwaption.h>
 #include <LMM/calibration/TestHGVolatilityParam.h>
-#include <LMM/pricer/LmmVanillaSwaptionApproxPricer_Rebonato.h>
+#include <LMM/Pricer/LmmApproximationPricer/LmmVanillaSwaptionApproxPricer_Rebonato.h>
 #include <LMM/calibration/ATMSwaptionMarketData.h>
 #include <LMM/calibration/SwaptionMarketDataContainer.h>
 

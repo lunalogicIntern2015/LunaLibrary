@@ -3,11 +3,11 @@
 #include <ql/math/array.hpp>
 #include <string>
 
-#include <LMM/LmmModel/LmmSwaptionMarketData.h>
-#include <LMM/LmmModel/LmmSwaptionMarketDataFull.h>
+#include <LMM/LmmSwaptionMarketData.h>
+#include <LMM/LmmSwaptionMarketDataFull.h>
 
 #include <LMM/calibration/LmmCalibrationConfig.h>
-#include <LMM/LmmModel/GMatrixMapping.h>
+#include <LMM/Calibration/GMatrixMapping.h>
 
 void test_Integrator1D(); 
 

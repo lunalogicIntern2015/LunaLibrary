@@ -9,7 +9,7 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/numeric/ublas/triangular.hpp>  // Triangular matrix
 
-#include <LMM/helper/GenericPath.h>
+#include <LMM/Helper/GenericPath.h>
 
 
 

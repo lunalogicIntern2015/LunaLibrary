@@ -9,8 +9,8 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/shared_array.hpp>
 
-#include <LMM/helper/Name.h>
-#include <LMM/helper/TenorType.h>
+#include <LMM/Helper/Name.h>
+#include <LMM/Helper/TenorType.h>
 
 
 /*! \class LMMTenorStructure used as a basis topological, timeline, timestep for simulation

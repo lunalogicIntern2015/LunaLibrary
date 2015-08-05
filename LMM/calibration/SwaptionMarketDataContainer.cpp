@@ -11,7 +11,7 @@
 #include <LMM/helper/GenericPath.h>
 #include <LMM/helper/BuildVariable.h>
 #include <LMM/helper/Noise.h>
-#include <LMM/numeric/Interpolation.h>
+#include <Numeric/Interpolation.h>
 
 SwaptionMarketDataContainer::SwaptionMarketDataContainer()
 : swaption_sparse_step_ (-1000000)

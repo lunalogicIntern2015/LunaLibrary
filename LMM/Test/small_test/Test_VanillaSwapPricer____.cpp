@@ -4,18 +4,18 @@
 
 #include <iostream>
 
-#include <LMM/helper/Name.h>
-#include <LMM/helper/GenericPath.h>
-#include <LMM/helper/Printer.h>
-#include <LMM/RNGenerator/McGenerator.h>
-#include <LMM/helper/TenorType.h>
-#include <LMM/helper/LMMTenorStructure.h>
-#include <LMM/instrument/VanillaSwap.h>
-#include <LMM/ModelMCLMM/Correlation.h>
-#include <LMM/ModelMCLMM/HGVolatilityFunction.h>
+#include <LMM/Helper/Name.h>
+#include <LMM/Helper/GenericPath.h>
+#include <LMM/Helper/Printer.h>
+#include <RNGenerator/McGenerator.h>
+#include <LMM/Helper/TenorType.h>
+#include <LMM/Helper/LMMTenorStructure.h>
+#include <Instrument/VanillaSwap.h>
+#include <LMM/Model/Correlation.h>
+#include <LMM/Model/HGVolatilityFunction.h>
 #include <LMM/ModelMCLMM/McTerminalLmm.h>
 #include <LMM/ModelMCLMM/McSpotLmm.h>
-#include <LMM/pricer/McLmmVanillaSwapPricer.h>
+#include <LMM/Pricer/McLmmVanillaSwapPricer.h>
 
 
 BOOST_AUTO_TEST_SUITE(lmm_test_swap)

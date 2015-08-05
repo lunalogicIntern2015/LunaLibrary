@@ -21,23 +21,23 @@
 //#include <ql/math/optimization/levenbergmarquardt.hpp>
 //// ---- include for QuantLib calibration -------
 //
-//#include <LMM/helper/GenericPath.h>
-//#include <LMM/helper/TenorType.h>
-//#include <LMM/helper/LMMTenorStructure.h>
-//#include <LMM/numeric/NumericalMethods.h>
-//#include <LMM/RNGenerator/McGenerator.h>
-//#include <LMM/helper/Noise.h>
+//#include <LMM/Helper/GenericPath.h>
+//#include <LMM/Helper/TenorType.h>
+//#include <LMM/Helper/LMMTenorStructure.h>
+//#include <Numeric/NumericalMethods.h>
+//#include <RNGenerator/McGenerator.h>
+//#include <LMM/Helper/Noise.h>
 //
 //#include <LMM/calibration/ATMSwaptionMarketData.h>
 //#include <LMM/calibration/SwaptionMarketDataContainer.h>
 //#include <LMM/calibration/SwaptionMarketDataManager.h>
 //
-//#include <LMM/LmmModel/Lmm.h>
-//#include <LMM/LmmModel/Correlation.h>
-//#include <LMM/LmmModel/ConstShifted_HGVolatilityFunction.h>
-//#include <LMM/pricer/LmmVanillaSwaptionApproxPricer_Rebonato.h>
+//#include <LMM/Model/Lmm.h>
+//#include <LMM/Model/Correlation.h>
+//#include <LMM/Model/ConstShifted_HGVolatilityFunction.h>
+//#include <LMM/Pricer/LmmApproximationPricer/LmmVanillaSwaptionApproxPricer_Rebonato.h>
 //
-//#include <LMM/calibration/CalibrationShiftCostFunction.h>
+//#include <LMM/Calibration/Calibrator_CostFunction/CalibrationShiftCostFunction.h>
 ////#include <LMM/calibration/TestHGVolatilityParam.h>
 //
 //LmmVanillaSwaptionApproxPricer_Rebonato_PTR createLmmVanillaSwaptionApproxPricer(const Tenor& tenorfixedleg,const Tenor& tenorfloatleg,LMMTenorStructure_PTR pLmmTenorStructure, const double const_shift );

@@ -2,8 +2,8 @@
 
 #include <boost/numeric/ublas/triangular.hpp>  // Triangular matrix
 #include <boost/numeric/ublas/io.hpp>
-#include <LMM/LmmModel/LmmCostFunction.h>
-#include <LMM/LmmModel/LmmCalibrator.h>
+#include <LMM/Model/LmmCostFunction.h>
+#include <LMM/Model/LmmCalibrator.h>
 
 typedef boost::numeric::ublas::matrix<double> UpperTriangularDoubleMatrix; // UTDM
 

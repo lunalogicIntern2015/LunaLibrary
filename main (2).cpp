@@ -1,16 +1,16 @@
 #include <stdio.h>
 
 
-#include <LMM/pricer/LmmVanillaSwaptionApproxPricer_Rebonato.h>
-#include <LMM/numeric/NumericalMethods.h>
-#include <JBLMM/Test/JBTests.h>
+#include <LMM/Pricer/LmmApproximationPricer/LmmVanillaSwaptionApproxPricer_Rebonato.h>
+#include <Numeric/NumericalMethods.h>
+//#include <JBLMM/Test/JBTests.h>
 
 #include <Cheyette/unit_test/TestFonction.h>
 #include <Cheyette/unit_test/TestIntegrator1D_2D.h>
 #include <Cheyette/unit_test/TestApproxDD.h>
 
-#include <Cheyette/CheyetteModel/CheyetteDD_Model.h>
-#include <LMM/numeric/Integrator1D.h>
+#include <Cheyette/Model/CheyetteDD_Model.h>
+#include <Numeric/Integrator1D.h>
 #include <Cheyette/unit_test/TestMC.h>
 #include <Cheyette/unit_test/TestCalibrator.h>
 #include <LMM/Test/Tests.h>
@@ -52,7 +52,7 @@ int main()
 
 
 
-	Test_LS_pricing_parameter();
+	//Test_LS_pricing_parameter();
 	//Test_10_basis();
 	//Test_evaluation_basis();
 	//Test_LS_pricing_allSubSet_basis();

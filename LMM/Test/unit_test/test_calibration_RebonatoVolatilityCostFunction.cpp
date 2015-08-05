@@ -5,16 +5,16 @@
 #include <cassert>
 #include <string.h>
 
-#include <LMM/helper/GenericPath.h>
-#include <LMM/helper/TenorType.h>
-#include <LMM/helper/LMMTenorStructure.h>
+#include <LMM/Helper/GenericPath.h>
+#include <LMM/Helper/TenorType.h>
+#include <LMM/Helper/LMMTenorStructure.h>
 #include <LMM/calibration/ATMSwaptionMarketData.h>
 #include <LMM/calibration/ATMSwaptionStructuredData.h>
 
-#include <LMM/ModelMCLMM/Lmm.h>
-#include <LMM/ModelMCLMM/Correlation.h>
-#include <LMM/ModelMCLMM/HGVolatilityFunction.h>
-#include <LMM/pricer/LmmApproxVanillaSwaptionPricer.h>
+#include <LMM/Model/Lmm.h>
+#include <LMM/Model/Correlation.h>
+#include <LMM/Model/HGVolatilityFunction.h>
+#include <LMM/Pricer/LmmApproximationPricer/LmmApproxVanillaSwaptionPricer.h>
 
 
 #include <LMM/calibration/RebonatoVolatilityCostFunction.h>

@@ -6,7 +6,7 @@
 #include <boost/function.hpp>
 #include <boost/shared_ptr.hpp>
 
-#include <LMM\numeric\NumericalMethods.h>
+#include <Numeric\NumericalMethods.h>
 
 /***********************************************************
 ******* fonctions de R dans R 

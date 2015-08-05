@@ -8,8 +8,8 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/numeric/ublas/triangular.hpp>  // Triangular matrix
 
-#include <LMM/helper/GenericPath.h>
-#include <LMM/helper/LMMTenorStructure.h>
+#include <LMM/Helper/GenericPath.h>
+#include <LMM/Helper/LMMTenorStructure.h>
 
 // specialise for printing upper triangular matrix
 typedef boost::numeric::ublas::matrix<double> UpperTriangularDoubleMatrix; // UTDM

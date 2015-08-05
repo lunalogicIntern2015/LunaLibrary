@@ -4,9 +4,9 @@
 #include <boost/bind.hpp>
 #include <vector>
 
-#include <LMM/helper/GenericPath.h>
-#include <LMM/helper/Printer.h>
-#include <LMM/helper/DerivatibleFunction.h>
+#include <LMM/Helper/GenericPath.h>
+#include <LMM/Helper/Printer.h>
+#include <LMM/Helper/DerivatibleFunction.h>
 
 
 BOOST_AUTO_TEST_SUITE(lmm_test_derivative)

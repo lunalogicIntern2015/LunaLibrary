@@ -2,9 +2,9 @@
 
 
 #include <PDE/PDE_2D_Model.h>
-#include <PDE/BoundaryCondition_D2.h>
-#include <PDE/Scheme_ADI.h>
-#include <PDE/PDE_ADI_Solver.h>
+#include <PDE/BoundaryCondition/BoundaryCondition_D2.h>
+#include <PDE/Scheme/Scheme_ADI.h>
+#include <PDE/Solver/PDE_ADI_Solver.h>
 #include <boost/shared_ptr.hpp>
 
 //! Cheyette model hiearchy is not well done, so for the moment only treat the cheyetteDD model

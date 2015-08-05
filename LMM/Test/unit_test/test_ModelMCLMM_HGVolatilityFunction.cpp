@@ -4,7 +4,7 @@
 
 #include <boost/test/included/unit_test.hpp>
 
-#include <LMM/ModelMCLMM/HGVolatilityFunction.h>
+#include <LMM/Model/HGVolatilityFunction.h>
 
 
 /*! an example of creating a HGVolatilityParam

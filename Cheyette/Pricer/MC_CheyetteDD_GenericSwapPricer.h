@@ -1,6 +1,6 @@
 #pragma once
 #include <Cheyette/Pricer/MC_Cheyette.h>	
-#include <JBLMM/Instrument/GenericSwap.h>
+#include <Instrument/GenericSwap/GenericSwap.h>
 
 class MC_CheyetteDD_GenericSwapPricer : public MC_Cheyette
 {

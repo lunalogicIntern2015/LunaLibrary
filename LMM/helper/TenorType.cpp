@@ -1,4 +1,4 @@
-#include <LMM/helper/TenorType.h>
+#include <LMM/Helper/TenorType.h>
 
 #include <cassert>
 
