@@ -6,8 +6,8 @@
 #include <Cheyette/Pricer/MC_CheyetteDD_VanillaSwaptionPricer.h>
 #include <Cheyette/Pricer/MC_CheyetteDD_ZCPricer.h>
 #include <Cheyette/Fonction.h>
-#include <LMM/RNGenerator/RNGenerator.h>
-#include <LMM/RNGenerator/McGenerator.h>
+#include <RNGenerator/RNGenerator.h>
+#include <RNGenerator/McGenerator.h>
 
 #include <Cheyette/unit_test/TestApproxDD.h>
 #include <Cheyette/unit_test/TestCalibrator.h>

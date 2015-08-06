@@ -437,14 +437,14 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>E:\Visual_Studio_Project\Visual_Studio_2012_Project\LunaLibrary;E:\DevLib\boost;E:\DevLib\QuantLib;$(IncludePath)</IncludePath>
+    <IncludePath>C:\stageCheyette ; C:\boost&amp;quantlib\QuantLib-1.2.1 ; C:\boost&amp;quantlib\boost_1_58_0 ; C:\stageCheyette ; E:\Visual_Studio_Project\Visual_Studio_2012_Project\LunaLibrary;E:\DevLib\boost;E:\DevLib\QuantLib;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)VCBuild\$(Configuration)\</OutDir>
     <IntDir>VCBuild\$(Configuration)\</IntDir>
-    <LibraryPath>E:\DevLib\QuantLib\lib;E:\DevLib\boost\stage\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>C:\boost&amp;quantlib\boost_1_58_0\libs ; C:\boost&amp;quantlib\QuantLib-1.2.1\lib ; E:\DevLib\QuantLib\lib;E:\DevLib\boost\stage\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>E:\DevLib\QuantLib;E:\DevLib\boost;D:\DevLib\QuantLib;D:\DevLib\boost;C:\boost&amp;quantlib\QuantLib-1.2.1 ; C:\boost&amp;quantlib\boost_1_58_0\ ; C:\boost&amp;quantlib\boost_1_58_0\boost ; C:\stageCheyette\LunaLibrary ; E:\Visual_Studio_Project\Visual_Studio_2012_Project\LunaLibrary;$(IncludePath)</IncludePath>
-    <LibraryPath>E:\DevLib\QuantLib\lib;E:\DevLib\boost\stage\lib;D:\DevLib\QuantLib\lib;D:\DevLib\boost\stage\lib;  C:\boost&amp;quantlib\boost_1_58_0\libs ; C:\boost&amp;quantlib\QuantLib-1.2.1\lib ; $(LibraryPath)</LibraryPath>
+    <IncludePath>C:\stageCheyette ; C:\boost&amp;quantlib\QuantLib-1.2.1 ; C:\boost&amp;quantlib\boost_1_58_0 ; C:\stageCheyette ; C:\stageCheyette ; E:\DevLib\QuantLib;E:\DevLib\boost;D:\DevLib\QuantLib;D:\DevLib\boost;C:\boost&amp;quantlib\QuantLib-1.2.1 ; C:\boost&amp;quantlib\boost_1_58_0\ ; C:\boost&amp;quantlib\boost_1_58_0\boost ; C:\stageCheyette\LunaLibrary ; E:\Visual_Studio_Project\Visual_Studio_2012_Project\LunaLibrary;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\boost&amp;quantlib\boost_1_58_0\libs ; C:\boost&amp;quantlib\QuantLib-1.2.1\lib ; E:\DevLib\QuantLib\lib;E:\DevLib\boost\stage\lib;D:\DevLib\QuantLib\lib;D:\DevLib\boost\stage\lib;  C:\boost&amp;quantlib\boost_1_58_0\libs ; C:\boost&amp;quantlib\QuantLib-1.2.1\lib ; $(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)VCBuild\$(Configuration)\</OutDir>
     <IntDir>VCBuild\$(Configuration)\</IntDir>
   </PropertyGroup>
@@ -452,7 +452,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>E:\Visual_Studio_Project\Visual_Studio_2012_Project\LunaLibrary;E:\DevLib\boost;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\boost&amp;quantlib\boost_1_58_0 ; C:\boost&amp;quantlib\QuantLib-1.2.1 ; E:\Visual_Studio_Project\Visual_Studio_2012_Project\LunaLibrary;E:\DevLib\boost;</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
@@ -460,7 +460,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>E:\DevLib\QuantLib\lib\QuantLib-vc110-mt-gd.lib;</AdditionalDependencies>
+      <AdditionalDependencies>C:\boost&amp;quantlib\QuantLib-1.2.1\lib\QuantLib-vc110-mt-gd.lib;</AdditionalDependencies>
       <AdditionalLibraryDirectories>E:\DevLib\boost\stage\lib;E:\DevLib\QuantLib\lib;</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>

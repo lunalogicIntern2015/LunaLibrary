@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Cheyette/Fonction.h>
-#include <Cheyette/CheyetteModel/CourbeInput.h>
+#include <Cheyette/Model/CourbeInput.h>
 
 #include <vector>
 #include <iostream>
@@ -9,7 +9,7 @@
 #include <boost/function.hpp>
 
 
-#include <LMM/instrument/VanillaSwap.h> 
+#include <Instrument/VanillaSwap.h> 
 #include <LMM/helper/LMMTenorStructure.h>
 
 #include <ql/math/array.hpp>

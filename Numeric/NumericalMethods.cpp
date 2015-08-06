@@ -237,28 +237,15 @@ double linearInterpolation2(const double& t,
 						   const std::vector<double>& maturities,
 						   const std::vector<double>& set_of_points)
 {
-	
-	try{
-		size_t N = maturities.size() ;
-		if (N != set_of_points.size())
-		{
-			throw std::string("Exception linearInterpolation : vecteurs grid et value doivent avoir meme longueur");
-		}
-		if (N == 0)
-		{
-			throw std::string("Exception linearInterpolation : vecteurs doivent etre non vides");
-		}
-		if (t < maturities[0] || t > maturities[N - 1])
-		{
-			throw std::string("Exception linearInterpolation : extrapolation !!");
-		}
-		size_t i=0 ;
-		while (t > maturities[i+1] && i < N-2){++i ;}
-	
-		return ( set_of_points[i] + (set_of_points[i+1] - set_of_points[i])/(maturities[i+1] - maturities[i])*(t - maturities[i]) ) ;
-	}
-	catch(std::string const& chaine) {std::cerr << chaine << std::endl;}
+	size_t N = maturities.size() ;
+	assert(N == set_of_points.size());  //vecteurs grid et value doivent avoir meme longueur
+	assert(N > 0) ;						//vecteurs doivent etre non vides
+	assert(t >= maturities[0] || t <= maturities[N - 1]) ;  //pas d'extrapolation
 
+	size_t i=0 ;
+	while (t > maturities[i+1] && i < N-2){++i ;}
+	
+	return ( set_of_points[i] + (set_of_points[i+1] - set_of_points[i])/(maturities[i+1] - maturities[i])*(t - maturities[i]) ) ;
 }
 
 double vectorProduct(std::vector<double>& v1, std::vector<double>& v2)

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <LMM\LmmSwaptionMarketData.h>
+
 //pour LMMTenorStructure
 const int max_nbOfYear = 40 ;
 

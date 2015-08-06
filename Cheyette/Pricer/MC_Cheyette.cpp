@@ -12,7 +12,7 @@ void MC_Cheyette::simulate_Euler() const
 	double y_t = 0. ;
 	double t = 0. ;
 
-	size_t fwdProbaIndex = fwdProbaT_ /tenorYearFrac ;
+	size_t fwdProbaIndex = static_cast<size_t>(fwdProbaT_ /tenorYearFrac) ;
 	//simulation de x_t, y_t jusqu'à fwdProbaT
 	for (size_t index = 1; index <= fwdProbaIndex ; ++index)    
 	{ 
@@ -44,7 +44,7 @@ void MC_Cheyette::simulate_Euler() const
 void MC_Cheyette::computeNumeraires() const
 {
 	double tenorYearFrac = pTenorStructure_->get_tenorType().YearFraction() ;	
-	size_t fwdProbaIndex = fwdProbaT_ /tenorYearFrac ;
+	size_t fwdProbaIndex = static_cast<size_t>(fwdProbaT_ /tenorYearFrac) ;
 	for (size_t i = 0 ; i <= fwdProbaIndex ; ++i)
 	{
 		double x_t = x_t_Cheyette_[i] ;
@@ -67,7 +67,7 @@ double MC_Cheyette::evaluateFloatLeg(	const size_t valuationIndex,
 	double price = 0.0;
 
 	//rapport tenorFloat / tenorStructure  (ex : swap 6M sur TenorStructure 3M) rapport de 2 = nbIndices
-	size_t nbIndices = tenorFloatYearFrac / tenorStructYearFrac ;
+	size_t nbIndices = static_cast<size_t>(tenorFloatYearFrac / tenorStructYearFrac) ;
 
 	for(size_t i=0; i<indexFloatLeg.size(); ++i)
 	{
@@ -85,13 +85,16 @@ double MC_Cheyette::evaluateFloatLeg(	const size_t valuationIndex,
 
 		double libor = cheyetteDD_Model_->Libor(valuationIndex * tenorStructYearFrac, fixingDate, paymentDate, 
 												x_t_Cheyette_[valuationIndex], y_t_Cheyette_[valuationIndex]) ; 	
+
 		//payoffFlow = nominal * deltaFloat * value  (ici NOMINAL = 1)
 		double payoffFlow		= tenorFloatYearFrac * libor ;		//tenorFloat = deltaFloat																			
 		double numeraireRatio	= numeraires_[valuationIndex]/numeraires_[paymentIndex];
 		price += payoffFlow * numeraireRatio;
 	}
 
-//version 2 : OK aussi
+//version 2 : mieux mais encore un petit ecart
+
+// A MULTIPLIER PAR LES NUMERAIRES !!!
 	//double startDateSwap	= (indexFloatLeg[0] - nbIndices ) * tenorStructYearFrac ;
 	//double endDateSwap		= indexFloatLeg[indexFloatLeg.size() - 1] * tenorStructYearFrac ;
 	//double price = 1 - cheyetteDD_Model_->P(startDateSwap, endDateSwap, x_t_Cheyette_[valuationIndex], 

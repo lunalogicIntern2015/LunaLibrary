@@ -181,39 +181,27 @@ public :
 	// traiter cas extreme: extrapolation ! 
 	const double Piecewiseconst_RR_Function::evaluate(double t) const
 	{
-		//assert(x_[0] <= t || t <= x_[x_.size() - 1] ) ;
-		//assert(y_.size() +  1 == x_.size()) ; 
-	    try
-		{
-			bool OK(true) ;
-			if(t < x_[0] || t > x_[x_.size() - 1] ){
-				OK = false ;
-				throw std::string("Exception : Evaluation de la fonction cste par morceaux hors du domaine");
-			}
-			if (y_.size() +  1 != x_.size())
-			{
-				OK = false ;
-				throw std::string("Exception Fonction Constante par morceaux : vecteurs de taille non conforme");
-			}
-			if (OK){
-				double res ; 
-				if (t == x_[x_.size() - 1]){
-					res = y_[y_.size() - 1] ;
-				}else{
-					size_t i = 0 ;
-					bool boolean ; 
-					boolean = (x_[i] <= t && t < x_[i+1]) ;
-					while (!boolean && i < (x_.size() - 2)){
-						++i ;
-						boolean = (x_[i] < t && t < x_[i+1]) ;
-					}
-					res = y_[i] ;
-				}
-				return (res) ;		
-			}
-		}
-		catch(std::string const& chaine) {std::cerr << chaine << std::endl;}
+		assert(x_[0] <= t || t <= x_[x_.size() - 1] ) ;
+		assert(y_.size() +  1 == x_.size()) ; 
 
+		double res ; 
+		if (t == x_[x_.size() - 1]){
+			res = y_[y_.size() - 1] ;
+		}
+		else
+		{
+			size_t i = 0 ;
+			bool boolean ; 
+			boolean = (x_[i] <= t && t < x_[i+1]) ;
+			while (!boolean && i < (x_.size() - 2))
+			{
+				++i ;
+				boolean = (x_[i] < t && t < x_[i+1]) ;
+			}
+			res = y_[i] ;
+		}
+		return (res) ;		
+			
 	}
 
 	const double operator ()(double x) const {

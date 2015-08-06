@@ -35,7 +35,7 @@ protected:
 	//LMMTenorStructure(const Tenor&  tenorType, int max_nbOfYear);
 	LMMTenorStructure_PTR		pTenorStructure_ ;	
 
-	size_t						fwdProbaT_ ;					// define the numeraire
+	double						fwdProbaT_ ;					// define the numeraire
 
 	size_t						discretizationBetweenDates_ ;	//nb de pas de discretisation entre 2 dates
 
@@ -49,13 +49,13 @@ public:
 	MC_Cheyette(	CheyetteDD_Model_PTR		cheyetteDD_Model,
 					RNGenerator_PTR				rnGenerator,
 					LMMTenorStructure_PTR		pTenorStructure,
-					size_t						fwdProbaT,
+					double						fwdProbaT,
 					size_t						discretizationBetweenDates   )
 		:cheyetteDD_Model_(cheyetteDD_Model), rnGenerator_(rnGenerator), pTenorStructure_(pTenorStructure),
 		fwdProbaT_(fwdProbaT), discretizationBetweenDates_(discretizationBetweenDates), 
-		x_t_Cheyette_(fwdProbaT / pTenorStructure->get_tenorType().YearFraction() + 1), 
-		y_t_Cheyette_(fwdProbaT / pTenorStructure->get_tenorType().YearFraction() + 1), 
-		numeraires_(fwdProbaT / pTenorStructure->get_tenorType().YearFraction() + 1) 
+		x_t_Cheyette_(static_cast<size_t>(fwdProbaT / pTenorStructure->get_tenorType().YearFraction() + 1)), 
+		y_t_Cheyette_(static_cast<size_t>(fwdProbaT / pTenorStructure->get_tenorType().YearFraction() + 1)), 
+		numeraires_(static_cast<size_t>(fwdProbaT / pTenorStructure->get_tenorType().YearFraction() + 1)) 
 	{
 			assert(pTenorStructure->get_max_nbOfYear() >= fwdProbaT)	;
 	} 
@@ -66,7 +66,7 @@ public:
 	CheyetteDD_Model_PTR		getCheyetteDD_Model() const{return cheyetteDD_Model_ ;}
 	RNGenerator_PTR				getRNGenerator() const{return rnGenerator_ ;}
 	LMMTenorStructure_PTR		getTenorStructure() const {return pTenorStructure_ ;}
-	size_t						getFwdProbaT() const{return fwdProbaT_ ;}
+	double						getFwdProbaT() const{return fwdProbaT_ ;}
 	size_t						getDiscretizationBetweenDates() const{return discretizationBetweenDates_ ;}
 
 	std::vector<double>			get_x_t_Cheyette() const{return x_t_Cheyette_ ;}
