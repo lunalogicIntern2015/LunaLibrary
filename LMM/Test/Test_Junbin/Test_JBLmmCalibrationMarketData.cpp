@@ -1,4 +1,4 @@
-#include <JBLMM/Test/JBTests.h>
+#include <LMM/Test/Test_Junbin/JBTests.h>
 #include <LMM/Test/Test_CalibrationConfig.h>
 
 #include <iostream>
@@ -41,15 +41,15 @@
 #include <LMM/Model/ConstShifted_HGVolatilityFunction.h>
 #include <LMM/Calibration/Calibrator_CostFunction/LmmBaseCalibrator.h>
 #include <LMM/Calibration/Calibrator_CostFunction/LmmABCDCalibrator.h>
-#include <LMM/Model/LmmSkewCostFunction.h>
+#include <LMM/Calibration/Calibrator_CostFunction/LmmSkewCostFunction.h> 
 #include <LMM/Pricer/LmmApproximationPricer/LmmVanillaSwaptionApproxPricer_Rebonato.h>
 
 #include <LMM/LmmSwaptionMarketData.h>
 
-#include <LMM/Model/LmmShiftCalibrator.h>
+#include <LMM/Calibration/Calibrator_CostFunction/LmmShiftCalibrator.h>
 
-#include <LMM/Model/LmmGlobal_gCalibrator.h>
-#include <LMM/Model/LmmGlobal_gCostFunction.h>
+#include <LMM/Calibration/Calibrator_CostFunction/LmmGlobal_gCalibrator.h>
+#include <LMM/Calibration/Calibrator_CostFunction/LmmGlobal_gCostFunction.h>
 
 #include <LMM/Model/Shifted_HGVolatilityFunction.h>
 

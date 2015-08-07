@@ -6,7 +6,7 @@
 
 #include <LMM/LmmSwaptionMarketData.h>
 #include <LMM/calibration/LmmCalibrationConfig.h>
-#include <LMM/GMatrixMapping.h>
+#include <LMM/Calibration/GMatrixMapping.h>
 #include <LMM/Model/Shifted_HGVolatilityFunction.h>
 #include <LMM/Pricer/McLmmPricer/McLmmVanillaSwapPricer.h>
 
@@ -19,10 +19,10 @@
 #include <LMM/Pricer/Longstaff_Schwartz/Regression_LS.h>
 #include <LMM/Pricer/Longstaff_Schwartz/McLmm_LS.h>
 #include <Instrument/CallableOption/CallableInstrument.h>
-#include <JBInstrument/CallableSwap.h>
-#include <JBInstrument/InstrumentFactory.h>
+
+#include <Instrument/InstrumentFactory.h>
 #include <LMM/Pricer/McLmmPricer/McLmmPricer.h>
-#include <JBLMM/Pricer/McLmmGenericSwapPricer.h>
+#include <LMM/Pricer/McLmmPricer/McLmmGenericSwapPricer.h>
 #include <LMM/Pricer/Longstaff_Schwartz/LS_BackwardAlgo.h>
 #include <LMM/Pricer/Longstaff_Schwartz/LS_ForwardAlgo.h>
 

@@ -1,4 +1,4 @@
-#include <JBLMM/Test/JBTests.h>
+#include <LMM/Test/Test_Junbin/JBTests.h>
 #include <LMM/Test/Tests.h>
 
 #include <iostream>
@@ -30,10 +30,9 @@
 #include <LMM/Pricer/Longstaff_Schwartz/Regression_LS.h>
 #include <LMM/Pricer/Longstaff_Schwartz/McLmm_LS.h>
 #include <Instrument/CallableOption/CallableInstrument.h>
-#include <JBInstrument/CallableSwap.h>
-#include <JBInstrument/InstrumentFactory.h>
+#include <Instrument/InstrumentFactory.h>
 #include <LMM/Pricer/McLmmPricer/McLmmPricer.h>
-#include <JBLMM/Pricer/McLmmGenericSwapPricer.h>
+#include <LMM/Pricer/McLmmPricer/McLmmGenericSwapPricer.h>
 #include <LMM/Pricer/Longstaff_Schwartz/LS_BackwardAlgo.h>
 #include <LMM/Pricer/Longstaff_Schwartz/LS_ForwardAlgo.h>
 
@@ -269,10 +268,10 @@ void Test_LS_pricing_vol_correl(const LmmCalibrationConfig& config)
 
 	mcLmm_LS_backward.simulateLMM(nbSimulation_vect[0]);
 	const std::vector<McLmm_LS::LMMSimulationResult>&  lmmSimualtionResults_backward = mcLmm_LS_backward.lmmSimualtionResults_;
-	mcLmm_LS_backward.write_to_stream(out_test_time);
+	//mcLmm_LS_backward.write_to_stream(out_test_time);
 	mcLmm_LS_forward.simulateLMM(nbSimulation_vect[0]);
 	const std::vector<McLmm_LS::LMMSimulationResult>&  lmmSimualtionResults_forward = mcLmm_LS_forward.lmmSimualtionResults_;
-	mcLmm_LS_forward.write_to_stream(out_test_time);
+	//mcLmm_LS_forward.write_to_stream(out_test_time);
 
 	std::stringstream outputFileName_s; 
 	outputFileName_s<<"Test_LS_pricing_with_parameter"<<".csv";

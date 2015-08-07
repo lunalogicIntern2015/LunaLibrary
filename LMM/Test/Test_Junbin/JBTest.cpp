@@ -1,4 +1,4 @@
-#include <JBLMM/Test/JBTests.h>
+#include <LMM/Test/Test_Junbin/JBTests.h>
 
 #include <iostream>
 #include <cassert>
@@ -24,14 +24,14 @@
 #include <LMM/Calibration/Calibrator_CostFunction/LmmBaseCalibrator.h>
 #include <LMM/Calibration/Calibrator_CostFunction/LmmBaseCostFunction.h>
 
-#include <LMM/Model/LmmGlobal_gCalibrator.h>
-#include <LMM/Model/LmmGlobal_gCostFunction.h>
-#include <LMM/Model/LmmLocal_gCalibrator.h>
-#include <LMM/Model/LmmLocal_gCostFunction.h>
-#include <LMM/Model/LmmCascade_gCalibrator.h>
-#include <LMM/Model/LmmCascade_gCostFunction.h>
+#include <LMM/Calibration/Calibrator_CostFunction/LmmGlobal_gCalibrator.h>
+#include <LMM/Calibration/Calibrator_CostFunction/LmmGlobal_gCostFunction.h>
+#include <LMM/Calibration/Calibrator_CostFunction/LmmLocal_gCalibrator.h>
+#include <LMM/Calibration/Calibrator_CostFunction/LmmLocal_gCostFunction.h>
+#include <LMM/Calibration/Calibrator_CostFunction/LmmCascade_gCalibrator.h>
+#include <LMM/Calibration/Calibrator_CostFunction/LmmCascade_gCostFunction.h>
 
-#include <LMM/Model/LmmShiftCalibrator.h>
+#include <LMM/Calibration/Calibrator_CostFunction/LmmShiftCalibrator.h>
 #include <LMM/Calibration/Calibrator_CostFunction/CalibrationShiftCostFunction.h>
 
 #include <LMM/calibration/SwaptionMarketDataManager.h>

@@ -598,6 +598,7 @@
     <ClInclude Include="LMM\Calibration\GMatrixMapping.h">
       <Filter>LMM\Calibration</Filter>
     </ClInclude>
+    <ClInclude Include="LMM\Test\Test_Junbin\JBTests.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Cheyette">
@@ -1278,5 +1279,15 @@
     <ClCompile Include="LMM\Calibration\GMatrixMapping.cpp">
       <Filter>LMM\Calibration</Filter>
     </ClCompile>
+    <ClCompile Include="LMM\Test\Test_Junbin\JBTest.cpp" />
+    <ClCompile Include="LMM\Test\Test_Junbin\Test_10_basis.cpp" />
+    <ClCompile Include="LMM\Test\Test_Junbin\Test_Comparaison_VanillaSwap.cpp" />
+    <ClCompile Include="LMM\Test\Test_Junbin\Test_GeneticTargetSwapOneTrajectory.cpp" />
+    <ClCompile Include="LMM\Test\Test_Junbin\Test_JBLmmCalibrationMarketData.cpp" />
+    <ClCompile Include="LMM\Test\Test_Junbin\Test_Longstaff_Schwartz.cpp" />
+    <ClCompile Include="LMM\Test\Test_Junbin\Test_McGeneticSwapLMMPricer.cpp" />
+    <ClCompile Include="LMM\Test\Test_Junbin\Test_McGeneticTargetSwapPricing.cpp" />
+    <ClCompile Include="LMM\Test\Test_Junbin\Test_oneset_basis_pricing.cpp" />
+    <ClCompile Include="LMM\Test\Test_Junbin\unit_test\Test_evaluation_basis.cpp" />
   </ItemGroup>
 </Project>
