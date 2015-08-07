@@ -538,9 +538,6 @@
     <ClInclude Include="LMM\Pricer\Longstaff_Schwartz\EV_Evaluator.h">
       <Filter>LMM\Pricer\Longstaff_Schwartz</Filter>
     </ClInclude>
-    <ClInclude Include="LMM\Pricer\Longstaff_Schwartz\LS_BackwardAlgo.h">
-      <Filter>LMM\Pricer\Longstaff_Schwartz</Filter>
-    </ClInclude>
     <ClInclude Include="LMM\Pricer\Longstaff_Schwartz\LS_ForwardAlgo.h">
       <Filter>LMM\Pricer\Longstaff_Schwartz</Filter>
     </ClInclude>
@@ -599,6 +596,12 @@
       <Filter>LMM\Calibration</Filter>
     </ClInclude>
     <ClInclude Include="LMM\Test\Test_Junbin\JBTests.h" />
+    <ClInclude Include="LMM\Pricer\Longstaff_Schwartz\LS_BackwardAlgo.h">
+      <Filter>LMM\Pricer\Longstaff_Schwartz</Filter>
+    </ClInclude>
+    <ClInclude Include="LMM\Pricer\McLmmPricer\McLmmCallableGenericSwapPricer.h" />
+    <ClInclude Include="Instrument\CallableOption\CallableInstrument.h" />
+    <ClInclude Include="Instrument\CallableOption\CallableGenericSwap.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Cheyette">
@@ -1289,5 +1292,8 @@
     <ClCompile Include="LMM\Test\Test_Junbin\Test_McGeneticTargetSwapPricing.cpp" />
     <ClCompile Include="LMM\Test\Test_Junbin\Test_oneset_basis_pricing.cpp" />
     <ClCompile Include="LMM\Test\Test_Junbin\unit_test\Test_evaluation_basis.cpp" />
+    <ClCompile Include="LMM\Pricer\McLmmPricer\McLmmCallableGenericSwapPricer.cpp" />
+    <ClCompile Include="Instrument\CallableOption\CallableInstrument.cpp" />
+    <ClCompile Include="Instrument\CallableOption\CallableGenericSwap.cpp" />
   </ItemGroup>
 </Project>

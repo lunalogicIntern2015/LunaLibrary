@@ -6,8 +6,8 @@
 
 #include <LMM/helper/Name.h>
 
-#include <JBLMM/Instrument/GenericSwap.h>
-#include <JBLMM/Instrument/CallableInstrument.h>
+#include <Instrument/GenericSwap/GenericSwap.h>
+#include <Instrument/CallableOption/CallableInstrument.h>
 
 
 class CallableGenericSwap : public CallableInstrument

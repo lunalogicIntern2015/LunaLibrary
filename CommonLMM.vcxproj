@@ -11,6 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Instrument\CallableOption\CallableInstrument.cpp" />
+    <ClCompile Include="Instrument\CallableOption\CallableGenericSwap.cpp" />
+    <ClCompile Include="LMM\Pricer\McLmmPricer\McLmmCallableGenericSwapPricer.cpp" />
     <ClCompile Include="Cheyette\Calibration\CheyetteBaseCalibrator.cpp" />
     <ClCompile Include="Cheyette\Calibration\CheyetteBaseCostFunction.cpp" />
     <ClCompile Include="Cheyette\Calibration\CheyetteDD_CalibrationConfig.cpp" />
@@ -218,6 +221,9 @@
     <ClCompile Include="StaticReplication\StaticReplicationFormula.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Instrument\CallableOption\CallableInstrument.h" />
+    <ClInclude Include="Instrument\CallableOption\CallableGenericSwap.h" />
+    <ClInclude Include="LMM\Pricer\McLmmPricer\McLmmCallableGenericSwapPricer.h" />
     <ClInclude Include="Cheyette\Calibration\CheyetteBaseCalibrator.h" />
     <ClInclude Include="Cheyette\Calibration\CheyetteBaseCostFunction.h" />
     <ClInclude Include="Cheyette\Calibration\CheyetteDD_CalibrationConfig.h" />
