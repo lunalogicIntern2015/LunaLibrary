@@ -56,6 +56,94 @@ std::vector<double> MC_CheyetteDD_VanillaSwaptionPricer::price(VanillaSwaption_P
 	return res ;
 }
 
+//pricing de swaption pour des strikes correspondant à une standardized moneyness dans [-5, 5]
+	//res[0] = prixSwaptionsPlusieursStrikes ;
+	//res[1] = IC_left ; 
+	//res[2] = IC_right ; 
+	//res[3] = strikes ; 
+	//res[4] = moneyness ;
+std::vector<std::vector<double>> MC_CheyetteDD_VanillaSwaptionPricer::priceMultipleStrikes(	VanillaSwaption_PTR pVanillaSwaption, 
+																							size_t nbSimulation, 
+																							double S0, 
+																							double sigma_ATM) const
+{
+	VanillaSwap vanillaSwap = pVanillaSwaption->getUnderlyingSwap() ;
+	Tenor floatingLegTenor = vanillaSwap.get_floatingLegTenorType() ;
+	Tenor fixedLegTenor = vanillaSwap.get_fixedLegTenorType() ;
+
+	assert(floatingLegTenor.YearFraction() >= pTenorStructure_->get_tenorType().YearFraction()) ;
+	assert(fixedLegTenor.YearFraction() >= pTenorStructure_->get_tenorType().YearFraction()) ;
+	assert(vanillaSwap.get_EndDate() <= fwdProbaT_) ;
+
+	//standardized moneyness
+	size_t nbMoneyness = 11 ;		//moneyness = -5, -4, ... , 0, 1, ... 5
+	std::vector<double> moneyness(nbMoneyness) ;			
+	moneyness[0] = 5. ; moneyness[1] = 4. ; moneyness[2] = 3. ; moneyness[3] = 2. ; moneyness[4] = 1. ;
+	moneyness[5] = 0. ;
+	moneyness[6] = -1. ; moneyness[7] = -2. ; moneyness[8] = -3. ; moneyness[9] = -4. ; moneyness[10] = -5. ;
+	
+	//strike equivalent pour une standardized moneyness dans [-5 ; 5]
+	std::vector<double> strikes(nbMoneyness) ;	
+	double T0 = pVanillaSwaption->getUnderlyingSwap().get_StartDate() ;
+	for (size_t i = 0 ; i < nbMoneyness ; ++i)
+	{
+		double strike = S0 / exp(sigma_ATM * sqrt(T0) * moneyness[i]) ; //   (strikeATM_Bloomberg + shiftStrike[i])/100. ;
+		strikes[i] = strike ; 
+	}
+
+	//prix MC et intervalles de confiance pour les differents strikes
+	std::vector<double> somme_xi(nbMoneyness, 0.) ;
+	std::vector<double> somme_xi2(nbMoneyness, 0.) ;
+	
+	size_t valuationIndexSwaption = 0 ;
+	size_t valuationIndexSwap = pVanillaSwaption->getUnderlyingSwap().get_indexStart() ;
+
+	for(size_t itrSimulation=0; itrSimulation<nbSimulation; ++itrSimulation)
+	{
+		if ((itrSimulation*10) % nbSimulation == 0){std::cout << double(itrSimulation)/double(nbSimulation)*100 << "%" << std::endl ;}	
+
+		simulate_Euler() ;
+		double npvFloatingLeg = evaluateFloatLeg(valuationIndexSwap, 
+												vanillaSwap.get_floatingLegPaymentIndexSchedule(), floatingLegTenor);
+
+		for (size_t i = 0 ; i < nbMoneyness ; ++i)
+		{
+			double npvFixedLeg = evaluateFixedLeg(valuationIndexSwap, vanillaSwap.get_fixedLegPaymentIndexSchedule(), 
+											fixedLegTenor, strikes[i] ) ; //vanillaSwap.get_strike());
+			
+			double payoffAtMaturity    = pVanillaSwaption->payoff(npvFloatingLeg,npvFixedLeg);			
+			double value = payoffAtMaturity * numeraires_[valuationIndexSwaption]/numeraires_[valuationIndexSwap] ;
+
+			somme_xi[i] += value ;
+			somme_xi2[i] += value * value ;
+		}
+	}
+
+	std::vector<double> prixSwaptionsPlusieursStrikes(nbMoneyness) ;
+	std::vector<double> IC_left(nbMoneyness) ;
+	std::vector<double> IC_right(nbMoneyness) ;
+	std::vector<double> volBlack(nbMoneyness) ;
+	for (size_t i = 0 ; i < nbMoneyness ; ++i)
+	{
+		double mean_x	= somme_xi[i] / nbSimulation; 
+		double mean_x2	= somme_xi2[i] / nbSimulation; 
+		double variance = mean_x2 - mean_x * mean_x ;
+
+		prixSwaptionsPlusieursStrikes[i] = mean_x ;
+		IC_left[i]	= mean_x - 2.57*std::sqrt(variance / nbSimulation);
+		IC_right[i] = mean_x + 2.57*std::sqrt(variance / nbSimulation);
+	}	
+
+	std::vector<std::vector<double>> res(5) ;
+	res[0] = prixSwaptionsPlusieursStrikes ;
+	res[1] = IC_left ; 
+	res[2] = IC_right ; 
+	res[3] = strikes ; 
+	res[4] = moneyness ; 
+
+	return res ;
+}
+
 
 void MC_CheyetteDD_VanillaSwaptionPricer::print(VanillaSwaption_PTR vanillaSwaption, 
 												std::vector<size_t> nbSimus, 

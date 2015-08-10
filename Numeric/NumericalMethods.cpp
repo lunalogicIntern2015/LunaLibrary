@@ -166,11 +166,11 @@ double Black_impliedVolatility(const double  bs_call_price,
 	boost::function<double(double)> f_derivative = boost::bind(Black_Vega,fwd,strike,_1,T);
 	
 	BS_function_helper bs_function_helper(f,f_derivative,bs_call_price);
-	double initial_guess = 1 ;
-	double min    = 10e-5;
+	double initial_guess = 0.2 ;
+	double min    = 10e-6;
 	double max    = 10 ;
     size_t nDigits   = 15;
-	boost::uintmax_t nMaxIter  = 100;
+	boost::uintmax_t nMaxIter  = 200;
 	double result_newton_raphson = boost::math::tools::newton_raphson_iterate(bs_function_helper, initial_guess, min, max, nDigits);
 	return result_newton_raphson;
 
@@ -183,11 +183,11 @@ double Black_SwaptionImpliedVolatility(const double bs_call_price, const double 
 	boost::function<double(double)> f_derivative = boost::bind(Black_Vega_swaption, annuity0, fwd,strike,_1,T);   
 	
 	BS_function_helper bs_function_helper(f,f_derivative,bs_call_price);
-	double initial_guess = 1 ;
+	double initial_guess = 0.3 ;
 	double min    = 0;
 	double max    = 10 ;
     size_t nDigits   = 15;
-	boost::uintmax_t nMaxIter  = 100;
+	boost::uintmax_t nMaxIter  = 300;
 	double result_newton_raphson = boost::math::tools::newton_raphson_iterate(bs_function_helper, initial_guess, min, max, nDigits);
 	return result_newton_raphson;
 
@@ -201,35 +201,26 @@ double linearInterpolation(const double& t,
 {
 	
 	size_t index_maturiy_before_t = 0;
+	assert(maturities.size() == set_of_points.size()) ;  //vecteurs grid et value doivent avoir meme longueur
 
-	try{
-		if (maturities.size() != set_of_points.size())
-		{
-			throw std::string("Exception linearInterpolation : vecteurs grid et value doivent avoir meme longueur");
-		}
-		else
-		{
-			//-- Search the maturities bounding date t
-			for (size_t i = 0; i < maturities.size(); ++i)
-			{
-				if (t > maturities[i])
-					index_maturiy_before_t++;
-			}
-
-			double date_prev = maturities[index_maturiy_before_t-1];
-			double date_next = maturities[index_maturiy_before_t];
-
-			double point_prev = set_of_points[index_maturiy_before_t-1];
-			double point_next = set_of_points[index_maturiy_before_t];
-
-			double coeff_1 = (date_next - t)/(date_next - date_prev);
-			double coeff_2 = (t - date_prev)/(date_next - date_prev);
-
-			double interpolatedValue = coeff_1*point_prev + coeff_2*point_next;
-			return interpolatedValue;
-		}
+	//-- Search the maturities bounding date t
+	for (size_t i = 0; i < maturities.size(); ++i)
+	{
+		if (t > maturities[i])
+			index_maturiy_before_t++;
 	}
-	catch(std::string const& chaine) {std::cerr << chaine << std::endl;}
+
+	double date_prev = maturities[index_maturiy_before_t-1];
+	double date_next = maturities[index_maturiy_before_t];
+
+	double point_prev = set_of_points[index_maturiy_before_t-1];
+	double point_next = set_of_points[index_maturiy_before_t];
+
+	double coeff_1 = (date_next - t)/(date_next - date_prev);
+	double coeff_2 = (t - date_prev)/(date_next - date_prev);
+
+	double interpolatedValue = coeff_1*point_prev + coeff_2*point_next;
+	return interpolatedValue;
 
 }
 

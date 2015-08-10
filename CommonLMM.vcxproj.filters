@@ -7,9 +7,6 @@
     <ClInclude Include="Cheyette\Calibration\CheyetteBaseCostFunction.h">
       <Filter>Cheyette\Calibration</Filter>
     </ClInclude>
-    <ClInclude Include="Cheyette\Calibration\CheyetteDD_CalibrationConfig.h">
-      <Filter>Cheyette\Calibration</Filter>
-    </ClInclude>
     <ClInclude Include="Cheyette\Calibration\CheyetteDD_CostFunctionLevel.h">
       <Filter>Cheyette\Calibration</Filter>
     </ClInclude>
@@ -17,15 +14,6 @@
       <Filter>Cheyette\Calibration</Filter>
     </ClInclude>
     <ClInclude Include="Cheyette\Calibration\CheyetteDD_LocalCalibrator.h">
-      <Filter>Cheyette\Calibration</Filter>
-    </ClInclude>
-    <ClInclude Include="Cheyette\Calibration\CoTerminalSwaptionQuotes.h">
-      <Filter>Cheyette\Calibration</Filter>
-    </ClInclude>
-    <ClInclude Include="Cheyette\Calibration\CoTerminalSwaptionSkew.h">
-      <Filter>Cheyette\Calibration</Filter>
-    </ClInclude>
-    <ClInclude Include="Cheyette\Calibration\CoTerminalSwaptionVol.h">
       <Filter>Cheyette\Calibration</Filter>
     </ClInclude>
     <ClInclude Include="Cheyette\Calibration\MarketData.h">
@@ -598,6 +586,10 @@
     <ClInclude Include="LMM\Calibration\GMatrixMapping.h">
       <Filter>LMM\Calibration</Filter>
     </ClInclude>
+    <ClInclude Include="Cheyette\Calibration\CoTerminalSwaptionQuotes.h" />
+    <ClInclude Include="Cheyette\Calibration\CoTerminalSwaptionSkew.h" />
+    <ClInclude Include="Cheyette\Calibration\CoTerminalSwaptionVol.h" />
+    <ClInclude Include="Cheyette\unit_test\TestApproxCall.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Cheyette">
@@ -701,9 +693,6 @@
     <ClCompile Include="Cheyette\Calibration\CheyetteBaseCostFunction.cpp">
       <Filter>Cheyette\Calibration</Filter>
     </ClCompile>
-    <ClCompile Include="Cheyette\Calibration\CheyetteDD_CalibrationConfig.cpp">
-      <Filter>Cheyette\Calibration</Filter>
-    </ClCompile>
     <ClCompile Include="Cheyette\Calibration\CheyetteDD_CostFunctionLevel.cpp">
       <Filter>Cheyette\Calibration</Filter>
     </ClCompile>
@@ -711,12 +700,6 @@
       <Filter>Cheyette\Calibration</Filter>
     </ClCompile>
     <ClCompile Include="Cheyette\Calibration\CheyetteDD_LocalCalibrator.cpp">
-      <Filter>Cheyette\Calibration</Filter>
-    </ClCompile>
-    <ClCompile Include="Cheyette\Calibration\CoTerminalSwaptionSkew.cpp">
-      <Filter>Cheyette\Calibration</Filter>
-    </ClCompile>
-    <ClCompile Include="Cheyette\Calibration\CoTerminalSwaptionVol.cpp">
       <Filter>Cheyette\Calibration</Filter>
     </ClCompile>
     <ClCompile Include="Cheyette\Calibration\MarketData.cpp">
@@ -1278,5 +1261,8 @@
     <ClCompile Include="LMM\Calibration\GMatrixMapping.cpp">
       <Filter>LMM\Calibration</Filter>
     </ClCompile>
+    <ClCompile Include="Cheyette\Calibration\CoTerminalSwaptionSkew.cpp" />
+    <ClCompile Include="Cheyette\Calibration\CoTerminalSwaptionVol.cpp" />
+    <ClCompile Include="Cheyette\unit_test\TestApproxCall.cpp" />
   </ItemGroup>
 </Project>

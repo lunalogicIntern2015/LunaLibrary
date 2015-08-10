@@ -57,4 +57,3 @@ public:
 
 typedef boost::shared_ptr<CoTerminalSwaptionQuotes> CoTerminalSwaptionQuotes_PTR;
 typedef boost::shared_ptr<const CoTerminalSwaptionQuotes> CoTerminalSwaptionQuotes_CONSTPTR;
-

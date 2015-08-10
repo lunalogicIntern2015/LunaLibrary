@@ -55,14 +55,6 @@
 #include <LMM/Calibration/Calibrator_CostFunction/LmmCascade_gCalibrator.h>
 #include <LMM/Calibration/Calibrator_CostFunction/LmmCascade_gCostFunction.h>
 
-//pour Cheyette
-#include <Cheyette/Calibration/CheyetteDD_CalibrationConfig.h>
-#include <Cheyette/Model/CheyetteDD_Model.h>
-#include <Cheyette/Pricer/CheyetteDD_VanillaSwaptionApproxPricer.h>
-#include <Cheyette/Calibration/CheyetteBaseCalibrator.h>
-#include <Cheyette/Calibration/CheyetteDD_LocalCalibrator.h>
-
-
 void test_calib_gMatrix_OneFile(const std::string& mkt_data_file);
 
 void test_calib_gMatrixNegative_allData();

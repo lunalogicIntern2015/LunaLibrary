@@ -90,14 +90,14 @@ public :
 	//pour la calibration, updateVol permet mise à jour des buffers lorsque la vol de CheyetteDD_Model est modifiée
 	void updateSigma_calib(std::ostream& o, double a, size_t index)
 	{
-		o << "sigma : ;" << a ;
+		//o << "sigma : ;" << a ;
 		pCheyetteDD_Model_->setCheyetteDD_Parameter_sigma(a, index) ;
 		initialize_buffers() ; 
 	}
 
 	void updateM_calib(std::ostream& o, double a, size_t index)
 	{
-		o << "m : ;" << a ;
+		//o << "m : ;" << a ;
 		pCheyetteDD_Model_->setCheyetteDD_Parameter_m(a, index) ;
 		initialize_buffers() ; 
 	}

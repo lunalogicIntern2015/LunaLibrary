@@ -51,7 +51,7 @@ void printAllResults_calibratedData(size_t fileNumber, size_t coterminal)
 	double sigma = 1.0 ;
 	double m = 0.10 ;	
 
-	Piecewiseconst_RR_Function sigmaFunc(coterminal /*- 1*/, sigma) ; 
+	Piecewiseconst_RR_Function sigmaFunc(coterminal /*- 1*/, sigma) ;	//modifier pour mettre 15Y 15Y
 	Piecewiseconst_RR_Function mFunc(coterminal /*- 1*/, m) ; 
 
 	CheyetteDD_Model::CheyetteDD_Parameter monStruct(k, sigmaFunc, mFunc) ;
@@ -64,7 +64,7 @@ void printAllResults_calibratedData(size_t fileNumber, size_t coterminal)
 //ecriture dans fichier
 	std::stringstream fileName_s ;
 	std::string directory = LMMPATH::get_output_path() ;
-	fileName_s << directory << "synthese_ALL.csv" ; 
+	fileName_s << directory << "results_ALL.csv" ; 
 	std::string fileName = fileName_s.str();
 
 	ofstream o;
@@ -161,10 +161,6 @@ void printAllResults_calibratedData(size_t fileNumber, size_t coterminal)
 	//compare market smile and model smile for ITM/ATM/OTM strikes
 	//generateSmile(model_nbYear, fileNumber, coterminal, o) ;
 
-	std::vector<size_t> nbSimus(1) ;
-	nbSimus[0] = 5000 ; //nbSimus[1] = 2 ; //nbSimus[2] = 5000 ; nbSimus[3] = 10000 ; nbSimus[4] = 20000 ;
-	//nbSimus[5] = 50000 ; nbSimus[6] = 100000 ;
-
 	//for (size_t a = 1 ; a < coterminal ; ++a)
 	//{
 	//	test_approx_ATM(a, coterminal - a, tenorFloat, tenorFixed, modele_test_PTR, nbSimus, o) ;	
@@ -172,68 +168,125 @@ void printAllResults_calibratedData(size_t fileNumber, size_t coterminal)
 
 	for (size_t a = 1 ; a < coterminal ; ++a)
 	{
+		//pour les swaptions 1Y, 3Y, 5Y, 10Y, 15Y seulement, commenter sinon
+		bool boolean_a = a == 1 || a == 3 || a == 5 || a == 10 || a == 15 ;
+		size_t b = coterminal - a ;
+		bool boolean_cot =	b == 1 || b == 3 || b == 5 || b == 10 || b == 15 ;
+		bool boolean = boolean_a && boolean_cot ;
+		if (!boolean) continue ;
+
 		//swaption 0 non definie
 		CheyetteDD_VanillaSwaptionApproxPricer_PTR pApproxPricer(
 			new CheyetteDD_VanillaSwaptionApproxPricer(modele_test_PTR, vectSwaptions[a])) ;
-
+		o << endl ;
+		o   << "SWAPTION " << a << "Y ," << coterminal - a << "Y" << std::endl;
 		o   << "startdate ;" << pApproxPricer->get_buffer_UnderlyingSwap_().get_StartDate() << std::endl;
 		o   << "enddate ;" << pApproxPricer->get_buffer_UnderlyingSwap_().get_EndDate() << std::endl;
 		
 		//approx
-		o   << "prix par approximation ;" << pApproxPricer->prixSwaptionApproxPiterbarg() << std::endl;
+		double approxPrice = pApproxPricer->prixSwaptionApproxPiterbarg() ;
+		o   << "prix par approximation ;" << approxPrice << std::endl;
 
 		//MC forward QT
-		o	<<	endl;
-		o   << "Monte Carlo sous proba forward Q T ; T = ;" << coterminal << std::endl;
-		o   << "nbSimus ; MC swaption ; IC_left ; IC_right" << std::endl;
-
 		double strikeATM_Bloomberg = vectSwaptions[a]->get_strike() ;
 		double annuity0 = pApproxPricer->swapRateDenominator(0., 0., 0.) ;
 		double swapRate0 = pApproxPricer->get_buffer_s0_() ;
+ 
+		double sigma_ATM = NumericalMethods::Black_SwaptionImpliedVolatility(approxPrice, annuity0, 															
+							swapRate0, strikeATM_Bloomberg, a) ;
+		//std::vector<size_t> nbSimus(16) ;
+		//nbSimus[0] = 1000 ; nbSimus[1] = 3000 ; nbSimus[2] = 5000 ; nbSimus[3] = 10000 ; nbSimus[4] = 30000 ;
+		//nbSimus[5] = 50000 ; nbSimus[6] = 100000 ; nbSimus[7] = 300000 ; nbSimus[8] = 500000 ; nbSimus[9] = 800000 ;
+		//nbSimus[10] = 1000000 ; nbSimus[11] = 1200000 ; nbSimus[12] = 1500000 ; nbSimus[13] = 1700000 ; nbSimus[14] = 2000000 ;
+		//nbSimus[15] = 2500000 ;
+
+		std::vector<size_t> nbSimus(1) ;
+		nbSimus[0] = 60000 ;
+		o	<<	endl;
+		o   << "Monte Carlo sous proba forward Q T ; T = ;" << coterminal << std::endl;
+		//o   << "nbSimus ; MC swaption ; IC_left ; IC_right" << std::endl;
+		o << "nb simus MC ; " << nbSimus[0] << std::endl ;
 
 		for (size_t indexSimu = 0 ; indexSimu < nbSimus.size() ; ++indexSimu)
 		{
 			//print_MCforward(nbSimus[indexSimu], pApproxPricer, o) ;
-			std::vector<double> resMC = MCforward(nbSimus[indexSimu], pApproxPricer) ;
-			o << nbSimus[indexSimu] << " ; " << resMC[0] << " ; " << resMC[1] << " ; " << resMC[2] << std::endl ;
+			//std::vector<double> resMC = MCforward(nbSimus[indexSimu], pApproxPricer) ;
+			//o << nbSimus[indexSimu] << " ; " << resMC[0] << " ; " << resMC[1] << " ; " << resMC[2] << std::endl ;
 
-			print_smile(a, coterminal - a, strikeATM_Bloomberg, resMC[0], annuity0, swapRate0, o) ;
+			//res[0] = prixSwaptionsPlusieursStrikes ;
+			//res[1] = IC_left ; //res[2] = IC_right ; 
+			//res[3] = strikes ; //res[4] = moneyness ;
+
+			std::vector<std::vector<double>> resMC = MCforward_MultipleStrikes(nbSimus[indexSimu], pApproxPricer, sigma_ATM) ;
+			helpPrinter("prixSwaptionsPlusieursStrikes", resMC[0], o) ;
+			helpPrinter("IC_left", resMC[1], o) ;
+			helpPrinter("IC_right", resMC[2], o) ;
+			helpPrinter("strikes", resMC[3], o) ;
+			helpPrinter("moneyness", resMC[4], o) ;
+
+			std::vector<double> volImp(resMC[0].size()) ;
+			for (size_t i = 0 ; i < resMC[0].size() ; i++)
+			{
+					//double vol = NumericalMethods::Black_SwaptionImpliedVolatility(resMC[0][i], annuity0, 															
+					//		swapRate0, resMC[3][i], a) ;
+					double vol = NumericalMethods::Black_impliedVolatility(resMC[0][i] / annuity0, 															
+							swapRate0, resMC[3][i], a) ;
+					volImp[i] = vol ;
+			}
+			helpPrinter("vol implicite", volImp, o) ;
+
+			//strike varie
+			//print_smile(a, coterminal - a, strikeATM_Bloomberg, resMC[0], annuity0, swapRate0, o) ;
 		}
 
 		//MC annuity
+		//o	<<	endl;
+		//o   << "Monte Carlo sous proba annuity" << std::endl;
+		//o   << "nbSimus ; MC swaption ; IC_left ; IC_right" << std::endl;
+		//for (size_t indexSimu = 0 ; indexSimu < nbSimus.size() ; ++indexSimu)
+		//{
+		//	//print_MCannuity(nbSimus[indexSimu], pApproxPricer, o) ;
+		//	std::vector<double> resMC = MCannuity(nbSimus[indexSimu], pApproxPricer) ;
+		//	o << nbSimus[indexSimu] << " ; " << resMC[0] << " ; " << resMC[1] << " ; " << resMC[2] << std::endl ;
 
-		std::cout << "YO " << std::endl ;
+		//	print_smile(a, coterminal - a, strikeATM_Bloomberg, resMC[0], annuity0, swapRate0, o) ;
+		//}
 
-		o	<<	endl;
-		o   << "Monte Carlo sous proba annuity" << std::endl;
-		o   << "nbSimus ; MC swaption ; IC_left ; IC_right" << std::endl;
-		for (size_t indexSimu = 0 ; indexSimu < nbSimus.size() ; ++indexSimu)
-		{
-			//print_MCannuity(nbSimus[indexSimu], pApproxPricer, o) ;
-			std::vector<double> resMC = MCannuity(nbSimus[indexSimu], pApproxPricer) ;
-			o << nbSimus[indexSimu] << " ; " << resMC[0] << " ; " << resMC[1] << " ; " << resMC[2] << std::endl ;
+		////MC annuity2 (libnearise)
+		//o	<<	endl;
+		//o   << "Monte Carlo sous proba annuity (eq 2 lineaire)" << std::endl;
+		//o   << "nbSimus ; MC swaption ; IC_left ; IC_right" << std::endl;
+		//for (size_t indexSimu = 0 ; indexSimu < nbSimus.size() ; ++indexSimu)
+		//{
+		//	//print_MCannuity2(nbSimus[indexSimu], pApproxPricer, o) ;
+		//	std::vector<double> resMC = MCannuity2(nbSimus[indexSimu], pApproxPricer) ;
+		//	o << nbSimus[indexSimu] << " ; " << resMC[0] << " ; " << resMC[1] << " ; " << resMC[2] << std::endl ;
 
-			print_smile(a, coterminal - a, strikeATM_Bloomberg, resMC[0], annuity0, swapRate0, o) ;
-		}
-
-		std::cout << "YO " << std::endl ;
-
-		//MC annuity2 (libnearise)
-		o	<<	endl;
-		o   << "Monte Carlo sous proba annuity (eq 2 lineaire)" << std::endl;
-		o   << "nbSimus ; MC swaption ; IC_left ; IC_right" << std::endl;
-		for (size_t indexSimu = 0 ; indexSimu < nbSimus.size() ; ++indexSimu)
-		{
-			//print_MCannuity2(nbSimus[indexSimu], pApproxPricer, o) ;
-			std::vector<double> resMC = MCannuity2(nbSimus[indexSimu], pApproxPricer) ;
-			o << nbSimus[indexSimu] << " ; " << resMC[0] << " ; " << resMC[1] << " ; " << resMC[2] << std::endl ;
-
-			print_smile(a, coterminal - a, strikeATM_Bloomberg, resMC[0], annuity0, swapRate0, o) ;
-		}
-		o	<<	endl;
+		//	print_smile(a, coterminal - a, strikeATM_Bloomberg, resMC[0], annuity0, swapRate0, o) ;
+		//}
+		//o	<<	endl;
 	}
 
 	o.close() ;
+
+}
+
+void lancementAuto()
+{
+	std::vector<size_t> vectCoterminal(13) ;
+	vectCoterminal[0] = 2 ; vectCoterminal[1] = 4 ; vectCoterminal[2] = 6 ; vectCoterminal[3] = 8 ;
+	vectCoterminal[4] = 10 ;	vectCoterminal[5] = 11 ; vectCoterminal[6] = 13 ; vectCoterminal[7] = 15 ;
+	vectCoterminal[8] = 16 ; 	vectCoterminal[9] = 18 ; vectCoterminal[10] = 20 ; vectCoterminal[11] = 25 ;
+	vectCoterminal[12] = 30 ;
+
+	//size_t fileNumber = 1 ;
+	for (size_t fileNumber = 5 ; fileNumber < 30 ; ++fileNumber)
+	{
+		for (size_t i = 0 ; i < vectCoterminal.size() ; ++i)
+		{
+			printAllResults_calibratedData(fileNumber, vectCoterminal[i]) ;
+		}
+	}
 }
 
 

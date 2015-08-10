@@ -533,9 +533,43 @@ std::vector<double> MCforward(size_t nbSimus, CheyetteDD_VanillaSwaptionApproxPr
 	MC_CheyetteDD_VanillaSwaptionPricer_PTR mc(new MC_CheyetteDD_VanillaSwaptionPricer(pModel,
 															rnGenerator, simulationStructure, fwdProbaT,
 															discretizationBetweenDates   ) ) ;
-
-	std::vector<double> vectPrixMC(1), vectICinf(1), vectICsup(1) ; 
+	
 	std::vector<double> resMC = mc->price(pSwaption, nbSimus) ;
+
+	return resMC ;
+}
+
+	//res[0] = prixSwaptionsPlusieursStrikes ;
+	//res[1] = IC_left ; 
+	//res[2] = IC_right ; 
+	//res[3] = strikes ; 
+	//res[4] = moneyness ;
+std::vector<std::vector<double>> MCforward_MultipleStrikes(size_t nbSimus, 
+															CheyetteDD_VanillaSwaptionApproxPricer_PTR pApproxPricer, 
+															double	sigma_ATM)
+{
+	double a = pApproxPricer->get_buffer_UnderlyingSwap_().get_StartDate() ;
+	double b = pApproxPricer->get_buffer_UnderlyingSwap_().get_EndDate() ;		
+//param MC
+	VanillaSwaption_PTR pSwaption = pApproxPricer->get_VanillaSwaption() ;
+	Tenor floatTenor = pSwaption->getUnderlyingSwap().get_floatingLegTenorType() ;
+	LMMTenorStructure_PTR simulationStructure(new LMMTenorStructure(floatTenor, static_cast<int>(a+b+1)) );
+	
+	unsigned long seed = 47;
+	RNGenerator_PTR  rnGenerator(new McGenerator(seed));
+
+	CheyetteDD_Model_PTR pModel = pApproxPricer->get_CheyetteDD_Model() ;
+
+	size_t fwdProbaT = static_cast<size_t>(b) ;   //end date du swap 	
+	size_t discretizationBetweenDates = 200 ;
+	MC_CheyetteDD_VanillaSwaptionPricer_PTR mc(new MC_CheyetteDD_VanillaSwaptionPricer(pModel,
+															rnGenerator, simulationStructure, fwdProbaT,
+															discretizationBetweenDates   ) ) ;
+	
+//pricing swaption pour plusieurs strikes 
+	double S0 = pApproxPricer->swapRate0() ; 
+	
+	std::vector<std::vector<double>> resMC = mc->priceMultipleStrikes(pSwaption, nbSimus, S0, sigma_ATM) ;
 
 	return resMC ;
 }
@@ -662,7 +696,7 @@ std::vector<std::vector<double>> MCannuityMultipleStrikes(  size_t fileNumber, s
 	
 	size_t indexStart = size_t(a / tenor) ;
 	size_t indexEnd = size_t((a+b) / tenor) ;
-	double fwdProbaT = a + b ;  
+	
 	LMMTenorStructure_PTR simulationStructure(new LMMTenorStructure(floatTenor, a+b+1) );
 
 	size_t nbPas = 200 ;
@@ -1400,6 +1434,16 @@ void smile(size_t a, size_t b, double strikeATM_Bloomberg)
 }
 
 
+void helpPrinter(const std::string& descriptionData, const std::vector<double>& data, std::ofstream& o)
+{
+	o << descriptionData << " ; " ;
+	for (size_t i = 0 ; i < data.size() ; ++i)
+	{
+		o << data[i] << " ; " ; 
+	}
+	o << endl ;
+}
+
 
 void print_smile(size_t a, size_t b, double strikeATM_Bloomberg, 
 				 double price, double annuity0, double swapRate0, std::ofstream& o)
@@ -1435,7 +1479,40 @@ void print_smile(size_t a, size_t b, double strikeATM_Bloomberg,
 //	o.close();			 //flux appele dans les fichiers suivants
 }
 
+//with standardized moneyness
+void print_smile_standard_moneyness(size_t a, size_t b, double strikeATM_Bloomberg, 
+									double price, double annuity0, double swapRate0, std::ofstream& o)
+{
+	std::vector<double> shiftStrike(9) ;   //shift additif en pourcents
+	shiftStrike[0] = -2./100. ; shiftStrike[1] = -1./100. ; shiftStrike[2] = -0.5/100. ; shiftStrike[3] = -0.05/100. ;
+	shiftStrike[4] = 0. ;
+	shiftStrike[5] = 0.05/100. ; shiftStrike[6] = 0.5/100. ; shiftStrike[7] = 1./100. ; shiftStrike[8] = 2./100. ;
 
+	Tenor floatTenor = Tenor::_6M ;
+	Tenor fixedTenor = Tenor::_1YR ; 
+	double tenor = std::min(floatTenor.YearFraction() , fixedTenor.YearFraction() ) ;
+	
+	size_t indexStart = size_t(a / tenor) ;
+	size_t indexEnd = size_t((a+b) / tenor) ;
+	double fwdProbaT = b ;  //size_t vers double ok
+	LMMTenorStructure_PTR simulationStructure(new LMMTenorStructure(floatTenor, a+b+1) );
+	
+	for (size_t i = 0 ; i < shiftStrike.size() ; ++i)
+	{
+		o << strikeATM_Bloomberg + shiftStrike[i] << " ; " ; 
+	}
+	o << endl ;
+	for (size_t i = 0 ; i < shiftStrike.size() ; ++i)
+	{
+		double strike = (strikeATM_Bloomberg + shiftStrike[i])/100. ;
+		double volBlack = NumericalMethods::Black_SwaptionImpliedVolatility(price, annuity0, 															
+							swapRate0, strike, a) ;
+				
+		o << volBlack << ";" ;
+	}
+	o << endl ;
+//	o.close();			 //flux appele dans les fichiers suivants
+}
 //1er element du vecteur : strikes
 //2eme element du vecteur : prix
 //3eme element du vecteur : vol Black

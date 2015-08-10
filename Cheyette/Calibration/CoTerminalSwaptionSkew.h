@@ -37,4 +37,3 @@ public:
 
 typedef boost::shared_ptr<CoTerminalSwaptionSkew> CoTerminalSwaptionSkew_PTR;
 typedef boost::shared_ptr<const CoTerminalSwaptionSkew> CoTerminalSwaptionSkew_CONSTPTR;
-

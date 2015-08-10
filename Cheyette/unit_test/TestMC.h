@@ -49,6 +49,10 @@ void test_approx_ATM(size_t a, size_t b, Tenor floatingLegTenor, Tenor fixedLegT
 
 std::vector<double> MCforward(size_t nbSimus, CheyetteDD_VanillaSwaptionApproxPricer_PTR pApproxPricer) ;
 
+std::vector<std::vector<double>> MCforward_MultipleStrikes(size_t nbSimus, 
+															CheyetteDD_VanillaSwaptionApproxPricer_PTR pApproxPricer, 
+															double	sigma_ATM) ;
+
 void print_MCforward(size_t nbSimus, CheyetteDD_VanillaSwaptionApproxPricer_PTR pApproxPricer, std::ofstream& o) ;
 
 //MC EQUATION 1
@@ -71,7 +75,7 @@ void print_MCannuity2(size_t nbSimus, CheyetteDD_VanillaSwaptionApproxPricer_PTR
 void MCannuity3(size_t a, size_t b, size_t nbSimus, 
 			   CheyetteDD_VanillaSwaptionApproxPricer_PTR pApproxPricer, std::ofstream& o) ;
 
-
+void helpPrinter(const std::string& descriptionData, const std::vector<double>& data, std::ofstream& o) ;
 
 //1er element du vecteur : strikes
 //2eme element du vecteur : prix

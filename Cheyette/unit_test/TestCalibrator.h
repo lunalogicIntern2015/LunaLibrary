@@ -22,6 +22,7 @@ void printAllResults_calibratedData(size_t fileNumber, size_t coterminal) ;
 
 CheyetteDD_Model_PTR getCalibratedModel(size_t fileNumber, size_t coterminal) ;
 
+void lancementAuto() ; 
 
 //std::vector<double> arrayToVector(QuantLib::Array a) ;
 

@@ -16,8 +16,9 @@ QuantLib::Disposable<QuantLib::Array> CheyetteDD_CostFunctionSkew::values(const 
 	double volShiftUp	= volShift(strikeATM, shiftUp) ;
 	double volShiftDown	= volShift(strikeATM, shiftDown) ;
 	double skewModel	= (volShiftUp - volShiftDown) / (2 * shiftUp) ;
-	std::cout << "skewModel : " << skewModel << ", skewQuote : " << skewQuote << std::endl ;
-	o_ << "; skewModel : ;" << skewModel << "; skewQuote : ;" << skewQuote << std::endl ;
+
+	//std::cout << "skewModel : " << skewModel << ", skewQuote : " << skewQuote << std::endl ;
+	//o_ << "; skewModel : ;" << skewModel << "; skewQuote : ;" << skewQuote << std::endl ;
 
 	QuantLib::Array res(1) ;
 	res[0] = skewModel - skewQuote ;		

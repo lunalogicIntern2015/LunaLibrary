@@ -19,7 +19,7 @@ namespace InputFileManager
 	{
 		std::vector<std::string> file_list;
 		file_list.push_back("VCUB_2008_01_02.csv");// 0
-		file_list.push_back("VCUB_2008_04_02 - Copie.txt");// 1      "VCUB_2008_04_02.csv"
+		file_list.push_back("VCUB_2008_04_02.csv");// 1  
 		file_list.push_back("VCUB_2008_07_02.csv");// 2
 		file_list.push_back("VCUB_2008_10_01.csv");// 3
 		file_list.push_back("VCUB_2009_01_07.csv");// 4

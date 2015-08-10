@@ -21,6 +21,16 @@ public:
 	//! Pricing at time T0=0
 	std::vector<double> price(VanillaSwaption_PTR pVanillaSwaption, size_t nbSimulation) const;
 
+	//pricing de swaption pour des strikes correspondant à une standardized moneyness dans [-5, 5]
+		//res[0] = prixSwaptionsPlusieursStrikes ;
+		//res[1] = IC_left ; 
+		//res[2] = IC_right ; 
+		//res[3] = strikes ; 
+		//res[4] = moneyness ;
+	std::vector<std::vector<double>> priceMultipleStrikes(	VanillaSwaption_PTR pVanillaSwaption, 
+															size_t nbSimulation, 
+															double S0, double sigma_ATM) const ;
+
 	void print(VanillaSwaption_PTR vanillaSwaption, 
 				std::vector<size_t> nbSimus, 
 				std::vector<double> prixMC,

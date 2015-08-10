@@ -26,8 +26,9 @@ QuantLib::Disposable<QuantLib::Array> CheyetteDD_CostFunctionLevel::values(const
 	double modelQuote	= NumericalMethods::Black_SwaptionImpliedVolatility(modelPrice, annuity0,   							  
 																			S0, strike, T) ;
 
-	std::cout << "volModel : " << modelQuote << ", volQuote : " << marketQuote << std::endl ;
-	o_ << "; volModel : ;" << modelQuote << "; volQuote : ;" << marketQuote << std::endl ;
+	//std::cout << "volModel : " << modelQuote << ", volQuote : " << marketQuote << std::endl ;
+	//o_ << "; volModel : ;" << modelQuote << "; volQuote : ;" << marketQuote << std::endl ;
+	
 	//array de dimension 1
 	QuantLib::Array res(1) ;
 	res[0] = modelQuote - marketQuote ;	

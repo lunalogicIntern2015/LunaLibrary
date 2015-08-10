@@ -45,4 +45,3 @@ public:
 
 typedef boost::shared_ptr<CoTerminalSwaptionVol> CoTerminalSwaptionVol_PTR;
 typedef boost::shared_ptr<const CoTerminalSwaptionVol> CoTerminalSwaptionVol_CONSTPTR;
-
