@@ -1,4 +1,4 @@
-#include <JBLMM/Test/JBTests.h>
+#include <LMM/Test/Test_Junbin/JBTests.h>
 #include <LMM/Test/Tests.h>
 
 #include <iostream>
@@ -30,10 +30,9 @@
 #include <LMM/Pricer/Longstaff_Schwartz/Regression_LS.h>
 #include <LMM/Pricer/Longstaff_Schwartz/McLmm_LS.h>
 #include <Instrument/CallableOption/CallableInstrument.h>
-#include <JBInstrument/CallableSwap.h>
-#include <JBInstrument/InstrumentFactory.h>
+#include <Instrument/InstrumentFactory.h>
 #include <LMM/Pricer/McLmmPricer/McLmmPricer.h>
-#include <JBLMM/Pricer/McLmmGenericSwapPricer.h>
+#include <LMM/Pricer/McLmmPricer/McLmmGenericSwapPricer.h>
 #include <LMM/Pricer/Longstaff_Schwartz/LS_BackwardAlgo.h>
 #include <LMM/Pricer/Longstaff_Schwartz/LS_ForwardAlgo.h>
 
@@ -79,319 +78,6 @@ McLmm_PTR getMcLmmExample(LMMTenorStructure_PTR lmmTenorStructure, const std::ve
 	McLmm_PTR mcLmm(new McTerminalLmm(shiftedLmm, initLiborValues, rnGenerator, MCSchemeType::EULER));
 	return mcLmm;
 }
-
-
-
-void Test_LS_pricing_allSubSet_basis()
-{
-	LMM::Index  indexStart = 2;		//1Y
-	LMM::Index  indexEnd   = 20;		//10Y
-	Tenor	floatingLegTenorType = Tenor::_6M;
-	Tenor	fixedLegTenorType    = Tenor::_1YR;
-	assert(indexStart%2==0&&indexEnd%2==0);
-	LMMTenorStructure_PTR lmmTenorStructure( new LMMTenorStructure(floatingLegTenorType, indexEnd/2));
-
-	std::vector<std::string> mkt_file_list = InputFileManager::get_VCUB_FileList();
-	const std::string& mkt_data_file = mkt_file_list.back();
-	std::string folder_name;   // = "TotalCalib\\" ;  config.use_positive_constraint_=true;
-	std::string base_name_file = LMMPATH::get_BaseFileName(mkt_data_file) + "\\";
-	folder_name+=base_name_file;
-	LMMPATH::reset_Output_SubFolder(folder_name );
-
-	LmmCalibrationConfig config;
-
-	config.floatLegTenor_=floatingLegTenorType;
-	config.fixedLegTenor_=fixedLegTenorType;
-
-	config.model_nbYear_		=	indexEnd/2;
-	size_t fixedFloatRatio		=	config.fixedLegTenor_.ratioTo(config.floatLegTenor_);
-	config.correl_FullRank_		=	fixedFloatRatio*config.model_nbYear_+1;
-
-
-	LmmSwaptionMarketData_PTR pLmmSwaptionMarketData	=	get_LmmSwaptionMarketData(config, mkt_data_file);
-	const std::vector<double>&	initLiborValues			=	pLmmSwaptionMarketData->get_LiborQuotes()->get_InitLibor();
-
-	//config.correl_ReducedRank_= 3; config.correl_alpha_ = 0.0 ; config.correl_beta_  = 0.1;
-	//QuantLib::Array found_abcd = marketData_LMM_ABCD_calibration(config,pLmmSwaptionMarketData);
-
-	std::vector<LMM::Index> exerciseDates;
-	exerciseDates.push_back(2);
-	exerciseDates.push_back(4);
-	exerciseDates.push_back(6);
-	exerciseDates.push_back(8);
-	exerciseDates.push_back(10);
-	exerciseDates.push_back(12);
-	exerciseDates.push_back(14);
-	exerciseDates.push_back(16);
-	exerciseDates.push_back(18);
-	exerciseDates.push_back(20);
-
-
-	//std::vector<double> initLiborValues;
-	//initLiborValues.push_back(0.00304663);
-	//initLiborValues.push_back(0.00283432);
-	//initLiborValues.push_back(0.00314012);
-	//initLiborValues.push_back(0.0037196);
-	//initLiborValues.push_back(0.0048919);
-	//initLiborValues.push_back(0.00490389);
-	//initLiborValues.push_back(0.00745992);
-	//initLiborValues.push_back(0.00748785);
-	//initLiborValues.push_back(0.0104202);
-	//initLiborValues.push_back(0.0104748);
-	//initLiborValues.push_back(0.0140121);
-	//initLiborValues.push_back(0.0141109);
-	//initLiborValues.push_back(0.0173241);
-	//initLiborValues.push_back(0.0174755);
-	//initLiborValues.push_back(0.0204022);
-	//initLiborValues.push_back(0.0206124);
-	//initLiborValues.push_back(0.0226241);
-	//initLiborValues.push_back(0.022883);
-	//initLiborValues.push_back(0.0243152);
-	//initLiborValues.push_back(0.0246144);
-	//initLiborValues.push_back(0.0253627);
-
-	double strike = 0.0137;
-
-	McLmm_PTR mcLmm_for_pricer = getMcLmmExample(lmmTenorStructure, initLiborValues,config);
-
-	//double nominal = 1.0;
-	//GenericSwap_CONSTPTR genericVanillaSwap = InstrumentFactory::createVanillaSwap(	strike, 
-	//																				indexStart, 
-	//																				indexEnd, 
-	//																				floatingLegTenorType, 
-	//																				fixedLegTenorType,
-	//																				lmmTenorStructure,
-	//																				nominal);
-	//CallableInstrument_PTR callableGenericSwap(new CallableGenericSwap(genericVanillaSwap, exerciseDates));
-
-
-	VanillaSwap_CONSTPTR vanillaSwap(new VanillaSwap(	strike, 
-														indexStart, 
-														indexEnd, 
-														floatingLegTenorType, 
-														fixedLegTenorType,
-														lmmTenorStructure));
-
-	CallableInstrument_PTR callableBermudanSwap(new BermudanVanillaSwaption(vanillaSwap,exerciseDates));
-
-	////for ab, bc, ca
-	//vector<std::vector<size_t>> set;
-	//set.push_back(std::vector<size_t>());
-	//set.back().push_back(1);
-	//set.back().push_back(1);
-	//set.back().push_back(0);
-	//set.push_back(std::vector<size_t>());
-	//set.back().push_back(0);
-	//set.back().push_back(1);
-	//set.back().push_back(1);
-	//set.push_back(std::vector<size_t>());
-	//set.back().push_back(1);
-	//set.back().push_back(0);
-	//set.back().push_back(1);
-	//for (size_t i= 0 ; i<3; i++)
-	//{
-	//	//set.push_back(std::vector<size_t>(3,0));
-	//	//set.back()[i]+=1;
-	//	for (size_t j=0; j<=i; j++)
-	//	{
-	//		set.push_back(std::vector<size_t>(3,0));
-	//		set.back()[i]+=1;
-	//		set.back()[j]+=1;
-	//	}
-	//}
-
-	std::vector<std::vector<std::vector<size_t>>> subset;
-	////getAllSubsets(set, subset);
-
-	size_t degre = 2;
-	size_t counter = 0;
-
-	//for 1 + a + a^2 + b + c 
-	//std::vector<std::vector<size_t>> choosed_basis_set;
-	//for(size_t i = 0; i <= 1; i++) 
-	//{
-	//	choosed_basis_set.push_back(std::vector<size_t>());
-	//	choosed_basis_set.back().push_back(0);
-	//	choosed_basis_set.back().push_back(0);
-	//	choosed_basis_set.back().push_back(i);							
-	//}
-	//for(size_t j = 1; j <= 1; j++) 
-	//{
-	//	choosed_basis_set.push_back(std::vector<size_t>());
-	//	choosed_basis_set.back().push_back(0);
-	//	choosed_basis_set.back().push_back(j);
-	//	choosed_basis_set.back().push_back(0);
-	//}	
-	//for(size_t k = 1; k <= 2; k++) 
-	//{
-	//	choosed_basis_set.push_back(std::vector<size_t>());
-	//	choosed_basis_set.back().push_back(k);
-	//	choosed_basis_set.back().push_back(0);
-	//	choosed_basis_set.back().push_back(0);
-	//}
-
-	//for 1 + a + a^2 + b + c + ab + bc +ac
-	//choosed_basis_set.push_back(std::vector<size_t>());
-	//choosed_basis_set.back().push_back(1);
-	//choosed_basis_set.back().push_back(1);
-	//choosed_basis_set.back().push_back(0);
-	//choosed_basis_set.push_back(std::vector<size_t>());
-	//choosed_basis_set.back().push_back(0);
-	//choosed_basis_set.back().push_back(1);
-	//choosed_basis_set.back().push_back(1);
-	//choosed_basis_set.push_back(std::vector<size_t>());
-	//choosed_basis_set.back().push_back(1);
-	//choosed_basis_set.back().push_back(0);
-	//choosed_basis_set.back().push_back(1);
-
-	//choosed_basis_set.push_back(std::vector<size_t>());
-	//choosed_basis_set.back().push_back(0);
-	//choosed_basis_set.back().push_back(3);
-	//choosed_basis_set.back().push_back(0);
-	//choosed_basis_set.push_back(std::vector<size_t>());
-	//choosed_basis_set.back().push_back(0);
-	//choosed_basis_set.back().push_back(4);
-	//choosed_basis_set.back().push_back(0);
-	//choosed_basis_set.push_back(std::vector<size_t>());
-	//choosed_basis_set.back().push_back(3);
-	//choosed_basis_set.back().push_back(0);
-	//choosed_basis_set.back().push_back(0);
-	//choosed_basis_set.push_back(std::vector<size_t>());
-	//choosed_basis_set.back().push_back(4);
-	//choosed_basis_set.back().push_back(0);
-	//choosed_basis_set.back().push_back(0);
-
-	//for (size_t i = 0; i<subset.size(); i++)
-	//{
-	//	subset[i].insert(subset[i].begin(), choosed_basis_set.begin(),choosed_basis_set.end());
-
-	//}
-
-	for(size_t swaprate_Degre = 0; swaprate_Degre <= degre; swaprate_Degre++) 
-	{
-		for(size_t pay_off_swaprate_Degre = 0; pay_off_swaprate_Degre <= degre; pay_off_swaprate_Degre++) 
-		{
-			for(size_t liborRate_Degre = 0; liborRate_Degre <= degre; liborRate_Degre++) 
-			{
-					subset.push_back(std::vector<std::vector<size_t>>());
-					for(size_t i = 0; i <= liborRate_Degre; i++) 
-					{
-						subset.back().push_back(std::vector<size_t>());
-						subset.back().back().push_back(0);
-						subset.back().back().push_back(0);
-						subset.back().back().push_back(i);							
-					}
-					for(size_t j = 1; j <= pay_off_swaprate_Degre; j++) 
-					{
-						subset.back().push_back(std::vector<size_t>());
-						subset.back().back().push_back(0);
-						subset.back().back().push_back(j);
-						subset.back().back().push_back(0);
-					}	
-					for(size_t k = 1; k <= swaprate_Degre; k++) 
-					{
-						subset.back().push_back(std::vector<size_t>());
-						subset.back().back().push_back(k);
-						subset.back().back().push_back(0);
-						subset.back().back().push_back(0);
-					}						
-			}			
-		}		
-	}
-
-	//for(size_t liborRate_Degre = 2; liborRate_Degre <= degre; liborRate_Degre++) 
-	//{
-	//		subset.push_back(choosed_basis_set);
-	//		for(size_t i = 3; i <= liborRate_Degre; i++) 
-	//		{
-	//			subset.back().push_back(std::vector<size_t>());
-	//			subset.back().back().push_back(0);
-	//			subset.back().back().push_back(0);
-	//			subset.back().back().push_back(i);							
-	//		}
-	//}
-
-
-
-
-	std::vector<size_t> nbSimulation_vect;
-	//nbSimulation_vect.push_back(20);
-	nbSimulation_vect.push_back(10000);
-
-	std::vector<std::vector<double>> basis_value_on_allPath_buffer(nbSimulation_vect[0]);
-
-	McLmm_PTR mcLmm = getMcLmmExample(lmmTenorStructure, initLiborValues, LmmCalibrationConfig());
-
-	McLmm_LS mcLmm_LS_backward(mcLmm);
-	McLmm_LS mcLmm_LS_forward(mcLmm);
-
-	mcLmm_LS_backward.simulateLMM(nbSimulation_vect[0]);
-	const std::vector<McLmm_LS::LMMSimulationResult>&  lmmSimualtionResults_backward = mcLmm_LS_backward.lmmSimualtionResults_;
-	mcLmm_LS_forward.simulateLMM(nbSimulation_vect[0]);
-	const std::vector<McLmm_LS::LMMSimulationResult>&  lmmSimualtionResults_forward = mcLmm_LS_forward.lmmSimualtionResults_;
-	
-	std::stringstream outputFileName_s; 
-	outputFileName_s<<"Test_LS_price_allSubSet_of_basis"<<".csv";
-	std::string outputFileName = LMMPATH::get_Root_OutputPath() + outputFileName_s.str();
-	ofstream out;
-	out.open(outputFileName,  ios::out | ios::app );
-	//out.open(outputFileName,  ios::out);
-	out<<endl;
-	out<<endl;
-	out<<endl;
-
-	std::stringstream outputFileName_test_time_s; 
-	outputFileName_test_time_s<<"Test_LS_test_function_time"<<".csv";
-	std::string outputFileName_test_time = LMMPATH::get_Root_OutputPath() + outputFileName_test_time_s.str();
-	ofstream out_test_time;
-	out_test_time.open(outputFileName_test_time,  ios::out | ios::app );
-	//out.open(outputFileName,  ios::out);
-	out_test_time<<endl;
-	out_test_time<<endl;
-	out_test_time<<endl;
-
-	time_t _time;
-	struct tm timeInfo;
-	char format[32];
-	time(&_time);
-	localtime_s(&timeInfo, &_time);
-	strftime(format, 32, "%Y-%m-%d %H-%M", &timeInfo);
-
-	out << format << endl;
-	out<< endl;
-	out<< "g : ;" << config.g << "; " << "correl_beta_ : ;" << config.correl_beta_   << " ;" <<endl;
-	out<< "Combinaison ;" << "prix ;" << "inf IC ;" << "sup IC ;" << "demi longeur IC ;" << "temps ;" <<endl;
-
-	for(size_t i = 0; i < subset.size(); i++) 
-	{
-			cout << "iteration : " << i << endl;
-			Test_LS_pricing_One_SubSet_basis(	subset[i], 
-												strike,
-												indexStart, 
-												indexEnd,
-												floatingLegTenorType,
-												fixedLegTenorType,
-												initLiborValues,
-												exerciseDates,
-												callableBermudanSwap,
-												lmmSimualtionResults_backward,
-												lmmSimualtionResults_forward,
-												nbSimulation_vect,
-												basis_value_on_allPath_buffer,
-												out,
-												out_test_time);
-	}
-
-	//VanillaSwap vanillaSwap(	strike, 
-	//							2, 
-	//							indexEnd, 
-	//							floatingLegTenorType, 
-	//							fixedLegTenorType, 
-	//							lmmTenorStructure);
-	//LmmVanillaSwaptionApproxPricer_Rebonato  LmmVanillaSwaptionApproxPricer_Rebonato(mcLmm_for_pricer);
-	//	double LmmVanillaSwaptionApproxPricer_Rebonato::volBlack(vanillaswaption, liborsInitValue)
-}
-
 
 void getAllSubsets(const vector<std::vector<size_t>>& set, std::vector<std::vector<std::vector<size_t>>>& subset)
 {
@@ -573,6 +259,316 @@ Basis_CONSTPTR getSingleEVBasis_swaprateCall(const VanillaSwap& vanillaSwap, dou
 																												liborIndex)))))));
 }
 
+
+//void Test_LS_pricing_allSubSet_basis()
+//{
+//	LMM::Index  indexStart = 2;		//1Y
+//	LMM::Index  indexEnd   = 20;		//10Y
+//	Tenor	floatingLegTenorType = Tenor::_6M;
+//	Tenor	fixedLegTenorType    = Tenor::_1YR;
+//	assert(indexStart%2==0&&indexEnd%2==0);
+//	LMMTenorStructure_PTR lmmTenorStructure( new LMMTenorStructure(floatingLegTenorType, indexEnd/2));
+//
+//	std::vector<std::string> mkt_file_list = InputFileManager::get_VCUB_FileList();
+//	const std::string& mkt_data_file = mkt_file_list.back();
+//	std::string folder_name;   // = "TotalCalib\\" ;  config.use_positive_constraint_=true;
+//	std::string base_name_file = LMMPATH::get_BaseFileName(mkt_data_file) + "\\";
+//	folder_name+=base_name_file;
+//	LMMPATH::reset_Output_SubFolder(folder_name );
+//
+//	LmmCalibrationConfig config;
+//
+//	config.floatLegTenor_=floatingLegTenorType;
+//	config.fixedLegTenor_=fixedLegTenorType;
+//
+//	config.model_nbYear_		=	indexEnd/2;
+//	size_t fixedFloatRatio		=	config.fixedLegTenor_.ratioTo(config.floatLegTenor_);
+//	config.correl_FullRank_		=	fixedFloatRatio*config.model_nbYear_+1;
+//
+//
+//	LmmSwaptionMarketData_PTR pLmmSwaptionMarketData	=	get_LmmSwaptionMarketData(config, mkt_data_file);
+//	const std::vector<double>&	initLiborValues			=	pLmmSwaptionMarketData->get_LiborQuotes()->get_InitLibor();
+//
+//	//config.correl_ReducedRank_= 3; config.correl_alpha_ = 0.0 ; config.correl_beta_  = 0.1;
+//	//QuantLib::Array found_abcd = marketData_LMM_ABCD_calibration(config,pLmmSwaptionMarketData);
+//
+//	std::vector<LMM::Index> exerciseDates;
+//	exerciseDates.push_back(2);
+//	exerciseDates.push_back(4);
+//	exerciseDates.push_back(6);
+//	exerciseDates.push_back(8);
+//	exerciseDates.push_back(10);
+//	exerciseDates.push_back(12);
+//	exerciseDates.push_back(14);
+//	exerciseDates.push_back(16);
+//	exerciseDates.push_back(18);
+//	exerciseDates.push_back(20);
+//
+//
+//	//std::vector<double> initLiborValues;
+//	//initLiborValues.push_back(0.00304663);
+//	//initLiborValues.push_back(0.00283432);
+//	//initLiborValues.push_back(0.00314012);
+//	//initLiborValues.push_back(0.0037196);
+//	//initLiborValues.push_back(0.0048919);
+//	//initLiborValues.push_back(0.00490389);
+//	//initLiborValues.push_back(0.00745992);
+//	//initLiborValues.push_back(0.00748785);
+//	//initLiborValues.push_back(0.0104202);
+//	//initLiborValues.push_back(0.0104748);
+//	//initLiborValues.push_back(0.0140121);
+//	//initLiborValues.push_back(0.0141109);
+//	//initLiborValues.push_back(0.0173241);
+//	//initLiborValues.push_back(0.0174755);
+//	//initLiborValues.push_back(0.0204022);
+//	//initLiborValues.push_back(0.0206124);
+//	//initLiborValues.push_back(0.0226241);
+//	//initLiborValues.push_back(0.022883);
+//	//initLiborValues.push_back(0.0243152);
+//	//initLiborValues.push_back(0.0246144);
+//	//initLiborValues.push_back(0.0253627);
+//
+//	double strike = 0.0137;
+//
+//	McLmm_PTR mcLmm_for_pricer = getMcLmmExample(lmmTenorStructure, initLiborValues,config);
+//
+//	//double nominal = 1.0;
+//	//GenericSwap_CONSTPTR genericVanillaSwap = InstrumentFactory::createVanillaSwap(	strike, 
+//	//																				indexStart, 
+//	//																				indexEnd, 
+//	//																				floatingLegTenorType, 
+//	//																				fixedLegTenorType,
+//	//																				lmmTenorStructure,
+//	//																				nominal);
+//	//CallableInstrument_PTR callableGenericSwap(new CallableGenericSwap(genericVanillaSwap, exerciseDates));
+//
+//
+//	VanillaSwap_CONSTPTR vanillaSwap(new VanillaSwap(	strike, 
+//														indexStart, 
+//														indexEnd, 
+//														floatingLegTenorType, 
+//														fixedLegTenorType,
+//														lmmTenorStructure));
+//
+//	CallableInstrument_PTR callableBermudanSwap(new BermudanVanillaSwaption(vanillaSwap,exerciseDates));
+//
+//	////for ab, bc, ca
+//	//vector<std::vector<size_t>> set;
+//	//set.push_back(std::vector<size_t>());
+//	//set.back().push_back(1);
+//	//set.back().push_back(1);
+//	//set.back().push_back(0);
+//	//set.push_back(std::vector<size_t>());
+//	//set.back().push_back(0);
+//	//set.back().push_back(1);
+//	//set.back().push_back(1);
+//	//set.push_back(std::vector<size_t>());
+//	//set.back().push_back(1);
+//	//set.back().push_back(0);
+//	//set.back().push_back(1);
+//	//for (size_t i= 0 ; i<3; i++)
+//	//{
+//	//	//set.push_back(std::vector<size_t>(3,0));
+//	//	//set.back()[i]+=1;
+//	//	for (size_t j=0; j<=i; j++)
+//	//	{
+//	//		set.push_back(std::vector<size_t>(3,0));
+//	//		set.back()[i]+=1;
+//	//		set.back()[j]+=1;
+//	//	}
+//	//}
+//
+//	std::vector<std::vector<std::vector<size_t>>> subset;
+//	////getAllSubsets(set, subset);
+//
+//	size_t degre = 2;
+//	size_t counter = 0;
+//
+//	//for 1 + a + a^2 + b + c 
+//	//std::vector<std::vector<size_t>> choosed_basis_set;
+//	//for(size_t i = 0; i <= 1; i++) 
+//	//{
+//	//	choosed_basis_set.push_back(std::vector<size_t>());
+//	//	choosed_basis_set.back().push_back(0);
+//	//	choosed_basis_set.back().push_back(0);
+//	//	choosed_basis_set.back().push_back(i);							
+//	//}
+//	//for(size_t j = 1; j <= 1; j++) 
+//	//{
+//	//	choosed_basis_set.push_back(std::vector<size_t>());
+//	//	choosed_basis_set.back().push_back(0);
+//	//	choosed_basis_set.back().push_back(j);
+//	//	choosed_basis_set.back().push_back(0);
+//	//}	
+//	//for(size_t k = 1; k <= 2; k++) 
+//	//{
+//	//	choosed_basis_set.push_back(std::vector<size_t>());
+//	//	choosed_basis_set.back().push_back(k);
+//	//	choosed_basis_set.back().push_back(0);
+//	//	choosed_basis_set.back().push_back(0);
+//	//}
+//
+//	//for 1 + a + a^2 + b + c + ab + bc +ac
+//	//choosed_basis_set.push_back(std::vector<size_t>());
+//	//choosed_basis_set.back().push_back(1);
+//	//choosed_basis_set.back().push_back(1);
+//	//choosed_basis_set.back().push_back(0);
+//	//choosed_basis_set.push_back(std::vector<size_t>());
+//	//choosed_basis_set.back().push_back(0);
+//	//choosed_basis_set.back().push_back(1);
+//	//choosed_basis_set.back().push_back(1);
+//	//choosed_basis_set.push_back(std::vector<size_t>());
+//	//choosed_basis_set.back().push_back(1);
+//	//choosed_basis_set.back().push_back(0);
+//	//choosed_basis_set.back().push_back(1);
+//
+//	//choosed_basis_set.push_back(std::vector<size_t>());
+//	//choosed_basis_set.back().push_back(0);
+//	//choosed_basis_set.back().push_back(3);
+//	//choosed_basis_set.back().push_back(0);
+//	//choosed_basis_set.push_back(std::vector<size_t>());
+//	//choosed_basis_set.back().push_back(0);
+//	//choosed_basis_set.back().push_back(4);
+//	//choosed_basis_set.back().push_back(0);
+//	//choosed_basis_set.push_back(std::vector<size_t>());
+//	//choosed_basis_set.back().push_back(3);
+//	//choosed_basis_set.back().push_back(0);
+//	//choosed_basis_set.back().push_back(0);
+//	//choosed_basis_set.push_back(std::vector<size_t>());
+//	//choosed_basis_set.back().push_back(4);
+//	//choosed_basis_set.back().push_back(0);
+//	//choosed_basis_set.back().push_back(0);
+//
+//	//for (size_t i = 0; i<subset.size(); i++)
+//	//{
+//	//	subset[i].insert(subset[i].begin(), choosed_basis_set.begin(),choosed_basis_set.end());
+//
+//	//}
+//
+//	for(size_t swaprate_Degre = 0; swaprate_Degre <= degre; swaprate_Degre++) 
+//	{
+//		for(size_t pay_off_swaprate_Degre = 0; pay_off_swaprate_Degre <= degre; pay_off_swaprate_Degre++) 
+//		{
+//			for(size_t liborRate_Degre = 0; liborRate_Degre <= degre; liborRate_Degre++) 
+//			{
+//					subset.push_back(std::vector<std::vector<size_t>>());
+//					for(size_t i = 0; i <= liborRate_Degre; i++) 
+//					{
+//						subset.back().push_back(std::vector<size_t>());
+//						subset.back().back().push_back(0);
+//						subset.back().back().push_back(0);
+//						subset.back().back().push_back(i);							
+//					}
+//					for(size_t j = 1; j <= pay_off_swaprate_Degre; j++) 
+//					{
+//						subset.back().push_back(std::vector<size_t>());
+//						subset.back().back().push_back(0);
+//						subset.back().back().push_back(j);
+//						subset.back().back().push_back(0);
+//					}	
+//					for(size_t k = 1; k <= swaprate_Degre; k++) 
+//					{
+//						subset.back().push_back(std::vector<size_t>());
+//						subset.back().back().push_back(k);
+//						subset.back().back().push_back(0);
+//						subset.back().back().push_back(0);
+//					}						
+//			}			
+//		}		
+//	}
+//
+//	//for(size_t liborRate_Degre = 2; liborRate_Degre <= degre; liborRate_Degre++) 
+//	//{
+//	//		subset.push_back(choosed_basis_set);
+//	//		for(size_t i = 3; i <= liborRate_Degre; i++) 
+//	//		{
+//	//			subset.back().push_back(std::vector<size_t>());
+//	//			subset.back().back().push_back(0);
+//	//			subset.back().back().push_back(0);
+//	//			subset.back().back().push_back(i);							
+//	//		}
+//	//}
+//
+//
+//
+//
+//	std::vector<size_t> nbSimulation_vect;
+//	//nbSimulation_vect.push_back(20);
+//	nbSimulation_vect.push_back(10000);
+//
+//	std::vector<std::vector<double>> basis_value_on_allPath_buffer(nbSimulation_vect[0]);
+//
+//	McLmm_PTR mcLmm = getMcLmmExample(lmmTenorStructure, initLiborValues, LmmCalibrationConfig());
+//
+//	McLmm_LS mcLmm_LS_backward(mcLmm);
+//	McLmm_LS mcLmm_LS_forward(mcLmm);
+//
+//	mcLmm_LS_backward.simulateLMM(nbSimulation_vect[0]);
+//	const std::vector<McLmm_LS::LMMSimulationResult>&  lmmSimualtionResults_backward = mcLmm_LS_backward.lmmSimualtionResults_;
+//	mcLmm_LS_forward.simulateLMM(nbSimulation_vect[0]);
+//	const std::vector<McLmm_LS::LMMSimulationResult>&  lmmSimualtionResults_forward = mcLmm_LS_forward.lmmSimualtionResults_;
+//	
+//	std::stringstream outputFileName_s; 
+//	outputFileName_s<<"Test_LS_price_allSubSet_of_basis"<<".csv";
+//	std::string outputFileName = LMMPATH::get_Root_OutputPath() + outputFileName_s.str();
+//	ofstream out;
+//	out.open(outputFileName,  ios::out | ios::app );
+//	//out.open(outputFileName,  ios::out);
+//	out<<endl;
+//	out<<endl;
+//	out<<endl;
+//
+//	std::stringstream outputFileName_test_time_s; 
+//	outputFileName_test_time_s<<"Test_LS_test_function_time"<<".csv";
+//	std::string outputFileName_test_time = LMMPATH::get_Root_OutputPath() + outputFileName_test_time_s.str();
+//	ofstream out_test_time;
+//	out_test_time.open(outputFileName_test_time,  ios::out | ios::app );
+//	//out.open(outputFileName,  ios::out);
+//	out_test_time<<endl;
+//	out_test_time<<endl;
+//	out_test_time<<endl;
+//
+//	time_t _time;
+//	struct tm timeInfo;
+//	char format[32];
+//	time(&_time);
+//	localtime_s(&timeInfo, &_time);
+//	strftime(format, 32, "%Y-%m-%d %H-%M", &timeInfo);
+//
+//	out << format << endl;
+//	out<< endl;
+//	out<< "g : ;" << config.g << "; " << "correl_beta_ : ;" << config.correl_beta_   << " ;" <<endl;
+//	out<< "Combinaison ;" << "prix ;" << "inf IC ;" << "sup IC ;" << "demi longeur IC ;" << "temps ;" <<endl;
+//
+//	for(size_t i = 0; i < subset.size(); i++) 
+//	{
+//			cout << "iteration : " << i << endl;
+//			Test_LS_pricing_One_SubSet_basis(	subset[i], 
+//												strike,
+//												indexStart, 
+//												indexEnd,
+//												floatingLegTenorType,
+//												fixedLegTenorType,
+//												initLiborValues,
+//												exerciseDates,
+//												callableBermudanSwap,
+//												lmmSimualtionResults_backward,
+//												lmmSimualtionResults_forward,
+//												nbSimulation_vect,
+//												basis_value_on_allPath_buffer,
+//												out,
+//												out_test_time);
+//	}
+//
+//	//VanillaSwap vanillaSwap(	strike, 
+//	//							2, 
+//	//							indexEnd, 
+//	//							floatingLegTenorType, 
+//	//							fixedLegTenorType, 
+//	//							lmmTenorStructure);
+//	//LmmVanillaSwaptionApproxPricer_Rebonato  LmmVanillaSwaptionApproxPricer_Rebonato(mcLmm_for_pricer);
+//	//	double LmmVanillaSwaptionApproxPricer_Rebonato::volBlack(vanillaswaption, liborsInitValue)
+//}
 
 //void Test_Longstaff_Schwartz()
 //{

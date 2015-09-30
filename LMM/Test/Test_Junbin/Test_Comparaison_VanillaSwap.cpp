@@ -1,4 +1,4 @@
-#include <JBLMM/Test/JBTests.h>
+#include <LMM/Test/Test_Junbin/JBTests.h>
 
 #include <vector>
 
@@ -6,10 +6,10 @@
 
 #include <LMM/Pricer/LmmAnalyticalPricer/LmmVanillaSwapPricer.h>
 #include <Instrument/GenericSwap/GenericSwap.h>
-#include <JBLMM/Pricer/GenericVanillaSwapPricer.h>
+#include <LMM/Pricer/GenericVanillaSwapPricer.h>
 #include <Instrument/Coupon/Coupon.h>
 #include <Instrument/Coupon/CappedFlooredCoupon.h>
-#include <JBInstrument/InstrumentFactory.h>
+#include <Instrument/InstrumentFactory.h>
 #include <Instrument/Coupon/CouponLeg.h>
 
 

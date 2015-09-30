@@ -1,4 +1,4 @@
-#include "JBLMM/Instrument/CallableSwap.h"
+#include <Instrument/CallableOption/CallableGenericSwap.h>
 
 
 CallableGenericSwap::CallableGenericSwap(GenericSwap_CONSTPTR genericSwap, const std::vector<LMM::Index>& exerciseTimes)

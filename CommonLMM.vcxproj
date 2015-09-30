@@ -11,8 +11,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
     <ClCompile Include="Cheyette\Calibration\CheyetteQuad_LocalCalibrator.cpp" />
     <ClCompile Include="Cheyette\Calibration\CheyetteMarketData_2.cpp" />
+=======
+    <ClCompile Include="Instrument\CallableOption\CallableInstrument.cpp" />
+    <ClCompile Include="Instrument\CallableOption\CallableGenericSwap.cpp" />
+    <ClCompile Include="LMM\Pricer\McLmmPricer\McLmmCallableGenericSwapPricer.cpp" />
+>>>>>>> a26a75093a0789faa89f42fd35d975c2056baadd
     <ClCompile Include="Cheyette\Calibration\CheyetteBaseCalibrator.cpp" />
     <ClCompile Include="Cheyette\Calibration\CheyetteBaseCostFunction.cpp" />
     <ClCompile Include="Cheyette\Calibration\CheyetteDD_LocalCalibrator.cpp" />
@@ -143,6 +149,16 @@
     <ClCompile Include="LMM\Test\Test_Functional.cpp" />
     <ClCompile Include="LMM\Test\Test_GMatrixMapping.cpp" />
     <ClCompile Include="LMM\Test\Test_Interpolation.cpp" />
+    <ClCompile Include="LMM\Test\Test_Junbin\JBTest.cpp" />
+    <ClCompile Include="LMM\Test\Test_Junbin\Test_10_basis.cpp" />
+    <ClCompile Include="LMM\Test\Test_Junbin\Test_Comparaison_VanillaSwap.cpp" />
+    <ClCompile Include="LMM\Test\Test_Junbin\Test_GeneticTargetSwapOneTrajectory.cpp" />
+    <ClCompile Include="LMM\Test\Test_Junbin\Test_JBLmmCalibrationMarketData.cpp" />
+    <ClCompile Include="LMM\Test\Test_Junbin\Test_Longstaff_Schwartz.cpp" />
+    <ClCompile Include="LMM\Test\Test_Junbin\Test_McGeneticSwapLMMPricer.cpp" />
+    <ClCompile Include="LMM\Test\Test_Junbin\Test_McGeneticTargetSwapPricing.cpp" />
+    <ClCompile Include="LMM\Test\Test_Junbin\Test_oneset_basis_pricing.cpp" />
+    <ClCompile Include="LMM\Test\Test_Junbin\unit_test\Test_evaluation_basis.cpp" />
     <ClCompile Include="LMM\Test\Test_LmmABCDFinder.cpp" />
     <ClCompile Include="LMM\Test\Test_LmmCalibrationConfig.cpp" />
     <ClCompile Include="LMM\Test\Test_LmmCalibrationMarketData.cpp" />
@@ -209,8 +225,14 @@
     <ClCompile Include="Cheyette\unit_test\Test_LectureFichier.cpp" />
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
     <ClInclude Include="Cheyette\Calibration\CheyetteQuad_LocalCalibrator.h" />
     <ClInclude Include="Cheyette\Calibration\CheyetteMarketData_2.h" />
+=======
+    <ClInclude Include="Instrument\CallableOption\CallableInstrument.h" />
+    <ClInclude Include="Instrument\CallableOption\CallableGenericSwap.h" />
+    <ClInclude Include="LMM\Pricer\McLmmPricer\McLmmCallableGenericSwapPricer.h" />
+>>>>>>> a26a75093a0789faa89f42fd35d975c2056baadd
     <ClInclude Include="Cheyette\Calibration\CheyetteBaseCalibrator.h" />
     <ClInclude Include="Cheyette\Calibration\CheyetteBaseCostFunction.h" />
     <ClInclude Include="Cheyette\Calibration\CheyetteDD_LocalCalibrator.h" />
@@ -347,6 +369,7 @@
     <ClInclude Include="LMM\Test\Tests.h" />
     <ClInclude Include="LMM\Test\Test_CalibrationConfig.h" />
     <ClInclude Include="LMM\Test\Test_createLmmModel.h" />
+    <ClInclude Include="LMM\Test\Test_Junbin\JBTests.h" />
     <ClInclude Include="LMM\UpperTriangleVanillaSwaptionQuotes.h" />
     <ClInclude Include="LMM\VolatilityGridBuilder.h" />
     <ClInclude Include="Numeric\BilinearInterpolation.h" />

@@ -1,4 +1,4 @@
-#include <JBLMM/Test/JBTests.h>
+#include <LMM/Test/Test_Junbin/JBTests.h>
 
 #include <iostream> 
 #include <fstream> 
@@ -13,9 +13,9 @@
 #include <LMM/Model/Lmm.h>
 #include <LMM/Model/ConstShifted_HGVolatilityFunction.h>
 
-#include <JBLMM/Pricer/McLmmGenericSwapPricer.h>
-#include <JBInstrument/InstrumentFactory.h>
-#include <JBLMM/Pricer/GenericVanillaSwapPricer.h>
+#include <LMM/Pricer/McLmmPricer/McLmmGenericSwapPricer.h>
+#include <Instrument/InstrumentFactory.h>
+#include <LMM/Pricer/GenericVanillaSwapPricer.h>
 #include <LMM/Pricer/McLmmPricer/McLmmGenericTargetSwapPricer.h>
 #include <Instrument/Coupon/TargetCoupon.h>
 

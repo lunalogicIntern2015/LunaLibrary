@@ -1,4 +1,4 @@
-#include <JBLMM/Test/JBTests.h>
+#include <LMM/Test/Test_Junbin/JBTests.h>
 #include <LMM/Test/Tests.h>
 
 #include <iostream>
@@ -30,10 +30,9 @@
 #include <LMM/Pricer/Longstaff_Schwartz/Regression_LS.h>
 #include <LMM/Pricer/Longstaff_Schwartz/McLmm_LS.h>
 #include <Instrument/CallableOption/CallableInstrument.h>
-#include <JBInstrument/CallableSwap.h>
-#include <JBInstrument/InstrumentFactory.h>
+#include <Instrument/InstrumentFactory.h>
 #include <LMM/Pricer/McLmmPricer/McLmmPricer.h>
-#include <JBLMM/Pricer/McLmmGenericSwapPricer.h>
+#include <LMM/Pricer/McLmmPricer/McLmmGenericSwapPricer.h>
 #include <LMM/Pricer/Longstaff_Schwartz/LS_BackwardAlgo.h>
 #include <LMM/Pricer/Longstaff_Schwartz/LS_ForwardAlgo.h>
 
