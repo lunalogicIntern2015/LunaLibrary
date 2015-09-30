@@ -5,17 +5,14 @@
 #include <string>
 #include <boost/shared_ptr.hpp>
 
-#include <Cheyette/Model/CheyetteDD_Model.h>
-#include <LMM/Mc/McLmm.h>  //pour le namespace MCSchemeType
+#include <Cheyette/Model/CheyetteModel.h>
+
 #include <RNGenerator/RNGenerator.h>
 #include <RNGenerator/McGenerator.h>
 #include <LMM/Helper/TenorType.h>
 #include <LMM/Helper/LMMTenorStructure.h>
 
-#include <Instrument/Coupon/Coupon.h>
-#include <Instrument/Coupon/CouponLeg.h>
-#include <Instrument/Coupon/CappedFlooredCoupon.h>
-#include <Instrument/Rate/LiborRate.h>
+
 
 
 /**************  generation de x(t) et y(t) sous la proba forward Q_T  **************
@@ -28,7 +25,8 @@
 class MC_Cheyette
 {
 protected:
-	CheyetteDD_Model_PTR		cheyetteDD_Model_ ;
+	CheyetteModel_PTR			cheyetteModel_PTR_ ;
+
 	RNGenerator_PTR				rnGenerator_;
 
 // UNE UNIQUE TENOR STRUCTURE pour tous les flux (même si 3M / 6M) //
@@ -40,22 +38,26 @@ protected:
 	size_t						discretizationBetweenDates_ ;	//nb de pas de discretisation entre 2 dates
 
 	//! comes from simulation
+	//x_t, y_t simulés sur la grille TenorStructure
 	mutable std::vector<double> x_t_Cheyette_ ;
 	mutable std::vector<double> y_t_Cheyette_ ;
 	mutable std::vector<double> numeraires_; // numeraire[i] = P(T_i, fwd_probaT)  , size = N
 
 public:
 
-	MC_Cheyette(	CheyetteDD_Model_PTR		cheyetteDD_Model,
+	MC_Cheyette(	CheyetteModel_PTR			cheyetteModel_PTR,
 					RNGenerator_PTR				rnGenerator,
 					LMMTenorStructure_PTR		pTenorStructure,
 					double						fwdProbaT,
 					size_t						discretizationBetweenDates   )
-		:cheyetteDD_Model_(cheyetteDD_Model), rnGenerator_(rnGenerator), pTenorStructure_(pTenorStructure),
-		fwdProbaT_(fwdProbaT), discretizationBetweenDates_(discretizationBetweenDates), 
-		x_t_Cheyette_(static_cast<size_t>(fwdProbaT / pTenorStructure->get_tenorType().YearFraction() + 1)), 
-		y_t_Cheyette_(static_cast<size_t>(fwdProbaT / pTenorStructure->get_tenorType().YearFraction() + 1)), 
-		numeraires_(static_cast<size_t>(fwdProbaT / pTenorStructure->get_tenorType().YearFraction() + 1)) 
+		:	cheyetteModel_PTR_(cheyetteModel_PTR)
+			, rnGenerator_(rnGenerator)
+			, pTenorStructure_(pTenorStructure)
+			, fwdProbaT_(fwdProbaT)
+			, discretizationBetweenDates_(discretizationBetweenDates)
+			, x_t_Cheyette_(static_cast<size_t>(fwdProbaT / pTenorStructure->get_tenorType().YearFraction() + 1))
+			, y_t_Cheyette_(static_cast<size_t>(fwdProbaT / pTenorStructure->get_tenorType().YearFraction() + 1))
+			, numeraires_(static_cast<size_t>(fwdProbaT / pTenorStructure->get_tenorType().YearFraction() + 1)) 
 	{
 			assert(pTenorStructure->get_max_nbOfYear() >= fwdProbaT)	;
 	} 
@@ -63,7 +65,6 @@ public:
 	virtual ~MC_Cheyette(){} 
 	
 	//-- Getters 
-	CheyetteDD_Model_PTR		getCheyetteDD_Model() const{return cheyetteDD_Model_ ;}
 	RNGenerator_PTR				getRNGenerator() const{return rnGenerator_ ;}
 	LMMTenorStructure_PTR		getTenorStructure() const {return pTenorStructure_ ;}
 	double						getFwdProbaT() const{return fwdProbaT_ ;}
@@ -74,27 +75,10 @@ public:
 	std::vector<double>			getNumeraires() const{return numeraires_ ;}
 
 	//remplit les vecteurs xt et yt aux dates de la tenor structure sous la mesure Q^T (T = fwdProbaT_)
-	void simulate_Euler() const;
+	void simulate_Euler() const ;
 	void computeNumeraires() const ;
 
-	//! one simulation - pour les produits vanille derives
-	double evaluateFloatLeg(	const size_t valuationIndex,
-								const std::vector<size_t>& indexFloatLeg,
-								const Tenor tenorFloatLeg) const;
-
-	double evaluateFixedLeg(	const size_t valuationIndex,
-								const std::vector<size_t>& indexFixedLeg,
-								const Tenor tenorFixedLeg, 
-								const double fixedRate) const;
-
-	//! one simulation - pour les produits generiques derives
-	//double evaluateCouponLeg(	const LMM::Index valuationIndex,
-	//							const CouponLeg_CONSTPTR couponLeg,
-	//							const Tenor tenorLeg) const;      // !!! tenorLeg peut etre different de TenorStructure !!! 
-
-	//double evaluateCappedFlooredCoupon( CappedFlooredCoupon_CONSTPTR cappedFlooredCoupon, 
-	//									double rateValue) const ;
 };
-
 typedef boost::shared_ptr<MC_Cheyette> MC_Cheyette_PTR;
 typedef boost::shared_ptr<const MC_Cheyette> MC_Cheyette_CONSTPTR;
+

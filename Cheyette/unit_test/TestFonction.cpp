@@ -83,27 +83,3 @@ void TestInterpolation_RR_Function()
 //	std::cout << "res1 " << res1 << ", res2 : " << res2 << ", res3 : " << res3 << std::endl ;
 //	std::cout << "res4 " << res4 << ", res5 : " << res5 << ", res6 : " << res6 << std::endl ;
 //}
-
-
-
-//void TestInverse(){
-//
-//	std::vector<double> tableauX ; 
-//	for (int i = 0 ; i < 11 ; ++i)
-//	{
-//		tableauX.push_back(i) ;
-//	}
-//	InverseFunction i = InverseFunction(tableauX) ;
-//	std::cout << "i0   " << i.fMoinsUn(0) << std::endl ;
-//	std::cout << "i115   " << i.fMoinsUn(115) << std::endl ;
-//	std::cout << "i200   " << i.fMoinsUn(200) << std::endl ;
-//	std::cout << "i380  " << i.fMoinsUn(380) << std::endl ;
-//
-//}
-
-//void TestOperateurR2R()
-//{
-//	boost::function<double(double, double)> f 
-//	Boost_R2R_Function myFunc(boost::function<double(double, double)>& func):func_(func){}
-//
-//}

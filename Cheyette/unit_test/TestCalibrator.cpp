@@ -1,12 +1,17 @@
 #include "TestCalibrator.h"
 #include <cassert>
 
+void helpPrinter(std::string description, std::vector<double> data, std::ofstream& o)
+{
+	o << description  << " ; " ;
+	for (size_t i = 0 ; i < data.size() ; ++i)
+	{
+		o << data[i] << " ; " ;
+	}
+	o << std::endl ;
+}
 
-
-//swaption aYbY, coterminal = a + b
-//calibre sur toutes les swaptions coterminales
-
-void printAllResults_calibratedData(size_t fileNumber, size_t coterminal)
+CheyetteMarketData_PTR recoverMarketData(const size_t fileNumber, const size_t coterminal)
 {
 //lecture du fichier et recuperation des market data
 	std::vector<std::string> mkt_file_list = InputFileManager::get_VCUB_FileList();
@@ -22,8 +27,9 @@ void printAllResults_calibratedData(size_t fileNumber, size_t coterminal)
 
 	LmmSwaptionMarketData_PTR pLmmSwaptionMarketData = get_LmmSwaptionMarketData(model_nbYear, mkt_data_file);
 
-//conversion des market data de matrices à vecteurs coterminaux
+//conversion des market data de matrices à vecteurs coterminaux à l'aide des fonctions de MarketDataConvertor.h
 //recuperation de la courbe taux, tenor, expiry, vol, skew, swaptions (vector) à partir de LmmSwaptionMarketData_PTR
+
 	std::vector<size_t>	vectExpiry = getVectorExpiry(coterminal) ;
 	std::vector<size_t>	vectTenor = getVectorTenor(coterminal) ;
 	
@@ -41,205 +47,238 @@ void printAllResults_calibratedData(size_t fileNumber, size_t coterminal)
 																	vectExpiry, vectTenor, vectStrike) ;
 
 	double shift = 5.0/10000 ;
-	MarketData_PTR mktData(new MarketData(	vectExpiry, vectTenor, vectStrike, vectVol, vectSkew, shift, 
-											vectSwaptions, "Black"));
-	
+	CheyetteMarketData_PTR mktData(new CheyetteMarketData(	courbeInput_PTR,	vectExpiry, vectTenor, vectStrike, 
+															vectVol, vectSkew, shift, vectSwaptions, "Black"));
+	return mktData ;
+}
 
-//Cheyette DD model
-	//parametres initiaux du modele à calibrer
+
+CheyetteDD_LocalCalibrator_PTR creeCheyetteDD_Calibrator(size_t fileNumber, size_t coterminal) 
+{
+//parametres du modele DD : valeurs des parametres avant calibration
+	double sigma = 0.2 ;
+	double m = 0.2 ;
 	double k = 0.02 ;
-	double sigma = 1.0 ;
-	double m = 0.10 ;	
 
-	Piecewiseconst_RR_Function sigmaFunc(coterminal /*- 1*/, sigma) ;	//modifier pour mettre 15Y 15Y
-	Piecewiseconst_RR_Function mFunc(coterminal /*- 1*/, m) ; 
+//recuperation des données de marché à partir d'un fichier
+	CheyetteMarketData_PTR pMarketData = recoverMarketData(fileNumber, coterminal) ;
+	CourbeInput_PTR pCourbeInput = pMarketData->getCourbeInput() ;
 
-	CheyetteDD_Model::CheyetteDD_Parameter monStruct(k, sigmaFunc, mFunc) ;
-	
-	int shiftChoice = 1 ;
-	
-	CheyetteDD_Model_PTR modele_test_PTR(new CheyetteDD_Model(courbeInput_PTR, monStruct, shiftChoice)) ;
-	modele_test_PTR->show() ;
+//approx pricer
+	size_t xmax = coterminal ;
+	Cheyette_SwaptionPricer_Approx_PTR cheyetteApprox_PTR = createApproxPricer_PTR(xmax, pCourbeInput, k, sigma, m) ;
+	cheyetteApprox_PTR->get_CheyetteModel()->show() ;
 
-//ecriture dans fichier
-	std::stringstream fileName_s ;
-	std::string directory = LMMPATH::get_output_path() ;
-	fileName_s << directory << "results_ALL.csv" ; 
-	std::string fileName = fileName_s.str();
+//cost functions
+	size_t indexSwaption = 1 ;
+	Cheyette_CostFunctionLevel_PTR pCheyette_CostFunctionLevel_PTR (
+				new Cheyette_CostFunctionLevel(	cheyetteApprox_PTR, pMarketData, indexSwaption)) ;
+	Cheyette_CostFunctionSkew_PTR pCheyette_CostFunctionSkew_PTR (
+				new Cheyette_CostFunctionSkew(	cheyetteApprox_PTR, pMarketData, indexSwaption)) ;
+//calibrator
+	QuantLib::Size maxIterations	= 500 ;
+	QuantLib::Real rootEpsilon		= 1./10000 ;
+	QuantLib::Real functionEpsilon	= 1./10000 ;
 
-	ofstream o;
+	std::vector<double> v_sigma(coterminal /*- 1*/, sigma) ; 
+	QuantLib::Array sigmaInitiate = HelperArray::vectorToArray(v_sigma) ; 
 
-	o.open(fileName,  ios::out | ios::app );
-	o	<<	endl;
-	modele_test_PTR->print(o) ;
-	switch (shiftChoice)
-	{
-		case 1 :
-			o << "shift 1 : r(t) / r(0)" << endl ;
-			break ;
-		case 2 :
-			o << "shift 2 : r(t) / f(0, t)" << endl ;
-			break ;
-		case 3 :
-			o << "shift 3 : S(t) / S(0)" << endl ;
-			break ;
-		default:
-			std::cout << "invalide shiftChoice" << std::endl ;
-			throw "exception" ;
-			break;
-	}
-	
-	courbeInput_PTR->printHorizontal(o) ;
-	o << endl ;
+	std::vector<double> v_m(coterminal /*- 1*/, m) ; 
+	QuantLib::Array mInitiate = HelperArray::vectorToArray(v_m) ;
+
+	QuantLib::Array calibrated_sigma(sigmaInitiate) ;
+	QuantLib::Array calibrated_m(mInitiate) ;
+
+	CheyetteDD_LocalCalibrator_PTR calibrator(	new CheyetteDD_LocalCalibrator(maxIterations,  rootEpsilon,   functionEpsilon,    
+											sigmaInitiate, mInitiate,
+											calibrated_sigma, calibrated_m,
+											pCheyette_CostFunctionLevel_PTR,
+											pCheyette_CostFunctionSkew_PTR)) ; 
+
+	return calibrator ;
+}
+
+void lancementCalibOneFile()
+{
+	size_t coterminal = 4 ;
+//DD
+	//size_t fileNumber = 2 ;	
+	//CheyetteDD_LocalCalibrator_PTR calibrator = creeCheyetteDD_Calibrator(fileNumber, coterminal) ;
+//Quad
+	size_t fileNumberMktData = 14 ; //vcun krw //14 ; 
+	size_t fileNumberMktData2 = 0 ; 	
+	CheyetteQuad_LocalCalibrator_PTR calibrator = creeCheyetteQuad_Calibrator(fileNumberMktData,
+																				fileNumberMktData2,
+																				coterminal) ;
+
+	calibrator->calibrate() ; 
+	calibrator->getCostFunctionLevel_PTR()->getCheyette_ApproxPricer_PTR()->get_CheyetteModel()->show() ;
+}
+
+CheyetteQuad_LocalCalibrator_PTR creeCheyetteQuad_Calibrator(size_t fileNumberMktData, 
+															 size_t fileNumberMktData_2, 
+															 size_t coterminal) 
+{
+//parametres du modele DD : valeurs des parametres avant calibration
+	double a = 0.02 ;
+	double b = 0.02 ;
+	double c = 0.01 ;
+	double k = 0.02 ;
+
+//recuperation des données de marché à partir d'un fichier
+	CheyetteMarketData_PTR pMarketData = recoverMarketData(fileNumberMktData, coterminal) ;
+	CourbeInput_PTR pCourbeInput = pMarketData->getCourbeInput() ;
+
+//approx pricer
+	size_t	xmax = coterminal ;
+	//Cheyette_SwaptionPricer_Approx_PTR cheyetteApprox_PTR = createApproxPricer_PTR(xmax, pCourbeInput, k, sigma, m) ;
+	Cheyette_SwaptionPricer_QuadApprox_PTR cheyetteApprox_PTR = createQuadApproxPricer_PTR(xmax, pCourbeInput, 
+																					k, a, b, c) ;
+	cheyetteApprox_PTR->get_CheyetteModel()->show() ;
+
+//cost functions
+	size_t indexSwaption = 1 ;
+	Cheyette_CostFunctionLevel_PTR pCheyette_CostFunctionLevel_PTR (
+				new Cheyette_CostFunctionLevel(	cheyetteApprox_PTR, pMarketData, indexSwaption)) ;
+	Cheyette_CostFunctionSkew_PTR pCheyette_CostFunctionSkew_PTR (
+				new Cheyette_CostFunctionSkew(	cheyetteApprox_PTR, pMarketData, indexSwaption)) ;
+
+	//cheyette market data 2
+	CheyetteMarketData_2_PTR cheyetteMarketData_2_PTR(new CheyetteMarketData_2()) ;
+	cheyetteMarketData_2_PTR->init(fileNumberMktData_2) ;
+	Cheyette_CostFunctionConvexity_PTR pCheyette_CostFunctionConvexity_PTR (
+				new Cheyette_CostFunctionConvexity(	cheyetteApprox_PTR, pMarketData, indexSwaption, 
+													cheyetteMarketData_2_PTR)) ;
 
 //calibrator
 	QuantLib::Size maxIterations	= 500 ;
 	QuantLib::Real rootEpsilon		= 1./10000 ;
 	QuantLib::Real functionEpsilon	= 1./10000 ;
 
-	//recuperation des quotations vol ATM, ATM+5bp, ATM-5bp pour tracer smile
-	UpperTriangleVanillaSwaptionQuotes_PTR volATM_ptr =  pLmmSwaptionMarketData->get_SwaptionQuotes_ATM() ;
-	UpperTriangleVanillaSwaptionQuotes_PTR volATMmm_ptr =  pLmmSwaptionMarketData->get_SwaptionQuotes_ATMmm() ;
-	UpperTriangleVanillaSwaptionQuotes_PTR volATMpp_ptr =  pLmmSwaptionMarketData->get_SwaptionQuotes_ATMpp() ;
+	std::vector<double> v_a(coterminal /*- 1*/, a) ; 
+	QuantLib::Array aInitiate = HelperArray::vectorToArray(v_a) ; 
 
-	//minimisation 1D, on passe en parametre sigma[indexSwaption] ou m[indexSwaption]
-	for (size_t indexSwaption = 1 ; indexSwaption < vectSwaptions.size() ; ++indexSwaption)
-	{
-		o << endl ;
-		o << "------ Calibration sur la swaption " 
-					<< indexSwaption << "Y" << coterminal - indexSwaption << "Y -------" << std::endl ;
-		o << std::endl ;
+	std::vector<double> v_b(coterminal /*- 1*/, b) ; 
+	QuantLib::Array bInitiate = HelperArray::vectorToArray(v_b) ;
 
-		CheyetteDD_VanillaSwaptionApproxPricer_PTR approx(
-					new CheyetteDD_VanillaSwaptionApproxPricer(modele_test_PTR, vectSwaptions[indexSwaption]));
+	std::vector<double> v_c(coterminal /*- 1*/, c) ; 
+	QuantLib::Array cInitiate = HelperArray::vectorToArray(v_c) ;
 
-		CoTerminalSwaptionVol_CONSTPTR coterminalSwaptionVol_PTR 
-				(new CoTerminalSwaptionVol(	vectVol[indexSwaption], 
-											vectExpiry[indexSwaption], 
-											vectTenor[indexSwaption], 
-											vectStrike[indexSwaption], 
-											vectSwaptions[indexSwaption])) ;
-		CheyetteDD_CostFunctionLevel_PTR cheyetteBaseCostFunctionLevel_PTR(
-					new CheyetteDD_CostFunctionLevel(o, coterminalSwaptionVol_PTR, approx, indexSwaption)) ;
+	QuantLib::Array calibrated_a(aInitiate) ;
+	QuantLib::Array calibrated_b(bInitiate) ;
+	QuantLib::Array calibrated_c(cInitiate) ;
 
-		CoTerminalSwaptionSkew_CONSTPTR coTerminalSwaptionSkew_PTR
-				(new CoTerminalSwaptionSkew(vectSkew[indexSwaption], 
-											vectExpiry[indexSwaption], 
-											vectTenor[indexSwaption], 
-											vectStrike[indexSwaption], 
-											vectSwaptions[indexSwaption], 
-											shift)) ;
-		CheyetteDD_CostFunctionSkew_PTR cheyetteBaseCostFunctionSkew_PTR(
-					new CheyetteDD_CostFunctionSkew(o, coTerminalSwaptionSkew_PTR, approx, indexSwaption)) ;
+	CheyetteQuad_LocalCalibrator_PTR calibrator(	new CheyetteQuad_LocalCalibrator(maxIterations,  rootEpsilon,   functionEpsilon,    
+											aInitiate, bInitiate, cInitiate,
+											calibrated_a, calibrated_b, calibrated_c,
+											pCheyette_CostFunctionLevel_PTR,
+											pCheyette_CostFunctionSkew_PTR,
+											pCheyette_CostFunctionConvexity_PTR)) ; 
 
-		std::vector<double> v_sigma(1) ; v_sigma[0] = sigma ;
-		QuantLib::Array sigmaInitiate = vectorToArray(v_sigma) ; 
+	return calibrator ;
+}
 
-		std::vector<double> v_m(1) ; v_m[0] = m ;
-		QuantLib::Array mInitiate = vectorToArray(v_m) ;
 
-		QuantLib::Array calibrated_sigma(sigmaInitiate) ;
-		QuantLib::Array calibrated_m(mInitiate) ;
+//calibre sur toutes les swaptions coterminales
+CheyetteModel_PTR getCalibratedModel(size_t fileNumber, size_t coterminal)
+{
+//Displaced Diffusion
+	CheyetteDD_LocalCalibrator_PTR calibrator = creeCheyetteDD_Calibrator(fileNumber, coterminal) ;
 
-		CheyetteDD_LocalCalibrator calibrator(	o, 
-												maxIterations,  rootEpsilon,   functionEpsilon,    
-												sigmaInitiate, mInitiate,
-												calibrated_sigma, calibrated_m,
-												cheyetteBaseCostFunctionLevel_PTR,
-												cheyetteBaseCostFunctionSkew_PTR) ; 
-
-		calibrator.solve() ;	
-
-		o << "VOL MARKET ; "
-			<< volATMmm_ptr->get_UpperTriangularVanillaSwaptionQuotes()(indexSwaption, coterminal - indexSwaption).second	<< ";"
-			<< volATM_ptr->get_UpperTriangularVanillaSwaptionQuotes()(indexSwaption, coterminal - indexSwaption).second		<< ";"
-			<< volATMpp_ptr->get_UpperTriangularVanillaSwaptionQuotes()(indexSwaption, coterminal - indexSwaption).second	<<std::endl ;
-		o << endl ;
-	}
-	modele_test_PTR->print(o) ;
+//Quadratic volatility
+	//size_t fileNumberMktData_2 = 0 ;
+	//CheyetteQuad_LocalCalibrator_PTR calibrator = creeCheyetteQuad_Calibrator(fileNumber, fileNumberMktData_2, coterminal) ;
 	
-	//compare market smile and model smile for ITM/ATM/OTM strikes
-	//generateSmile(model_nbYear, fileNumber, coterminal, o) ;
+	calibrator->calibrate() ;
+	CheyetteModel_PTR calibratedModel = calibrator->getCostFunctionLevel_PTR()->getCheyette_ApproxPricer_PTR()->get_CheyetteModel() ;
+	
+	calibratedModel->show() ;
+	return calibratedModel ;	
+}
 
-	//for (size_t a = 1 ; a < coterminal ; ++a)
-	//{
-	//	test_approx_ATM(a, coterminal - a, tenorFloat, tenorFixed, modele_test_PTR, nbSimus, o) ;	
-	//}
+//swaption aYbY, coterminal = a + b
+//calibre sur toutes les swaptions coterminales
 
-	for (size_t a = 1 ; a < coterminal ; ++a)
+void printAllResults_calibratedData(size_t fileNumber, size_t coterminal)
+{
+	CheyetteMarketData_PTR marketData = recoverMarketData(fileNumber, coterminal) ;
+	Tenor floatTenor = Tenor::_6M ;
+
+//ecriture dans fichier
+	std::stringstream fileName_s ;
+	std::string directory = LMMPATH::get_output_path() ;
+	fileName_s << directory << "10Y_test_RESULTATS_POUR_RAPPORT.csv" ; 
+	std::string fileName = fileName_s.str();
+
+	ofstream o;
+
+	o.open(fileName,  ios::out | ios::app );
+	o	<<	endl;
+	
+//calibrator
+	CheyetteModel_PTR calibratedModel = getCalibratedModel(fileNumber, coterminal) ;
+	
+	calibratedModel->print(o) ;
+
+	std::vector<VanillaSwaption_PTR> vectSwaptions = marketData->getVect_swaptions() ;
+
+	//approx
+	Cheyette_SwaptionPricer_Approx_PTR pApproxPricer(new Cheyette_SwaptionPricer_LinearApprox(calibratedModel) ) ;
+	//Cheyette_SwaptionPricer_Approx_PTR pApproxPricer(new Cheyette_SwaptionPricer_QuadApprox(calibratedModel) ) ;
+
+	//swaption 0 non definie
+	for (size_t a = 10 ; a < coterminal ; ++a)
 	{
-		//pour les swaptions 1Y, 3Y, 5Y, 10Y, 15Y seulement, commenter sinon
-		bool boolean_a = a == 1 || a == 3 || a == 5 || a == 10 || a == 15 ;
-		size_t b = coterminal - a ;
-		bool boolean_cot =	b == 1 || b == 3 || b == 5 || b == 10 || b == 15 ;
-		bool boolean = boolean_a && boolean_cot ;
-		if (!boolean) continue ;
+		////pour les swaptions 1Y, 3Y, 5Y, 10Y, 15Y seulement, commenter sinon
 
-		//swaption 0 non definie
-		CheyetteDD_VanillaSwaptionApproxPricer_PTR pApproxPricer(
-			new CheyetteDD_VanillaSwaptionApproxPricer(modele_test_PTR, vectSwaptions[a])) ;
+		//bool boolean_a = a == 1 || a == 3 || a == 5 || a == 10 || a == 15 ;
+		//size_t b = coterminal - a ;
+		//bool boolean_cot =	b == 1 || b == 3 || b == 5 || b == 10 || b == 15 ;
+		//bool boolean = boolean_a && boolean_cot ;
+		//if (!boolean) continue ;
+
 		o << endl ;
 		o   << "SWAPTION " << a << "Y ," << coterminal - a << "Y" << std::endl;
-		o   << "startdate ;" << pApproxPricer->get_buffer_UnderlyingSwap_().get_StartDate() << std::endl;
-		o   << "enddate ;" << pApproxPricer->get_buffer_UnderlyingSwap_().get_EndDate() << std::endl;
-		
-		//approx
-		double approxPrice = pApproxPricer->prixSwaptionApproxPiterbarg() ;
+		o   << "startdate ;" << vectSwaptions[a]->getUnderlyingSwap().get_StartDate() << std::endl;
+		o   << "enddate ;" << vectSwaptions[a]->getUnderlyingSwap().get_EndDate() << std::endl;
+		double strike_0 = vectSwaptions[a]->get_strike() ;		
+		o   << "strike ATM ;" << strike_0 << std::endl;
+		double approxPrice = pApproxPricer->price(vectSwaptions[a]) ;
 		o   << "prix par approximation ;" << approxPrice << std::endl;
 
-		//MC forward QT
-		double strikeATM_Bloomberg = vectSwaptions[a]->get_strike() ;
-		double annuity0 = pApproxPricer->swapRateDenominator(0., 0., 0.) ;
-		double swapRate0 = pApproxPricer->get_buffer_s0_() ;
- 
-		double sigma_ATM = NumericalMethods::Black_SwaptionImpliedVolatility(approxPrice, annuity0, 															
-							swapRate0, strikeATM_Bloomberg, a) ;
-		//std::vector<size_t> nbSimus(16) ;
-		//nbSimus[0] = 1000 ; nbSimus[1] = 3000 ; nbSimus[2] = 5000 ; nbSimus[3] = 10000 ; nbSimus[4] = 30000 ;
-		//nbSimus[5] = 50000 ; nbSimus[6] = 100000 ; nbSimus[7] = 300000 ; nbSimus[8] = 500000 ; nbSimus[9] = 800000 ;
-		//nbSimus[10] = 1000000 ; nbSimus[11] = 1200000 ; nbSimus[12] = 1500000 ; nbSimus[13] = 1700000 ; nbSimus[14] = 2000000 ;
-		//nbSimus[15] = 2500000 ;
 
+		//liste de shifts EN BP à appliquer sur le strike
+		size_t nbShifts = 13 ;	
+		std::vector<double> shifts_bp(nbShifts) ;			
+		
+		//shifts_bp[0] = -250. ; shifts_bp[1] = -200. ; 
+		//shifts_bp[0] = -150. ; shifts_bp[1] = -100. ; shifts_bp[2] = -50. ;
+		//shifts_bp[3] = -25. ; shifts_bp[4] = 0. ; shifts_bp[5] = 25. ;
+		//shifts_bp[6] = 50. ; shifts_bp[7] = 100. ; shifts_bp[8] = 150. ; shifts_bp[9] = 200. ; shifts_bp[10] = 250. ;
+
+		shifts_bp[0] = -250. ; shifts_bp[1] = -200. ; shifts_bp[2] = -150. ; shifts_bp[3] = -100. ; shifts_bp[4] = -50. ;
+		shifts_bp[5] = -25. ; shifts_bp[6] = 0. ; shifts_bp[7] = 25. ;
+		shifts_bp[8] = 50. ; shifts_bp[9] = 100. ; shifts_bp[10] = 150. ; shifts_bp[11] = 200. ; shifts_bp[12] = 250. ;
+
+		//APPROXIMATION pour multiple strikes
+		std::vector<std::vector<double>> resApprox = pApproxPricer->priceMultipleStrikes(vectSwaptions[a], shifts_bp) ;
+	
+		helpPrinter("strikes", resApprox[1], o) ;
+		helpPrinter("approx", resApprox[0], o) ;
+		helpPrinter("vol Black approx", resApprox[2], o) ;
+
+		//MC (proba forward QT)
 		std::vector<size_t> nbSimus(1) ;
 		nbSimus[0] = 60000 ;
-		o	<<	endl;
-		o   << "Monte Carlo sous proba forward Q T ; T = ;" << coterminal << std::endl;
-		//o   << "nbSimus ; MC swaption ; IC_left ; IC_right" << std::endl;
-		o << "nb simus MC ; " << nbSimus[0] << std::endl ;
-
-		for (size_t indexSimu = 0 ; indexSimu < nbSimus.size() ; ++indexSimu)
-		{
-			//print_MCforward(nbSimus[indexSimu], pApproxPricer, o) ;
-			//std::vector<double> resMC = MCforward(nbSimus[indexSimu], pApproxPricer) ;
-			//o << nbSimus[indexSimu] << " ; " << resMC[0] << " ; " << resMC[1] << " ; " << resMC[2] << std::endl ;
-
-			//res[0] = prixSwaptionsPlusieursStrikes ;
-			//res[1] = IC_left ; //res[2] = IC_right ; 
-			//res[3] = strikes ; //res[4] = moneyness ;
-
-			std::vector<std::vector<double>> resMC = MCforward_MultipleStrikes(nbSimus[indexSimu], pApproxPricer, sigma_ATM) ;
-			helpPrinter("prixSwaptionsPlusieursStrikes", resMC[0], o) ;
-			helpPrinter("IC_left", resMC[1], o) ;
-			helpPrinter("IC_right", resMC[2], o) ;
-			helpPrinter("strikes", resMC[3], o) ;
-			helpPrinter("moneyness", resMC[4], o) ;
-
-			std::vector<double> volImp(resMC[0].size()) ;
-			for (size_t i = 0 ; i < resMC[0].size() ; i++)
-			{
-					//double vol = NumericalMethods::Black_SwaptionImpliedVolatility(resMC[0][i], annuity0, 															
-					//		swapRate0, resMC[3][i], a) ;
-					double vol = NumericalMethods::Black_impliedVolatility(resMC[0][i] / annuity0, 															
-							swapRate0, resMC[3][i], a) ;
-					volImp[i] = vol ;
-			}
-			helpPrinter("vol implicite", volImp, o) ;
-
-			//strike varie
-			//print_smile(a, coterminal - a, strikeATM_Bloomberg, resMC[0], annuity0, swapRate0, o) ;
-		}
+		
+		double swapRate0 = pApproxPricer->get_buffer_s0_() ;
+		double annuity0 = pApproxPricer->swapRateDenominator(0., 0., 0.) ;
+		
+		printSwaptionMultipleStrikesMC(coterminal, floatTenor, calibratedModel,
+										vectSwaptions[a], nbSimus, shifts_bp, annuity0, swapRate0, o) ;
 
 		//MC annuity
+
 		//o	<<	endl;
 		//o   << "Monte Carlo sous proba annuity" << std::endl;
 		//o   << "nbSimus ; MC swaption ; IC_left ; IC_right" << std::endl;
@@ -248,11 +287,11 @@ void printAllResults_calibratedData(size_t fileNumber, size_t coterminal)
 		//	//print_MCannuity(nbSimus[indexSimu], pApproxPricer, o) ;
 		//	std::vector<double> resMC = MCannuity(nbSimus[indexSimu], pApproxPricer) ;
 		//	o << nbSimus[indexSimu] << " ; " << resMC[0] << " ; " << resMC[1] << " ; " << resMC[2] << std::endl ;
-
 		//	print_smile(a, coterminal - a, strikeATM_Bloomberg, resMC[0], annuity0, swapRate0, o) ;
 		//}
 
-		////MC annuity2 (libnearise)
+		//MC annuity2 (linearise)
+
 		//o	<<	endl;
 		//o   << "Monte Carlo sous proba annuity (eq 2 lineaire)" << std::endl;
 		//o   << "nbSimus ; MC swaption ; IC_left ; IC_right" << std::endl;
@@ -261,213 +300,112 @@ void printAllResults_calibratedData(size_t fileNumber, size_t coterminal)
 		//	//print_MCannuity2(nbSimus[indexSimu], pApproxPricer, o) ;
 		//	std::vector<double> resMC = MCannuity2(nbSimus[indexSimu], pApproxPricer) ;
 		//	o << nbSimus[indexSimu] << " ; " << resMC[0] << " ; " << resMC[1] << " ; " << resMC[2] << std::endl ;
-
 		//	print_smile(a, coterminal - a, strikeATM_Bloomberg, resMC[0], annuity0, swapRate0, o) ;
 		//}
 		//o	<<	endl;
 	}
-
 	o.close() ;
-
 }
 
-void lancementAuto()
-{
-	std::vector<size_t> vectCoterminal(13) ;
-	vectCoterminal[0] = 2 ; vectCoterminal[1] = 4 ; vectCoterminal[2] = 6 ; vectCoterminal[3] = 8 ;
-	vectCoterminal[4] = 10 ;	vectCoterminal[5] = 11 ; vectCoterminal[6] = 13 ; vectCoterminal[7] = 15 ;
-	vectCoterminal[8] = 16 ; 	vectCoterminal[9] = 18 ; vectCoterminal[10] = 20 ; vectCoterminal[11] = 25 ;
-	vectCoterminal[12] = 30 ;
 
-	//size_t fileNumber = 1 ;
-	for (size_t fileNumber = 5 ; fileNumber < 30 ; ++fileNumber)
-	{
-		for (size_t i = 0 ; i < vectCoterminal.size() ; ++i)
+void printSwaptionMultipleStrikesMC(size_t coterminal, Tenor floatTenor, 
+									CheyetteModel_PTR calibratedModel,
+									VanillaSwaption_PTR pSwaption, 
+									std::vector<size_t> nbSimus, 
+									std::vector<double> shifts_bp, double annuity0, double swapRate0,
+									std::ofstream& o)
+{
+		o	<<	endl;
+		o   << "Monte Carlo sous proba forward Q T ; T = ;" << coterminal << std::endl;
+		o << "nb simus MC ; " << nbSimus[0] << std::endl ;
+
+		LMMTenorStructure_PTR	pTenorStructure(new LMMTenorStructure(floatTenor, coterminal + 1)) ;
+		size_t					fwdProbaT = coterminal ;
+		size_t					discretizationBetweenDates = 200 ;
+		MC_Cheyette_VanillaSwaptionPricer_PTR mcPricer = 
+				creeMC_SwaptionPricer_PTR(calibratedModel, pTenorStructure, fwdProbaT, discretizationBetweenDates) ;
+
+		double T0 = pSwaption->getUnderlyingSwap().get_StartDate() ;
+		std::cout << T0 << std::endl ;
+
+		for (size_t indexSimu = 0 ; indexSimu < nbSimus.size() ; ++indexSimu)
 		{
-			printAllResults_calibratedData(fileNumber, vectCoterminal[i]) ;
+			std::vector<std::vector<double>> resMC = mcPricer->priceMultipleStrikes(pSwaption, nbSimus[indexSimu], shifts_bp) ;
+			helpPrinter("prixSwaptionsPlusieursStrikes", resMC[0], o) ;
+			helpPrinter("IC_left", resMC[1], o) ;
+			helpPrinter("IC_right", resMC[2], o) ;
+			helpPrinter("strikes", resMC[3], o) ;
+
+			std::vector<double> volImp(resMC[0].size()) ;
+			for (size_t i = 0 ; i < resMC[0].size() ; i++)
+			{
+				double vol = NumericalMethods::Black_impliedVolatility(resMC[0][i] / annuity0, swapRate0, resMC[3][i], T0) ;
+				volImp[i] = vol ;
+			}
+			helpPrinter("vol implicite", volImp, o) ;
 		}
-	}
 }
 
-
-//calibre sur toutes les swaptions coterminales
-CheyetteDD_Model_PTR getCalibratedModel(size_t fileNumber, size_t coterminal)
-{
-//initial parameters of Cheyette DD model
-	double k = 0.02 ;
-	double sigma = 0.2 ; //1.0 ;
-	double m = 0.4 ; // 0.10 ;	
-
-	Piecewiseconst_RR_Function sigmaFunc(coterminal /*- 1*/, sigma) ; 
-	Piecewiseconst_RR_Function mFunc(coterminal /*- 1*/, m) ; 
-
-	CheyetteDD_Model::CheyetteDD_Parameter monStruct(k, sigmaFunc, mFunc) ;
-	
-	int shiftChoice = 1 ;
-
-	
-//lecture du fichier et recuperation des market data
-	std::vector<std::string> mkt_file_list = InputFileManager::get_VCUB_FileList();
-
-	std::string mkt_data_file = mkt_file_list[fileNumber] ;
-
-	std::string folder_name;
-	std::string base_name_file = LMMPATH::get_BaseFileName(mkt_data_file) + "\\";
-	folder_name+=base_name_file;
-	LMMPATH::reset_Output_SubFolder(folder_name );
-
-	size_t model_nbYear = 18 ; //definit jusqu'où est lu VCUB
-
-	LmmSwaptionMarketData_PTR pLmmSwaptionMarketData = get_LmmSwaptionMarketData(model_nbYear, mkt_data_file);
-
-
-//conversion des market data de matrices à vecteurs coterminaux
-//recuperation de la courbe taux, tenor, expiry, vol, skew, swaptions (vector) à partir de LmmSwaptionMarketData_PTR
-	std::vector<size_t>	vectExpiry = getVectorExpiry(coterminal) ;
-	std::vector<size_t>	vectTenor = getVectorTenor(coterminal) ;
-	
-	std::vector<double>	vectStrike = getVectorStrike(pLmmSwaptionMarketData, coterminal) ;
-	std::vector<double>	vectVol = getVectorVol(pLmmSwaptionMarketData, coterminal) ;	
-	std::vector<double>	vectSkew = getVectorSkew(pLmmSwaptionMarketData, coterminal) ;		
-	
-	CourbeInput_PTR courbeInput_PTR(new 
-		CourbeInput(upperMatrixZC_To_CourbeInput_yield(pLmmSwaptionMarketData->get_LiborQuotes()) )
-								) ;
-	
-	Tenor tenorFloat = Tenor::_6M ;
-	Tenor tenorFixed = Tenor::_1YR ;  
- 	std::vector<VanillaSwaption_PTR> vectSwaptions = getVectorSwaptions(tenorFloat, tenorFixed,
-																	vectExpiry, vectTenor, vectStrike) ;
-
-	double shift = 5.0/10000 ;
-	MarketData_PTR mktData(new MarketData(	vectExpiry, vectTenor, vectStrike, vectVol, vectSkew, shift, 
-											vectSwaptions, "Black"));
-	
-	CheyetteDD_Model_PTR modele_test_PTR(new CheyetteDD_Model(courbeInput_PTR, monStruct, shiftChoice)) ;
-	modele_test_PTR->show() ;
-
-//ecriture dans fichier
-	std::stringstream fileName_s ;
-	std::string directory = LMMPATH::get_output_path() ;
-	fileName_s << directory << "calib.csv" ; 
-	std::string fileName = fileName_s.str();
-
-	ofstream o;
-
-	o.open(fileName,  ios::out | ios::app );
-	o	<<	endl;
-	modele_test_PTR->print(o) ;
-	switch (shiftChoice)
-	{
-		case 1 :
-			o << "shift 1 : r(t) / r(0)" << endl ;
-			break ;
-		case 2 :
-			o << "shift 2 : r(t) / f(0, t)" << endl ;
-			break ;
-		case 3 :
-			o << "shift 3 : S(t) / S(0)" << endl ;
-			break ;
-		default:
-			std::cout << "invalide shiftChoice" << std::endl ;
-			throw "exception" ;
-			break;
-	}
-	
-	courbeInput_PTR->printHorizontal(o) ;
-	o << endl ;
-
-//calibrator
-	QuantLib::Size maxIterations	= 500 ;
-	QuantLib::Real rootEpsilon		= 1./10000 ;
-	QuantLib::Real functionEpsilon	= 1./10000 ;
-
-	//recuperation des quotations vol ATM, ATM+5bp, ATM-5bp pour tracer smile
-	UpperTriangleVanillaSwaptionQuotes_PTR volATM_ptr =  pLmmSwaptionMarketData->get_SwaptionQuotes_ATM() ;
-	UpperTriangleVanillaSwaptionQuotes_PTR volATMmm_ptr =  pLmmSwaptionMarketData->get_SwaptionQuotes_ATMmm() ;
-	UpperTriangleVanillaSwaptionQuotes_PTR volATMpp_ptr =  pLmmSwaptionMarketData->get_SwaptionQuotes_ATMpp() ;
-
-	//minimisation 1D, on passe en parametre sigma[indexSwaption] ou m[indexSwaption]
-	for (size_t indexSwaption = 1 ; indexSwaption < vectSwaptions.size() ; ++indexSwaption)
-	{
-		o << endl ;
-		o << "------ Calibration sur la swaption " 
-					<< indexSwaption << "Y" << coterminal - indexSwaption << "Y -------" << std::endl ;
-		o << std::endl ;
-
-		CheyetteDD_VanillaSwaptionApproxPricer_PTR approx(
-					new CheyetteDD_VanillaSwaptionApproxPricer(modele_test_PTR, vectSwaptions[indexSwaption]));
-
-		CoTerminalSwaptionVol_CONSTPTR coterminalSwaptionVol_PTR 
-				(new CoTerminalSwaptionVol(	vectVol[indexSwaption], 
-											vectExpiry[indexSwaption], 
-											vectTenor[indexSwaption], 
-											vectStrike[indexSwaption], 
-											vectSwaptions[indexSwaption])) ;
-		CheyetteDD_CostFunctionLevel_PTR cheyetteBaseCostFunctionLevel_PTR(
-					new CheyetteDD_CostFunctionLevel(o, coterminalSwaptionVol_PTR, approx, indexSwaption)) ;
-
-		CoTerminalSwaptionSkew_CONSTPTR coTerminalSwaptionSkew_PTR
-				(new CoTerminalSwaptionSkew(vectSkew[indexSwaption], 
-											vectExpiry[indexSwaption], 
-											vectTenor[indexSwaption], 
-											vectStrike[indexSwaption], 
-											vectSwaptions[indexSwaption], 
-											shift)) ;
-		CheyetteDD_CostFunctionSkew_PTR cheyetteBaseCostFunctionSkew_PTR(
-					new CheyetteDD_CostFunctionSkew(o, coTerminalSwaptionSkew_PTR, approx, indexSwaption)) ;
-
-		std::vector<double> v_sigma(1) ; v_sigma[0] = sigma ;
-		QuantLib::Array sigmaInitiate = vectorToArray(v_sigma) ; 
-
-		std::vector<double> v_m(1) ; v_m[0] = m ;
-		QuantLib::Array mInitiate = vectorToArray(v_m) ;
-
-		QuantLib::Array calibrated_sigma(sigmaInitiate) ;
-		QuantLib::Array calibrated_m(mInitiate) ;
-
-		CheyetteDD_LocalCalibrator calibrator(	o, 
-												maxIterations,  rootEpsilon,   functionEpsilon,    
-												sigmaInitiate, mInitiate,
-												calibrated_sigma, calibrated_m,
-												cheyetteBaseCostFunctionLevel_PTR,
-												cheyetteBaseCostFunctionSkew_PTR) ; 
-
-		calibrator.solve() ;	
-
-		o << "VOL MARKET ; "
-			<< volATMmm_ptr->get_UpperTriangularVanillaSwaptionQuotes()(indexSwaption, coterminal - indexSwaption).second	<< ";"
-			<< volATM_ptr->get_UpperTriangularVanillaSwaptionQuotes()(indexSwaption, coterminal - indexSwaption).second		<< ";"
-			<< volATMpp_ptr->get_UpperTriangularVanillaSwaptionQuotes()(indexSwaption, coterminal - indexSwaption).second	<<std::endl ;
-		o << endl ;
-	}
-	
-	//print le modele calibre
-	return modele_test_PTR ;
-	
-}
-
-
-
-QuantLib::Array vectorToArray(std::vector<double> v)
-{
-	QuantLib::Array a(v.size()) ;
-	for (size_t i = 0 ; i < v.size() ; ++i)
-	{
-		a[i] = v[i] ;
-	}
-	return a ;
-}
-
-
-//std::vector<double> arrayToVector(QuantLib::Array a)
+//void lancementAuto()
 //{
-//	std::vector<double> vect ;
-//	vect.reserve(a.size()) ;
-//	for (size_t i = 0 ; i < a.size() ; ++i)
+//
+//	
+//	std::vector<size_t> vectCoterminal(13) ;
+//	vectCoterminal[0] = 2 ; vectCoterminal[1] = 4 ; vectCoterminal[2] = 6 ; vectCoterminal[3] = 8 ;
+//	vectCoterminal[4] = 10 ;	vectCoterminal[5] = 11 ; vectCoterminal[6] = 13 ; vectCoterminal[7] = 15 ;
+//	vectCoterminal[8] = 16 ; 	vectCoterminal[9] = 18 ; vectCoterminal[10] = 20 ; vectCoterminal[11] = 25 ;
+//	vectCoterminal[12] = 30 ;
+//
+//	//size_t fileNumber = 1 ;
+//	for (size_t fileNumber = 12 ; fileNumber < 13 ; ++fileNumber)
 //	{
-//		vect[i] = a[i] ;
+//		for (size_t i = 0 ; i < vectCoterminal.size() ; ++i)
+//		{
+//			printAllResults_calibratedData(fileNumber, vectCoterminal[i]) ;
+//		}
 //	}
-//	return vect ;
 //}
+
+	//file_list.push_back("VCUB_2008_01_02.csv");// 0
+	//	file_list.push_back("VCUB_2008_04_02.csv");// 1  
+	//	file_list.push_back("VCUB_2008_07_02.csv");// 2
+	//	file_list.push_back("VCUB_2008_10_01.csv");// 3
+	//	file_list.push_back("VCUB_2009_01_07.csv");// 4
+	//	file_list.push_back("VCUB_2009_04_01.csv");// 5
+	//	file_list.push_back("VCUB_2009_07_01.csv");// 6
+	//	file_list.push_back("VCUB_2009_10_07.csv");// 7
+	//	file_list.push_back("VCUB_2010_01_06.csv");// 8
+	//	file_list.push_back("VCUB_2010_04_07.csv");// 9
+	//	file_list.push_back("VCUB_2010_07_07.csv");// 10
+	//	file_list.push_back("VCUB_2010_10_06.csv");// 11
+	//	file_list.push_back("VCUB_2011_01_05.csv");// 12
+	//	file_list.push_back("VCUB_2011_04_06.csv");// 13
+	//	file_list.push_back("VCUB_2011_07_06.csv");// 14
+	//	file_list.push_back("VCUB_2011_10_05.csv");// 15
+	//	file_list.push_back("VCUB_2012_01_04.csv");// 16
+	//	file_list.push_back("VCUB_2012_04_04.csv");// 17
+	//	file_list.push_back("VCUB_2012_07_04.csv");// 18
+	//	file_list.push_back("VCUB_2012_10_03.csv");// 19
+	//	file_list.push_back("VCUB_2013_01_02.csv");// 20
+	//	file_list.push_back("VCUB_2013_04_04.csv");// 21
+	//	file_list.push_back("VCUB_2013_07_03.csv");// 22
+	//	file_list.push_back("VCUB_2013_10_03.csv");// 23
+	//	file_list.push_back("VCUB_2014_01_01.csv");// 24
+	//	file_list.push_back("VCUB_2014_02_05.csv");// 25
+	//	file_list.push_back("VCUB_2014_03_05.csv");// 26
+	//	file_list.push_back("VCUB_2014_04_02.csv");// 27
+	//	file_list.push_back("VCUB_2014_05_01.csv");// 28
+	//	file_list.push_back("VCUB_2014_06_04.csv");// 29
+	//	file_list.push_back("VCUB_2014_07_02.csv");// 30
+	//	file_list.push_back("VCUB_2014_08_01.csv");// 31
+	//	file_list.push_back("VCUB_2014_08_04.csv");// 31
+	//	file_list.push_back("VCUB_2014_08_05.csv");// 33
+	//	file_list.push_back("VCUB_2014_08_06.csv");// 34
+	//	file_list.push_back("VCUB_2014_08_07.csv");// 35
+	//	file_list.push_back("VCUB_2014_08_08.csv");// 36
+	//	file_list.push_back("VCUB_2014_08_14.csv");// 37
+
+
+
+
 

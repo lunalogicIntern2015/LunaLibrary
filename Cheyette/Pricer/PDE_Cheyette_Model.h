@@ -11,11 +11,11 @@
 class PDE_CheyetteDD_Model: public PDE_2D_Model
 {
 public:
-	CheyetteDD_Model  cheyette_model_;
+	CheyetteDD_Model_PTR  cheyette_model_;
 	Discretization    discret_;
 
-	PDE_CheyetteDD_Model(const CheyetteDD_Model& cheyette_Model, const Discretization& discret)
-		: cheyette_model_(cheyette_Model),
+	PDE_CheyetteDD_Model(const CheyetteDD_Model_PTR& cheyette_Model_PTR, const Discretization& discret)
+		: cheyette_model_(cheyette_Model_PTR),
 		  discret_(discret)
 	{};
 
@@ -26,7 +26,7 @@ public:
 		double x = discret_.get_discret_x( x_index);
 		double y = discret_.get_discret_y( y_index);
 
-		double diffusion_x = cheyette_model_.diffusion_x(t,x,y);
+		double diffusion_x = cheyette_model_->diffusion_x(t,x,y);
 		return 0.5*diffusion_x*diffusion_x;
 	}
 
@@ -35,14 +35,14 @@ public:
 		double x = discret_.get_discret_x( x_index);
 		double y = discret_.get_discret_y( y_index);
 
-		double drift_x = cheyette_model_.drift_x_Q(t,x,y);
+		double drift_x = cheyette_model_->drift_x_Q(t,x,y);
 		return drift_x;
 	}
 
 	double C_x(double t, int x_index, int y_index)   const 
 	{
 		double x = discret_.get_discret_x( x_index);
-		double r = cheyette_model_.r_t(t,x); 
+		double r = cheyette_model_->r_t(t,x); 
 		return -r; 
 	} 
 
@@ -55,7 +55,7 @@ public:
 	{  
 		double x = discret_.get_discret_x( x_index);
 		double y = discret_.get_discret_y( y_index);
-		double drift_y = cheyette_model_.drift_y(t,x,y);
+		double drift_y = cheyette_model_->drift_y(t,x,y);
 
 		return drift_y;
 	}

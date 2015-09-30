@@ -12,85 +12,51 @@
 #include <ql/math/optimization/levenbergmarquardt.hpp>
 
 #include <Cheyette/Calibration/CheyetteBaseCostFunction.h>
-#include <Cheyette/Calibration/CheyetteDD_CostFunctionLevel.h>
-#include <Cheyette/Calibration/CheyetteDD_CostFunctionSkew.h>
+#include <Cheyette/Calibration/Cheyette_CostFunctionLevel.h>
+#include <Cheyette/Calibration/Cheyette_CostFunctionSkew.h>
 
 #include <ql/math/optimization/costfunction.hpp>
 
-//using namespace QuantLib ;  //pour CostFunction, Real, Array
+
+namespace HelperArray
+{
+	//std::vector<double> arrayToVector(QuantLib::Array a) ;
+	QuantLib::Array vectorToArray(const std::vector<double>& v) ;
+};
 
 //classe mere. Pour le moment, seul LocalCalibrator en dérive
 //possibilité de faire GlobalCalibrator
 class CheyetteBaseCalibrator
 {
 protected :
-	QuantLib::EndCriteria			stopCriteria_; 
-	//CheyetteBaseCostFunction_PTR	cheyetteBaseCostFunction_PTR_ ;
-
-	bool isVirtualCalibration_;
-
-	std::string base_general_result_info_;
-	
-	std::ostream& o_ ;
-
-	//! minimizator
-	QuantLib::EndCriteria::Type endConvergenceType_;
-
-	bool use_positive_constraint_;
+	QuantLib::EndCriteria					stopCriteria_;			//construit avec maxIterations, rootEpsilon, functionEpsilon
+	QuantLib::EndCriteria::Type				endConvergenceType_;
 	boost::shared_ptr<QuantLib::Constraint> pConstraint_;
 
-
-	//! storage information after minimization
-	size_t total_number_called_;
-	double total_minimization_time_;
-	
-	// stored relative error for post calibration
-	double max_quote_rel_error_;
-	std::pair<size_t,size_t> max_quote_rel_error_position_;
-	
-	//// stored error for post calibration
-	double max_quote_abs_error_;
-	std::pair<size_t,size_t> max_quote_abs_error_position_;
-
-	double quote_error_l2_, quote_error_l1_, quote_error_lInf_;
-
-	// post calibration calculated errors
-	void retrieve_calib_global_error() ;
-	
-	//virtual void retrieve_calib_info() = 0 ;
-
-	void printAnnexeStopCriteriaLevenbergMarquardt( std::ofstream & stream ) const ;
-
 public :
-	CheyetteBaseCalibrator( std::ostream& o, 
-							const QuantLib::Size& maxIterations,
+	CheyetteBaseCalibrator( const QuantLib::Size& maxIterations,
 							const QuantLib::Real& rootEpsilon,        
 							const QuantLib::Real& functionEpsilon) ;    
-						//	CheyetteBaseCostFunction_PTR cheyetteBaseCostFunction) ;
+							
+	virtual ~CheyetteBaseCalibrator(){}
 
-	bool isVirtualCalibration() const { return isVirtualCalibration_; }
+	void minimizeNoConstraint(	QuantLib::Array& xInitiate, 
+								QuantLib::LevenbergMarquardt& minimizationSolver, 
+								CheyetteBaseCostFunction_PTR pCostFunction) const ;
 
-	virtual void solve() = 0 ;
+	void minimizePositiveConstraint(QuantLib::Array& calibratedArray1D, 	
+									QuantLib::LevenbergMarquardt& minimizationSolver, 
+									CheyetteBaseCostFunction_PTR pCostFunction) const ;
 
-	//virtual void printPlusPlus(const std::string& base_filename) const = 0 ;
+	void minimizeBoundaryConstraint(QuantLib::Array& calibratedArray1D, 
+									QuantLib::LevenbergMarquardt& minimizationSolver,
+									CheyetteBaseCostFunction_PTR pCostFunction) const ;
 
-	//activate the positive constraint to be sure that the cellulle calibration do not have negative solution
-	void activate_PositiveConstraint() ;
+	void printMinimizationInfo(QuantLib::Problem optimizationProblem, 
+							   QuantLib::EndCriteria::Type endConvergenceType) const ;
 
-	// methods retrieving information from QuantLib::EndCriteria
-	QuantLib::Size maxIterations()                const {return stopCriteria_.maxIterations() ;}
-	QuantLib::Size maxStationaryStateIterations() const {return stopCriteria_.maxStationaryStateIterations() ;}
-	QuantLib::Real rootEpsilon()                  const {return stopCriteria_.rootEpsilon() ;}
-	QuantLib::Real functionEpsilon()              const {return stopCriteria_.functionEpsilon() ;}
-	QuantLib::Real gradientNormEpsilon()          const {return stopCriteria_.gradientNormEpsilon() ;}
-	const QuantLib::EndCriteria::Type& get_EndConvergenceType() const { return endConvergenceType_ ;}
-		
-	const double& get_QuoteError_L2() const { return quote_error_l2_; }
-	const double& get_QuoteError_L1() const { return quote_error_l1_; }
-	const double& get_QuoteError_LInf() const { return quote_error_lInf_; }
-
-
-	const std::string& get_BaseGeneral_Result_Info() const { return base_general_result_info_;}
+	virtual void solve() const = 0 ;		//minimise pour une swaption
+	virtual void calibrate() const = 0 ;	//calibration du modèle sur le vecteur des swaptions coterminales
 };
 
 typedef boost::shared_ptr<CheyetteBaseCalibrator> CheyetteBaseCalibrator_PTR;

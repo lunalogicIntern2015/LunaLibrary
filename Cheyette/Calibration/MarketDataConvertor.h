@@ -1,6 +1,7 @@
 #pragma once
 
-#include <LMM\LmmSwaptionMarketData.h>
+#include <LMM/LmmSwaptionMarketData.h>
+#include <Cheyette/Model/CourbeInput.h>
 
 //pour LMMTenorStructure
 const int max_nbOfYear = 40 ;

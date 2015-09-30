@@ -37,5 +37,6 @@ public:
 };
 
 typedef boost::shared_ptr<VanillaSwaption> VanillaSwaption_PTR;
+typedef boost::shared_ptr<const VanillaSwaption> VanillaSwaption_CONSTPTR;
 
 

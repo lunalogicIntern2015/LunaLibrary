@@ -1,27 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClInclude Include="Cheyette\Calibration\CheyetteBaseCalibrator.h">
-      <Filter>Cheyette\Calibration</Filter>
-    </ClInclude>
-    <ClInclude Include="Cheyette\Calibration\CheyetteBaseCostFunction.h">
-      <Filter>Cheyette\Calibration</Filter>
-    </ClInclude>
-    <ClInclude Include="Cheyette\Calibration\CheyetteDD_CostFunctionLevel.h">
-      <Filter>Cheyette\Calibration</Filter>
-    </ClInclude>
-    <ClInclude Include="Cheyette\Calibration\CheyetteDD_CostFunctionSkew.h">
-      <Filter>Cheyette\Calibration</Filter>
-    </ClInclude>
-    <ClInclude Include="Cheyette\Calibration\CheyetteDD_LocalCalibrator.h">
-      <Filter>Cheyette\Calibration</Filter>
-    </ClInclude>
-    <ClInclude Include="Cheyette\Calibration\MarketData.h">
-      <Filter>Cheyette\Calibration</Filter>
-    </ClInclude>
-    <ClInclude Include="Cheyette\Calibration\MarketDataConvertor.h">
-      <Filter>Cheyette\Calibration</Filter>
-    </ClInclude>
     <ClInclude Include="Cheyette\Model\CheyetteDD_Model.h">
       <Filter>Cheyette\Model</Filter>
     </ClInclude>
@@ -34,28 +13,7 @@
     <ClInclude Include="Cheyette\Model\CourbeInput.h">
       <Filter>Cheyette\Model</Filter>
     </ClInclude>
-    <ClInclude Include="Cheyette\Pricer\CheyetteDD_VanillaSwaptionApproxPricer.h">
-      <Filter>Cheyette\Pricer</Filter>
-    </ClInclude>
-    <ClInclude Include="Cheyette\Pricer\CheyetteQuad_VanillaSwaptionApproxPricer.h">
-      <Filter>Cheyette\Pricer</Filter>
-    </ClInclude>
     <ClInclude Include="Cheyette\Pricer\MC_Cheyette.h">
-      <Filter>Cheyette\Pricer</Filter>
-    </ClInclude>
-    <ClInclude Include="Cheyette\Pricer\MC_CheyetteDD_GenericSwapPricer.h">
-      <Filter>Cheyette\Pricer</Filter>
-    </ClInclude>
-    <ClInclude Include="Cheyette\Pricer\MC_CheyetteDD_GenericSwaptionPricer.h">
-      <Filter>Cheyette\Pricer</Filter>
-    </ClInclude>
-    <ClInclude Include="Cheyette\Pricer\MC_CheyetteDD_VanillaSwapPricer.h">
-      <Filter>Cheyette\Pricer</Filter>
-    </ClInclude>
-    <ClInclude Include="Cheyette\Pricer\MC_CheyetteDD_VanillaSwaptionPricer.h">
-      <Filter>Cheyette\Pricer</Filter>
-    </ClInclude>
-    <ClInclude Include="Cheyette\Pricer\MC_CheyetteDD_ZCPricer.h">
       <Filter>Cheyette\Pricer</Filter>
     </ClInclude>
     <ClInclude Include="Cheyette\Pricer\PDE_Cheyette_Model.h">
@@ -70,31 +28,7 @@
     <ClInclude Include="Cheyette\Pricer\PDE_CheyetteDD_VanillaSwapPricer.h">
       <Filter>Cheyette\Pricer</Filter>
     </ClInclude>
-    <ClInclude Include="Cheyette\unit_test\Test_CheyetteDD_Model.h">
-      <Filter>Cheyette\Test</Filter>
-    </ClInclude>
-    <ClInclude Include="Cheyette\unit_test\TestApproxDD.h">
-      <Filter>Cheyette\Test</Filter>
-    </ClInclude>
-    <ClInclude Include="Cheyette\unit_test\TestCalibrator.h">
-      <Filter>Cheyette\Test</Filter>
-    </ClInclude>
-    <ClInclude Include="Cheyette\unit_test\TestFonction.h">
-      <Filter>Cheyette\Test</Filter>
-    </ClInclude>
-    <ClInclude Include="Cheyette\unit_test\TestIntegrator1D_2D.h">
-      <Filter>Cheyette\Test</Filter>
-    </ClInclude>
-    <ClInclude Include="Cheyette\unit_test\TestMC.h">
-      <Filter>Cheyette\Test</Filter>
-    </ClInclude>
-    <ClInclude Include="Cheyette\unit_test\TestMCGeneric.h">
-      <Filter>Cheyette\Test</Filter>
-    </ClInclude>
     <ClInclude Include="Cheyette\Fonction.h">
-      <Filter>Cheyette</Filter>
-    </ClInclude>
-    <ClInclude Include="Cheyette\InverseFunction.h">
       <Filter>Cheyette</Filter>
     </ClInclude>
     <ClInclude Include="Instrument\Coupon\CappedFlooredCoupon.h">
@@ -586,10 +520,81 @@
     <ClInclude Include="LMM\Calibration\GMatrixMapping.h">
       <Filter>LMM\Calibration</Filter>
     </ClInclude>
-    <ClInclude Include="Cheyette\Calibration\CoTerminalSwaptionQuotes.h" />
-    <ClInclude Include="Cheyette\Calibration\CoTerminalSwaptionSkew.h" />
-    <ClInclude Include="Cheyette\Calibration\CoTerminalSwaptionVol.h" />
-    <ClInclude Include="Cheyette\unit_test\TestApproxCall.h" />
+    <ClInclude Include="Cheyette\Pricer\MC_Cheyette_VanillaSwapPricer.h">
+      <Filter>Cheyette\Pricer</Filter>
+    </ClInclude>
+    <ClInclude Include="Cheyette\Calibration\Cheyette_CostFunctionConvexity.h">
+      <Filter>Cheyette\Calibration</Filter>
+    </ClInclude>
+    <ClInclude Include="Cheyette\Calibration\Cheyette_CostFunctionLevel.h">
+      <Filter>Cheyette\Calibration</Filter>
+    </ClInclude>
+    <ClInclude Include="Cheyette\Calibration\Cheyette_CostFunctionSkew.h">
+      <Filter>Cheyette\Calibration</Filter>
+    </ClInclude>
+    <ClInclude Include="Cheyette\Pricer\Cheyette_SwaptionPricer_Approx.h">
+      <Filter>Cheyette\Pricer</Filter>
+    </ClInclude>
+    <ClInclude Include="Cheyette\Pricer\Cheyette_SwaptionPricer_LinearApprox.h">
+      <Filter>Cheyette\Pricer</Filter>
+    </ClInclude>
+    <ClInclude Include="Cheyette\Pricer\Cheyette_SwaptionPricer_QuadApprox.h">
+      <Filter>Cheyette\Pricer</Filter>
+    </ClInclude>
+    <ClInclude Include="Cheyette\Calibration\CheyetteBaseCalibrator.h">
+      <Filter>Cheyette\Calibration</Filter>
+    </ClInclude>
+    <ClInclude Include="Cheyette\Calibration\CheyetteBaseCostFunction.h">
+      <Filter>Cheyette\Calibration</Filter>
+    </ClInclude>
+    <ClInclude Include="Cheyette\Calibration\CheyetteDD_LocalCalibrator.h">
+      <Filter>Cheyette\Calibration</Filter>
+    </ClInclude>
+    <ClInclude Include="Cheyette\Calibration\CheyetteQuad_LocalCalibrator.h">
+      <Filter>Cheyette\Calibration</Filter>
+    </ClInclude>
+    <ClInclude Include="Cheyette\Calibration\MarketDataConvertor.h">
+      <Filter>Cheyette\Calibration</Filter>
+    </ClInclude>
+    <ClInclude Include="Cheyette\Calibration\CheyetteMarketData.h">
+      <Filter>Cheyette\Calibration</Filter>
+    </ClInclude>
+    <ClInclude Include="Cheyette\Calibration\CheyetteMarketData_2.h">
+      <Filter>Cheyette\Calibration</Filter>
+    </ClInclude>
+    <ClInclude Include="Cheyette\unit_test\TestMC.h">
+      <Filter>Cheyette\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="Cheyette\unit_test\TestIntegrator1D_2D.h">
+      <Filter>Cheyette\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="Cheyette\unit_test\TestFonction.h">
+      <Filter>Cheyette\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="Cheyette\unit_test\TestCalibrator.h">
+      <Filter>Cheyette\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="Cheyette\unit_test\TestApproxDD.h">
+      <Filter>Cheyette\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="Cheyette\unit_test\TestApproxCall.h">
+      <Filter>Cheyette\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="Cheyette\unit_test\Test_LectureFichier.h">
+      <Filter>Cheyette\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="Cheyette\unit_test\Test_comparaison_MC_approx.h">
+      <Filter>Cheyette\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="Cheyette\unit_test\Test_CheyetteQuad_Model.h">
+      <Filter>Cheyette\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="Cheyette\unit_test\Test_CheyetteDD_Model.h">
+      <Filter>Cheyette\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="Cheyette\Pricer\MC_Cheyette_VanillaSwaptionPricer.h">
+      <Filter>Cheyette\Pricer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Cheyette">
@@ -687,24 +692,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Cheyette\Calibration\CheyetteBaseCalibrator.cpp">
-      <Filter>Cheyette\Calibration</Filter>
-    </ClCompile>
-    <ClCompile Include="Cheyette\Calibration\CheyetteBaseCostFunction.cpp">
-      <Filter>Cheyette\Calibration</Filter>
-    </ClCompile>
-    <ClCompile Include="Cheyette\Calibration\CheyetteDD_CostFunctionLevel.cpp">
-      <Filter>Cheyette\Calibration</Filter>
-    </ClCompile>
-    <ClCompile Include="Cheyette\Calibration\CheyetteDD_CostFunctionSkew.cpp">
-      <Filter>Cheyette\Calibration</Filter>
-    </ClCompile>
-    <ClCompile Include="Cheyette\Calibration\CheyetteDD_LocalCalibrator.cpp">
-      <Filter>Cheyette\Calibration</Filter>
-    </ClCompile>
-    <ClCompile Include="Cheyette\Calibration\MarketData.cpp">
-      <Filter>Cheyette\Calibration</Filter>
-    </ClCompile>
     <ClCompile Include="Cheyette\Model\CheyetteDD_Model.cpp">
       <Filter>Cheyette\Model</Filter>
     </ClCompile>
@@ -714,28 +701,7 @@
     <ClCompile Include="Cheyette\Model\CourbeInput.cpp">
       <Filter>Cheyette\Model</Filter>
     </ClCompile>
-    <ClCompile Include="Cheyette\Pricer\CheyetteDD_VanillaSwaptionApproxPricer.cpp">
-      <Filter>Cheyette\Pricer</Filter>
-    </ClCompile>
-    <ClCompile Include="Cheyette\Pricer\CheyetteQuad_VanillaSwaptionApproxPricer.cpp">
-      <Filter>Cheyette\Pricer</Filter>
-    </ClCompile>
     <ClCompile Include="Cheyette\Pricer\MC_Cheyette.cpp">
-      <Filter>Cheyette\Pricer</Filter>
-    </ClCompile>
-    <ClCompile Include="Cheyette\Pricer\MC_CheyetteDD_GenericSwapPricer.cpp">
-      <Filter>Cheyette\Pricer</Filter>
-    </ClCompile>
-    <ClCompile Include="Cheyette\Pricer\MC_CheyetteDD_GenericSwaptionPricer.cpp">
-      <Filter>Cheyette\Pricer</Filter>
-    </ClCompile>
-    <ClCompile Include="Cheyette\Pricer\MC_CheyetteDD_VanillaSwapPricer.cpp">
-      <Filter>Cheyette\Pricer</Filter>
-    </ClCompile>
-    <ClCompile Include="Cheyette\Pricer\MC_CheyetteDD_VanillaSwaptionPricer.cpp">
-      <Filter>Cheyette\Pricer</Filter>
-    </ClCompile>
-    <ClCompile Include="Cheyette\Pricer\MC_CheyetteDD_ZCPricer.cpp">
       <Filter>Cheyette\Pricer</Filter>
     </ClCompile>
     <ClCompile Include="Cheyette\Pricer\PDE_CheyetteDD_GenericSwapPricer.cpp">
@@ -743,30 +709,6 @@
     </ClCompile>
     <ClCompile Include="Cheyette\Pricer\PDE_CheyetteDD_VanillaSwapPricer.cpp">
       <Filter>Cheyette\Pricer</Filter>
-    </ClCompile>
-    <ClCompile Include="Cheyette\unit_test\Test_CheyetteDD_Model.cpp">
-      <Filter>Cheyette\Test</Filter>
-    </ClCompile>
-    <ClCompile Include="Cheyette\unit_test\TestApproxDD.cpp">
-      <Filter>Cheyette\Test</Filter>
-    </ClCompile>
-    <ClCompile Include="Cheyette\unit_test\TestCalibrator.cpp">
-      <Filter>Cheyette\Test</Filter>
-    </ClCompile>
-    <ClCompile Include="Cheyette\unit_test\TestFonction.cpp">
-      <Filter>Cheyette\Test</Filter>
-    </ClCompile>
-    <ClCompile Include="Cheyette\unit_test\TestIntegrator1D_2D.cpp">
-      <Filter>Cheyette\Test</Filter>
-    </ClCompile>
-    <ClCompile Include="Cheyette\unit_test\TestMC.cpp">
-      <Filter>Cheyette\Test</Filter>
-    </ClCompile>
-    <ClCompile Include="Cheyette\unit_test\TestMCGeneric.cpp">
-      <Filter>Cheyette\Test</Filter>
-    </ClCompile>
-    <ClCompile Include="Cheyette\InverseFunction.cpp">
-      <Filter>Cheyette</Filter>
     </ClCompile>
     <ClCompile Include="Instrument\Coupon\CappedFlooredCoupon.cpp">
       <Filter>Instrument\Coupon</Filter>
@@ -1261,8 +1203,80 @@
     <ClCompile Include="LMM\Calibration\GMatrixMapping.cpp">
       <Filter>LMM\Calibration</Filter>
     </ClCompile>
-    <ClCompile Include="Cheyette\Calibration\CoTerminalSwaptionSkew.cpp" />
-    <ClCompile Include="Cheyette\Calibration\CoTerminalSwaptionVol.cpp" />
-    <ClCompile Include="Cheyette\unit_test\TestApproxCall.cpp" />
+    <ClCompile Include="Cheyette\Pricer\MC_Cheyette_VanillaSwapPricer.cpp">
+      <Filter>Cheyette\Pricer</Filter>
+    </ClCompile>
+    <ClCompile Include="Cheyette\Calibration\Cheyette_CostFunctionConvexity.cpp">
+      <Filter>Cheyette\Calibration</Filter>
+    </ClCompile>
+    <ClCompile Include="Cheyette\Calibration\Cheyette_CostFunctionLevel.cpp">
+      <Filter>Cheyette\Calibration</Filter>
+    </ClCompile>
+    <ClCompile Include="Cheyette\Calibration\Cheyette_CostFunctionSkew.cpp">
+      <Filter>Cheyette\Calibration</Filter>
+    </ClCompile>
+    <ClCompile Include="Cheyette\Pricer\Cheyette_SwaptionPricer_Approx.cpp">
+      <Filter>Cheyette\Pricer</Filter>
+    </ClCompile>
+    <ClCompile Include="Cheyette\Pricer\Cheyette_SwaptionPricer_LinearApprox.cpp">
+      <Filter>Cheyette\Pricer</Filter>
+    </ClCompile>
+    <ClCompile Include="Cheyette\Pricer\Cheyette_SwaptionPricer_QuadApprox.cpp">
+      <Filter>Cheyette\Pricer</Filter>
+    </ClCompile>
+    <ClCompile Include="Cheyette\Calibration\CheyetteBaseCalibrator.cpp">
+      <Filter>Cheyette\Calibration</Filter>
+    </ClCompile>
+    <ClCompile Include="Cheyette\Calibration\CheyetteBaseCostFunction.cpp">
+      <Filter>Cheyette\Calibration</Filter>
+    </ClCompile>
+    <ClCompile Include="Cheyette\Calibration\CheyetteDD_LocalCalibrator.cpp">
+      <Filter>Cheyette\Calibration</Filter>
+    </ClCompile>
+    <ClCompile Include="Cheyette\Calibration\CheyetteQuad_LocalCalibrator.cpp">
+      <Filter>Cheyette\Calibration</Filter>
+    </ClCompile>
+    <ClCompile Include="Cheyette\Calibration\CheyetteMarketData.cpp">
+      <Filter>Cheyette\Calibration</Filter>
+    </ClCompile>
+    <ClCompile Include="Cheyette\Calibration\CheyetteMarketData_2.cpp">
+      <Filter>Cheyette\Calibration</Filter>
+    </ClCompile>
+    <ClCompile Include="Cheyette\unit_test\TestMC.cpp">
+      <Filter>Cheyette\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="Cheyette\unit_test\TestIntegrator1D_2D.cpp">
+      <Filter>Cheyette\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="Cheyette\unit_test\TestFonction.cpp">
+      <Filter>Cheyette\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="Cheyette\unit_test\TestCalibrator.cpp">
+      <Filter>Cheyette\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="Cheyette\unit_test\TestApproxDD.cpp">
+      <Filter>Cheyette\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="Cheyette\unit_test\TestApproxCall.cpp">
+      <Filter>Cheyette\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="Cheyette\unit_test\Test_LectureFichier.cpp">
+      <Filter>Cheyette\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="Cheyette\unit_test\Test_comparaison_MC_approx.cpp">
+      <Filter>Cheyette\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="Cheyette\unit_test\Test_CheyetteQuad_Model.cpp">
+      <Filter>Cheyette\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="Cheyette\unit_test\Test_CheyetteDD_Model.cpp">
+      <Filter>Cheyette\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="Cheyette\Model\CheyetteModel.cpp">
+      <Filter>Cheyette\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Cheyette\Pricer\MC_Cheyette_VanillaSwaptionPricer.cpp">
+      <Filter>Cheyette\Pricer</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

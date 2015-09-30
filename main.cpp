@@ -11,16 +11,41 @@
 #include <Numeric/Integrator1D.h>
 #include <Cheyette/unit_test/TestMC.h>
 
-
+#include <Cheyette/unit_test/Test_comparaison_MC_approx.h>
+#include <Cheyette/unit_test/TestCalibrator.h>
+#include <Cheyette/unit_test/Test_LectureFichier.h>
+#include <Cheyette/Calibration/CheyetteMarketData_2.h>
 
 int main()
 {
+//	lancementQualiteApprox() ;
 
-	//lancementAuto() ;
+	size_t fileNumber = 3 ; //2008 07 02
+//	size_t fileNumber = 14 ; //2011 04 06
+//	size_t fileNumber = 37 ; //2014_08_08
 
-	//size_t fileNumber = 1 ;
-	//size_t coterminal = 12 ;
+	size_t coterminal = 11 ;
+	printAllResults_calibratedData(fileNumber, coterminal) ;
+
+	//fileNumber = 14 ;
 	//printAllResults_calibratedData(fileNumber, coterminal) ;
+
+	//size_t fileNumber = 37 ;
+	//printAllResults_calibratedData(fileNumber, coterminal) ;
+
+	//testRecupData(0) ;
+	//testReadFile(0) ;
+	//test_MC_approx() ;
+	//lancementCalibOneFile() ;
+
+	//std::vector<double> v_sigma(3, 1) ; //3 fois l'élément 1
+	//std::cout << v_sigma[0] << v_sigma[1] << v_sigma[2] << std::endl ;
+
+	//test_approx() ;
+
+	//testMCSwap_SwaptionPricer() ;
+//	lancementAuto() ;
+
 
 	//MCforward_vs_annuity() ;
 //test MC swap contre swap courbe + swaption OK
@@ -46,12 +71,6 @@ int main()
 	//////TestMCSwapPricer(a, b, simus, floatingLegTenor, fixedLegTenor) ;
 	//////TestMCSwapPricer_annuity(a, b, simus, floatingLegTenor, fixedLegTenor) ;
 
-	//double bs_call_price = 0.0747381/100 ; //0.0611958/100 ;
-	//double annuity0 = 83.86/100  ; //A0
-	//double s0 = 2.6342/100 ; //s0
-	//double strike = s0 ;   
-	//double T = 10.0 ;
-	//std::cout << NumericalMethods::Black_SwaptionImpliedVolatility(bs_call_price, annuity0, s0, strike, T) ;
 
 	getchar();
 }

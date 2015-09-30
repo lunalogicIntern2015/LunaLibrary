@@ -115,7 +115,6 @@ double Black_Price_vol2_allStrike(double fwd, double strike, double sqrt_int_sig
 	}
 	else
 	{
-		throw std::string("Info : strike negatif") ;
 		res = fwd - strike ;	
 	}
 
@@ -170,7 +169,7 @@ double Black_impliedVolatility(const double  bs_call_price,
 	double min    = 10e-6;
 	double max    = 10 ;
     size_t nDigits   = 15;
-	boost::uintmax_t nMaxIter  = 200;
+	boost::uintmax_t nMaxIter  = 30;
 	double result_newton_raphson = boost::math::tools::newton_raphson_iterate(bs_function_helper, initial_guess, min, max, nDigits);
 	return result_newton_raphson;
 

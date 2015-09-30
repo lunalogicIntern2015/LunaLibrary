@@ -18,6 +18,10 @@ namespace InputFileManager
 	inline std::vector<std::string> get_VCUB_FileList()
 	{
 		std::vector<std::string> file_list;
+		//file_list.push_back("VCUB_2011_04_06_KRW.csv");// 0        // !!!! à supprimer apres
+		
+		file_list.push_back("2011_04_06.csv");// 0        // !!!! à supprimer apres
+
 		file_list.push_back("VCUB_2008_01_02.csv");// 0
 		file_list.push_back("VCUB_2008_04_02.csv");// 1  
 		file_list.push_back("VCUB_2008_07_02.csv");// 2

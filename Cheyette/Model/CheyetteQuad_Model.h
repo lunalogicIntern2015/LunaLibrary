@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Cheyette/Fonction.h>
+#include <Cheyette/Model/CheyetteModel.h>
 #include <Cheyette/Model/CourbeInput.h>
 
 #include <vector>
@@ -26,87 +27,70 @@
    -----------------------------------------------------------*/
 
 
-class CheyetteQuad_Model
+class CheyetteQuad_Model : public CheyetteModel 
 {
-public:
 
-	struct CheyetteQuad_Parameter
-	{
-		double						k_;			//mean reversion parameter (constant)
-	    Piecewiseconst_RR_Function	a_ ;		//a(t)				
-		Piecewiseconst_RR_Function	b_;			//b(t)					
-		Piecewiseconst_RR_Function	c_;			//c(t)					
-
-		//structure constructor
-		CheyetteQuad_Parameter(const double k, 
-			                 const Piecewiseconst_RR_Function& a, 
-			                 const Piecewiseconst_RR_Function& b, 
-							 const Piecewiseconst_RR_Function& c)
-			: k_(k), a_(a), b_(b), c_(c) 
-			{
-				assert(k > 0) ;
-				if(a_.getx_() != b_.getx_() && b_.getx_() != c_.getx_())
-				{
-					std::cout << "Warning: pillars of piecewise constant functions a, b and c are different" << std::endl ;
-				}
-			}
-	};
-
-private:
-
-	CourbeInput_PTR					courbeInput_PTR_ ;             // yield y(0,t)
-	mutable CheyetteQuad_Parameter	cheyetteQuad_Parameter_; 
+private :
+	double						k_;			//mean reversion parameter (constant)
+	Piecewiseconst_RR_Function	a_ ;		//a(t)				
+	Piecewiseconst_RR_Function	b_;			//b(t)					
+	Piecewiseconst_RR_Function	c_;			//c(t)					
 
 public :
-	//constructor
-	CheyetteQuad_Model(	const CourbeInput_PTR& courbeInput_PTR, 
-						const CheyetteQuad_Parameter& cheyetteParam)
-				: courbeInput_PTR_(courbeInput_PTR), cheyetteQuad_Parameter_(cheyetteParam) {}
+	//Ctor
+	CheyetteQuad_Model(	const CourbeInput_PTR courbeInput_PTR, 
+						double k,		
+			            const Piecewiseconst_RR_Function& a, 
+			            const Piecewiseconst_RR_Function& b, 
+						const Piecewiseconst_RR_Function& c) 
+		: CheyetteModel(courbeInput_PTR), k_(k), a_(a), b_(b), c_(c)
+		{
+			assert(k > 0) ;
+			if(a_.getx_() != b_.getx_() && b_.getx_() != c_.getx_())
+			{
+				std::cout << "Warning: pillars of piecewise constant functions a, b and c are different" << std::endl ;
+			}
+		}
+
 
 	virtual ~CheyetteQuad_Model(){}
 
+	virtual double meanReversion(double t, double x_t, double y_t) const {return k_;}
+	virtual double localVol(double t, double x_t, double y_t) const 
+	{
+		return a_(t) + b_(t) * x_t + c_(t) * x_t * x_t ;
+	}
+
+	virtual double localVol_1stDerivative(double t, double x_t, double y_t) const
+	{
+		//r(t) = x(t) + f(0, t)
+		return b_(t) + 2 * c_(t) * x_t ;
+	} 
+
+	virtual double localVol_2ndDerivative(double t, double x_t, double y_t) const
+	{
+		return 2 * c_(t) ;
+	} 
+
 	//getters
-	CourbeInput_PTR			get_courbeInput_PTR() const{return courbeInput_PTR_ ;}
-	CheyetteQuad_Parameter	get_CheyetteQuad_Parameter() const{return cheyetteQuad_Parameter_;}
+	double						get_k() const {return k_;}			
+	Piecewiseconst_RR_Function	get_a() const {return a_ ;}	
+	Piecewiseconst_RR_Function	get_b() const {return b_ ;}
+	Piecewiseconst_RR_Function	get_c() const {return c_ ;}
 
 	//setters
-	void		setCheyetteQuad_Parameter_a(const std::vector<double>& a_y)
-						{cheyetteQuad_Parameter_.a_.sety_(a_y) ;}
-	void		setCheyetteQuad_Parameter_b(const std::vector<double>& b_y)
-						{cheyetteQuad_Parameter_.b_.sety_(b_y) ;}
-	void		setCheyetteQuad_Parameter_c(const std::vector<double>& c_y)
-						{cheyetteQuad_Parameter_.c_.sety_(c_y) ;}
+	virtual void		setCheyetteModel_Parameter_Level	(const std::vector<double>& a_y){a_.sety_(a_y) ;}
+	virtual void		setCheyetteModel_Parameter_Skew		(const std::vector<double>& b_y){b_.sety_(b_y) ;}
+	virtual void		setCheyetteModel_Parameter_Convexity(const std::vector<double>& c_y){c_.sety_(c_y) ;}
 
-	void		setCheyetteQuad_Parameter_a(double a, size_t index)
-						{cheyetteQuad_Parameter_.a_.sety_(a, index) ;}
-	void		setCheyetteQuad_Parameter_b(double b, size_t index)
-						{cheyetteQuad_Parameter_.b_.sety_(b, index) ;}
-	void		setCheyetteQuad_Parameter_c(double c, size_t index)
-						{cheyetteQuad_Parameter_.c_.sety_(c, index) ;}
+	virtual void		setCheyetteModel_Parameter_Level	(double a, size_t index){a_.sety_(a, index) ;}
+	virtual void		setCheyetteModel_Parameter_Skew		(double b, size_t index){b_.sety_(b, index) ;}
+	virtual void		setCheyetteModel_Parameter_Convexity(double c, size_t index){c_.sety_(c, index) ;}
 
-	void show() const ;
-	void print(std::ostream& o) const ;
+	virtual void show() const ;
+	virtual void print(std::ostream& o) const ;
 
-	//fonction de vol locale Quadratic Volatility
-	double sigma_r( double t,  double x_t) const ;
-	double sigma_r_t_1stDerivative( double t,  double x_t) const ;  //derivee wrt x_t
-	double sigma_r_t_2ndDerivative( double t,  double x_t) const ;
-
-	//fonctions G(t, T), ZC B(t, T), Libor...
 	double G(double t, double T) const ;  
-	double P(double t, double T, double x_t, double y_t) const ;  //ZC B(0,t) : donné en input sinon stochastique
-
-	double r_t(double t, double x_t) const ;
-
-	double Libor(double t, double T1, double T2, double x_t, double y_t) const ;  
-
-		//EDS : diffusion
-	double diffusion_x(double t, double x_t) const ;
-	
-	double drift_y(double t, double x_t, double y_t) const ;
-
-	//EDS : drift sous Q^T
-	double drift_x_QT(double t, double T_proba_fwd, double x_t, double y_t) const ;
 
 };
 
